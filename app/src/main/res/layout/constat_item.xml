@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="400dp"
+    android:background="@color/white"
+    android:layout_height="250dp">
+
+    <LinearLayout
+        android:id="@+id/ctn_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_700"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txv_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            tools:text="001 - Mercredi 10 Septembre 2020 - 16h52" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ctn_type_appart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ctn_header">
+
+
+        <ImageView
+            android:id="@+id/imv_enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_enter" />
+
+        <TextView
+            android:id="@+id/txv_type_appart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            tools:text="Appart T2" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:lines="2"
+        app:layout_constraintBottom_toBottomOf="@id/ctn_type_appart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ctn_type_appart"
+        app:layout_constraintTop_toTopOf="@id/ctn_type_appart"
+        tools:text="43 rue de bellevue 69400 Lyon" />
+
+    <View
+        android:id="@+id/separator_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/txv_address" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+
+    <TextView
+        android:id="@+id/txv_owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/ctn_footer"
+        app:layout_constraintTop_toBottomOf="@id/separator_1"
+        tools:text="Propriétaire\nKilian RENARD" />
+
+    <TextView
+        android:id="@+id/txv_tenant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/ctn_footer"
+        app:layout_constraintTop_toBottomOf="@id/separator_1"
+        tools:text="Locataire\nJosé BELLIER" />
+
+
+    <View
+        android:id="@+id/separator_3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@id/ctn_footer" />
+
+    <ImageView
+        android:id="@+id/imv_pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_pdf"
+        app:layout_constraintBottom_toTopOf="@id/ctn_footer"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        android:layout_marginBottom="8dp"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/separator_1"
+        app:layout_constraintBottom_toTopOf="@id/imv_pdf"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="6dp"/>
+
+    <LinearLayout
+        android:id="@+id/ctn_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/txv_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            tools:text="Adama Traore - Entreprise Name" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
