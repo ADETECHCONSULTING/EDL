@@ -10,4 +10,9 @@
         android:name="fr.atraore.edl.ui.MainFragment"
         android:label="main_fragment"
         tools:layout="@layout/main_fragment" />
+    <fragment
+        android:id="@+id/startConstatFragment"
+        android:name="fr.atraore.edl.ui.edl.StartConstatFragment"
+        android:label="start_constat_fragment"
+        tools:layout="@layout/start_constat_fragment" />
 </navigation>

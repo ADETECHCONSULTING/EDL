@@ -12,8 +12,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
-        app:title="EDL"
-        android:theme="@style/ToolbarTheme"/>
+        android:theme="@style/ToolbarTheme">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_title"
+            android:textSize="24dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:id="@+id/toolbar_title" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <fragment
         android:id="@+id/nav_host_fragment"
@@ -23,6 +34,5 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:navGraph="@navigation/edl_navigation"
         app:defaultNavHost="true" />
-
 
 </LinearLayout>

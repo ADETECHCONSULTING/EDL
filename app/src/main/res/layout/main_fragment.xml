@@ -7,8 +7,9 @@
     android:background="@drawable/gradient_bg"
     tools:context=".ui.MainFragment">
 
+
     <LinearLayout
-        android:layout_width="150dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -16,29 +17,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_entrant"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/button_outline_shape"
+            app:cornerRadius="30dp"
+            android:theme="@style/Theme.MaterialComponents"
+            android:textColor="@color/white"
+            app:strokeColor="@color/white"
+            app:strokeWidth="4dp"
             android:text="Entrant" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_pre_etat"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/button_outline_shape"
-            android:text="Entrant" />
+            app:cornerRadius="30dp"
+            android:theme="@style/Theme.MaterialComponents"
+            android:textColor="@color/white"
+            app:strokeColor="@color/white"
+            app:strokeWidth="4dp"
+            android:text="Pré-état" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_sortant"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/button_outline_shape"
-            android:text="Entrant" />
+            app:cornerRadius="30dp"
+            android:theme="@style/Theme.MaterialComponents"
+            android:textColor="@color/white"
+            app:strokeColor="@color/white"
+            app:strokeWidth="4dp"
+            android:text="Sortant" />
+
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

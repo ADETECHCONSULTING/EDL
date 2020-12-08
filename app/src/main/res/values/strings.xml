@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">EDL</string>
+    <string name="app_title">EDL</string>
+    <string name="bien_label">Bien</string>
+    <string name="owner_label">Propriétaire</string>
+    <string name="tenant_label">Locataire</string>
+    <string name="mandataire_label">Mandataire</string>
+    <string name="user_label">Utilisateur</string>
 </resources>
