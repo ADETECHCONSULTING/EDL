@@ -4,40 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/holo_blue_dark"
+    android:background="@drawable/gradient_bg"
     tools:context=".ui.MainFragment">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rcv_constat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/btn_entrant"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Entrant"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/button_outline_shape"/>
+            android:background="@drawable/button_outline_shape"
+            android:text="Entrant" />
 
         <Button
             android:id="@+id/btn_pre_etat"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Entrant"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/button_outline_shape"/>
+            android:background="@drawable/button_outline_shape"
+            android:text="Entrant" />
 
         <Button
             android:id="@+id/btn_sortant"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Entrant"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/button_outline_shape"/>
+            android:background="@drawable/button_outline_shape"
+            android:text="Entrant" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
