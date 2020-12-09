@@ -25,6 +25,13 @@
 
     </LinearLayout>
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="ctn_bien, ctn_owner, ctn_locataire, ctn_mandataire"/>
+
     <!-- BIEN -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ctn_bien"
@@ -366,10 +373,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ctn_agence"
         android:layout_width="0dp"
-        android:layout_height="170dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_max="170dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/barrier_1"
+        app:layout_constraintVertical_bias="1"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ctn_user"
@@ -398,7 +408,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="center"
-            app:layout_constraintBottom_toTopOf="@id/imv_search_agence"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ctn_agence_header"
             tools:text="Appart T2 sur 1 niveau" />
 
@@ -409,7 +419,8 @@
             android:layout_margin="12dp"
             android:src="@drawable/ic_loupe"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ctn_agence_header" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -418,7 +429,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ctn_user"
         android:layout_width="0dp"
-        android:layout_height="170dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_max="170dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="10dp"
@@ -426,6 +438,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/barrier_1"
+        app:layout_constraintVertical_bias="1"
         app:layout_constraintStart_toEndOf="@+id/ctn_agence">
 
         <View
@@ -450,7 +464,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="center"
-            app:layout_constraintBottom_toTopOf="@id/imv_search_user"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ctn_user_header"
             tools:text="Appart T2 sur 1 niveau" />
 
@@ -461,7 +475,8 @@
             android:layout_margin="12dp"
             android:src="@drawable/ic_loupe"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ctn_user_header" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,7 +9,13 @@
         android:id="@+id/mainFragment"
         android:name="fr.atraore.edl.ui.MainFragment"
         android:label="main_fragment"
-        tools:layout="@layout/main_fragment" />
+        tools:layout="@layout/main_fragment" >
+        <action
+            android:id="@+id/go_to_start"
+            app:destination="@id/startConstatFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/startConstatFragment"
         android:name="fr.atraore.edl.ui.edl.StartConstatFragment"
