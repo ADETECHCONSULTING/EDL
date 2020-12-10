@@ -1,4 +1,4 @@
-package fr.atraore.edl.models
+package fr.atraore.edl.data.models
 
 const val PDF_ID_CONFIG = 1
 data class ConfigPdf (

@@ -15,6 +15,9 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+    buildFeatures {
+        dataBinding true
+    }
 
     defaultConfig {
         applicationId "fr.atraore.edl"

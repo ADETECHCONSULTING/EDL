@@ -1,17 +1,17 @@
-package fr.atraore.edl.models
+package fr.atraore.edl.data.models
 
-data class Users(
+data class Owner(
     val id: Int,
-    val civi: String,
+    val civi: String?,
     val name: String,
     val address: String?,
-    val address2: String,
+    val address2: String?,
     val postalCode: String?,
-    val city: String,
+    val city: String?,
     val tel: String?,
     val tel2: String?,
     val mail: String?,
-    val notes: String?,
-    val actif: Int
+    val notes: String?
 ) {
+
 }

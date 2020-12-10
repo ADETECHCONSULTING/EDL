@@ -1,4 +1,4 @@
-package fr.atraore.edl.models
+package fr.atraore.edl.data.models
 
 //Biens
 data class Property (

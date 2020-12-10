@@ -1,4 +1,4 @@
-package fr.atraore.edl.models
+package fr.atraore.edl.data.models
 
 const val STATES_ID_CONFIG = 1
 

@@ -1,4 +1,4 @@
-package fr.atraore.edl.models
+package fr.atraore.edl.data.models
 
 const val CLEANESS_CONFIG_ID = 1
 data class ConfigClean(
