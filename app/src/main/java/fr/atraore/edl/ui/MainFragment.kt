@@ -6,10 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.ui.adapter.ConstatAdapter
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
@@ -18,19 +22,26 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    lateinit var viewModel : MainViewModel
+    private val mainViewModel: MainViewModel by viewModels {
+        MainViewModelFactory((activity?.application as EdlApplication).repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
+        val adapter = ConstatAdapter()
+        rcv_constat.adapter = adapter
+        rcv_constat.layoutManager = LinearLayoutManager(context)
+
+        mainViewModel.allConstats.observe(viewLifecycleOwner, Observer { constats ->
+            constats?.let { adapter.submitList(it) }
+        })
 
         initListeners()
     }
