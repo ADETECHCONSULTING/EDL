@@ -51,13 +51,14 @@ abstract class AppDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-
+                    populateDatabase(database.getConstatDao())
                 }
             }
         }
 
+        //Init with data
         suspend fun populateDatabase(constatDao: ConstatDao) {
-            // Delete all content
+/*            // Delete all content
             constatDao.deleteAll()
 
             //Add Sample Constat
@@ -87,6 +88,7 @@ abstract class AppDatabase : RoomDatabase() {
             )
             constatDao.save(constat)
             constatDao.save(constat2)
+            */
 
         }
     }

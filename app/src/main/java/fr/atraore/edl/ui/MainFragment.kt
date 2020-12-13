@@ -13,8 +13,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.ui.adapter.ConstatAdapter
 import kotlinx.android.synthetic.main.main_fragment.*
+import java.sql.Date
 
 class MainFragment : Fragment() {
 
@@ -51,6 +53,18 @@ class MainFragment : Fragment() {
     fun initListeners() {
         btn_entrant.setOnClickListener {
             findNavController().navigate(R.id.go_to_start)
+            mainViewModel.saveConstat(Constat(
+                id = 0,
+                typeConstat = "E",
+                dateCreation = Date(1607686070062),
+                idAgency = 1,
+                idContractor = 1,
+                idOwner = 1,
+                idProperty = 1,
+                idTenant = 1,
+                idUser = 1,
+                state = 0
+            ))
         }
         btn_pre_etat.setOnClickListener {
             findNavController().navigate(R.id.go_to_start)

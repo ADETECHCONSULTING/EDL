@@ -3,9 +3,8 @@ package fr.atraore.edl.data.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import fr.atraore.edl.utils.CONSTAT_TABLE
 import java.sql.Date
-
-const val CONSTAT_TABLE = "Constat"
 
 @Entity(tableName = CONSTAT_TABLE)
 data class Constat(
