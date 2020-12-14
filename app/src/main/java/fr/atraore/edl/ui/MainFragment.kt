@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -52,15 +53,17 @@ class MainFragment : Fragment() {
 
     fun initListeners() {
         btn_entrant.setOnClickListener {
-            findNavController().navigate(R.id.go_to_start)
-            mainViewModel.saveConstat(Constat(
-                constatId = 0,
+            val constat = Constat(
+                constatId = 1,
                 typeConstat = "E",
                 dateCreation = Date(1607686070062),
                 idAgency = 1,
                 idUser = 1,
                 state = 0
-            ))
+            )
+            mainViewModel.saveConstat(constat)
+            val bundle = bundleOf("constatId" to constat.constatId)
+            findNavController().navigate(R.id.go_to_start, bundle)
         }
         btn_pre_etat.setOnClickListener {
             findNavController().navigate(R.id.go_to_start)

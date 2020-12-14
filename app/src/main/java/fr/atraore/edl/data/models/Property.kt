@@ -1,23 +1,28 @@
 package fr.atraore.edl.data.models
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 //Biens
+@Entity
 data class Property (
-    val propertyId: Int,
+    @PrimaryKey(autoGenerate = true) val propertyId: Int,
     val address: String,
-    val address2: String?,
-    val postalCode: String,
+    @ColumnInfo(name = "address_2") val address2: String?,
+    @ColumnInfo(name = "postal_code") val postalCode: String,
     val city: String,
     val notes: String?,
     val nature: String?, //Studio
     val type: String?, //T3
-    val nbLevels: Int?,
+    @ColumnInfo(name = "nb_level") val nbLevels: Int?,
     val comment: String?,
     val floor: Int?,
-    val stairCase: Int?,
-    val appartmentDoor: Int?,
-    val caveDoor: Int?,
-    val atticDoor: Int?, //grenier
-    val parkingDoor: Int?,
-    val boxDoor: Int?
+    @ColumnInfo(name = "stair_case") val stairCase: Int?,
+    @ColumnInfo(name = "apparment_door") val appartmentDoor: Int?,
+    @ColumnInfo(name = "cave_door") val caveDoor: Int?,
+    @ColumnInfo(name = "attic_door") val atticDoor: Int?, //grenier
+    @ColumnInfo(name = "parking_door") val parkingDoor: Int?,
+    @ColumnInfo(name = "box_door") val boxDoor: Int?
 ) {
 }

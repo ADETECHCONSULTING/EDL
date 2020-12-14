@@ -10,6 +10,10 @@
             type="android.view.View.OnClickListener" />
 
         <variable
+            name="constatClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="constatItem"
             type="fr.atraore.edl.data.models.Constat" />
         
@@ -19,6 +23,7 @@
         android:layout_width="350dp"
         android:layout_height="200dp"
         android:layout_marginBottom="20dp"
+        android:onClick="@{constatClickListener}"
         android:background="@color/white">
 
         <LinearLayout

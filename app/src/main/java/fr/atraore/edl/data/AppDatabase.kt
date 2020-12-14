@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import fr.atraore.edl.data.dao.ConstatDao
-import fr.atraore.edl.data.models.Constat
+import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.crossRef.ConstatContractorCrossRef
 import fr.atraore.edl.data.models.crossRef.ConstatOwnerCrossRef
 import fr.atraore.edl.data.models.crossRef.ConstatPropertyCrossRef
@@ -25,7 +25,13 @@ const val DATABASE_NAME = "edlDb"
         ConstatOwnerCrossRef::class,
         ConstatPropertyCrossRef::class,
         ConstatTenantCrossRef::class,
-        ConstatContractorCrossRef::class
+        ConstatContractorCrossRef::class,
+        Owner::class,
+        Property::class,
+        Tenant::class,
+        Contractor::class,
+        Agency::class,
+        Users::class
     ], version = 1, exportSchema = false
 )
 @TypeConverters(DateTypeConverter::class)

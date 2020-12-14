@@ -14,4 +14,6 @@ data class Constat(
     @ColumnInfo(name = "id_user") val idUser: Int?,
     @ColumnInfo(name = "id_agency") val idAgency: Int?,
     val state: Int?
-)
+) {
+
+}

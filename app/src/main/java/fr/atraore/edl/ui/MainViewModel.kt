@@ -16,7 +16,7 @@ class MainViewModel(
     val corountineContext: CoroutineContext
     get() = Dispatchers.IO
 
-    fun saveConstat(constat: Constat) = CoroutineScope(corountineContext).launch {
+    fun saveConstat(constat: Constat) = viewModelScope.launch {
         constatRepositoy.save(constat)
     }
 }

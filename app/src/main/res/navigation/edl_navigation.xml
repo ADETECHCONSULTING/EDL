@@ -14,11 +14,17 @@
             android:id="@+id/go_to_start"
             app:destination="@id/startConstatFragment"
             app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:exitAnim="@android:anim/slide_out_right">
+
+            <argument
+                android:name="constatArg"
+                app:argType="integer"/>
+
+        </action>
     </fragment>
     <fragment
         android:id="@+id/startConstatFragment"
-        android:name="fr.atraore.edl.ui.edl.StartConstatFragment"
+        android:name="fr.atraore.edl.ui.edl.start.StartConstatFragment"
         android:label="start_constat_fragment"
         tools:layout="@layout/start_constat_fragment" />
 </navigation>
