@@ -2,7 +2,7 @@ package fr.atraore.edl.data.models
 
 //Biens
 data class Property (
-    val id: Int,
+    val propertyId: Int,
     val address: String,
     val address2: String?,
     val postalCode: String,

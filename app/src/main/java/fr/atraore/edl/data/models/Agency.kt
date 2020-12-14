@@ -8,7 +8,7 @@ import fr.atraore.edl.utils.AGENCY_TABLE
 //Agences
 @Entity(tableName = AGENCY_TABLE)
 data class Agency (
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val agencyId: Int,
     val name: String,
     val address: String?,
     @ColumnInfo(name = "address_2") val address2: String?,

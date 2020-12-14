@@ -397,7 +397,7 @@
             android:id="@+id/txv_agence_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mandataire_label"
+            android:text="@string/agence_label"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/ctn_agence_header"
             app:layout_constraintEnd_toEndOf="@id/ctn_agence_header"

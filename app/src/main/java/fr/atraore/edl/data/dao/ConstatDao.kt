@@ -2,8 +2,8 @@ package fr.atraore.edl.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import fr.atraore.edl.data.models.CONSTAT_TABLE
 import fr.atraore.edl.data.models.Constat
+import fr.atraore.edl.utils.CONSTAT_TABLE
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -20,7 +20,7 @@ interface ConstatDao {
     fun getAllConstat(): Flow<List<Constat>>
 
     //Select constat by id
-    @Query("SELECT * FROM $CONSTAT_TABLE WHERE id = :constatId")
+    @Query("SELECT * FROM $CONSTAT_TABLE WHERE constatId = :constatId")
     fun getConstatById(constatId: Int): Flow<Constat>
 
     @Delete

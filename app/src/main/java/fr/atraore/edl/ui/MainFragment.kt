@@ -54,14 +54,10 @@ class MainFragment : Fragment() {
         btn_entrant.setOnClickListener {
             findNavController().navigate(R.id.go_to_start)
             mainViewModel.saveConstat(Constat(
-                id = 0,
+                constatId = 0,
                 typeConstat = "E",
                 dateCreation = Date(1607686070062),
                 idAgency = 1,
-                idContractor = 1,
-                idOwner = 1,
-                idProperty = 1,
-                idTenant = 1,
                 idUser = 1,
                 state = 0
             ))

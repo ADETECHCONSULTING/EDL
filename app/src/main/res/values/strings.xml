@@ -6,4 +6,5 @@
     <string name="tenant_label">Locataire</string>
     <string name="mandataire_label">Mandataire</string>
     <string name="user_label">Utilisateur</string>
+    <string name="agence_label">Agence</string>
 </resources>

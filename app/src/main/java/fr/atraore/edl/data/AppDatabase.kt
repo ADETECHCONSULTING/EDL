@@ -8,13 +8,26 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import fr.atraore.edl.data.dao.ConstatDao
 import fr.atraore.edl.data.models.Constat
+import fr.atraore.edl.data.models.crossRef.ConstatContractorCrossRef
+import fr.atraore.edl.data.models.crossRef.ConstatOwnerCrossRef
+import fr.atraore.edl.data.models.crossRef.ConstatPropertyCrossRef
+import fr.atraore.edl.data.models.crossRef.ConstatTenantCrossRef
 import fr.atraore.edl.utils.DateTypeConverter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.sql.Date
 
 const val DATABASE_NAME = "edlDb"
-@Database(entities = [Constat::class], version = 1, exportSchema = false)
+
+@Database(
+    entities = [
+        Constat::class,
+        ConstatOwnerCrossRef::class,
+        ConstatPropertyCrossRef::class,
+        ConstatTenantCrossRef::class,
+        ConstatContractorCrossRef::class
+    ], version = 1, exportSchema = false
+)
 @TypeConverters(DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 

@@ -47,7 +47,7 @@ class ConstatAdapter: ListAdapter<Constat, ConstatAdapter.ViewHolder>(DiffCallba
 private class DiffCallback: DiffUtil.ItemCallback<Constat>() {
 
     override fun areItemsTheSame(oldItem: Constat, newItem: Constat): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.constatId == newItem.constatId
     }
 
     override fun areContentsTheSame(oldItem: Constat, newItem: Constat): Boolean {
