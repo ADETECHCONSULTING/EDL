@@ -26,5 +26,18 @@
         android:id="@+id/startConstatFragment"
         android:name="fr.atraore.edl.ui.edl.start.StartConstatFragment"
         android:label="start_constat_fragment"
-        tools:layout="@layout/start_constat_fragment" />
+        tools:layout="@layout/start_constat_fragment" >
+        <action
+            android:id="@+id/go_to_search"
+            app:destination="@id/viewPagerFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPagerFragment"
+        android:name="fr.atraore.edl.ui.edl.search.ViewPagerFragment"
+        android:label="fragment_view_pager"
+        tools:layout="@layout/fragment_view_pager" />
 </navigation>
