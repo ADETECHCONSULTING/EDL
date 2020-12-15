@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import fr.atraore.edl.data.dao.ConstatDao
+import fr.atraore.edl.data.dao.PropertyDao
 import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.crossRef.ConstatContractorCrossRef
 import fr.atraore.edl.data.models.crossRef.ConstatOwnerCrossRef
@@ -16,6 +17,7 @@ import fr.atraore.edl.utils.DateTypeConverter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.sql.Date
+import java.util.*
 
 const val DATABASE_NAME = "edlDb"
 
@@ -38,6 +40,7 @@ const val DATABASE_NAME = "edlDb"
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getConstatDao(): ConstatDao
+    abstract fun getPropertyDao(): PropertyDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
@@ -70,13 +73,13 @@ abstract class AppDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    populateDatabase(database.getConstatDao())
+                    populateDatabase(database.getConstatDao(), database.getPropertyDao())
                 }
             }
         }
 
         //Init with data
-        suspend fun populateDatabase(constatDao: ConstatDao) {
+        suspend fun populateDatabase(constatDao: ConstatDao, propertyDao: PropertyDao) {
 /*            // Delete all content
             constatDao.deleteAll()
 
@@ -109,6 +112,27 @@ abstract class AppDatabase : RoomDatabase() {
             constatDao.save(constat2)
             */
 
+            val property = Property(
+                propertyId = UUID.randomUUID().toString(),
+                address = "43 rue des couronnes",
+                address2 = "",
+                postalCode = "75020",
+                "Paris",
+                "",
+                "Appartement",
+                "F3",
+                2,
+                "",
+                5,
+                1,
+                13,
+                6,
+                2,
+                3,
+                0
+            )
+
+            propertyDao.save(property)
         }
     }
 

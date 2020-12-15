@@ -3,10 +3,8 @@ package fr.atraore.edl.ui
 import androidx.lifecycle.*
 import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.repository.ConstatRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
 import kotlin.coroutines.CoroutineContext
 
 class MainViewModel(

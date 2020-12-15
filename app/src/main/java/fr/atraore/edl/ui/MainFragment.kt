@@ -27,7 +27,7 @@ class MainFragment : Fragment() {
     }
 
     private val mainViewModel: MainViewModel by viewModels {
-        MainViewModelFactory((activity?.application as EdlApplication).repository)
+        MainViewModelFactory((activity?.application as EdlApplication).constatRepository)
     }
 
     override fun onCreateView(

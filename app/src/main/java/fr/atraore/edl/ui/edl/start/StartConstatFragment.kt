@@ -19,7 +19,7 @@ class StartConstatFragment : Fragment() {
     }
 
     private val startViewModel: StartConstatViewModel by viewModels() {
-        StartConstatViewModelFactory((activity?.application as EdlApplication).repository, arguments?.getString("constatId")!!)
+        StartConstatViewModelFactory((activity?.application as EdlApplication).constatRepository, arguments?.getString("constatId")!!)
     }
 
     override fun onCreateView(
