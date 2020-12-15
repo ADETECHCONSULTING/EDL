@@ -17,7 +17,7 @@ interface ConstatDao {
 
     @Transaction
     @Query("SELECT * FROM constat WHERE constatId = :constatId")
-    fun getConstatDetails(constatId: Int) : Flow<ConstatWithDetails>
+    fun getConstatDetails(constatId: String) : Flow<ConstatWithDetails>
 
     //Select constat by id
     @Query("SELECT * FROM $CONSTAT_TABLE WHERE constatId = :constatId")

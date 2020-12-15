@@ -11,7 +11,7 @@ class ConstatRepository(
 ) {
     val allConstats: Flow<List<Constat>> = constatDao.getAllConstat()
 
-    fun getConstatDetail(constatId: Int): Flow<ConstatWithDetails> {
+    fun getConstatDetail(constatId: String): Flow<ConstatWithDetails> {
         return constatDao.getConstatDetails(constatId)
     }
 

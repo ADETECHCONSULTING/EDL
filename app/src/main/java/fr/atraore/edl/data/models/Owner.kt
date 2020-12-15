@@ -7,7 +7,7 @@ import fr.atraore.edl.utils.OWNER_TABLE
 
 @Entity(tableName = OWNER_TABLE)
 data class Owner(
-    @PrimaryKey(autoGenerate = true) val ownerId: Int,
+    @PrimaryKey(autoGenerate = false) val ownerId: String,
     val civi: String?,
     val name: String,
     val address: String?,

@@ -16,9 +16,8 @@ class StartConstatFragment : Fragment() {
         fun newInstance() = StartConstatFragment()
     }
 
-    private var bundleConstatId: Int = -1
     private val startViewModel: StartConstatViewModel by viewModels() {
-        StartConstatViewModelFactory((activity?.application as EdlApplication).repository, arguments?.getInt("constatId") ?: -1)
+        StartConstatViewModelFactory((activity?.application as EdlApplication).repository, arguments?.getString("constatId")!!)
     }
 
     override fun onCreateView(
@@ -31,7 +30,7 @@ class StartConstatFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         startViewModel.constatDetail.observe(viewLifecycleOwner, {
-            Toast.makeText(context, it.constat.constatId.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, it.constat.constatId, Toast.LENGTH_SHORT).show()
         })
     }
 

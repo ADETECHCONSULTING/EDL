@@ -1,7 +1,7 @@
 package fr.atraore.edl.data.models
 
 data class Descriptif(
-    val id: Int,
+    val id: String,
     val libelle: String,
     val nature: String,
     val bib: String?,

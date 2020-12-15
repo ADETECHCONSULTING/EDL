@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 //Biens
 @Entity
 data class Property (
-    @PrimaryKey(autoGenerate = true) val propertyId: Int,
+    @PrimaryKey(autoGenerate = false) val propertyId: String,
     val address: String,
     @ColumnInfo(name = "address_2") val address2: String?,
     @ColumnInfo(name = "postal_code") val postalCode: String,

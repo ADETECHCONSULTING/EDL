@@ -7,7 +7,7 @@ import fr.atraore.edl.utils.CONTRACTOR_TABLE
 
 @Entity(tableName = CONTRACTOR_TABLE)
 data class Contractor(
-    @PrimaryKey(autoGenerate = true) val contractorId: Int,
+    @PrimaryKey(autoGenerate = false) val contractorId: String,
     val denomination: String,
     val mail: String?,
     @ColumnInfo(name = "address_1") val address1: String?,

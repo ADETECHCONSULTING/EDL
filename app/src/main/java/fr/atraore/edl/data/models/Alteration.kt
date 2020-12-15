@@ -1,7 +1,7 @@
 package fr.atraore.edl.data.models
 
 data class Alteration(
-    val alterationId: Int,
+    val alterationId: String,
     val libelle: String,
     val nature: String?,
     val bib: String?,

@@ -7,7 +7,7 @@ import java.sql.Date
 
 @Entity
 data class Tenant(
-    @PrimaryKey(autoGenerate = true) val tenantId: Int,
+    @PrimaryKey(autoGenerate = false) val tenantId: String,
     val civi: String?,
     val name: String,
     val address: String?,

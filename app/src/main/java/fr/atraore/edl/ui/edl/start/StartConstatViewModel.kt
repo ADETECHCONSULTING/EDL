@@ -11,7 +11,7 @@ import kotlin.coroutines.CoroutineContext
 
 class StartConstatViewModel(
     val repository: ConstatRepository,
-    val constatId: Int
+    val constatId: String
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
     val coroutineContext: CoroutineContext
@@ -22,7 +22,7 @@ class StartConstatViewModel(
 
 class StartConstatViewModelFactory(
     private val repository: ConstatRepository,
-    private val constatId: Int
+    private val constatId: String
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

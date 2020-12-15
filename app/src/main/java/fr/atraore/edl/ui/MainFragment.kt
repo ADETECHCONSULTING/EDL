@@ -18,6 +18,7 @@ import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.ui.adapter.ConstatAdapter
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.sql.Date
+import java.util.*
 
 class MainFragment : Fragment() {
 
@@ -54,7 +55,7 @@ class MainFragment : Fragment() {
     fun initListeners() {
         btn_entrant.setOnClickListener {
             val constat = Constat(
-                constatId = 1,
+                constatId = UUID.randomUUID().toString(),
                 typeConstat = "E",
                 dateCreation = Date(1607686070062),
                 idAgency = 1,
