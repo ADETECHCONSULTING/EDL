@@ -8,12 +8,8 @@ import kotlinx.coroutines.flow.Flow
 
 class PropertyRepository(
     private val propertyDao: PropertyDao
-) {
+) : BaseRepository<Property>(propertyDao) {
+
     val allProperties: Flow<List<Property>> = propertyDao.getAllProperties()
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun save(property: Property) {
-        propertyDao.save(property)
-    }
 }

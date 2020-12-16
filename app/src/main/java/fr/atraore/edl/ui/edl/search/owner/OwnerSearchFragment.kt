@@ -6,8 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.ui.adapter.OwnerAdapter
 import fr.atraore.edl.ui.edl.search.BaseFragment
+import kotlinx.android.synthetic.main.owner_search_fragment.*
 
 class OwnerSearchFragment : BaseFragment() {
 
@@ -18,7 +25,9 @@ class OwnerSearchFragment : BaseFragment() {
         fun newInstance() = OwnerSearchFragment()
     }
 
-    private lateinit var viewModel: OwnerSearchViewModel
+    private val ownerSearchViewModel: OwnerSearchViewModel by viewModels {
+        OwnerSearchViewModelFactory((activity?.application as EdlApplication).ownerRepository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,8 +38,14 @@ class OwnerSearchFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(OwnerSearchViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        val adapter = OwnerAdapter()
+        rcv_owner.adapter = adapter
+        rcv_owner.layoutManager = GridLayoutManager(context, 3)
+
+        ownerSearchViewModel.allOwners.observe(viewLifecycleOwner, Observer {owners ->
+            owners?.let { adapter.submitList(it) }
+        })
     }
 
 }

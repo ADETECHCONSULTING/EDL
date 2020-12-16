@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="addClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="ownerItem"
+            type="fr.atraore.edl.data.models.Owner" />
+
+    </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/ctn_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorPrimary"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txv_type_appart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@{ownerItem.name}"
+                android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintTop_toBottomOf="@id/ctn_header"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Bien de type : T2" />
+
+
+            <TextView
+                android:id="@+id/txv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="2"
+                android:text="@{ownerItem.address}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txv_type_appart"
+                tools:text="43 rue de bellevue 69400" />
+
+            <TextView
+                android:id="@+id/txv_address_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="2"
+                android:text="@{ownerItem.city}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txv_address"
+                android:layout_marginBottom="10dp"
+                tools:text="43 rue de bellevue 69400" />
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/txv_address_2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/ic_add_white"
+                android:backgroundTint="?colorAccent"
+                android:onClick="@{addClickListener}"
+                app:borderWidth="0dp"
+                app:tint="@color/white"
+                android:layout_margin="12dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
