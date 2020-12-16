@@ -6,8 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import fr.atraore.edl.data.dao.ConstatDao
-import fr.atraore.edl.data.dao.PropertyDao
+import fr.atraore.edl.data.dao.*
 import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.crossRef.ConstatContractorCrossRef
 import fr.atraore.edl.data.models.crossRef.ConstatOwnerCrossRef
@@ -41,6 +40,11 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getConstatDao(): ConstatDao
     abstract fun getPropertyDao(): PropertyDao
+    abstract fun getAgencyDao(): AgencyDao
+    abstract fun getContractorDao(): ContractorDao
+    abstract fun getTenantDao(): TenantDao
+    abstract fun getUserDao(): UserDao
+    abstract fun getOwnerDao(): OwnerDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
@@ -73,13 +77,29 @@ abstract class AppDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    populateDatabase(database.getConstatDao(), database.getPropertyDao())
+                    populateDatabase(
+                        database.getConstatDao(),
+                        database.getPropertyDao(),
+                        database.getAgencyDao(),
+                        database.getTenantDao(),
+                        database.getOwnerDao(),
+                        database.getUserDao(),
+                        database.getContractorDao()
+                    )
                 }
             }
         }
 
         //Init with data
-        suspend fun populateDatabase(constatDao: ConstatDao, propertyDao: PropertyDao) {
+        suspend fun populateDatabase(
+            constatDao: ConstatDao,
+            propertyDao: PropertyDao,
+            agencyDao: AgencyDao,
+            tenantDao: TenantDao,
+            ownerDao: OwnerDao,
+            userDao: UserDao,
+            contractorDao: ContractorDao
+        ) {
 /*            // Delete all content
             constatDao.deleteAll()
 
@@ -191,11 +211,72 @@ abstract class AppDatabase : RoomDatabase() {
                 1,
                 0
             )
+            propertyDao.save(property, property2, property3, property4)
 
-            propertyDao.save(property)
-            propertyDao.save(property2)
-            propertyDao.save(property3)
-            propertyDao.save(property4)
+            val agency = Agency(
+                UUID.randomUUID().toString(),
+                "Adam'Service",
+                "155 boulevard des états-unis 69008",
+                "",
+                "",
+                "",
+                "0627562283",
+                "",
+                "",
+                1,
+                ""
+            )
+            agencyDao.save(agency)
+
+            val proprietaire = Owner(
+                UUID.randomUUID().toString(),
+                "M",
+                "Adama",
+                "155 boulevard des états-unis",
+                "",
+                "69008",
+                "Lyon",
+                "0627562283",
+                "",
+                "a.traore.pro@gmail.com",
+                ""
+            )
+            ownerDao.save(proprietaire)
+
+            val contractor = Contractor(
+                UUID.randomUUID().toString(),
+                "Guy Hoquet",
+                "a.traore.pro@gmail.com",
+                "18 rue Léandre vaillat",
+                "",
+                "",
+                "74100",
+                "",
+                "",
+                "Annemasse"
+            )
+            contractorDao.save(contractor)
+
+            val tenant = Tenant(
+                UUID.randomUUID().toString(),
+                "Mme",
+                "Amiour Caroline",
+                "745 rue de bonneville",
+                "",
+                "74300",
+                "Annemasse",
+                "0620577356",
+                "",
+                "caroamiour@hotmail.fr",
+                "",
+                "",
+                "",
+                "",
+                "",
+                Date(1607686070062)
+            )
+            tenantDao.save(tenant)
+
         }
     }
 

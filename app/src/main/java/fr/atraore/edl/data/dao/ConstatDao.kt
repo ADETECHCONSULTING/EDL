@@ -9,7 +9,7 @@ import fr.atraore.edl.utils.CONSTAT_TABLE
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ConstatDao {
+interface ConstatDao : BaseDao<Constat> {
     //** GET **
     //Select all constat from Table Constat
     @Query("SELECT * FROM $CONSTAT_TABLE")
@@ -28,9 +28,6 @@ interface ConstatDao {
     fun getConstatById(constatId: Int): Flow<Constat>
 
     //** INSERT **
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(constat: Constat)
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveConstatContractorCrossRef(crossRef: ConstatContractorCrossRef)
 
