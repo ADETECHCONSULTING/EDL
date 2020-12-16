@@ -43,7 +43,7 @@ class MainFragment : Fragment() {
         rcv_constat.adapter = adapter
         rcv_constat.layoutManager = LinearLayoutManager(context)
 
-        mainViewModel.allConstats.observe(viewLifecycleOwner, Observer { constats ->
+        mainViewModel.allConstatWithDetails.observe(viewLifecycleOwner, Observer { constats ->
             constats?.let { adapter.submitList(it) }
         })
 

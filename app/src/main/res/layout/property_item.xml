@@ -16,7 +16,7 @@
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@color/white">
@@ -38,7 +38,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Bien de type : @{propertyItem.type}"
+                android:text="@{`Bien de type : ` + propertyItem.type}"
                 android:textColor="@color/colorPrimaryDark"
                 app:layout_constraintTop_toBottomOf="@id/ctn_header"
                 app:layout_constraintStart_toStartOf="parent"

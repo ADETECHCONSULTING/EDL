@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
 import fr.atraore.edl.databinding.ConstatItemBinding
 import fr.atraore.edl.data.models.Constat
+import fr.atraore.edl.data.models.ConstatWithDetails
 
-class ConstatAdapter : ListAdapter<Constat, ConstatAdapter.ViewHolder>(DiffCallback()) {
+class ConstatAdapter : ListAdapter<ConstatWithDetails, ConstatAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -34,15 +35,15 @@ class ConstatAdapter : ListAdapter<Constat, ConstatAdapter.ViewHolder>(DiffCallb
         }
     }
 
-    private fun createPdfOnClickListener(constat: Constat): View.OnClickListener {
+    private fun createPdfOnClickListener(constat: ConstatWithDetails): View.OnClickListener {
         //TODO gérer la création du pdf
         return View.OnClickListener {
             Log.d("ConstatAdapter", "createPdfOnClickListener: CLICKED")
         }
     }
 
-    private fun createConstatClickListener(constat: Constat): View.OnClickListener {
-        val bundle = bundleOf("constatId" to constat.constatId)
+    private fun createConstatClickListener(constat: ConstatWithDetails): View.OnClickListener {
+        val bundle = bundleOf("constatId" to constat.constat.constatId)
         //TODO add UUID to constat id
         return Navigation.createNavigateOnClickListener(R.id.go_to_start, bundle)
     }
@@ -53,7 +54,7 @@ class ConstatAdapter : ListAdapter<Constat, ConstatAdapter.ViewHolder>(DiffCallb
         fun bind(
             listenerPdf: View.OnClickListener,
             listenerConstat: View.OnClickListener,
-            item: Constat
+            item: ConstatWithDetails
         ) {
             binding.apply {
                 pdfClickListener = listenerPdf
@@ -64,13 +65,13 @@ class ConstatAdapter : ListAdapter<Constat, ConstatAdapter.ViewHolder>(DiffCallb
     }
 }
 
-private class DiffCallback : DiffUtil.ItemCallback<Constat>() {
+private class DiffCallback : DiffUtil.ItemCallback<ConstatWithDetails>() {
 
-    override fun areItemsTheSame(oldItem: Constat, newItem: Constat): Boolean {
-        return oldItem.constatId == newItem.constatId
+    override fun areItemsTheSame(oldItem: ConstatWithDetails, newItem: ConstatWithDetails): Boolean {
+        return oldItem.constat.constatId == newItem.constat.constatId
     }
 
-    override fun areContentsTheSame(oldItem: Constat, newItem: Constat): Boolean {
+    override fun areContentsTheSame(oldItem: ConstatWithDetails, newItem: ConstatWithDetails): Boolean {
         return oldItem == newItem
     }
 

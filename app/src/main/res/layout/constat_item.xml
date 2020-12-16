@@ -15,7 +15,7 @@
 
         <variable
             name="constatItem"
-            type="fr.atraore.edl.data.models.Constat" />
+            type="fr.atraore.edl.data.models.ConstatWithDetails" />
         
     </data>
 
@@ -63,6 +63,9 @@
                 android:id="@+id/txv_type_appart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text='@{constatItem.propertyTypeAndNatureConcatenate}'
+                android:lines="2"
+                android:ellipsize="end"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
                 tools:text="Appart T2" />
@@ -75,6 +78,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:lines="2"
+            android:text='@{constatItem.propertyAddressConcatenate}'
             app:layout_constraintBottom_toBottomOf="@id/ctn_type_appart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ctn_type_appart"
@@ -103,6 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:text='@{constatItem.ownersConcatenate}'
             app:layout_constraintBottom_toTopOf="@+id/ctn_footer"
             app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:text='@{constatItem.tenantConcatenate}'
             app:layout_constraintBottom_toTopOf="@+id/ctn_footer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/guideline"

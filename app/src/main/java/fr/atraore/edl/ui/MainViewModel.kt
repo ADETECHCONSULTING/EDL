@@ -2,6 +2,7 @@ package fr.atraore.edl.ui
 
 import androidx.lifecycle.*
 import fr.atraore.edl.data.models.Constat
+import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.repository.ConstatRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -11,6 +12,7 @@ class MainViewModel(
     private val constatRepositoy: ConstatRepository
 ) : ViewModel() {
     val allConstats: LiveData<List<Constat>> = constatRepositoy.allConstats.asLiveData()
+    val allConstatWithDetails: LiveData<List<ConstatWithDetails>> = constatRepositoy.allConstatWithDetails.asLiveData()
     val corountineContext: CoroutineContext
     get() = Dispatchers.IO
 

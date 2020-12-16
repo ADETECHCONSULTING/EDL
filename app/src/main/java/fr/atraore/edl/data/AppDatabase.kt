@@ -132,7 +132,70 @@ abstract class AppDatabase : RoomDatabase() {
                 0
             )
 
+            val property2 = Property(
+                propertyId = UUID.randomUUID().toString(),
+                address = "38 rue des Bellevue",
+                address2 = "",
+                postalCode = "69008",
+                "Landivisiau",
+                "",
+                "Maison",
+                "F5",
+                2,
+                "Avec Jardin",
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                0
+            )
+
+            val property3 = Property(
+                propertyId = UUID.randomUUID().toString(),
+                address = "50 avenue debourg",
+                address2 = "",
+                postalCode = "69007",
+                "Lyon",
+                "",
+                "Appartement",
+                "F2",
+                1,
+                "",
+                1,
+                1,
+                15,
+                1,
+                1,
+                1,
+                0
+            )
+
+            val property4 = Property(
+                propertyId = UUID.randomUUID().toString(),
+                address = "50 avenue debourg",
+                address2 = "",
+                postalCode = "69007",
+                "Lyon",
+                "",
+                "Appartement",
+                "F2",
+                1,
+                "",
+                1,
+                1,
+                15,
+                1,
+                1,
+                1,
+                0
+            )
+
             propertyDao.save(property)
+            propertyDao.save(property2)
+            propertyDao.save(property3)
+            propertyDao.save(property4)
         }
     }
 
