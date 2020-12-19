@@ -6,8 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.ui.adapter.TenantAdapter
 import fr.atraore.edl.ui.edl.search.BaseFragment
+import kotlinx.android.synthetic.main.tenant_search_fragment.*
 
 class TenantSearchFragment : BaseFragment() {
 
@@ -18,7 +24,9 @@ class TenantSearchFragment : BaseFragment() {
         fun newInstance() = TenantSearchFragment()
     }
 
-    private lateinit var viewModel: TenantSearchViewModel
+    private val tenantViewModel: TenantSearchViewModel by viewModels {
+        TenantSearchViewModelFactory((activity?.application as EdlApplication).tenantRepository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,8 +37,14 @@ class TenantSearchFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(TenantSearchViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        val adapter = TenantAdapter()
+        rcv_tenant.adapter = adapter
+        rcv_tenant.layoutManager = GridLayoutManager(context, 3)
+
+        tenantViewModel.allTenants.observe(viewLifecycleOwner, Observer {tenants ->
+            tenants?.let { adapter.submitList(it) }
+        })
     }
 
 }

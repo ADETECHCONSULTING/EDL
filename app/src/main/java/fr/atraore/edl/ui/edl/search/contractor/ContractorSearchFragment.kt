@@ -6,8 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.ui.adapter.ContractorAdapter
 import fr.atraore.edl.ui.edl.search.BaseFragment
+import kotlinx.android.synthetic.main.contractor_search_fragment.*
 
 class ContractorSearchFragment : BaseFragment() {
 
@@ -18,7 +24,9 @@ class ContractorSearchFragment : BaseFragment() {
         fun newInstance() = ContractorSearchFragment()
     }
 
-    private lateinit var viewModel: ContractorSearchViewModel
+    private val contractorViewModel: ContractorSearchViewModel by viewModels {
+        ContractorSearchViewModelFactory((activity?.application as EdlApplication).contractorRepository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,8 +37,14 @@ class ContractorSearchFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ContractorSearchViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        val adapter = ContractorAdapter()
+        rcv_contractor.adapter = adapter
+        rcv_contractor.layoutManager = GridLayoutManager(context, 3)
+
+        contractorViewModel.allContractors.observe(viewLifecycleOwner, Observer { contractors ->
+            contractors?.let { adapter.submitList(it) }
+        })
     }
 
 }

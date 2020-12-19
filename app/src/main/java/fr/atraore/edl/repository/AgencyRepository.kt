@@ -8,6 +8,6 @@ class AgencyRepository(
     private val agencyDao: AgencyDao
 ) : BaseRepository<Agency>(agencyDao) {
 
-    private val allAgency: Flow<List<Agency>> = agencyDao.getAllAgencies()
+    val allAgency: Flow<List<Agency>> = agencyDao.getAllAgencies()
 
 }
