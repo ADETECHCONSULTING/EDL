@@ -6,7 +6,7 @@ import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.Property
 import kotlinx.coroutines.flow.Flow
 
-class PropertyRepository(
+class   PropertyRepository(
     private val propertyDao: PropertyDao
 ) : BaseRepository<Property>(propertyDao) {
 

@@ -13,4 +13,6 @@ interface UserDao : BaseDao<Users> {
     @Query("SELECT * FROM $USERS_TABLE")
     fun getAllUsers(): Flow<List<Users>>
 
+    @Query("SELECT * FROM $USERS_TABLE LIMIT 1")
+    fun getLastUser(): Flow<Users>
 }

@@ -38,12 +38,12 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:text="@{ownerItem.name}"
+                android:text="@{ownerItem.civi + ` ` + ownerItem.name}"
                 android:textColor="@color/colorPrimaryDark"
                 app:layout_constraintTop_toBottomOf="@id/ctn_header"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="Bien de type : T2" />
+                tools:text="Mme Traore" />
 
 
             <TextView
@@ -53,11 +53,11 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@{ownerItem.address}"
+                android:text="@{ownerItem.address + `, ` + ownerItem.city}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txv_type_appart"
-                tools:text="43 rue de bellevue 69400" />
+                tools:text="43 rue de bellevue 69400, Landiris" />
 
             <TextView
                 android:id="@+id/txv_address_2"
@@ -66,12 +66,12 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@{ownerItem.city}"
+                android:text="@{ownerItem.tel}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txv_address"
                 android:layout_marginBottom="10dp"
-                tools:text="43 rue de bellevue 69400" />
+                tools:text="0627562283" />
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
