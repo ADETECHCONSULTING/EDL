@@ -15,10 +15,12 @@
 
     </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
             android:background="@color/white">
 
             <LinearLayout
@@ -35,14 +37,10 @@
                 android:id="@+id/txv_type_appart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@{ownerItem.civi + ` ` + ownerItem.name}"
                 android:textColor="@color/colorPrimaryDark"
-                app:layout_constraintTop_toBottomOf="@id/ctn_header"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="Mme Traore" />
 
 
@@ -53,10 +51,7 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@{ownerItem.address + `, ` + ownerItem.city}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txv_type_appart"
+                android:text="@{ownerItem.address + ` ` + ownerItem.postalCode + `, ` + ownerItem.city}"
                 tools:text="43 rue de bellevue 69400, Landiris" />
 
             <TextView
@@ -67,9 +62,6 @@
                 android:gravity="center"
                 android:lines="2"
                 android:text="@{ownerItem.tel}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txv_address"
                 android:layout_marginBottom="10dp"
                 tools:text="0627562283" />
 
@@ -77,9 +69,7 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/txv_address_2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_gravity="end"
                 android:src="@drawable/ic_add_white"
                 android:backgroundTint="?colorAccent"
                 android:onClick="@{addClickListener}"
@@ -87,5 +77,5 @@
                 app:tint="@color/white"
                 android:layout_margin="12dp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 </layout>

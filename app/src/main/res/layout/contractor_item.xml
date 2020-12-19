@@ -10,8 +10,8 @@
             type="android.view.View.OnClickListener" />
 
         <variable
-            name="propertyItem"
-            type="fr.atraore.edl.data.models.Property" />
+            name="contractorItem"
+            type="fr.atraore.edl.data.models.Contractor" />
 
     </data>
 
@@ -39,9 +39,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="@{`Bien de type : ` + propertyItem.type}"
+                android:text="@{contractorItem.denomination}"
                 android:textColor="@color/colorPrimaryDark"
-                tools:text="Bien de type : T2" />
+                tools:text="Guy Hoquet" />
 
 
             <TextView
@@ -51,29 +51,33 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@{propertyItem.address + ` ` + propertyItem.postalCode + `, ` + propertyItem.city}"
-                tools:text="43 rue de bellevue 69400" />
+                android:text="@{contractorItem.address1 + ` ` + contractorItem.postalCode1}"
+                tools:text="43 rue de bellevue 69400, Landiris" />
 
             <TextView
-                android:id="@+id/txv_nature"
+                android:id="@+id/txv_address_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@{`Nature : ` + propertyItem.nature}"
-                tools:text="Nature : Studio" />
+                android:text="@{contractorItem.address2 + ` ` + contractorItem.postalCode2}"
+                tools:text="43 rue de bellevue 69400, Landiris" />
+
 
             <TextView
-                android:id="@+id/txv_porte"
+                android:id="@+id/txv_tel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@{`N° de porte : ` + propertyItem.appartmentDoor}"
+                android:text="@{contractorItem.address3 + ` ` + contractorItem.postalCode3}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txv_address"
                 android:layout_marginBottom="10dp"
-                tools:text="N° de porte : 14" />
+                tools:text="bellevuebellevue" />
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
