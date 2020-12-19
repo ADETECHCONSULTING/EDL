@@ -28,8 +28,7 @@ class ViewPagerFragment : Fragment() {
             OwnerSearchFragment.newInstance(),
             TenantSearchFragment.newInstance(),
             ContractorSearchFragment.newInstance(),
-            AgencySearchFragment.newInstance(),
-            UserSearchFragment.newInstance()
+            AgencySearchFragment.newInstance()
         )
 
         val adapter = ViewPagerAdapter(
