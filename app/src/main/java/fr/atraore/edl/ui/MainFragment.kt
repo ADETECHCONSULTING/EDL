@@ -16,6 +16,7 @@ import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.ui.adapter.ConstatAdapter
+import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.sql.Date
 import java.util.*
@@ -63,7 +64,7 @@ class MainFragment : Fragment() {
                 state = 0
             )
             mainViewModel.saveConstat(constat)
-            val bundle = bundleOf("constatId" to constat.constatId)
+            val bundle = bundleOf(ARGS_CONSTAT_ID to constat.constatId)
             findNavController().navigate(R.id.go_to_start, bundle)
         }
         btn_pre_etat.setOnClickListener {

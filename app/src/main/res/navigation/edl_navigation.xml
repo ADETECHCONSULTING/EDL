@@ -15,11 +15,6 @@
             app:destination="@id/startConstatFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right">
-
-            <argument
-                android:name="constatArg"
-                app:argType="integer"/>
-
         </action>
     </fragment>
     <fragment
