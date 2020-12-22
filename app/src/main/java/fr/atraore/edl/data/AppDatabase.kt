@@ -102,22 +102,22 @@ abstract class AppDatabase : RoomDatabase() {
             userDao: UserDao,
             contractorDao: ContractorDao
         ) {
-/*            // Delete all content
+            // Delete all content
             constatDao.deleteAll()
+
 
             //Add Sample Constat
             var constat = Constat(
-                id = 0,
+                constatId = UUID.randomUUID().toString(),
                 typeConstat = "E",
                 dateCreation = Date(1607686070062),
                 idAgency = 1,
-                idContractor = 1,
-                idOwner = 1,
-                idProperty = 1,
-                idTenant = 1,
                 idUser = 1,
                 state = 0
             )
+            constatDao.save(constat)
+
+            /*
             var constat2 = Constat(
                 id = 1,
                 typeConstat = "S",
@@ -278,6 +278,22 @@ abstract class AppDatabase : RoomDatabase() {
                 Date(1607686070062)
             )
             tenantDao.save(tenant)
+
+            val constatWithProperty = ConstatPropertyCrossRef(
+                constat.constatId,
+                property.propertyId
+            )
+            val constatWithOwner = ConstatOwnerCrossRef(
+                constat.constatId,
+                proprietaire.ownerId
+            )
+            val constatWithTenant = ConstatTenantCrossRef(
+                constat.constatId,
+                tenant.tenantId
+            )
+            constatDao.saveConstatPropertyCrossRef(constatWithProperty)
+            constatDao.saveConstatOwnerCrossRef(constatWithOwner)
+            constatDao.saveConstatTenantCrossRef(constatWithTenant)
 
         }
     }

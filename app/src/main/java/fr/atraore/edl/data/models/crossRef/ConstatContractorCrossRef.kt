@@ -4,6 +4,6 @@ import androidx.room.Entity
 
 @Entity(primaryKeys = ["constatId", "contractorId"])
 data class ConstatContractorCrossRef(
-    val constatId: Int,
-    val contractorId: Int
+    val constatId: String,
+    val contractorId: String
 )
