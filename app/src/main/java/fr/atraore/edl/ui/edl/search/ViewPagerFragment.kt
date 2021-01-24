@@ -12,9 +12,7 @@ import fr.atraore.edl.ui.edl.search.biens.PropertySearchFragment
 import fr.atraore.edl.ui.edl.search.contractor.ContractorSearchFragment
 import fr.atraore.edl.ui.edl.search.owner.OwnerSearchFragment
 import fr.atraore.edl.ui.edl.search.tenant.TenantSearchFragment
-import fr.atraore.edl.ui.edl.search.user.UserSearchFragment
 import fr.atraore.edl.utils.ARGS_TAB_POSITION
-import kotlinx.android.synthetic.main.fragment_view_pager.*
 import kotlinx.android.synthetic.main.fragment_view_pager.view.*
 
 class ViewPagerFragment : Fragment() {
