@@ -29,6 +29,7 @@
     <string name="nb_level_label">Nombre d\'étage</string>
     <string name="etage_label">Etage</string>
     <string name="appartment_number_label">N° de porte</string>
+    <string name="rename_label">Renommer</string>
 
     <string-array name="civilites">
         <item>Monsieur</item>

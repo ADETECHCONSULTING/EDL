@@ -40,7 +40,7 @@ class AgencySearchFragment : BaseFragment() {
 
         val adapter = AgencyAdapter()
         rcv_agency.adapter = adapter
-        rcv_agency.layoutManager = GridLayoutManager(context, 3)
+        rcv_agency.layoutManager = GridLayoutManager(context, 4)
 
         agencyViewModel.allAgencies.observe(viewLifecycleOwner, Observer {agencies ->
             agencies?.let { adapter.submitList(it) }

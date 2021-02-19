@@ -40,7 +40,7 @@ class TenantSearchFragment : BaseFragment() {
 
         val adapter = TenantAdapter()
         rcv_tenant.adapter = adapter
-        rcv_tenant.layoutManager = GridLayoutManager(context, 3)
+        rcv_tenant.layoutManager = GridLayoutManager(context, 4)
 
         tenantViewModel.allTenants.observe(viewLifecycleOwner, Observer {tenants ->
             tenants?.let { adapter.submitList(it) }

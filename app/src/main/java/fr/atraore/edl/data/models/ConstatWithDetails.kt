@@ -37,13 +37,15 @@ data class ConstatWithDetails(
     val properties: List<Property>
 ) {
     @Ignore
-    fun getOwnersConcatenate(): String {
+    fun getOwnersConcatenate(withPrefix: Boolean): String {
         var res = "";
 
         if (owners.isEmpty()) {
             res = "Pas de propriétaires"
         } else {
-            res += "Propriétaires\n"
+            if (withPrefix) {
+                res += "Propriétaires\n"
+            }
             owners.forEach { owner ->
                 res += owner.name + "\n"
             }
@@ -53,13 +55,15 @@ data class ConstatWithDetails(
     }
 
     @Ignore
-    fun getTenantConcatenate(): String {
+    fun getTenantConcatenate(withPrefix: Boolean): String {
         var res = "";
 
         if (tenants.isEmpty()) {
             res = "Pas de locataires"
         } else {
-            res += "Locataires\n"
+            if (withPrefix) {
+                res += "Locataires\n"
+            }
             tenants.forEach { tenant ->
                 res += tenant.name + "\n"
             }
@@ -112,4 +116,5 @@ data class ConstatWithDetails(
 
         return res
     }
+
 }

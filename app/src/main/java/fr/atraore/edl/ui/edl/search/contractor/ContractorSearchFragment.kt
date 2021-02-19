@@ -40,7 +40,7 @@ class ContractorSearchFragment : BaseFragment() {
 
         val adapter = ContractorAdapter()
         rcv_contractor.adapter = adapter
-        rcv_contractor.layoutManager = GridLayoutManager(context, 3)
+        rcv_contractor.layoutManager = GridLayoutManager(context, 4)
 
         contractorViewModel.allContractors.observe(viewLifecycleOwner, Observer { contractors ->
             contractors?.let { adapter.submitList(it) }

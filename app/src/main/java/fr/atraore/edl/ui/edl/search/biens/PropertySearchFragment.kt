@@ -38,7 +38,7 @@ class PropertySearchFragment : BaseFragment() {
 
         val adapter = PropertyAdapter()
         rcv_property.adapter = adapter
-        rcv_property.layoutManager = GridLayoutManager(context, 3)
+        rcv_property.layoutManager = GridLayoutManager(context, 4)
 
         propertySearchViewModel.allProperties.observe(viewLifecycleOwner, Observer { properties ->
             properties?.let { adapter.submitList(it) }

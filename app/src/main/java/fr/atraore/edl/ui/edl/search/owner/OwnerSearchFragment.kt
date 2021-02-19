@@ -41,7 +41,7 @@ class OwnerSearchFragment : BaseFragment() {
 
         val adapter = OwnerAdapter()
         rcv_owner.adapter = adapter
-        rcv_owner.layoutManager = GridLayoutManager(context, 3)
+        rcv_owner.layoutManager = GridLayoutManager(context, 4)
 
         ownerSearchViewModel.allOwners.observe(viewLifecycleOwner, Observer {owners ->
             owners?.let { adapter.submitList(it) }
