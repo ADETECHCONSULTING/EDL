@@ -8,8 +8,8 @@
             type="android.view.View.OnClickListener" />
 
         <variable
-            name="tenantItem"
-            type="fr.atraore.edl.data.models.Tenant" />
+            name="itemPrimary"
+            type="fr.atraore.edl.data.models.PrimaryInfo" />
 
         <variable
             name="editItem"
@@ -25,10 +25,11 @@
         android:gravity="center_horizontal"
         android:padding="@dimen/padding_small"
         android:textSize="@dimen/txt_size_small"
-        android:text="@{tenantItem.civi + ` ` + tenantItem.name}"
+        android:text="@{itemPrimary.primaryInfo()}"
         android:onClick="@{editClickListener}"
         android:background="@android:color/transparent"
         android:enabled="@{editItem}"
+        android:maxLines="2"
         android:textColor="@drawable/state_edittext"
         android:inputType="@{editItem ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL }" />
 

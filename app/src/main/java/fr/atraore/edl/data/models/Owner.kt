@@ -2,6 +2,7 @@ package fr.atraore.edl.data.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import fr.atraore.edl.utils.OWNER_TABLE
 
@@ -18,6 +19,9 @@ data class Owner(
     @ColumnInfo(name = "tel_2") val tel2: String?,
     val mail: String?,
     val notes: String?
-) {
-
+) : PrimaryInfo {
+    @Ignore
+    override fun primaryInfo(): String {
+        return "$civi $name"
+    }
 }

@@ -35,9 +35,8 @@ class ContractorSearchFragment : BaseFragment() {
         return inflater.inflate(R.layout.contractor_search_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val adapter = ContractorAdapter()
         rcv_contractor.adapter = adapter
         rcv_contractor.layoutManager = GridLayoutManager(context, 4)

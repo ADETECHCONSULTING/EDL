@@ -2,11 +2,12 @@ package fr.atraore.edl.data.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import fr.atraore.edl.utils.CONTRACTOR_TABLE
 
 @Entity(tableName = CONTRACTOR_TABLE)
-data class Contractor(
+data class Contractor (
     @PrimaryKey(autoGenerate = false) val contractorId: String,
     val denomination: String,
     val mail: String?,
@@ -17,4 +18,9 @@ data class Contractor(
     @ColumnInfo(name = "postal_code_2") val postalCode2: String?,
     @ColumnInfo(name = "postal_code_3") val postalCode3: String?,
     val city: String?
-)
+) : PrimaryInfo {
+    @Ignore
+    override fun primaryInfo(): String {
+        return denomination
+    }
+}

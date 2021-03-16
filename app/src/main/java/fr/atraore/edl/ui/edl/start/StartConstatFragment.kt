@@ -12,18 +12,21 @@ import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
-import fr.atraore.edl.ui.adapter.start.TenantInfoAdapter
+import fr.atraore.edl.ui.adapter.start.PrimaryInfoAdapter
 import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.start_constat_fragment.*
 
-class StartConstatFragment : Fragment(), View.OnClickListener {
+class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver {
 
     companion object {
         fun newInstance() = StartConstatFragment()
@@ -34,35 +37,37 @@ class StartConstatFragment : Fragment(), View.OnClickListener {
         StartConstatViewModelFactory(edlApplication.constatRepository, edlApplication.tenantRepository, arguments?.getString(ARGS_CONSTAT_ID)!!)
     }
 
-    private lateinit var tenantInfoAdapter: TenantInfoAdapter
-
     private lateinit var binding: StartConstatFragmentBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.start_constat_fragment, container, false)
         binding.constatViewModel = startViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        tenantInfoAdapter = TenantInfoAdapter()
-        rcv_tenant.adapter = tenantInfoAdapter
-        rcv_tenant.layoutManager = LinearLayoutManager(context)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        configRecyclerViewsLinear(rcv_tenant, rcv_biens, rcv_contractor, rcv_owner)
 
         startViewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
-            constatWithDetails?.let { tenantInfoAdapter.submitList(it.tenants) }
+            constatWithDetails?.let {
+                (rcv_tenant.adapter as PrimaryInfoAdapter).submitList(it.tenants)
+                (rcv_biens.adapter as PrimaryInfoAdapter).submitList(it.properties)
+                (rcv_owner.adapter as PrimaryInfoAdapter).submitList(it.owners)
+                (rcv_contractor.adapter as PrimaryInfoAdapter).submitList(it.contractors)
+            }
         })
 
         initListener()
     }
 
+    /**
+     * Initialise les events
+     */
     fun initListener() {
         imv_search_bien.setOnClickListener(this)
         imv_search_owner.setOnClickListener(this)
@@ -76,6 +81,19 @@ class StartConstatFragment : Fragment(), View.OnClickListener {
         imv_edit_mandataire.setOnClickListener(this)
     }
 
+    /**
+     * Configure les recyclerviews de façon lineaire
+     */
+    fun configRecyclerViewsLinear(vararg recyclerViews: RecyclerView) {
+        recyclerViews.forEach {
+            it.adapter = PrimaryInfoAdapter()
+            it.layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    /**
+     * gère les clics de l'ihm start_constat_fragment
+     */
     override fun onClick(v: View?) {
         when (v?.id) {
             //click on Item : search icon
@@ -102,17 +120,20 @@ class StartConstatFragment : Fragment(), View.OnClickListener {
 
             //click on Item : Edit icon
             R.id.imv_edit_owner -> {
-                getEditableDialog(txv_owners.text as String)
+                (rcv_owner.adapter as PrimaryInfoAdapter).editUpdate()
+                //getEditableDialog(txv_owners.text as String)
             }
             R.id.imv_edit_locataire -> {
-                tenantInfoAdapter.editUpdate()
+                (rcv_tenant.adapter as PrimaryInfoAdapter).editUpdate()
                 //getEditableDialog(txv_tenant.text as String)
             }
             R.id.imv_edit_mandataire -> {
-                getEditableDialog(txv_contractor.text as String)
+                (rcv_contractor.adapter as PrimaryInfoAdapter).editUpdate()
+                //getEditableDialog(txv_contractor.text as String)
             }
             R.id.imv_edit_bien -> {
-                getEditableDialog(txv_biens.text as String)
+                (rcv_biens.adapter as PrimaryInfoAdapter).editUpdate()
+                //getEditableDialog(txv_biens.text as String)
             }
 
             else -> {

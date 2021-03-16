@@ -36,8 +36,8 @@ class OwnerSearchFragment : BaseFragment() {
         return inflater.inflate(R.layout.owner_search_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val adapter = OwnerAdapter()
         rcv_owner.adapter = adapter
