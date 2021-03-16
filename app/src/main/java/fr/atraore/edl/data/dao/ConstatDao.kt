@@ -40,11 +40,6 @@ interface ConstatDao : BaseDao<Constat> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveConstatPropertyCrossRef(crossRef: ConstatPropertyCrossRef)
 
-
-    //** UPDATE **
-    @Update
-    fun update(constat: Constat)
-
     //** DELETE **
     @Delete
     fun delete(constat: Constat)

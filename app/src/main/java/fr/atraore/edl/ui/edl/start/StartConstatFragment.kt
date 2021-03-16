@@ -14,9 +14,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
+import fr.atraore.edl.ui.adapter.start.TenantInfoAdapter
 import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.start_constat_fragment.*
 
@@ -27,8 +30,11 @@ class StartConstatFragment : Fragment(), View.OnClickListener {
     }
 
     private val startViewModel: StartConstatViewModel by viewModels() {
-        StartConstatViewModelFactory((activity?.application as EdlApplication).constatRepository, arguments?.getString(ARGS_CONSTAT_ID)!!)
+        val edlApplication = activity?.application as EdlApplication;
+        StartConstatViewModelFactory(edlApplication.constatRepository, edlApplication.tenantRepository, arguments?.getString(ARGS_CONSTAT_ID)!!)
     }
+
+    private lateinit var tenantInfoAdapter: TenantInfoAdapter
 
     private lateinit var binding: StartConstatFragmentBinding
 
@@ -45,8 +51,13 @@ class StartConstatFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        tenantInfoAdapter = TenantInfoAdapter()
+        rcv_tenant.adapter = tenantInfoAdapter
+        rcv_tenant.layoutManager = LinearLayoutManager(context)
+
         startViewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
-            Toast.makeText(context, constatWithDetails.constat.constatId, Toast.LENGTH_SHORT).show()
+            constatWithDetails?.let { tenantInfoAdapter.submitList(it.tenants) }
         })
 
         initListener()
@@ -94,7 +105,8 @@ class StartConstatFragment : Fragment(), View.OnClickListener {
                 getEditableDialog(txv_owners.text as String)
             }
             R.id.imv_edit_locataire -> {
-                getEditableDialog(txv_tenant.text as String)
+                tenantInfoAdapter.editUpdate()
+                //getEditableDialog(txv_tenant.text as String)
             }
             R.id.imv_edit_mandataire -> {
                 getEditableDialog(txv_contractor.text as String)
@@ -110,6 +122,12 @@ class StartConstatFragment : Fragment(), View.OnClickListener {
     }
 
     fun getEditableDialog(text: String) {
+        //inflate the layout for the body of the dialog
+        val viewInflated = LayoutInflater.from(context).inflate(R.layout.dialog_edit, start_constat_container, false)
+        //set up the input
+        val input = viewInflated.findViewById<EditText>(R.id.edt_rename)
+        input.setText(text)
+
         val builder = context?.let {
             AlertDialog.Builder(it)
                 .setTitle("Voulez-vous effectuer un renommage ?")
@@ -121,11 +139,6 @@ class StartConstatFragment : Fragment(), View.OnClickListener {
                 }
         }
 
-        //inflate the layout for the body of the dialog
-        val viewInflated = LayoutInflater.from(context).inflate(R.layout.dialog_edit, start_constat_container, false)
-        //set up the input
-        val input = viewInflated.findViewById<EditText>(R.id.edt_rename)
-        input.setText(text)
         //specify the body to inflate
         builder?.setView(viewInflated)
 

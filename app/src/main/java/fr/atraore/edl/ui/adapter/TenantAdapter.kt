@@ -59,7 +59,7 @@ class TenantAdapter : ListAdapter<Tenant, TenantAdapter.ViewHolder>(DiffTenantCa
     }
 }
 
-private class DiffTenantCallback : DiffUtil.ItemCallback<Tenant>() {
+class DiffTenantCallback : DiffUtil.ItemCallback<Tenant>() {
 
     override fun areItemsTheSame(oldItem: Tenant, newItem: Tenant): Boolean {
         return oldItem.tenantId == newItem.tenantId

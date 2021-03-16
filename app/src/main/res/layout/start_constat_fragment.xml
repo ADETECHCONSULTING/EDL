@@ -238,15 +238,12 @@
                 app:layout_constraintEnd_toEndOf="@id/ctn_locataire_header"
                 app:layout_constraintTop_toTopOf="@id/ctn_locataire_header" />
 
-            <TextView
-                android:id="@+id/txv_tenant"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_tenant"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:gravity="center"
                 app:layout_constraintBottom_toTopOf="@id/group_btns_locataire"
-                app:layout_constraintTop_toBottomOf="@id/ctn_locataire_header"
-                tools:text="Appart T2 sur 1 niveau"
-                android:text="@{constatViewModel.constatDetail.getTenantConcatenate(false)}"/>
+                app:layout_constraintTop_toBottomOf="@id/ctn_locataire_header" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/group_btns_locataire"
