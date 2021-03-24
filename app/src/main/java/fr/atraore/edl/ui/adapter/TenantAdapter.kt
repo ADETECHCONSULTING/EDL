@@ -16,8 +16,12 @@ import fr.atraore.edl.data.models.Tenant
 import fr.atraore.edl.databinding.ConstatItemBinding
 import fr.atraore.edl.databinding.PropertyItemBinding
 import fr.atraore.edl.databinding.TenantItemBinding
+import fr.atraore.edl.ui.edl.search.tenant.TenantSearchViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class TenantAdapter : ListAdapter<Tenant, TenantAdapter.ViewHolder>(DiffTenantCallback()) {
+class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel) : ListAdapter<Tenant, TenantAdapter.ViewHolder>(DiffTenantCallback()) {
+    private val TAG = TenantAdapter::class.simpleName
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -40,7 +44,10 @@ class TenantAdapter : ListAdapter<Tenant, TenantAdapter.ViewHolder>(DiffTenantCa
     private fun createClickListener(tenant: Tenant): View.OnClickListener {
         //TODO insert
         return View.OnClickListener {
-            Log.d("Property Adapter", "createConstatClickListener: CLICKED")
+            Log.d(TAG, "createConstatClickListener: CLICKED ${tenant}")
+            GlobalScope.launch {
+                tenantSearchViewModel.saveConstatTenant("69de4257-d7ae-4741-b7be-9a3f83b1187b", tenant.tenantId)
+            }
         }
     }
 

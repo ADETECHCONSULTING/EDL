@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import fr.atraore.edl.data.dao.ConstatDao
 import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.ConstatWithDetails
+import fr.atraore.edl.data.models.crossRef.ConstatTenantCrossRef
 import kotlinx.coroutines.flow.Flow
 
 class ConstatRepository(
@@ -20,5 +21,11 @@ class ConstatRepository(
     @WorkerThread
     suspend fun save(constat: Constat) {
         constatDao.save(constat)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveConstatTenantCrossRef(constatId: String, tenantId: String) {
+        constatDao.saveConstatTenantCrossRef(ConstatTenantCrossRef(constatId, tenantId))
     }
 }

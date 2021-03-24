@@ -277,7 +277,27 @@ abstract class AppDatabase : RoomDatabase() {
                 "",
                 Date(1607686070062)
             )
+            val tenant2 = Tenant(
+                UUID.randomUUID().toString(),
+                "M",
+                "Gilbert Louvin",
+                "525 rue de beauvisage",
+                "",
+                "69008",
+                "Lyon",
+                "0620577356",
+                "",
+                "giblouv@hotmail.fr",
+                "",
+                "",
+                "",
+                "",
+                "",
+                Date(1607686070062)
+            )
             tenantDao.save(tenant)
+            tenantDao.save(tenant2)
+
 
             val constatWithProperty = ConstatPropertyCrossRef(
                 constat.constatId,

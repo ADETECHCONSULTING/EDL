@@ -25,7 +25,8 @@ class TenantSearchFragment : BaseFragment() {
     }
 
     private val tenantViewModel: TenantSearchViewModel by viewModels {
-        TenantSearchViewModelFactory((activity?.application as EdlApplication).tenantRepository)
+        val edlApplication = (activity?.application as EdlApplication)
+        TenantSearchViewModelFactory(edlApplication.tenantRepository, edlApplication.constatRepository)
     }
 
     override fun onCreateView(
@@ -38,7 +39,7 @@ class TenantSearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = TenantAdapter()
+        val adapter = TenantAdapter(tenantViewModel)
         rcv_tenant.adapter = adapter
         rcv_tenant.layoutManager = GridLayoutManager(context, 4)
 
