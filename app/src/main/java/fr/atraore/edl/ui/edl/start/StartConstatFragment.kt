@@ -52,7 +52,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
 
         startViewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
             constatWithDetails?.let {
-                configRecyclerViewsLinear(rcv_tenant, rcv_biens, rcv_contractor, rcv_owner, constatWithDetails = it)
+                configRecyclerViewsLinear(rcv_tenant, rcv_biens, rcv_contractor, rcv_owner, constatWithDetails = it, startConstatViewModel = startViewModel)
             }
         })
 
@@ -78,20 +78,20 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
     /**
      * Configure les recyclerviews de façon lineaire
      */
-    private fun configRecyclerViewsLinear(vararg recyclerViews: RecyclerView, constatWithDetails: ConstatWithDetails) {
+    private fun configRecyclerViewsLinear(vararg recyclerViews: RecyclerView, constatWithDetails: ConstatWithDetails, startConstatViewModel: StartConstatViewModel) {
         recyclerViews.forEach {
             when (it.id) {
                 R.id.rcv_tenant -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.tenants)
+                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.tenants, startConstatViewModel)
                 }
                 R.id.rcv_owner -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.owners)
+                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.owners, startConstatViewModel)
                 }
                 R.id.rcv_biens -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.properties)
+                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.properties, startConstatViewModel)
                 }
                 R.id.rcv_contractor -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.contractors)
+                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.contractors, startConstatViewModel)
                 }
             }
             it.layoutManager = LinearLayoutManager(context)
@@ -150,7 +150,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
     private fun editOrSave(primaryInfoAdapter: PrimaryInfoNoDataBindAdapter) {
         if (primaryInfoAdapter.edit) {
             if (startViewModel.constatDetail.value != null) {
-                //primaryInfoAdapter.saveContent(primaryInfos)
+                primaryInfoAdapter.saveContent()
             }
         }
 

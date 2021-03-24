@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Property (
     @PrimaryKey(autoGenerate = false) val propertyId: String,
-    val address: String,
+    var address: String,
     @ColumnInfo(name = "address_2") val address2: String?,
     @ColumnInfo(name = "postal_code") val postalCode: String,
     val city: String,
@@ -29,5 +29,9 @@ data class Property (
     @Ignore
     override fun primaryInfo(): String {
         return "$type $nature\n$address $city $postalCode"
+    }
+
+    override fun civiInfo(): String {
+        return ""
     }
 }

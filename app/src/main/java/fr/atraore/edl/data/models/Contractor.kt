@@ -9,7 +9,7 @@ import fr.atraore.edl.utils.CONTRACTOR_TABLE
 @Entity(tableName = CONTRACTOR_TABLE)
 data class Contractor (
     @PrimaryKey(autoGenerate = false) val contractorId: String,
-    val denomination: String,
+    var denomination: String,
     val mail: String?,
     @ColumnInfo(name = "address_1") val address1: String?,
     @ColumnInfo(name = "address_2") val address2: String?,
@@ -22,5 +22,9 @@ data class Contractor (
     @Ignore
     override fun primaryInfo(): String {
         return denomination
+    }
+
+    override fun civiInfo(): String {
+        return ""
     }
 }

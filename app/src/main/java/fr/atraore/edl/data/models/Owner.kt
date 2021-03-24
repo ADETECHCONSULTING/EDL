@@ -10,7 +10,7 @@ import fr.atraore.edl.utils.OWNER_TABLE
 data class Owner(
     @PrimaryKey(autoGenerate = false) val ownerId: String,
     val civi: String?,
-    val name: String,
+    var name: String,
     val address: String?,
     @ColumnInfo(name = "address_2") val address2: String?,
     @ColumnInfo(name = "postal_code") val postalCode: String?,
@@ -23,5 +23,9 @@ data class Owner(
     @Ignore
     override fun primaryInfo(): String {
         return "$civi $name"
+    }
+
+    override fun civiInfo(): String {
+        return "$civi"
     }
 }

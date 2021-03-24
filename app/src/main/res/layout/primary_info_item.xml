@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<EditText
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/edt_item"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/txv_civi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="@dimen/padding_small"
+        android:textSize="@dimen/txt_size_small"
+        app:layout_constraintBottom_toBottomOf="@id/edt_item"
+        tools:text="Mme "/>
+
+<EditText
+    android:id="@+id/edt_item"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:imeOptions="actionDone"
     android:gravity="center_horizontal"
@@ -11,6 +26,11 @@
     android:textSize="@dimen/txt_size_small"
     android:background="@android:color/transparent"
     android:maxLines="2"
+    app:layout_constraintEnd_toEndOf="parent"
     tools:text="F3 Appartement 43 rue des couronnes 75020 Paris"
+    app:layout_constraintStart_toEndOf="@id/txv_civi"
+    app:layout_constraintTop_toTopOf="parent"
     android:textColor="@drawable/state_edittext" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

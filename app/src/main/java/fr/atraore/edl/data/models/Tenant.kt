@@ -10,7 +10,7 @@ import java.sql.Date
 data class Tenant(
     @PrimaryKey(autoGenerate = false) val tenantId: String,
     val civi: String?,
-    val name: String,
+    var name: String,
     val address: String?,
     @ColumnInfo(name = "address_2") val address2: String?,
     @ColumnInfo(name = "postal_code") val postalCode: String?,
@@ -27,6 +27,10 @@ data class Tenant(
 ) : PrimaryInfo() {
     @Ignore
     override fun primaryInfo(): String {
-        return "$civi $name"
+        return name
+    }
+
+    override fun civiInfo(): String {
+        return "$civi"
     }
 }
