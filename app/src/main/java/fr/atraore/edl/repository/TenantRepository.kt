@@ -12,10 +12,4 @@ class TenantRepository(
 ) : BaseRepository<Tenant>(tenantDao) {
 
     val allTenants: Flow<List<Tenant>> = tenantDao.getAllTenants()
-
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun saveTenants(tenants: List<Tenant>) {
-        tenantDao.saveTenants(tenants)
-    }
 }

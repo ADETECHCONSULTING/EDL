@@ -14,7 +14,4 @@ interface TenantDao : BaseDao<Tenant> {
     @Query("SELECT * FROM $TENANT_TABLE")
     fun getAllTenants(): Flow<List<Tenant>>
 
-    @Update
-    suspend fun saveTenants(tenants: List<Tenant>)
-
 }

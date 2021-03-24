@@ -21,7 +21,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:imeOptions="actionDone"
-    android:gravity="center_horizontal"
+    android:gravity="start"
     android:padding="@dimen/padding_small"
     android:textSize="@dimen/txt_size_small"
     android:background="@android:color/transparent"

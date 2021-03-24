@@ -22,7 +22,7 @@ data class Owner(
 ) : PrimaryInfo() {
     @Ignore
     override fun primaryInfo(): String {
-        return "$civi $name"
+        return name
     }
 
     override fun civiInfo(): String {

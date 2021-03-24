@@ -32,7 +32,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
 
     private val startViewModel: StartConstatViewModel by viewModels() {
         val edlApplication = activity?.application as EdlApplication;
-        StartConstatViewModelFactory(edlApplication.constatRepository, edlApplication.tenantRepository, arguments?.getString(ARGS_CONSTAT_ID)!!)
+        StartConstatViewModelFactory(edlApplication.constatRepository, edlApplication.tenantRepository, edlApplication.ownerRepository, edlApplication.propertyRepository, edlApplication.contractorRepository, arguments?.getString(ARGS_CONSTAT_ID)!!)
     }
 
     private lateinit var binding: StartConstatFragmentBinding

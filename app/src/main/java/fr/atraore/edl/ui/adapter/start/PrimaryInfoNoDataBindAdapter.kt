@@ -50,13 +50,13 @@ class PrimaryInfoNoDataBindAdapter(private val dataSet: List<PrimaryInfo>, priva
                             (itemPrimary as Tenant).name = s.toString()
                         }
                         is Owner -> {
-
+                            (itemPrimary as Owner).name = s.toString()
                         }
                         is Contractor -> {
-
+                            (itemPrimary as Contractor).denomination = s.toString()
                         }
                         is Property -> {
-
+                            //à voir pour la modification de biens
                         }
                     }
                 }
@@ -80,18 +80,22 @@ class PrimaryInfoNoDataBindAdapter(private val dataSet: List<PrimaryInfo>, priva
                 startConstatViewModel.saveTenants(dataSet as List<Tenant>)
             }
             is Owner -> {
-
+                //checked cast juste avant sur la premiere valeur
+                startConstatViewModel.saveOwners(dataSet as List<Owner>)
             }
             is Contractor -> {
-
+                //checked cast juste avant sur la premiere valeur
+                startConstatViewModel.saveContractor(dataSet as List<Contractor>)
             }
             is Property -> {
-
+                //checked cast juste avant sur la premiere valeur
+                startConstatViewModel.saveProperties(dataSet as List<Property>)
             }
         }
     }
 
     fun editUpdate() {
+        edit = !edit
         dataSet.forEach { primaryInfo -> primaryInfo.enableInfo = !primaryInfo.enableInfo }
         notifyDataSetChanged()
     }

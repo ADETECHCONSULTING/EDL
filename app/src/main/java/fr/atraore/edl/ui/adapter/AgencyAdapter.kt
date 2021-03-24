@@ -40,7 +40,7 @@ class AgencyAdapter : ListAdapter<Agency, AgencyAdapter.ViewHolder>(DiffAgencyCa
     private fun createClickListener(agency: Agency): View.OnClickListener {
         //TODO insert
         return View.OnClickListener {
-            Log.d("Property Adapter", "createConstatClickListener: CLICKED")
+            Log.d("Property Adapter", "createConstatClickListener: CLICKED ${agency}",)
         }
     }
 
