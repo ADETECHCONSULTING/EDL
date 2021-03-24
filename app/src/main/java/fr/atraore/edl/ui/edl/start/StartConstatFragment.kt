@@ -1,6 +1,5 @@
 package fr.atraore.edl.ui.edl.start
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +11,16 @@ import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
-import fr.atraore.edl.ui.adapter.start.PrimaryInfoAdapter
+import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
 import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.start_constat_fragment.*
 
@@ -51,14 +49,10 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configRecyclerViewsLinear(rcv_tenant, rcv_biens, rcv_contractor, rcv_owner)
 
         startViewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
             constatWithDetails?.let {
-                (rcv_tenant.adapter as PrimaryInfoAdapter).submitList(it.tenants)
-                (rcv_biens.adapter as PrimaryInfoAdapter).submitList(it.properties)
-                (rcv_owner.adapter as PrimaryInfoAdapter).submitList(it.owners)
-                (rcv_contractor.adapter as PrimaryInfoAdapter).submitList(it.contractors)
+                configRecyclerViewsLinear(rcv_tenant, rcv_biens, rcv_contractor, rcv_owner, constatWithDetails = it)
             }
         })
 
@@ -68,7 +62,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
     /**
      * Initialise les events
      */
-    fun initListener() {
+    private fun initListener() {
         imv_search_bien.setOnClickListener(this)
         imv_search_owner.setOnClickListener(this)
         imv_search_locataire.setOnClickListener(this)
@@ -84,9 +78,22 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
     /**
      * Configure les recyclerviews de façon lineaire
      */
-    fun configRecyclerViewsLinear(vararg recyclerViews: RecyclerView) {
+    private fun configRecyclerViewsLinear(vararg recyclerViews: RecyclerView, constatWithDetails: ConstatWithDetails) {
         recyclerViews.forEach {
-            it.adapter = PrimaryInfoAdapter()
+            when (it.id) {
+                R.id.rcv_tenant -> {
+                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.tenants)
+                }
+                R.id.rcv_owner -> {
+                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.owners)
+                }
+                R.id.rcv_biens -> {
+                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.properties)
+                }
+                R.id.rcv_contractor -> {
+                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.contractors)
+                }
+            }
             it.layoutManager = LinearLayoutManager(context)
         }
     }
@@ -119,27 +126,35 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
             }
 
             //click on Item : Edit icon
+            //click true active l'edition
+            //click false sauvegarde le contenu
             R.id.imv_edit_owner -> {
-                (rcv_owner.adapter as PrimaryInfoAdapter).editUpdate()
-                //getEditableDialog(txv_owners.text as String)
+                editOrSave(rcv_owner.adapter as PrimaryInfoNoDataBindAdapter)
             }
             R.id.imv_edit_locataire -> {
-                (rcv_tenant.adapter as PrimaryInfoAdapter).editUpdate()
-                //getEditableDialog(txv_tenant.text as String)
+                editOrSave(rcv_tenant.adapter as PrimaryInfoNoDataBindAdapter)
             }
             R.id.imv_edit_mandataire -> {
-                (rcv_contractor.adapter as PrimaryInfoAdapter).editUpdate()
-                //getEditableDialog(txv_contractor.text as String)
+                editOrSave(rcv_contractor.adapter as PrimaryInfoNoDataBindAdapter)
             }
             R.id.imv_edit_bien -> {
-                (rcv_biens.adapter as PrimaryInfoAdapter).editUpdate()
-                //getEditableDialog(txv_biens.text as String)
+                editOrSave(rcv_biens.adapter as PrimaryInfoNoDataBindAdapter)
             }
 
             else -> {
                 Toast.makeText(context, "Une erreur est survenue. Veuillez revenir au menu principal et réessayer", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun editOrSave(primaryInfoAdapter: PrimaryInfoNoDataBindAdapter) {
+        if (primaryInfoAdapter.edit) {
+            if (startViewModel.constatDetail.value != null) {
+                //primaryInfoAdapter.saveContent(primaryInfos)
+            }
+        }
+
+        primaryInfoAdapter.editUpdate();
     }
 
     fun getEditableDialog(text: String) {

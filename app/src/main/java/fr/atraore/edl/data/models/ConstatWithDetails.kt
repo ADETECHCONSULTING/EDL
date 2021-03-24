@@ -73,21 +73,6 @@ data class ConstatWithDetails(
     }
 
     @Ignore
-    fun getContractorsConcatenate(): String {
-        var res = "";
-
-        if (contractors.isEmpty()) {
-            res = "Pas de mandataires"
-        } else {
-            owners.forEach { contractor ->
-                res += contractor.name + "\n"
-            }
-        }
-
-        return res
-    }
-
-    @Ignore
     fun getPropertyAddressConcatenate(): String {
         var res = "";
 

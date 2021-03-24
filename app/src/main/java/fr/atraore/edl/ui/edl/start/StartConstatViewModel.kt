@@ -24,8 +24,8 @@ class StartConstatViewModel(
         repository.save(constat)
     }
 
-    fun saveTenant(tenant: Tenant) = viewModelScope.launch {
-        tenantRepository.save(tenant)
+    fun saveTenants(tenants: List<Tenant>) = viewModelScope.launch {
+        tenantRepository.saveTenants(tenants)
     }
 }
 

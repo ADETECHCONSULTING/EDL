@@ -24,7 +24,7 @@ data class Tenant(
     @ColumnInfo(name = "sortie_postal_code") val sortiePostalCode: String?,
     @ColumnInfo(name = "sortie_city") val sortieCity: String?,
     @ColumnInfo(name = "date_entree") val dateEntree: Date
-) : PrimaryInfo {
+) : PrimaryInfo() {
     @Ignore
     override fun primaryInfo(): String {
         return "$civi $name"

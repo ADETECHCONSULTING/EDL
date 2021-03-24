@@ -25,7 +25,7 @@ data class Property (
     @ColumnInfo(name = "attic_door") val atticDoor: Int?, //grenier
     @ColumnInfo(name = "parking_door") val parkingDoor: Int?,
     @ColumnInfo(name = "box_door") val boxDoor: Int?
-) : PrimaryInfo {
+) : PrimaryInfo() {
     @Ignore
     override fun primaryInfo(): String {
         return "$type $nature\n$address $city $postalCode"

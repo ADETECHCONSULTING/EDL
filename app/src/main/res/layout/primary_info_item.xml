@@ -1,36 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<EditText
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/edt_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:imeOptions="actionDone"
+    android:gravity="center_horizontal"
+    android:padding="@dimen/padding_small"
+    android:textSize="@dimen/txt_size_small"
+    android:background="@android:color/transparent"
+    android:maxLines="2"
+    tools:text="F3 Appartement 43 rue des couronnes 75020 Paris"
+    android:textColor="@drawable/state_edittext" />
 
-    <data>
-        <import type="android.text.InputType"/>
-        <variable
-            name="editClickListener"
-            type="android.view.View.OnClickListener" />
-
-        <variable
-            name="itemPrimary"
-            type="fr.atraore.edl.data.models.PrimaryInfo" />
-
-        <variable
-            name="editItem"
-            type="Boolean" />
-
-    </data>
-
-    <EditText
-        android:id="@+id/edt_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:imeOptions="actionDone"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/padding_small"
-        android:textSize="@dimen/txt_size_small"
-        android:text="@{itemPrimary.primaryInfo()}"
-        android:onClick="@{editClickListener}"
-        android:background="@android:color/transparent"
-        android:enabled="@{editItem}"
-        android:maxLines="2"
-        android:textColor="@drawable/state_edittext"
-        android:inputType="@{editItem ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL }" />
-
-</layout>

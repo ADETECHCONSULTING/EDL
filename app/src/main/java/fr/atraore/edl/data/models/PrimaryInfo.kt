@@ -1,5 +1,7 @@
 package fr.atraore.edl.data.models
 
-interface PrimaryInfo {
-    fun primaryInfo() : String
+
+abstract class PrimaryInfo {
+    var enableInfo: Boolean = false
+    abstract fun primaryInfo() : String
 }

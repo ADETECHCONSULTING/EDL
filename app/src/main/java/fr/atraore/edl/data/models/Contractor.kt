@@ -18,7 +18,7 @@ data class Contractor (
     @ColumnInfo(name = "postal_code_2") val postalCode2: String?,
     @ColumnInfo(name = "postal_code_3") val postalCode3: String?,
     val city: String?
-) : PrimaryInfo {
+) : PrimaryInfo() {
     @Ignore
     override fun primaryInfo(): String {
         return denomination

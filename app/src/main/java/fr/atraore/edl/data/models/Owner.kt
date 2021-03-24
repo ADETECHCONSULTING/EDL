@@ -19,7 +19,7 @@ data class Owner(
     @ColumnInfo(name = "tel_2") val tel2: String?,
     val mail: String?,
     val notes: String?
-) : PrimaryInfo {
+) : PrimaryInfo() {
     @Ignore
     override fun primaryInfo(): String {
         return "$civi $name"

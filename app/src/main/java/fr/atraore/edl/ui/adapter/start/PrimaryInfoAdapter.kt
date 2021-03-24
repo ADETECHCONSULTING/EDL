@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import fr.atraore.edl.data.dao.BaseDao
 import fr.atraore.edl.data.models.PrimaryInfo
-import fr.atraore.edl.databinding.PrimaryInfoItemBinding
 
+
+/*
 class PrimaryInfoAdapter : ListAdapter<PrimaryInfo, PrimaryInfoAdapter.ViewHolder>(DiffTenantInfoCallback()) {
+    private val TAG: String? = PrimaryInfoAdapter::class.simpleName
 
     var edit: Boolean = false
 
@@ -35,8 +38,13 @@ class PrimaryInfoAdapter : ListAdapter<PrimaryInfo, PrimaryInfoAdapter.ViewHolde
     private fun editClickListener(tenant: PrimaryInfo): View.OnClickListener {
         //TODO update
         return View.OnClickListener {
-            Log.d("Primary Info Adapter", "editClickListener: CLICKED")
+            Log.d(TAG, "editClickListener: CLICKED")
         }
+    }
+
+    fun saveContent(baseEntities: PrimaryInfo) {
+        Log.d(TAG, "sauvegarde de l'entity")
+
     }
 
     fun editUpdate() {
@@ -72,3 +80,4 @@ class DiffTenantInfoCallback : DiffUtil.ItemCallback<PrimaryInfo>() {
     }
 
 }
+ */
