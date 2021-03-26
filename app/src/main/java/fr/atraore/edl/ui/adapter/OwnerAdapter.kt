@@ -9,8 +9,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.data.models.Owner
 import fr.atraore.edl.databinding.OwnerItemBinding
+import fr.atraore.edl.ui.edl.search.owner.OwnerSearchViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class OwnerAdapter : ListAdapter<Owner, OwnerAdapter.ViewHolder>(DiffOwnerCallback()) {
+class OwnerAdapter(private val ownerSearchViewModel: OwnerSearchViewModel, private val constatId: String) : ListAdapter<Owner, OwnerAdapter.ViewHolder>(DiffOwnerCallback()) {
+    private val TAG = OwnerAdapter::class.simpleName
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -31,9 +35,11 @@ class OwnerAdapter : ListAdapter<Owner, OwnerAdapter.ViewHolder>(DiffOwnerCallba
     }
 
     private fun createOwnerClickListener(owner: Owner): View.OnClickListener {
-        //TODO insert
         return View.OnClickListener {
-            Log.d("Property Adapter", "createConstatClickListener: CLICKED")
+            Log.d(TAG, "Creation ConstatOwnerCrossRef ${owner} in ${constatId}")
+            GlobalScope.launch {
+                ownerSearchViewModel.saveConstatOwner(constatId, owner.ownerId)
+            }
         }
     }
 

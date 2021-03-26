@@ -13,15 +13,16 @@ import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.ui.adapter.TenantAdapter
 import fr.atraore.edl.ui.edl.search.BaseFragment
+import fr.atraore.edl.ui.edl.search.biens.PropertySearchFragment
 import kotlinx.android.synthetic.main.tenant_search_fragment.*
 
-class TenantSearchFragment : BaseFragment() {
+class TenantSearchFragment(private val constatId: String) : BaseFragment() {
 
     override val title: String
         get() = "Locataire"
 
     companion object {
-        fun newInstance() = TenantSearchFragment()
+        fun newInstance(constatId: String) = TenantSearchFragment(constatId)
     }
 
     private val tenantViewModel: TenantSearchViewModel by viewModels {
@@ -39,11 +40,11 @@ class TenantSearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = TenantAdapter(tenantViewModel)
+        val adapter = TenantAdapter(tenantViewModel, constatId)
         rcv_tenant.adapter = adapter
         rcv_tenant.layoutManager = GridLayoutManager(context, 4)
 
-        tenantViewModel.allTenants.observe(viewLifecycleOwner, Observer {tenants ->
+        tenantViewModel.allTenants.observe(viewLifecycleOwner, Observer { tenants ->
             tenants?.let { adapter.submitList(it) }
         })
     }

@@ -4,18 +4,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.Property
-import fr.atraore.edl.databinding.ConstatItemBinding
 import fr.atraore.edl.databinding.PropertyItemBinding
+import fr.atraore.edl.ui.edl.search.biens.PropertySearchViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class PropertyAdapter : ListAdapter<Property, PropertyAdapter.ViewHolder>(DiffPropertyCallback()) {
+class PropertyAdapter(private val propertySearchViewModel: PropertySearchViewModel, private val constatId: String) : ListAdapter<Property, PropertyAdapter.ViewHolder>(DiffPropertyCallback()) {
+    private val TAG = PropertyAdapter::class.simpleName
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -36,9 +35,11 @@ class PropertyAdapter : ListAdapter<Property, PropertyAdapter.ViewHolder>(DiffPr
     }
 
     private fun createConstatClickListener(property: Property): View.OnClickListener {
-        //TODO insert
         return View.OnClickListener {
-            Log.d("Property Adapter", "createConstatClickListener: CLICKED")
+            Log.d(TAG, "Creation ConstatPropertyCrossRef ${property} in ${constatId}")
+            GlobalScope.launch {
+                propertySearchViewModel.saveConstatProperty(constatId, property.propertyId)
+            }
         }
     }
 

@@ -13,17 +13,18 @@ import fr.atraore.edl.ui.adapter.PropertyAdapter
 import fr.atraore.edl.ui.edl.search.BaseFragment
 import kotlinx.android.synthetic.main.property_search_fragment.*
 
-class PropertySearchFragment : BaseFragment() {
+class PropertySearchFragment(private val constatId: String) : BaseFragment() {
 
     override val title: String
         get() = "Biens"
 
     companion object {
-        fun newInstance() = PropertySearchFragment()
+        fun newInstance(constatId: String) = PropertySearchFragment(constatId)
     }
 
     private val propertySearchViewModel: PropertySearchViewModel by viewModels {
-        PropertySearchViewModelFactory((activity?.application as EdlApplication).propertyRepository)
+        val edlApplication = (activity?.application as EdlApplication)
+        PropertySearchViewModelFactory(edlApplication.propertyRepository, edlApplication.constatRepository)
     }
 
     override fun onCreateView(
@@ -36,7 +37,7 @@ class PropertySearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = PropertyAdapter()
+        val adapter = PropertyAdapter(propertySearchViewModel, constatId)
         rcv_property.adapter = adapter
         rcv_property.layoutManager = GridLayoutManager(context, 4)
 

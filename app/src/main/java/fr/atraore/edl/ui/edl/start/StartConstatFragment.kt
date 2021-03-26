@@ -21,6 +21,7 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
+import fr.atraore.edl.ui.hideKeyboard
 import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.start_constat_fragment.*
 
@@ -36,6 +37,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
     }
 
     private lateinit var binding: StartConstatFragmentBinding
+    private lateinit var constatId: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +54,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
 
         startViewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
             constatWithDetails?.let {
+                this.constatId = constatWithDetails.constat.constatId
                 configRecyclerViewsLinear(rcv_tenant, rcv_biens, rcv_contractor, rcv_owner, constatWithDetails = it, startConstatViewModel = startViewModel)
             }
         })
@@ -105,23 +108,23 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
         when (v?.id) {
             //click on Item : search icon
             R.id.imv_search_owner -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_PROPRIETAIRE)
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_PROPRIETAIRE, ARGS_CONSTAT_ID to this.constatId)
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_bien -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_BIENS)
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_BIENS, ARGS_CONSTAT_ID to this.constatId)
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_locataire -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_LOCATAIRE)
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_LOCATAIRE, ARGS_CONSTAT_ID to this.constatId)
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_mandataire -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE)
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE, ARGS_CONSTAT_ID to this.constatId)
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_agence -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_AGENCES)
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_AGENCES, ARGS_CONSTAT_ID to this.constatId)
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
 
@@ -151,10 +154,11 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
         if (primaryInfoAdapter.edit) {
             if (startViewModel.constatDetail.value != null) {
                 primaryInfoAdapter.saveContent()
+                hideKeyboard() //utilisation de l'extension pour fermer le clavier
             }
         }
 
-        primaryInfoAdapter.editUpdate();
+        primaryInfoAdapter.editUpdate()
     }
 
     fun getEditableDialog(text: String) {

@@ -12,6 +12,7 @@ import fr.atraore.edl.ui.edl.search.biens.PropertySearchFragment
 import fr.atraore.edl.ui.edl.search.contractor.ContractorSearchFragment
 import fr.atraore.edl.ui.edl.search.owner.OwnerSearchFragment
 import fr.atraore.edl.ui.edl.search.tenant.TenantSearchFragment
+import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import fr.atraore.edl.utils.ARGS_TAB_POSITION
 import kotlinx.android.synthetic.main.fragment_view_pager.view.*
 
@@ -22,13 +23,15 @@ class ViewPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_view_pager, container, false)
+        val constatId = arguments?.getString(ARGS_CONSTAT_ID)
 
+        //#TODO Gérer le cas où le constat id n'est pas été sauvegardé (lenteur de la tablette)
         val fragmentList = arrayListOf<Fragment>(
-            PropertySearchFragment.newInstance(),
-            OwnerSearchFragment.newInstance(),
-            TenantSearchFragment.newInstance(),
-            ContractorSearchFragment.newInstance(),
-            AgencySearchFragment.newInstance()
+            PropertySearchFragment.newInstance(constatId!!),
+            OwnerSearchFragment.newInstance(constatId!!),
+            TenantSearchFragment.newInstance(constatId!!),
+            ContractorSearchFragment.newInstance(constatId!!),
+            AgencySearchFragment.newInstance(constatId!!)
         )
 
         val adapter = ViewPagerAdapter(

@@ -16,8 +16,13 @@ import fr.atraore.edl.data.models.Property
 import fr.atraore.edl.databinding.ConstatItemBinding
 import fr.atraore.edl.databinding.ContractorItemBinding
 import fr.atraore.edl.databinding.PropertyItemBinding
+import fr.atraore.edl.ui.edl.search.biens.PropertySearchViewModel
+import fr.atraore.edl.ui.edl.search.contractor.ContractorSearchViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class ContractorAdapter : ListAdapter<Contractor, ContractorAdapter.ViewHolder>(DiffContractorCallback()) {
+class ContractorAdapter(private val contractorSearchViewModel: ContractorSearchViewModel, private val constatId: String) : ListAdapter<Contractor, ContractorAdapter.ViewHolder>(DiffContractorCallback()) {
+    private val TAG = ContractorAdapter::class.simpleName
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -38,9 +43,11 @@ class ContractorAdapter : ListAdapter<Contractor, ContractorAdapter.ViewHolder>(
     }
 
     private fun createClickListener(contractor: Contractor): View.OnClickListener {
-        //TODO insert
         return View.OnClickListener {
-            Log.d("Property Adapter", "createConstatClickListener: CLICKED")
+            Log.d(TAG, "Creation ConstatContractorCrossRef ${contractor} in ${constatId}")
+            GlobalScope.launch {
+                contractorSearchViewModel.saveConstatContractor(constatId, contractor.contractorId)
+            }
         }
     }
 

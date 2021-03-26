@@ -14,19 +14,21 @@ import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.ui.adapter.OwnerAdapter
 import fr.atraore.edl.ui.edl.search.BaseFragment
+import fr.atraore.edl.ui.edl.search.biens.PropertySearchFragment
 import kotlinx.android.synthetic.main.owner_search_fragment.*
 
-class OwnerSearchFragment : BaseFragment() {
+class OwnerSearchFragment(private val constatId: String) : BaseFragment() {
 
     override val title: String
         get() = "Propriétaires"
 
     companion object {
-        fun newInstance() = OwnerSearchFragment()
+        fun newInstance(constatId: String) = OwnerSearchFragment(constatId)
     }
 
     private val ownerSearchViewModel: OwnerSearchViewModel by viewModels {
-        OwnerSearchViewModelFactory((activity?.application as EdlApplication).ownerRepository)
+        val edlApplication = (activity?.application as EdlApplication)
+        OwnerSearchViewModelFactory(edlApplication.ownerRepository, edlApplication.constatRepository)
     }
 
     override fun onCreateView(
@@ -39,7 +41,7 @@ class OwnerSearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = OwnerAdapter()
+        val adapter = OwnerAdapter(ownerSearchViewModel, constatId)
         rcv_owner.adapter = adapter
         rcv_owner.layoutManager = GridLayoutManager(context, 4)
 

@@ -20,7 +20,7 @@ import fr.atraore.edl.ui.edl.search.tenant.TenantSearchViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel) : ListAdapter<Tenant, TenantAdapter.ViewHolder>(DiffTenantCallback()) {
+class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel, private val constatId: String) : ListAdapter<Tenant, TenantAdapter.ViewHolder>(DiffTenantCallback()) {
     private val TAG = TenantAdapter::class.simpleName
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,9 +44,9 @@ class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel) : 
     private fun createClickListener(tenant: Tenant): View.OnClickListener {
         //TODO insert
         return View.OnClickListener {
-            Log.d(TAG, "createConstatClickListener: CLICKED ${tenant}")
+            Log.d(TAG, "Creation ConstatTenantCrossRef ${tenant} in ${constatId}")
             GlobalScope.launch {
-                tenantSearchViewModel.saveConstatTenant("69de4257-d7ae-4741-b7be-9a3f83b1187b", tenant.tenantId)
+                tenantSearchViewModel.saveConstatTenant(constatId, tenant.tenantId)
             }
         }
     }

@@ -13,19 +13,21 @@ import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.ui.adapter.ContractorAdapter
 import fr.atraore.edl.ui.edl.search.BaseFragment
+import fr.atraore.edl.ui.edl.search.biens.PropertySearchFragment
 import kotlinx.android.synthetic.main.contractor_search_fragment.*
 
-class ContractorSearchFragment : BaseFragment() {
+class ContractorSearchFragment(private val constatId: String) : BaseFragment() {
 
     override val title: String
         get() = "Mandataires"
 
     companion object {
-        fun newInstance() = ContractorSearchFragment()
+        fun newInstance(constatId: String) = ContractorSearchFragment(constatId)
     }
 
     private val contractorViewModel: ContractorSearchViewModel by viewModels {
-        ContractorSearchViewModelFactory((activity?.application as EdlApplication).contractorRepository)
+        val edlApplication = (activity?.application as EdlApplication)
+        ContractorSearchViewModelFactory(edlApplication.contractorRepository, edlApplication.constatRepository)
     }
 
     override fun onCreateView(
@@ -37,7 +39,7 @@ class ContractorSearchFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = ContractorAdapter()
+        val adapter = ContractorAdapter(contractorViewModel, constatId)
         rcv_contractor.adapter = adapter
         rcv_contractor.layoutManager = GridLayoutManager(context, 4)
 

@@ -13,15 +13,16 @@ import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.ui.adapter.AgencyAdapter
 import fr.atraore.edl.ui.edl.search.BaseFragment
+import fr.atraore.edl.ui.edl.search.biens.PropertySearchFragment
 import kotlinx.android.synthetic.main.agency_search_fragment.*
 
-class AgencySearchFragment : BaseFragment() {
+class AgencySearchFragment(private val constatId: String) : BaseFragment() {
 
     override val title: String
         get() = "Agences"
 
     companion object {
-        fun newInstance() = AgencySearchFragment()
+        fun newInstance(constatId: String) = AgencySearchFragment(constatId)
     }
 
     private val agencyViewModel: AgencySearchViewModel by viewModels {
