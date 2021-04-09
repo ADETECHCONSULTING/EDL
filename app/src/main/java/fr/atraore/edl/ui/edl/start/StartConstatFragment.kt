@@ -56,7 +56,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
         startViewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
             constatWithDetails?.let {
                 this.constatId = constatWithDetails.constat.constatId
-                startViewModel.constatHeaderInfo.value = "Constat d'état des lieux ${if(constatWithDetails.constat.typeConstat == "E") "entrant" else "sortant"} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
+                startViewModel.constatHeaderInfo.value = "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
                 configRecyclerViewsLinear(
                     rcv_tenant,
                     rcv_biens,
@@ -216,6 +216,22 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
 
         builder?.show()
 
+    }
+
+    fun getConstatEtat(etat: String): String {
+        when (etat) {
+            "E" -> {
+                return "entrant"
+            }
+            "PE" -> {
+                return "pré-état"
+            }
+            "S" -> {
+                return "sortant"
+            } else -> {
+                return ""
+            }
+        }
     }
 
 }

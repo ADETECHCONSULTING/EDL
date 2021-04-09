@@ -29,7 +29,7 @@
             android:textColor="@color/white"
             app:strokeColor="@color/white"
             app:strokeWidth="4dp"
-            android:text="Entrant" />
+            android:text="@string/entrant_label" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_pre_etat"
@@ -42,7 +42,7 @@
             android:textColor="@color/white"
             app:strokeColor="@color/white"
             app:strokeWidth="4dp"
-            android:text="Pré-état" />
+            android:text="@string/pre_etat_label" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_sortant"
@@ -55,7 +55,7 @@
             android:textColor="@color/white"
             app:strokeColor="@color/white"
             app:strokeWidth="4dp"
-            android:text="Sortant" />
+            android:text="@string/sortant_label" />
 
 
     </LinearLayout>
