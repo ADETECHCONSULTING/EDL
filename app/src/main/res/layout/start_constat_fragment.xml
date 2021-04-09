@@ -30,6 +30,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textColor="@color/black"
+                android:text="@{constatViewModel.constatHeaderInfo}"
                 tools:text="Constat d’état des lieux entrant Nº003 - Mercredi 30 septembre à 16H52" />
 
         </LinearLayout>

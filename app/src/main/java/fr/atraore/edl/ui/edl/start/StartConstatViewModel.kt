@@ -16,6 +16,7 @@ class StartConstatViewModel(
     val constatId: String
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
+    val constatHeaderInfo = MutableLiveData<String>()
     val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
 

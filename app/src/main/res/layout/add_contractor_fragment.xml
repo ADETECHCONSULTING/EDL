@@ -7,24 +7,6 @@
     tools:background="@drawable/gradient_bg"
     tools:context=".ui.edl.add.tenant.AddTenantFragment">
 
-    <LinearLayout
-        android:id="@+id/ctn_header"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_header"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/txv_header"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/black"
-            tools:text="@string/contractor_label" />
-
-    </LinearLayout>
-
     <TextView
         android:id="@+id/txv_denomination"
         style="@style/MyTextViewStyleLabel"
@@ -34,7 +16,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:text="@string/denomination_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ctn_header" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/edt_denomination"
@@ -186,7 +168,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:text="@string/phone_label"
         app:layout_constraintStart_toEndOf="@id/guideline_middle"
-        app:layout_constraintTop_toBottomOf="@id/ctn_header" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/edt_tel"

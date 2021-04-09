@@ -21,6 +21,7 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
+import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.ui.hideKeyboard
 import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.start_constat_fragment.*
@@ -55,7 +56,15 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
         startViewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
             constatWithDetails?.let {
                 this.constatId = constatWithDetails.constat.constatId
-                configRecyclerViewsLinear(rcv_tenant, rcv_biens, rcv_contractor, rcv_owner, constatWithDetails = it, startConstatViewModel = startViewModel)
+                startViewModel.constatHeaderInfo.value = "Constat d'état des lieux ${if(constatWithDetails.constat.typeConstat == "E") "entrant" else "sortant"} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
+                configRecyclerViewsLinear(
+                    rcv_tenant,
+                    rcv_biens,
+                    rcv_contractor,
+                    rcv_owner,
+                    constatWithDetails = it,
+                    startConstatViewModel = startViewModel
+                )
             }
         })
 
