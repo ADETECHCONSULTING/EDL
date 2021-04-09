@@ -76,6 +76,11 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
         imv_edit_bien.setOnClickListener(this)
         imv_edit_locataire.setOnClickListener(this)
         imv_edit_mandataire.setOnClickListener(this)
+
+        imv_add_bien.setOnClickListener(this)
+        imv_add_contractor.setOnClickListener(this)
+        imv_add_locataire.setOnClickListener(this)
+        imv_add_owner.setOnClickListener(this)
     }
 
     /**
@@ -102,7 +107,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
     }
 
     /**
-     * gère les clics de l'ihm start_constat_fragment
+     * gère les clics de l'ihm start_constat_fragment depuis l'init listener
      */
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -142,6 +147,24 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
             }
             R.id.imv_edit_bien -> {
                 editOrSave(rcv_biens.adapter as PrimaryInfoNoDataBindAdapter)
+            }
+
+            //Click on Add
+            R.id.imv_add_bien -> {
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_BIENS)
+                findNavController().navigate(R.id.go_to_add, bundle)
+            }
+            R.id.imv_add_locataire -> {
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_LOCATAIRE)
+                findNavController().navigate(R.id.go_to_add, bundle)
+            }
+            R.id.imv_add_owner -> {
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_PROPRIETAIRE)
+                findNavController().navigate(R.id.go_to_add, bundle)
+            }
+            R.id.imv_add_contractor -> {
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE)
+                findNavController().navigate(R.id.go_to_add, bundle)
             }
 
             else -> {

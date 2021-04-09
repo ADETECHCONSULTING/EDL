@@ -1,4 +1,4 @@
-package fr.atraore.edl.ui.edl.search
+package fr.atraore.edl.ui.edl
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

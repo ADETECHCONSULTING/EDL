@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.atraore.edl.R
+import fr.atraore.edl.ui.edl.BaseFragment
 
-class AddPropertyFragment : Fragment() {
+class AddPropertyFragment : BaseFragment() {
+
+    override val title: String
+        get() = "Biens"
 
     companion object {
         fun newInstance() = AddPropertyFragment()

@@ -29,10 +29,23 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/go_to_add"
+            app:destination="@id/viewPagerFragmentAdd"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/viewPagerFragment"
         android:name="fr.atraore.edl.ui.edl.search.ViewPagerFragment"
         android:label="fragment_view_pager"
+        tools:layout="@layout/fragment_view_pager" />
+
+    <fragment
+        android:id="@+id/viewPagerFragmentAdd"
+        android:name="fr.atraore.edl.ui.edl.add.ViewPagerFragmentAdd"
+        android:label="fragment_view_pager_add"
         tools:layout="@layout/fragment_view_pager" />
 </navigation>

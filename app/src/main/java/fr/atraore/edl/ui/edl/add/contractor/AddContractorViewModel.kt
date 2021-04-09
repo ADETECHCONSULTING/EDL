@@ -1,4 +1,4 @@
-package fr.atraore.edl.ui.edl.add
+package fr.atraore.edl.ui.edl.add.contractor
 
 import androidx.lifecycle.ViewModel
 

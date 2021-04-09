@@ -6,8 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.atraore.edl.R
+import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.ui.edl.add.owner.AddOwnerFragment
+import fr.atraore.edl.ui.edl.add.owner.AddOwnerViewModel
 
-class AddTenantFragment : Fragment() {
+class AddTenantFragment : BaseFragment() {
+
+    override val title: String
+        get() = "Locataires"
+
+    companion object {
+        fun newInstance() = AddTenantFragment()
+    }
+
+    private lateinit var viewModel: AddTenantViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

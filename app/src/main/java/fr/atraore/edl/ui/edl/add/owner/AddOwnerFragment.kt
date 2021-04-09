@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.atraore.edl.R
+import fr.atraore.edl.ui.edl.BaseFragment
 
-class AddOwnerFragment : Fragment() {
+class AddOwnerFragment : BaseFragment() {
+
+    override val title: String
+        get() = "Propriétaires"
 
     companion object {
         fun newInstance() = AddOwnerFragment()

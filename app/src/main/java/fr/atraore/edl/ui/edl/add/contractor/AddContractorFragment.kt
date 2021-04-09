@@ -1,4 +1,4 @@
-package fr.atraore.edl.ui.edl.add
+package fr.atraore.edl.ui.edl.add.contractor
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.atraore.edl.R
+import fr.atraore.edl.ui.edl.BaseFragment
 
-class AddContractorFragment : Fragment() {
+class AddContractorFragment : BaseFragment() {
+
+    override val title: String
+        get() = "Mandataires"
 
     companion object {
         fun newInstance() = AddContractorFragment()

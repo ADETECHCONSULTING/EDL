@@ -1,8 +1,6 @@
 package fr.atraore.edl.ui.edl.search.agency
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.ui.adapter.AgencyAdapter
-import fr.atraore.edl.ui.edl.search.BaseFragment
-import fr.atraore.edl.ui.edl.search.biens.PropertySearchFragment
+import fr.atraore.edl.ui.edl.BaseFragment
 import kotlinx.android.synthetic.main.agency_search_fragment.*
 
 class AgencySearchFragment(private val constatId: String) : BaseFragment() {
