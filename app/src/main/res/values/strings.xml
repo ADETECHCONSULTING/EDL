@@ -33,6 +33,8 @@
     <string name="entrant_label">Entrant</string>
     <string name="pre_etat_label">Pré-état</string>
     <string name="sortant_label">Sortant</string>
+    <string name="default_1">1</string>
+    <string name="default_0">0</string>
 
     <string-array name="civilites">
         <item>Monsieur</item>

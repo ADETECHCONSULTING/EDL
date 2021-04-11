@@ -1,22 +1,35 @@
 package fr.atraore.edl.ui.edl
 
-import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import fr.atraore.edl.EdlApplication
+import fr.atraore.edl.data.models.*
 
 abstract class BaseFragment<T> : Fragment() {
     abstract val title: String
 
-    private val baseViewModel: BaseViewModel<T> by viewModels {
-        val edlApplication = activity?.application as EdlApplication;
-        BaseViewModelFactory(edlApplication.constatRepository)
+    /**
+     * Sauvegarde dans le bon repository
+     * https://stackoverflow.com/a/53589293
+     */
+    suspend fun <T: Any> save(obj: T) {
+        val edlApplication = activity?.application as EdlApplication
+
+        when (obj::class) {
+            Tenant::class -> {
+                edlApplication.tenantRepository.save(obj as Tenant)
+            }
+            Property::class -> {
+                val property: Property = obj as Property
+                edlApplication.propertyRepository.save(property)
+            }
+            Owner::class -> {
+                edlApplication.ownerRepository.save(obj as Owner)
+            }
+            Contractor::class -> {
+                edlApplication.contractorRepository.save(obj as Contractor)
+            }
+            else -> println("Type not recognized")
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(context, baseViewModel.toString(), Toast.LENGTH_SHORT).show()
-    }
 }

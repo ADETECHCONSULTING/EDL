@@ -7,7 +7,7 @@ import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.Tenant
 import kotlinx.coroutines.flow.Flow
 
-class TenantRepository(
+class TenantRepository (
     private val tenantDao: TenantDao
 ) : BaseRepository<Tenant>(tenantDao) {
 

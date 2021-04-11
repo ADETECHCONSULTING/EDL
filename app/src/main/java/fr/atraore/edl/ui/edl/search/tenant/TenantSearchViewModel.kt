@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import fr.atraore.edl.data.models.Tenant
 import fr.atraore.edl.repository.ConstatRepository
-import fr.atraore.edl.repository.PropertyRepository
 import fr.atraore.edl.repository.TenantRepository
-import fr.atraore.edl.ui.edl.search.biens.PropertySearchViewModel
 
 class TenantSearchViewModel(
     private val repository: TenantRepository,
