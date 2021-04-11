@@ -9,11 +9,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Property
 import fr.atraore.edl.ui.adapter.PropertyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import kotlinx.android.synthetic.main.property_search_fragment.*
 
-class PropertySearchFragment(private val constatId: String) : BaseFragment() {
+class PropertySearchFragment(private val constatId: String) : BaseFragment<Property>() {
 
     override val title: String
         get() = "Biens"

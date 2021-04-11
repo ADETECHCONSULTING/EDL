@@ -9,11 +9,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Contractor
 import fr.atraore.edl.ui.adapter.ContractorAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import kotlinx.android.synthetic.main.contractor_search_fragment.*
 
-class ContractorSearchFragment(private val constatId: String) : BaseFragment() {
+class ContractorSearchFragment(private val constatId: String) : BaseFragment<Contractor>() {
 
     override val title: String
         get() = "Mandataires"

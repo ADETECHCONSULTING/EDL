@@ -12,18 +12,12 @@ import kotlinx.coroutines.flow.Flow
 
 class ConstatRepository(
     private val constatDao: ConstatDao
-) {
+) : BaseRepository<Constat>(constatDao) {
     val allConstats: Flow<List<Constat>> = constatDao.getAllConstat()
     val allConstatWithDetails: Flow<List<ConstatWithDetails>> = constatDao.getAllConstatWithDetails()
 
     fun getConstatDetail(constatId: String): Flow<ConstatWithDetails> {
         return constatDao.getConstatDetails(constatId)
-    }
-
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
-    suspend fun save(constat: Constat) {
-        constatDao.save(constat)
     }
 
     @Suppress("RedundantSuspendModifier")

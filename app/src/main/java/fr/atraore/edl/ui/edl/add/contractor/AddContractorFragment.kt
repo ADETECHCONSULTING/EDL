@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Contractor
 import fr.atraore.edl.ui.edl.BaseFragment
 
-class AddContractorFragment : BaseFragment() {
+class AddContractorFragment : BaseFragment<Contractor>() {
 
     override val title: String
         get() = "Mandataires"

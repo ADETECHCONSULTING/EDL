@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Tenant
 import fr.atraore.edl.ui.edl.BaseFragment
 
-class AddTenantFragment : BaseFragment() {
+class AddTenantFragment : BaseFragment<Tenant>() {
 
     override val title: String
         get() = "Locataires"

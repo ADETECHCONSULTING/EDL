@@ -30,10 +30,10 @@ class ViewPagerFragment : Fragment() {
         //#TODO Gérer le cas où le constat id n'est pas été sauvegardé (lenteur de la tablette)
         val fragmentList = arrayListOf<Fragment>(
             PropertySearchFragment.newInstance(constatId!!),
-            OwnerSearchFragment.newInstance(constatId!!),
-            TenantSearchFragment.newInstance(constatId!!),
-            ContractorSearchFragment.newInstance(constatId!!),
-            AgencySearchFragment.newInstance(constatId!!)
+            OwnerSearchFragment.newInstance(constatId),
+            TenantSearchFragment.newInstance(constatId),
+            ContractorSearchFragment.newInstance(constatId),
+            AgencySearchFragment.newInstance(constatId)
         )
 
         val adapter = ViewPagerAdapter(
@@ -44,8 +44,9 @@ class ViewPagerFragment : Fragment() {
 
         view.viewPager.adapter = adapter
 
+        //<*> pas besoin d'arguments typés vu qu'on récupère que le title
         TabLayoutMediator(view.tab_layout, view.viewPager) { tab, position ->
-            tab.text = (fragmentList[position] as BaseFragment).title
+            tab.text = (fragmentList[position] as BaseFragment<*>).title
         }.attach()
 
         view.viewPager.setCurrentItem(arguments?.getInt(ARGS_TAB_POSITION) ?: 0, true)

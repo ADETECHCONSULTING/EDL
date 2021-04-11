@@ -9,11 +9,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Tenant
 import fr.atraore.edl.ui.adapter.TenantAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import kotlinx.android.synthetic.main.tenant_search_fragment.*
 
-class TenantSearchFragment(private val constatId: String) : BaseFragment() {
+class TenantSearchFragment(private val constatId: String) : BaseFragment<Tenant>() {
 
     override val title: String
         get() = "Locataire"

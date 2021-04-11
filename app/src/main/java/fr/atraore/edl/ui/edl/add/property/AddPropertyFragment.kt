@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Property
 import fr.atraore.edl.ui.edl.BaseFragment
 
-class AddPropertyFragment : BaseFragment() {
+class AddPropertyFragment : BaseFragment<Property>() {
 
     override val title: String
         get() = "Biens"

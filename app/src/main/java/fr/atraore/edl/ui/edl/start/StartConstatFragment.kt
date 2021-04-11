@@ -203,10 +203,10 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
         val builder = context?.let {
             AlertDialog.Builder(it)
                 .setTitle("Voulez-vous effectuer un renommage ?")
-                .setPositiveButton("Renommer") { dialog, which ->
+                .setPositiveButton("Renommer") { dialog, _ ->
                     dialog.dismiss()
                 }
-                .setNegativeButton("Annuler") { dialog, which ->
+                .setNegativeButton("Annuler") { dialog, _ ->
                     dialog.dismiss()
                 }
         }

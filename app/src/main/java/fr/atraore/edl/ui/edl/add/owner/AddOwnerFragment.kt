@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Owner
 import fr.atraore.edl.ui.edl.BaseFragment
 
-class AddOwnerFragment : BaseFragment() {
+class AddOwnerFragment : BaseFragment<Owner>() {
 
     override val title: String
         get() = "Propriétaires"

@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Users
 import fr.atraore.edl.ui.edl.BaseFragment
 
-class UserSearchFragment : BaseFragment() {
+class UserSearchFragment : BaseFragment<Users>() {
 
     override val title: String
         get() = "Utilisateurs"

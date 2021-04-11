@@ -9,11 +9,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Owner
 import fr.atraore.edl.ui.adapter.OwnerAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import kotlinx.android.synthetic.main.owner_search_fragment.*
 
-class OwnerSearchFragment(private val constatId: String) : BaseFragment() {
+class OwnerSearchFragment(private val constatId: String) : BaseFragment<Owner>() {
 
     override val title: String
         get() = "Propriétaires"

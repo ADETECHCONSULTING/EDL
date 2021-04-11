@@ -9,11 +9,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Agency
 import fr.atraore.edl.ui.adapter.AgencyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import kotlinx.android.synthetic.main.agency_search_fragment.*
 
-class AgencySearchFragment(private val constatId: String) : BaseFragment() {
+class AgencySearchFragment(private val constatId: String) : BaseFragment<Agency>() {
 
     override val title: String
         get() = "Agences"
