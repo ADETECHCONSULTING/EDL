@@ -34,7 +34,11 @@ class AddPropertyFragment : BaseFragment<Property>(), View.OnClickListener, Coro
         get() = "Biens"
 
     companion object {
-        fun newInstance() = AddPropertyFragment()
+        fun newInst
+        Log.d(TAG, "création d'un bien ${property}")
+    }
+
+    findNavController().popBackStack()ance() = AddPropertyFragment()
     }
 
     override fun onCreateView(
@@ -100,10 +104,6 @@ class AddPropertyFragment : BaseFragment<Property>(), View.OnClickListener, Coro
 
         launch {
             save(property)
-            Log.d(TAG, "création d'un bien ${property}")
-        }
-
-        findNavController().popBackStack()
     }
 
     override fun onClick(v: View?) {
