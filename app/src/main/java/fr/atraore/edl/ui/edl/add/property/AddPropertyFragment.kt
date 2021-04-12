@@ -17,12 +17,18 @@ import kotlinx.android.synthetic.main.add_property_fragment.edt_address
 import kotlinx.android.synthetic.main.add_property_fragment.edt_address2
 import kotlinx.android.synthetic.main.add_property_fragment.edt_city
 import kotlinx.android.synthetic.main.add_property_fragment.edt_postal_code
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
-class AddPropertyFragment : BaseFragment<Property>(), View.OnClickListener {
+class AddPropertyFragment : BaseFragment<Property>(), View.OnClickListener, CoroutineScope {
     private val TAG = AddPropertyFragment::class.simpleName
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     override val title: String
         get() = "Biens"
@@ -92,8 +98,7 @@ class AddPropertyFragment : BaseFragment<Property>(), View.OnClickListener {
             0, //box
         )
 
-        //TODO Coroutine à améliorer pour les performances (à faire non global)
-        GlobalScope.launch {
+        launch {
             save(property)
             Log.d(TAG, "création d'un bien ${property}")
         }
