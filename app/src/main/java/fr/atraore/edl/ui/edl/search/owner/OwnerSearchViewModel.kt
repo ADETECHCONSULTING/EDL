@@ -17,6 +17,10 @@ class OwnerSearchViewModel(
     suspend fun saveConstatOwner(constatId: String, ownerId: String) {
         constatRepository.saveConstatOwnerCrossRef(constatId, ownerId)
     }
+
+    suspend fun deleteConstatOwner(constatId: String, ownerId: String) {
+        constatRepository.deleteConstatOwnerCrossRef(constatId, ownerId)
+    }
 }
 
 class OwnerSearchViewModelFactory(

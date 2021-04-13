@@ -8,6 +8,7 @@ import fr.atraore.edl.data.models.crossRef.ConstatContractorCrossRef
 import fr.atraore.edl.data.models.crossRef.ConstatOwnerCrossRef
 import fr.atraore.edl.data.models.crossRef.ConstatPropertyCrossRef
 import fr.atraore.edl.data.models.crossRef.ConstatTenantCrossRef
+import java.io.Serializable
 
 data class ConstatWithDetails(
     @Embedded val constat: Constat,
@@ -35,7 +36,7 @@ data class ConstatWithDetails(
         associateBy = Junction(ConstatPropertyCrossRef::class)
     )
     val properties: List<Property>
-) {
+) : Serializable {
     @Ignore
     fun getOwnersConcatenate(withPrefix: Boolean): String {
         var res = "";

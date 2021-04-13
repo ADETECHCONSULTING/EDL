@@ -7,14 +7,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.Owner
 import fr.atraore.edl.databinding.OwnerItemBinding
 import fr.atraore.edl.ui.edl.search.owner.OwnerSearchViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class OwnerAdapter(private val ownerSearchViewModel: OwnerSearchViewModel, private val constatId: String) : ListAdapter<Owner, OwnerAdapter.ViewHolder>(DiffOwnerCallback()) {
+class OwnerAdapter(private val ownerSearchViewModel: OwnerSearchViewModel, private val constatDetail: ConstatWithDetails) : ListAdapter<Owner, OwnerAdapter.ViewHolder>(DiffOwnerCallback()), CoroutineScope {
     private val TAG = OwnerAdapter::class.simpleName
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -28,17 +35,34 @@ class OwnerAdapter(private val ownerSearchViewModel: OwnerSearchViewModel, priva
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val owner = getItem(position)
-        holder.apply {
-            bind(createOwnerClickListener(owner), owner)
-            itemView.tag = owner
+        //si proprio déjà dans la liste alors event de suppression sinon event d'ajout
+        if (constatDetail.owners.find { it.ownerId == owner.ownerId } !== null) {
+            holder.apply {
+                bind(deleteOwnerClickListener(owner), owner, false)
+                itemView.tag = owner
+            }
+        } else {
+            holder.apply {
+                bind(createOwnerClickListener(owner), owner, true)
+                itemView.tag = owner
+            }
         }
     }
 
     private fun createOwnerClickListener(owner: Owner): View.OnClickListener {
         return View.OnClickListener {
-            Log.d(TAG, "Creation ConstatOwnerCrossRef ${owner} in ${constatId}")
-            GlobalScope.launch {
-                ownerSearchViewModel.saveConstatOwner(constatId, owner.ownerId)
+            launch {
+                ownerSearchViewModel.saveConstatOwner(constatDetail.constat.constatId, owner.ownerId)
+                Log.d(TAG, "Creation ConstatOwnerCrossRef ${owner} in ${constatDetail.constat.constatId}")
+            }
+        }
+    }
+
+    private fun deleteOwnerClickListener(owner: Owner): View.OnClickListener {
+        return View.OnClickListener {
+            launch {
+                ownerSearchViewModel.deleteConstatOwner(constatDetail.constat.constatId, owner.ownerId)
+                Log.d(TAG, "Suppression ConstatOwnerCrossRef ${owner} in ${constatDetail.constat.constatId}")
             }
         }
     }
@@ -48,11 +72,13 @@ class OwnerAdapter(private val ownerSearchViewModel: OwnerSearchViewModel, priva
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             listenerProperty: View.OnClickListener,
-            item: Owner
+            item: Owner,
+            itemState: Boolean
         ) {
             binding.apply {
                 ownerItem = item
                 addClickListener = listenerProperty
+                state = itemState
             }
         }
     }

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import java.io.Serializable
 import java.sql.Date
 
 @Entity
@@ -24,7 +25,7 @@ data class Tenant(
     @ColumnInfo(name = "sortie_postal_code") val sortiePostalCode: String?,
     @ColumnInfo(name = "sortie_city") val sortieCity: String?,
     @ColumnInfo(name = "date_entree") val dateEntree: Date
-) : PrimaryInfo() {
+) : PrimaryInfo(), Serializable {
     @Ignore
     override fun primaryInfo(): String {
         return name

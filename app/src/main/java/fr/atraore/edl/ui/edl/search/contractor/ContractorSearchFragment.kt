@@ -9,18 +9,19 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.Contractor
 import fr.atraore.edl.ui.adapter.ContractorAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import kotlinx.android.synthetic.main.contractor_search_fragment.*
 
-class ContractorSearchFragment(private val constatId: String) : BaseFragment<Contractor>() {
+class ContractorSearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Contractor>() {
 
     override val title: String
         get() = "Mandataires"
 
     companion object {
-        fun newInstance(constatId: String) = ContractorSearchFragment(constatId)
+        fun newInstance(constat: ConstatWithDetails) = ContractorSearchFragment(constat)
     }
 
     private val contractorViewModel: ContractorSearchViewModel by viewModels {
@@ -37,7 +38,7 @@ class ContractorSearchFragment(private val constatId: String) : BaseFragment<Con
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val adapter = ContractorAdapter(contractorViewModel, constatId)
+        val adapter = ContractorAdapter(contractorViewModel, constat)
         rcv_contractor.adapter = adapter
         rcv_contractor.layoutManager = GridLayoutManager(context, 4)
 

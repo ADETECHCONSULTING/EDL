@@ -8,3 +8,5 @@ val POSITION_FRAGMENT_AGENCES = 4
 
 val ARGS_TAB_POSITION = "tabPosition"
 val ARGS_CONSTAT_ID = "constatId"
+val ARGS_CONSTAT = "constat"
+val ARGS_ALREADY_ADDED = "alreadyAdded"

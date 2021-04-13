@@ -7,14 +7,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.Property
 import fr.atraore.edl.databinding.PropertyItemBinding
 import fr.atraore.edl.ui.edl.search.biens.PropertySearchViewModel
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class PropertyAdapter(private val propertySearchViewModel: PropertySearchViewModel, private val constatId: String) : ListAdapter<Property, PropertyAdapter.ViewHolder>(DiffPropertyCallback()) {
+class PropertyAdapter(private val propertySearchViewModel: PropertySearchViewModel, private val constatDetails: ConstatWithDetails) : ListAdapter<Property, PropertyAdapter.ViewHolder>(DiffPropertyCallback()), CoroutineScope {
     private val TAG = PropertyAdapter::class.simpleName
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -28,17 +34,34 @@ class PropertyAdapter(private val propertySearchViewModel: PropertySearchViewMod
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val property = getItem(position)
-        holder.apply {
-            bind(createConstatClickListener(property), property)
-            itemView.tag = property
+        //si bien déjà dans la liste alors event de suppression sinon event d'ajout
+        if (constatDetails.properties.find { it.propertyId == property.propertyId } !== null) {
+            holder.apply {
+                bind(deleteConstatClickListener(property), property, false)
+                itemView.tag = property
+            }
+        } else {
+            holder.apply {
+                bind(createConstatClickListener(property), property, true)
+                itemView.tag = property
+            }
         }
     }
 
     private fun createConstatClickListener(property: Property): View.OnClickListener {
         return View.OnClickListener {
-            Log.d(TAG, "Creation ConstatPropertyCrossRef ${property} in ${constatId}")
-            GlobalScope.launch {
-                propertySearchViewModel.saveConstatProperty(constatId, property.propertyId)
+            launch {
+                propertySearchViewModel.saveConstatProperty(constatDetails.constat.constatId, property.propertyId)
+                Log.d(TAG, "Creation ConstatPropertyCrossRef ${property} in ${constatDetails.constat.constatId}")
+            }
+        }
+    }
+
+    private fun deleteConstatClickListener(property: Property): View.OnClickListener {
+        return View.OnClickListener {
+            launch {
+                propertySearchViewModel.deleteConstatProperty(constatDetails.constat.constatId, property.propertyId)
+                Log.d(TAG, "Suppression ConstatPropertyCrossRef ${property} in ${constatDetails.constat.constatId}")
             }
         }
     }
@@ -48,11 +71,13 @@ class PropertyAdapter(private val propertySearchViewModel: PropertySearchViewMod
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             listenerProperty: View.OnClickListener,
-            item: Property
+            item: Property,
+            itemState: Boolean
         ) {
             binding.apply {
                 propertyItem = item
                 addClickListener = listenerProperty
+                state = itemState
             }
         }
     }

@@ -17,6 +17,10 @@ class PropertySearchViewModel(
     suspend fun saveConstatProperty(constatId: String, propertyId: String) {
         constatRepository.saveConstatPropertyCrossRef(constatId, propertyId)
     }
+
+    suspend fun deleteConstatProperty(constatId: String, propertyId: String) {
+        constatRepository.deleteConstatPropertyCrossRef(constatId, propertyId)
+    }
 }
 
 class PropertySearchViewModelFactory(

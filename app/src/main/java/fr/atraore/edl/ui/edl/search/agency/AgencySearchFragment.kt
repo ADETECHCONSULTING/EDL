@@ -10,17 +10,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Agency
+import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.AgencyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import kotlinx.android.synthetic.main.agency_search_fragment.*
 
-class AgencySearchFragment(private val constatId: String) : BaseFragment<Agency>() {
+class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Agency>() {
 
     override val title: String
         get() = "Agences"
 
     companion object {
-        fun newInstance(constatId: String) = AgencySearchFragment(constatId)
+        fun newInstance(constat: ConstatWithDetails) = AgencySearchFragment(constat)
     }
 
     private val agencyViewModel: AgencySearchViewModel by viewModels {

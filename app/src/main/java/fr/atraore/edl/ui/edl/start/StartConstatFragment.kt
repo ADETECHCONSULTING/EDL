@@ -38,7 +38,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
     }
 
     private lateinit var binding: StartConstatFragmentBinding
-    private lateinit var constatId: String
+    private lateinit var constat: ConstatWithDetails
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +55,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
 
         startViewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
             constatWithDetails?.let {
-                this.constatId = constatWithDetails.constat.constatId
+                this.constat = constatWithDetails
                 startViewModel.constatHeaderInfo.value = "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
                 configRecyclerViewsLinear(
                     rcv_tenant,
@@ -122,23 +122,23 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
         when (v?.id) {
             //click on Item : search icon
             R.id.imv_search_owner -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_PROPRIETAIRE, ARGS_CONSTAT_ID to this.constatId)
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_PROPRIETAIRE, ARGS_CONSTAT to this.constat)
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_bien -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_BIENS, ARGS_CONSTAT_ID to this.constatId)
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_BIENS, ARGS_CONSTAT to this.constat)
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_locataire -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_LOCATAIRE, ARGS_CONSTAT_ID to this.constatId)
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_LOCATAIRE, ARGS_CONSTAT to this.constat)
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_mandataire -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE, ARGS_CONSTAT_ID to this.constatId)
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE, ARGS_CONSTAT to this.constat)
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_agence -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_AGENCES, ARGS_CONSTAT_ID to this.constatId)
+                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_AGENCES, ARGS_CONSTAT to this.constat)
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
 

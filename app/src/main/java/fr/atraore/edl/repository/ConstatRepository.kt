@@ -43,4 +43,28 @@ class ConstatRepository(
     suspend fun saveConstatPropertyCrossRef(constatId: String, propertyId: String) {
         constatDao.saveConstatPropertyCrossRef(ConstatPropertyCrossRef(constatId, propertyId))
     }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteConstatPropertyCrossRef(constatId: String, propertyId: String) {
+        constatDao.deleteConstatPropertyCrossRef(ConstatPropertyCrossRef(constatId, propertyId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteConstatOwnerCrossRef(constatId: String, ownerId: String) {
+        constatDao.deleteConstatOwnerCrossRef(ConstatOwnerCrossRef(constatId, ownerId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteConstatTenantCrossRef(constatId: String, tenantId: String) {
+        constatDao.deleteConstatTenantCrossRef(ConstatTenantCrossRef(constatId, tenantId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteConstatContractorCrossRef(constatId: String, contractorId: String) {
+        constatDao.deleteConstatContractorCrossRef(ConstatContractorCrossRef(constatId, contractorId))
+    }
 }

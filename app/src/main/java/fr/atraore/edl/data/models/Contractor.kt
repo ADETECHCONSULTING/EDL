@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import fr.atraore.edl.utils.CONTRACTOR_TABLE
+import java.io.Serializable
 
 @Entity(tableName = CONTRACTOR_TABLE)
 data class Contractor (
@@ -18,7 +19,7 @@ data class Contractor (
     @ColumnInfo(name = "postal_code_2") val postalCode2: String?,
     @ColumnInfo(name = "postal_code_3") val postalCode3: String?,
     val city: String?
-) : PrimaryInfo() {
+) : PrimaryInfo(), Serializable {
     @Ignore
     override fun primaryInfo(): String {
         return denomination

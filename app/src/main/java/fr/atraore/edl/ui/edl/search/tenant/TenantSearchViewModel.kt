@@ -17,6 +17,10 @@ class TenantSearchViewModel(
     suspend fun saveConstatTenant(constatId: String, tenantId: String) {
         constatRepository.saveConstatTenantCrossRef(constatId, tenantId)
     }
+
+    suspend fun deleteConstatTenant(constatId: String, tenantId: String) {
+        constatRepository.deleteConstatTenantCrossRef(constatId, tenantId)
+    }
 }
 
 class TenantSearchViewModelFactory(

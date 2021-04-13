@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import fr.atraore.edl.utils.OWNER_TABLE
+import java.io.Serializable
 
 @Entity(tableName = OWNER_TABLE)
 data class Owner(
@@ -19,7 +20,7 @@ data class Owner(
     @ColumnInfo(name = "tel_2") val tel2: String?,
     val mail: String?,
     val notes: String?
-) : PrimaryInfo() {
+) : PrimaryInfo(), Serializable {
     @Ignore
     override fun primaryInfo(): String {
         return name

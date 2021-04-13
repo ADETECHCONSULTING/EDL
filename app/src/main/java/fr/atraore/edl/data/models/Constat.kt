@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fr.atraore.edl.utils.CONSTAT_TABLE
+import java.io.Serializable
 import java.sql.Date
 import java.util.*
 
@@ -15,6 +16,6 @@ data class Constat(
     @ColumnInfo(name = "id_user") val idUser: Int?,
     @ColumnInfo(name = "id_agency") val idAgency: Int?,
     val state: Int?
-) {
+) : Serializable {
 
 }

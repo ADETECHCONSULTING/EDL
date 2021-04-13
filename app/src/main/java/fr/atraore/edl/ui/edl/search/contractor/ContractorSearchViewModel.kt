@@ -17,6 +17,10 @@ class ContractorSearchViewModel(
     suspend fun saveConstatContractor(constatId: String, contractorId: String) {
         constatRepository.saveConstatContractorCrossRef(constatId, contractorId)
     }
+
+    suspend fun deleteConstatContractor(constatId: String, contractorId: String) {
+        constatRepository.deleteConstatContractorCrossRef(constatId, contractorId)
+    }
 }
 
 class ContractorSearchViewModelFactory(

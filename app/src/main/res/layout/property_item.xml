@@ -13,6 +13,10 @@
             name="propertyItem"
             type="fr.atraore.edl.data.models.Property" />
 
+        <variable
+            name="state"
+            type="java.lang.Boolean" />
+
     </data>
 
         <LinearLayout
@@ -81,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:src="@drawable/ic_add_white"
-                android:backgroundTint="?colorAccent"
+                android:backgroundTint="@{state ? @color/colorAccent : @color/red}"
                 android:onClick="@{addClickListener}"
                 app:borderWidth="0dp"
                 app:tint="@color/white"

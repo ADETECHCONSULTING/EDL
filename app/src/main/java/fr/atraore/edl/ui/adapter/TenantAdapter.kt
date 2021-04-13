@@ -11,17 +11,24 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Constat
+import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.Property
 import fr.atraore.edl.data.models.Tenant
 import fr.atraore.edl.databinding.ConstatItemBinding
 import fr.atraore.edl.databinding.PropertyItemBinding
 import fr.atraore.edl.databinding.TenantItemBinding
 import fr.atraore.edl.ui.edl.search.tenant.TenantSearchViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel, private val constatId: String) : ListAdapter<Tenant, TenantAdapter.ViewHolder>(DiffTenantCallback()) {
+class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel, private val constatDetails: ConstatWithDetails) : ListAdapter<Tenant, TenantAdapter.ViewHolder>(DiffTenantCallback()), CoroutineScope {
     private val TAG = TenantAdapter::class.simpleName
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -35,18 +42,33 @@ class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel, pr
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tenant = getItem(position)
-        holder.apply {
-            bind(createClickListener(tenant), tenant)
-            itemView.tag = tenant
+        if (constatDetails.tenants.find { it.tenantId == tenant.tenantId } !== null) {
+            holder.apply {
+                bind(deleteClickListener(tenant), tenant, false)
+                itemView.tag = tenant
+            }
+        } else {
+            holder.apply {
+                bind(createClickListener(tenant), tenant, true)
+                itemView.tag = tenant
+            }
         }
     }
 
     private fun createClickListener(tenant: Tenant): View.OnClickListener {
-        //TODO insert
         return View.OnClickListener {
-            Log.d(TAG, "Creation ConstatTenantCrossRef ${tenant} in ${constatId}")
-            GlobalScope.launch {
-                tenantSearchViewModel.saveConstatTenant(constatId, tenant.tenantId)
+            launch {
+                tenantSearchViewModel.saveConstatTenant(constatDetails.constat.constatId, tenant.tenantId)
+                Log.d(TAG, "Creation ConstatTenantCrossRef ${tenant} in ${constatDetails.constat.constatId}")
+            }
+        }
+    }
+
+    private fun deleteClickListener(tenant: Tenant): View.OnClickListener {
+        return View.OnClickListener {
+            launch {
+                tenantSearchViewModel.deleteConstatTenant(constatDetails.constat.constatId, tenant.tenantId)
+                Log.d(TAG, "Creation ConstatTenantCrossRef ${tenant} in ${constatDetails.constat.constatId}")
             }
         }
     }
@@ -56,11 +78,13 @@ class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel, pr
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             listenerProperty: View.OnClickListener,
-            item: Tenant
+            item: Tenant,
+            itemState: Boolean
         ) {
             binding.apply {
                 tenantItem = item
                 addClickListener = listenerProperty
+                state = itemState
             }
         }
     }
