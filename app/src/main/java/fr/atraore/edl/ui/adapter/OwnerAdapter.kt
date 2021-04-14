@@ -54,6 +54,8 @@ class OwnerAdapter(private val ownerSearchViewModel: OwnerSearchViewModel, priva
             launch {
                 ownerSearchViewModel.saveConstatOwner(constatDetail.constat.constatId, owner.ownerId)
                 Log.d(TAG, "Creation ConstatOwnerCrossRef ${owner} in ${constatDetail.constat.constatId}")
+                constatDetail.owners.add(owner) //ajout dans la liste pour que l'adapter refresh l'UI à jour
+                notifyDataSetChanged()
             }
         }
     }
@@ -63,6 +65,8 @@ class OwnerAdapter(private val ownerSearchViewModel: OwnerSearchViewModel, priva
             launch {
                 ownerSearchViewModel.deleteConstatOwner(constatDetail.constat.constatId, owner.ownerId)
                 Log.d(TAG, "Suppression ConstatOwnerCrossRef ${owner} in ${constatDetail.constat.constatId}")
+                constatDetail.owners.remove(owner) //supprime de la liste pour que l'adapter refresh l'UI à jour
+                notifyDataSetChanged()
             }
         }
     }

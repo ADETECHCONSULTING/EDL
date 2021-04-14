@@ -61,6 +61,8 @@ class ContractorAdapter(private val contractorSearchViewModel: ContractorSearchV
             launch {
                 contractorSearchViewModel.saveConstatContractor(constatDetails.constat.constatId, contractor.contractorId)
                 Log.d(TAG, "Creation ConstatContractorCrossRef ${contractor} in ${constatDetails.constat.constatId}")
+                constatDetails.contractors.add(contractor) //ajout dans la liste pour que l'adapter refresh l'UI à jour
+                notifyDataSetChanged()
             }
         }
     }
@@ -70,6 +72,8 @@ class ContractorAdapter(private val contractorSearchViewModel: ContractorSearchV
             launch {
                 contractorSearchViewModel.deleteConstatContractor(constatDetails.constat.constatId, contractor.contractorId)
                 Log.d(TAG, "Creation ConstatContractorCrossRef ${contractor} in ${constatDetails.constat.constatId}")
+                constatDetails.contractors.remove(contractor) //supprime de la liste pour que l'adapter refresh l'UI à jour
+                notifyDataSetChanged()
             }
         }
     }

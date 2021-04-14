@@ -53,6 +53,8 @@ class PropertyAdapter(private val propertySearchViewModel: PropertySearchViewMod
             launch {
                 propertySearchViewModel.saveConstatProperty(constatDetails.constat.constatId, property.propertyId)
                 Log.d(TAG, "Creation ConstatPropertyCrossRef ${property} in ${constatDetails.constat.constatId}")
+                constatDetails.properties.add(property) //ajout dans la liste pour que l'adapter refresh l'UI à jour
+                notifyDataSetChanged()
             }
         }
     }
@@ -62,6 +64,8 @@ class PropertyAdapter(private val propertySearchViewModel: PropertySearchViewMod
             launch {
                 propertySearchViewModel.deleteConstatProperty(constatDetails.constat.constatId, property.propertyId)
                 Log.d(TAG, "Suppression ConstatPropertyCrossRef ${property} in ${constatDetails.constat.constatId}")
+                constatDetails.properties.remove(property) //supprime de la liste pour que l'adapter refresh l'UI à jour
+                notifyDataSetChanged()
             }
         }
     }
