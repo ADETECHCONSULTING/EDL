@@ -2,6 +2,8 @@ package fr.atraore.edl
 
 import android.app.Application
 import fr.atraore.edl.data.AppDatabase
+import fr.atraore.edl.photo.PhotoPicker
+import fr.atraore.edl.photo.utils.GlideImageLoader
 import fr.atraore.edl.repository.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -16,4 +18,13 @@ class EdlApplication : Application() {
     val contractorRepository by lazy { ContractorRepository(database.getContractorDao()) }
     val tenantRepository by lazy { TenantRepository(database.getTenantDao()) }
     val userRepository by lazy { UserRepository(database.getUserDao()) }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        PhotoPicker.init(
+            loader = GlideImageLoader(),
+            authority = "fr.atraore.edl.fileprovider"
+        )
+    }
 }

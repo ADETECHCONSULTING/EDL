@@ -30,4 +30,22 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="TextAppearance.PhotoPicker.Button" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?colorAccent</item>
+        <item name="android:includeFontPadding">true</item>
+        <item name="android:textSize">@dimen/textSizeMedium</item>
+    </style>
+
+    <style name="ChiliPhotoPicker.Light" parent="Theme.MaterialComponents.NoActionBar.Bridge">
+        <item name="pickerBackgroundColor">@color/background_light</item>
+        <item name="pickerPrimaryColor">@color/text_primary_light</item>
+        <item name="pickerSecondaryColor">@color/text_secondary_light</item>
+        <item name="pickerControlColor">@color/controls_light</item>
+        <item name="pickerCornerRadius">@dimen/background_corner_radius</item>
+        <item name="pickerCameraIcon">@drawable/picker_camera</item>
+        <item name="pickerGalleryIcon">@drawable/picker_gallery</item>
+        <item name="pickerDividerColor">@color/divider_light</item>
+    </style>
+
 </resources>

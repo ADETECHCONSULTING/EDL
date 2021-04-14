@@ -6,4 +6,8 @@
     <dimen name="padding_small">8dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="txt_size_small">16sp</dimen>
+    <dimen name="textSizeSmall">14sp</dimen>
+    <dimen name="textSizeMedium">16sp</dimen>
+    <dimen name="textSizeLarge">21sp</dimen>
+    <dimen name="background_corner_radius">24dp</dimen>
 </resources>
