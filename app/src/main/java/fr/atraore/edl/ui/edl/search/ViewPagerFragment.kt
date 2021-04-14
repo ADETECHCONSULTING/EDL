@@ -17,6 +17,7 @@ import fr.atraore.edl.ui.edl.search.biens.PropertySearchFragment
 import fr.atraore.edl.ui.edl.search.contractor.ContractorSearchFragment
 import fr.atraore.edl.ui.edl.search.owner.OwnerSearchFragment
 import fr.atraore.edl.ui.edl.search.tenant.TenantSearchFragment
+import fr.atraore.edl.ui.edl.search.user.UserSearchFragment
 import fr.atraore.edl.ui.edl.start.StartConstatViewModel
 import fr.atraore.edl.ui.edl.start.StartConstatViewModelFactory
 import fr.atraore.edl.utils.ARGS_CONSTAT
@@ -39,7 +40,8 @@ class ViewPagerFragment : Fragment() {
             OwnerSearchFragment.newInstance(constat),
             TenantSearchFragment.newInstance(constat),
             ContractorSearchFragment.newInstance(constat),
-            AgencySearchFragment.newInstance(constat)
+            AgencySearchFragment.newInstance(constat),
+            UserSearchFragment.newInstance(constat)
         )
 
         val adapter = ViewPagerAdapter(

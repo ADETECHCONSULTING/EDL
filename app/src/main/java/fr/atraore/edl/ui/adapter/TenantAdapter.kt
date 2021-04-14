@@ -60,6 +60,8 @@ class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel, pr
             launch {
                 tenantSearchViewModel.saveConstatTenant(constatDetails.constat.constatId, tenant.tenantId)
                 Log.d(TAG, "Creation ConstatTenantCrossRef ${tenant} in ${constatDetails.constat.constatId}")
+                constatDetails.tenants.add(tenant) //supprime de la liste pour que l'adapter refresh l'UI à jour
+                notifyDataSetChanged()
             }
         }
     }
@@ -69,6 +71,8 @@ class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel, pr
             launch {
                 tenantSearchViewModel.deleteConstatTenant(constatDetails.constat.constatId, tenant.tenantId)
                 Log.d(TAG, "Creation ConstatTenantCrossRef ${tenant} in ${constatDetails.constat.constatId}")
+                constatDetails.tenants.remove(tenant) //supprime de la liste pour que l'adapter refresh l'UI à jour
+                notifyDataSetChanged()
             }
         }
     }

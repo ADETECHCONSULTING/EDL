@@ -14,37 +14,37 @@ data class ConstatWithDetails(
         entityColumn = "ownerId",
         associateBy = Junction(ConstatOwnerCrossRef::class)
     )
-    val owners: List<Owner>,
+    val owners: MutableList<Owner>,
     @Relation(
         parentColumn = "constatId",
         entityColumn = "tenantId",
         associateBy = Junction(ConstatTenantCrossRef::class)
     )
-    val tenants: List<Tenant>,
+    val tenants: MutableList<Tenant>,
     @Relation(
         parentColumn = "constatId",
         entityColumn = "contractorId",
         associateBy = Junction(ConstatContractorCrossRef::class)
     )
-    val contractors: List<Contractor>,
+    val contractors: MutableList<Contractor>,
     @Relation(
         parentColumn = "constatId",
         entityColumn = "propertyId",
         associateBy = Junction(ConstatPropertyCrossRef::class)
     )
-    val properties: List<Property>,
+    val properties: MutableList<Property>,
     @Relation(
         parentColumn = "constatId",
         entityColumn = "agencyId",
         associateBy = Junction(ConstatAgencyCrossRef::class)
     )
-    val agency: Agency,
+    val agency: Agency?,
     @Relation(
         parentColumn = "constatId",
         entityColumn = "userId",
         associateBy = Junction(ConstatUsersCrossRef::class)
     )
-    val user: Users,
+    val user: Users?,
 ) : Serializable {
     @Ignore
     fun getOwnersConcatenate(withPrefix: Boolean): String {

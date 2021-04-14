@@ -15,8 +15,12 @@ class AgencySearchViewModel(
 ): ViewModel() {
     val allAgencies: LiveData<List<Agency>> = repository.allAgency.asLiveData()
 
-    suspend fun save(constat: Constat) {
-        constatRepository.save(constat)
+    suspend fun updateExistingAgency(constat: Constat, agency: Agency) {
+        constatRepository.updateExistingAgencyCrossRef(constat.constatId, agency.agencyId)
+    }
+
+    suspend fun save(constat: Constat, agency: Agency) {
+        constatRepository.saveConstatAgencyCrossRef(constat.constatId, agency.agencyId)
     }
 }
 

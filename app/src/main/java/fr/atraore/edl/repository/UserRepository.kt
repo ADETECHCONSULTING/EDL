@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 class UserRepository(
     private val userDao: UserDao
 ) : BaseRepository<Users>(userDao) {
-    val user: Flow<Users> = userDao.getLastUser()
+    val allUsers: Flow<List<Users>> = userDao.getAllUsers()
 }

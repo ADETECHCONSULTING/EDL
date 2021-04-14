@@ -46,6 +46,13 @@ interface ConstatDao : BaseDao<Constat> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveConstatUsersCrossRef(crossRef: ConstatUsersCrossRef)
 
+    //** Update **
+    @Query("UPDATE ConstatAgencyCrossRef SET agencyId =:agencyId WHERE constatId =:constatId")
+    suspend fun updateExistingAgencyCrossRef(constatId: String, agencyId: String)
+
+    @Query("UPDATE ConstatUsersCrossRef SET userId =:userId WHERE constatId =:constatId")
+    suspend fun updateExistingUsersCrossRef(constatId: String, userId: String)
+
     //** DELETE **
     @Delete
     fun delete(constat: Constat)

@@ -49,8 +49,20 @@ class ConstatRepository(
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
+    suspend fun updateExistingAgencyCrossRef(constatId: String, agencyId: String) {
+        constatDao.updateExistingAgencyCrossRef(constatId, agencyId)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
     suspend fun saveConstatUserCrossRef(constatId: String, userId: String) {
         constatDao.saveConstatUsersCrossRef(ConstatUsersCrossRef(constatId, userId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun updateExistingUserCrossRef(constatId: String, userId: String) {
+        constatDao.updateExistingUsersCrossRef(constatId, userId)
     }
 
     @Suppress("RedundantSuspendModifier")

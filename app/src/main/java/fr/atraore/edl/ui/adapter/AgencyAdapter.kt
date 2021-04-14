@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, private val constatDetails: ConstatWithDetails) : ListAdapter<Agency, AgencyAdapter.ViewHolder>(DiffAgencyCallback()), CoroutineScope {
-    private val TAG = ContractorAdapter::class.simpleName
+    private val TAG = AgencyAdapter::class.simpleName
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
@@ -48,8 +48,13 @@ class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, pr
     private fun createClickListener(agency: Agency): View.OnClickListener {
         return View.OnClickListener {
             launch {
-                agencySearchViewModel.save(constatDetails.constat)
-                Log.d(TAG, "Update/Creation agence ${agency} in ${constatDetails.constat.constatId}")
+                if (constatDetails.agency != null) {
+                    agencySearchViewModel.updateExistingAgency(constatDetails.constat, agency)
+                    Log.d(TAG, "Update agence ${agency} in ${constatDetails.constat.constatId}")
+                } else {
+                    agencySearchViewModel.save(constatDetails.constat, agency)
+                    Log.d(TAG, "Ajout agence ${agency} in ${constatDetails.constat.constatId}")
+                }
             }
         }
     }
