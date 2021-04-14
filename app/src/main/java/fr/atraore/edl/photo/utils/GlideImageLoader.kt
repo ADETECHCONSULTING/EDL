@@ -12,8 +12,8 @@ class GlideImageLoader: ImageLoader {
 
     override fun loadImage(context: Context, view: ImageView, uri: Uri) {
         Glide.with(context)
-            .asBitmap()
             .load(uri)
+            .asBitmap()
             .placeholder(R.drawable.bg_placeholder)
             .centerCrop()
             .into(view)

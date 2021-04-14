@@ -1,10 +1,12 @@
 package fr.atraore.edl.ui
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -20,6 +22,7 @@ import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.sql.Date
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainFragment : Fragment() {
 
@@ -51,14 +54,12 @@ class MainFragment : Fragment() {
         initListeners()
     }
 
-
-
     fun initListeners() {
         btn_entrant.setOnClickListener {
             val constat = Constat(
                 constatId = UUID.randomUUID().toString(),
                 typeConstat = "E",
-                dateCreation = Date(1607686070062),
+                dateCreation = Date(System.currentTimeMillis()),
                 state = 0
             )
             mainViewModel.saveConstat(constat)

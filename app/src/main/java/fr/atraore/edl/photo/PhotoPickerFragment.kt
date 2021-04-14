@@ -23,18 +23,16 @@ import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import fr.atraore.edl.CameraActivity
-import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.photo.PickerViewModel.Companion.SELECTION_UNDEFINED
 import fr.atraore.edl.photo.adapter.ImagePickerAdapter
 import fr.atraore.edl.photo.adapter.SelectableImage
-import fr.atraore.edl.photo.utils.*
 import fr.atraore.edl.photo.utils.Intents
 import fr.atraore.edl.photo.utils.NonDismissibleBehavior
 import fr.atraore.edl.photo.utils.SpacingItemDecoration
@@ -64,7 +62,7 @@ class PhotoPickerFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm = ViewModelProviders.of(this).get(PickerViewModel::class.java)
+        vm = ViewModelProvider(this).get(PickerViewModel::class.java)
         vm.setMaxSelectionCount(getMaxSelection(requireArguments()))
 
         contextWrapper = ContextThemeWrapper(context, getTheme(requireArguments()))
