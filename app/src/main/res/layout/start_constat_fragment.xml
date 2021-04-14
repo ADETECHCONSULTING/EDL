@@ -416,7 +416,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ctn_agence_header"
                 tools:text="Appart T2 sur 1 niveau"
-                android:text=""/>
+                android:text="@{constatViewModel.constatDetail.agency.name}"/>
 
             <ImageView
                 android:id="@+id/imv_search_agence"
@@ -473,7 +473,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ctn_user_header"
                 tools:text="Appart T2 sur 1 niveau"
-                android:text=""/>
+                android:text="@{constatViewModel.constatDetail.user.name}"/>
 
             <ImageView
                 android:id="@+id/imv_search_user"

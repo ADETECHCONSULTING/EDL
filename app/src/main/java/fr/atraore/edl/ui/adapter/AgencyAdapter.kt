@@ -10,14 +10,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Agency
-import fr.atraore.edl.data.models.Constat
-import fr.atraore.edl.data.models.Property
+import fr.atraore.edl.data.models.*
 import fr.atraore.edl.databinding.AgencyItemBinding
 import fr.atraore.edl.databinding.ConstatItemBinding
 import fr.atraore.edl.databinding.PropertyItemBinding
+import fr.atraore.edl.ui.edl.search.agency.AgencySearchViewModel
+import fr.atraore.edl.ui.edl.search.contractor.ContractorSearchViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class AgencyAdapter : ListAdapter<Agency, AgencyAdapter.ViewHolder>(DiffAgencyCallback()) {
+class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, private val constatDetails: ConstatWithDetails) : ListAdapter<Agency, AgencyAdapter.ViewHolder>(DiffAgencyCallback()), CoroutineScope {
+    private val TAG = ContractorAdapter::class.simpleName
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -38,11 +46,14 @@ class AgencyAdapter : ListAdapter<Agency, AgencyAdapter.ViewHolder>(DiffAgencyCa
     }
 
     private fun createClickListener(agency: Agency): View.OnClickListener {
-        //TODO insert
         return View.OnClickListener {
-            Log.d("Property Adapter", "createConstatClickListener: CLICKED ${agency}",)
+            launch {
+                agencySearchViewModel.save(constatDetails.constat)
+                Log.d(TAG, "Update/Creation agence ${agency} in ${constatDetails.constat.constatId}")
+            }
         }
     }
+
 
     class ViewHolder(
         private val binding: AgencyItemBinding

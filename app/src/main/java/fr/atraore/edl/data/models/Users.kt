@@ -7,7 +7,7 @@ import fr.atraore.edl.utils.USERS_TABLE
 
 @Entity(tableName = USERS_TABLE)
 data class Users(
-    @PrimaryKey(autoGenerate = false) val id: String,
+    @PrimaryKey(autoGenerate = false) val userId: String,
     val civi: String,
     val name: String,
     val address: String?,

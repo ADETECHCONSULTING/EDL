@@ -8,10 +8,7 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import fr.atraore.edl.data.dao.*
 import fr.atraore.edl.data.models.*
-import fr.atraore.edl.data.models.crossRef.ConstatContractorCrossRef
-import fr.atraore.edl.data.models.crossRef.ConstatOwnerCrossRef
-import fr.atraore.edl.data.models.crossRef.ConstatPropertyCrossRef
-import fr.atraore.edl.data.models.crossRef.ConstatTenantCrossRef
+import fr.atraore.edl.data.models.crossRef.*
 import fr.atraore.edl.utils.DateTypeConverter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -27,6 +24,8 @@ const val DATABASE_NAME = "edlDb"
         ConstatPropertyCrossRef::class,
         ConstatTenantCrossRef::class,
         ConstatContractorCrossRef::class,
+        ConstatAgencyCrossRef::class,
+        ConstatUsersCrossRef::class,
         Owner::class,
         Property::class,
         Tenant::class,
@@ -111,8 +110,6 @@ abstract class AppDatabase : RoomDatabase() {
                 constatId = UUID.randomUUID().toString(),
                 typeConstat = "E",
                 dateCreation = Date(1607686070062),
-                idAgency = 1,
-                idUser = 1,
                 state = 0
             )
             constatDao.save(constat)
@@ -230,6 +227,22 @@ abstract class AppDatabase : RoomDatabase() {
             )
             agencyDao.save(agency)
 
+            val user = Users(
+                UUID.randomUUID().toString(),
+                "Monsieur",
+                "Adama",
+                "Test",
+                "Test",
+                "Test",
+                "Test",
+                "Test",
+                "Test",
+                "Test",
+                "Test",
+                1
+            )
+            userDao.save(user)
+
             val proprietaire = Owner(
                 UUID.randomUUID().toString(),
                 "M",
@@ -311,10 +324,19 @@ abstract class AppDatabase : RoomDatabase() {
                 constat.constatId,
                 tenant.tenantId
             )
+            val constatWithAgency = ConstatAgencyCrossRef(
+                constat.constatId,
+                agency.agencyId
+            )
+            val constatWithUser = ConstatUsersCrossRef(
+                constat.constatId,
+                user.userId
+            )
             constatDao.saveConstatPropertyCrossRef(constatWithProperty)
             constatDao.saveConstatOwnerCrossRef(constatWithOwner)
             constatDao.saveConstatTenantCrossRef(constatWithTenant)
-
+            constatDao.saveConstatAgencyCrossRef(constatWithAgency)
+            constatDao.saveConstatUsersCrossRef(constatWithUser)
         }
     }
 

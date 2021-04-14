@@ -58,8 +58,6 @@ class MainFragment : Fragment() {
                 constatId = UUID.randomUUID().toString(),
                 typeConstat = "E",
                 dateCreation = Date(1607686070062),
-                idAgency = 1,
-                idUser = 1,
                 state = 0
             )
             mainViewModel.saveConstat(constat)

@@ -4,10 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Ignore
 import androidx.room.Junction
 import androidx.room.Relation
-import fr.atraore.edl.data.models.crossRef.ConstatContractorCrossRef
-import fr.atraore.edl.data.models.crossRef.ConstatOwnerCrossRef
-import fr.atraore.edl.data.models.crossRef.ConstatPropertyCrossRef
-import fr.atraore.edl.data.models.crossRef.ConstatTenantCrossRef
+import fr.atraore.edl.data.models.crossRef.*
 import java.io.Serializable
 
 data class ConstatWithDetails(
@@ -35,7 +32,19 @@ data class ConstatWithDetails(
         entityColumn = "propertyId",
         associateBy = Junction(ConstatPropertyCrossRef::class)
     )
-    val properties: List<Property>
+    val properties: List<Property>,
+    @Relation(
+        parentColumn = "constatId",
+        entityColumn = "agencyId",
+        associateBy = Junction(ConstatAgencyCrossRef::class)
+    )
+    val agency: Agency,
+    @Relation(
+        parentColumn = "constatId",
+        entityColumn = "userId",
+        associateBy = Junction(ConstatUsersCrossRef::class)
+    )
+    val user: Users,
 ) : Serializable {
     @Ignore
     fun getOwnersConcatenate(withPrefix: Boolean): String {

@@ -65,6 +65,7 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
                     constatWithDetails = it,
                     startConstatViewModel = startViewModel
                 )
+
             }
         })
 
@@ -113,6 +114,13 @@ class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver
             }
             it.layoutManager = LinearLayoutManager(context)
         }
+    }
+
+    /**
+     * configure l'agence et l'user
+     */
+    private fun configAgencyUsers(constatWithDetails: ConstatWithDetails) {
+
     }
 
     /**

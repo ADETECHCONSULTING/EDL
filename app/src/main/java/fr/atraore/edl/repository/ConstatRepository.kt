@@ -4,10 +4,7 @@ import androidx.annotation.WorkerThread
 import fr.atraore.edl.data.dao.ConstatDao
 import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.ConstatWithDetails
-import fr.atraore.edl.data.models.crossRef.ConstatContractorCrossRef
-import fr.atraore.edl.data.models.crossRef.ConstatOwnerCrossRef
-import fr.atraore.edl.data.models.crossRef.ConstatPropertyCrossRef
-import fr.atraore.edl.data.models.crossRef.ConstatTenantCrossRef
+import fr.atraore.edl.data.models.crossRef.*
 import kotlinx.coroutines.flow.Flow
 
 class ConstatRepository(
@@ -46,6 +43,18 @@ class ConstatRepository(
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
+    suspend fun saveConstatAgencyCrossRef(constatId: String, agencyId: String) {
+        constatDao.saveConstatAgencyCrossRef(ConstatAgencyCrossRef(constatId, agencyId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveConstatUserCrossRef(constatId: String, userId: String) {
+        constatDao.saveConstatUsersCrossRef(ConstatUsersCrossRef(constatId, userId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
     suspend fun deleteConstatPropertyCrossRef(constatId: String, propertyId: String) {
         constatDao.deleteConstatPropertyCrossRef(ConstatPropertyCrossRef(constatId, propertyId))
     }
@@ -67,4 +76,5 @@ class ConstatRepository(
     suspend fun deleteConstatContractorCrossRef(constatId: String, contractorId: String) {
         constatDao.deleteConstatContractorCrossRef(ConstatContractorCrossRef(constatId, contractorId))
     }
+
 }

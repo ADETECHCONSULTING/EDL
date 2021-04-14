@@ -40,6 +40,12 @@ interface ConstatDao : BaseDao<Constat> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveConstatPropertyCrossRef(crossRef: ConstatPropertyCrossRef)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveConstatAgencyCrossRef(crossRef: ConstatAgencyCrossRef)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveConstatUsersCrossRef(crossRef: ConstatUsersCrossRef)
+
     //** DELETE **
     @Delete
     fun delete(constat: Constat)
@@ -55,6 +61,12 @@ interface ConstatDao : BaseDao<Constat> {
 
     @Delete
     suspend fun deleteConstatContractorCrossRef(crossRef: ConstatContractorCrossRef)
+
+    @Delete
+    suspend fun deleteConstatAgencyCrossRef(crossRef: ConstatAgencyCrossRef)
+
+    @Delete
+    suspend fun deleteConstatUsersCrossRef(crossRef: ConstatUsersCrossRef)
 
     @Query("DELETE FROM $CONSTAT_TABLE")
     fun deleteAll()

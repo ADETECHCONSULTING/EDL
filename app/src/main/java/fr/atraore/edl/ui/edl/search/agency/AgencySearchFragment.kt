@@ -25,7 +25,8 @@ class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragme
     }
 
     private val agencyViewModel: AgencySearchViewModel by viewModels {
-        AgencySearchViewModelFactory((activity?.application as EdlApplication).agencyRepository)
+        val edlApplication = activity?.application as EdlApplication
+        AgencySearchViewModelFactory(edlApplication.agencyRepository, edlApplication.constatRepository)
     }
 
     override fun onCreateView(
@@ -38,7 +39,7 @@ class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = AgencyAdapter()
+        val adapter = AgencyAdapter(agencyViewModel, constat)
         rcv_agency.adapter = adapter
         rcv_agency.layoutManager = GridLayoutManager(context, 4)
 
