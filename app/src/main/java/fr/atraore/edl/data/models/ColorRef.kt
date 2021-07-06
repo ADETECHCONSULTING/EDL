@@ -4,10 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Alteration(
+data class ColorRef(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val label: String,
-    val section: String,
-    val equipement: String
-) {
-}
+    val RGB: String
+)

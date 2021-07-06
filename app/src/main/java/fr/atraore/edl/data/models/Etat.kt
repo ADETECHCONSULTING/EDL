@@ -4,10 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Descriptif(
-    @PrimaryKey(autoGenerate = true) val id: String,
+data class Etat(
+    @PrimaryKey(autoGenerate = true) val id: Int,
     val label: String,
     val section: String,
     val equipement: String
-) {
-}
+)
