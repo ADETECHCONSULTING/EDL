@@ -2,13 +2,15 @@ package fr.atraore.edl.ui.edl.search.contractor
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.atraore.edl.data.models.Contractor
 import fr.atraore.edl.repository.ConstatRepository
 import fr.atraore.edl.repository.ContractorRepository
+import javax.inject.Inject
 
-class ContractorSearchViewModel(
+@HiltViewModel
+class ContractorSearchViewModel @Inject constructor(
     private val repository: ContractorRepository,
     private val constatRepository: ConstatRepository
 ) : ViewModel() {
@@ -21,19 +23,4 @@ class ContractorSearchViewModel(
     suspend fun deleteConstatContractor(constatId: String, contractorId: String) {
         constatRepository.deleteConstatContractorCrossRef(constatId, contractorId)
     }
-}
-
-class ContractorSearchViewModelFactory(
-    private val repository: ContractorRepository,
-    private val constatRepository: ConstatRepository
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ContractorSearchViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return ContractorSearchViewModel(repository, constatRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-
 }

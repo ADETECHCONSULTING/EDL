@@ -1,14 +1,17 @@
 package fr.atraore.edl.ui
 
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.repository.ConstatRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val constatRepositoy: ConstatRepository
 ) : ViewModel() {
     val allConstats: LiveData<List<Constat>> = constatRepositoy.allConstats.asLiveData()

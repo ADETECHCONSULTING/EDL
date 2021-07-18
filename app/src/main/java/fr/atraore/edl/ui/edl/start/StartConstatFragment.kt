@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.ConstatWithDetails
@@ -25,16 +26,18 @@ import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.ui.hideKeyboard
 import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.start_constat_fragment.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver {
 
     companion object {
         fun newInstance() = StartConstatFragment()
     }
 
-    private val startViewModel: StartConstatViewModel by viewModels() {
-        val edlApplication = activity?.application as EdlApplication;
-        StartConstatViewModelFactory(edlApplication.constatRepository, edlApplication.tenantRepository, edlApplication.ownerRepository, edlApplication.propertyRepository, edlApplication.contractorRepository, arguments?.getString(ARGS_CONSTAT_ID)!!)
+    @Inject lateinit var startConstatViewModelFactory: StartConstatViewModel.AssistedStartFactory
+    private val startViewModel: StartConstatViewModel by assistedViewModel {
+        startConstatViewModelFactory.create(arguments?.getString(ARGS_CONSTAT_ID)!!)
     }
 
     private lateinit var binding: StartConstatFragmentBinding

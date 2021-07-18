@@ -1,13 +1,11 @@
 package fr.atraore.edl.repository
 
-import androidx.annotation.WorkerThread
-import androidx.room.Update
 import fr.atraore.edl.data.dao.TenantDao
-import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.Tenant
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class TenantRepository (
+class TenantRepository @Inject constructor(
     private val tenantDao: TenantDao
 ) : BaseRepository<Tenant>(tenantDao) {
 

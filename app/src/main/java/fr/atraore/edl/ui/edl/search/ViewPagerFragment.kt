@@ -18,10 +18,7 @@ import fr.atraore.edl.ui.edl.search.contractor.ContractorSearchFragment
 import fr.atraore.edl.ui.edl.search.owner.OwnerSearchFragment
 import fr.atraore.edl.ui.edl.search.tenant.TenantSearchFragment
 import fr.atraore.edl.ui.edl.search.user.UserSearchFragment
-import fr.atraore.edl.ui.edl.start.StartConstatViewModel
-import fr.atraore.edl.ui.edl.start.StartConstatViewModelFactory
 import fr.atraore.edl.utils.ARGS_CONSTAT
-import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import fr.atraore.edl.utils.ARGS_TAB_POSITION
 import kotlinx.android.synthetic.main.fragment_view_pager.view.*
 

@@ -1,6 +1,5 @@
 package fr.atraore.edl.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.ConstatWithDetails

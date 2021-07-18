@@ -7,14 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Agency
 import fr.atraore.edl.data.models.ConstatWithDetails
+import fr.atraore.edl.ui.MainViewModel
 import fr.atraore.edl.ui.adapter.AgencyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import kotlinx.android.synthetic.main.agency_search_fragment.*
 
+@AndroidEntryPoint
 class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Agency>() {
 
     override val title: String
@@ -24,10 +27,8 @@ class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragme
         fun newInstance(constat: ConstatWithDetails) = AgencySearchFragment(constat)
     }
 
-    private val agencyViewModel: AgencySearchViewModel by viewModels {
-        val edlApplication = activity?.application as EdlApplication
-        AgencySearchViewModelFactory(edlApplication.agencyRepository, edlApplication.constatRepository)
-    }
+    private val agencyViewModel: AgencySearchViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
