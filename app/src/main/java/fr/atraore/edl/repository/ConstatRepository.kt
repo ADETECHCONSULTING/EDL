@@ -6,8 +6,9 @@ import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.crossRef.*
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class ConstatRepository(
+class ConstatRepository @Inject constructor(
     private val constatDao: ConstatDao
 ) : BaseRepository<Constat>(constatDao) {
     val allConstats: Flow<List<Constat>> = constatDao.getAllConstat()

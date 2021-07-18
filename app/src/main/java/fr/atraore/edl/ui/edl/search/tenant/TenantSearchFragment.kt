@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.ConstatWithDetails
@@ -15,6 +16,7 @@ import fr.atraore.edl.ui.adapter.TenantAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import kotlinx.android.synthetic.main.tenant_search_fragment.*
 
+@AndroidEntryPoint
 class TenantSearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Tenant>() {
 
     override val title: String
@@ -24,10 +26,7 @@ class TenantSearchFragment(private val constat: ConstatWithDetails) : BaseFragme
         fun newInstance(constat: ConstatWithDetails) = TenantSearchFragment(constat)
     }
 
-    private val tenantViewModel: TenantSearchViewModel by viewModels {
-        val edlApplication = (activity?.application as EdlApplication)
-        TenantSearchViewModelFactory(edlApplication.tenantRepository, edlApplication.constatRepository)
-    }
+    private val tenantViewModel: TenantSearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
