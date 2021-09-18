@@ -10,3 +10,31 @@ val ARGS_TAB_POSITION = "tabPosition"
 val ARGS_CONSTAT_ID = "constatId"
 val ARGS_CONSTAT = "constat"
 val ARGS_ALREADY_ADDED = "alreadyAdded"
+
+val ROOMS_LABELS = arrayOf(
+    "ACCES / ENTREE",
+    "DEGAGEMENT",
+    "CUISINE",
+    "SEJOUR",
+    "CHAMBRE",
+    "SALLE DE BAINS",
+    "WC",
+    "GARAGE",
+    "LOCAL TECHNIQUE",
+    "CHAUFFERIE",
+    "CELLIER",
+    "BUANDERIE",
+    "GRENIER",
+    "CAVE",
+    "EXTERIEURS",
+    "POOL HOUSE",
+    "DRESSING",
+    "MEZZANINE",
+    "CABANON",
+    "MONTEE ESCALIER",
+    "LOCAL COMMERCIAL - FACADES ET EXTERIEURS",
+    "LOCAL COMMERCIAL - ACCUEIL",
+    "LOCAL COMMERCIAL - PIECE",
+    "LOCAL COMMERCIAL - CUISINE",
+    "LOCAL COMMERCIAL - SANITAIRES"
+)

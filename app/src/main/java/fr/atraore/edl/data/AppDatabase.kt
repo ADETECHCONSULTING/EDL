@@ -10,10 +10,12 @@ import fr.atraore.edl.data.dao.*
 import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.crossRef.*
 import fr.atraore.edl.utils.DateTypeConverter
+import fr.atraore.edl.utils.ROOMS_LABELS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.sql.Date
 import java.util.*
+import kotlin.collections.ArrayList
 
 const val DATABASE_NAME = "edlDb"
 
@@ -37,6 +39,7 @@ const val DATABASE_NAME = "edlDb"
 @TypeConverters(DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
+    //Daos
     abstract fun getConstatDao(): ConstatDao
     abstract fun getPropertyDao(): PropertyDao
     abstract fun getAgencyDao(): AgencyDao
@@ -44,6 +47,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getTenantDao(): TenantDao
     abstract fun getUserDao(): UserDao
     abstract fun getOwnerDao(): OwnerDao
+    abstract fun getRoomReference(): RoomReferenceDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
@@ -83,7 +87,8 @@ abstract class AppDatabase : RoomDatabase() {
                         database.getTenantDao(),
                         database.getOwnerDao(),
                         database.getUserDao(),
-                        database.getContractorDao()
+                        database.getContractorDao(),
+                        database.getRoomReference()
                     )
                 }
             }
@@ -99,14 +104,38 @@ abstract class AppDatabase : RoomDatabase() {
             tenantDao: TenantDao,
             ownerDao: OwnerDao,
             userDao: UserDao,
-            contractorDao: ContractorDao
+            contractorDao: ContractorDao,
+            roomReferenceDao: RoomReferenceDao
         ) {
             // Delete all content
             constatDao.deleteAll()
 
+            toDeleteForProd(constatDao, propertyDao, agencyDao, tenantDao, ownerDao, userDao, contractorDao)
+            createRoomsReference(roomReferenceDao)
+
+        }
+
+        suspend fun createRoomsReference(roomReferenceDao: RoomReferenceDao) {
+            ROOMS_LABELS.forEach {
+                val roomReference = RoomReference(UUID.randomUUID().toString(), it)
+                if (it == "ACCES / ENTREE") {
+                    roomReference.mandatory = true;
+                }
+                roomReferenceDao.save(roomReference)
+            }
+        }
+
+        suspend fun toDeleteForProd(
+            constatDao: ConstatDao,
+            propertyDao: PropertyDao,
+            agencyDao: AgencyDao,
+            tenantDao: TenantDao,
+            ownerDao: OwnerDao,
+            userDao: UserDao,
+            contractorDao: ContractorDao) {
 
             //Add Sample Constat
-            var constat = Constat(
+            val constat = Constat(
                 constatId = UUID.randomUUID().toString(),
                 typeConstat = "E",
                 dateCreation = Date(1607686070062),
