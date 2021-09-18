@@ -25,6 +25,10 @@ class UserSearchFragment(private val constat: ConstatWithDetails) : BaseFragment
         fun newInstance(constat: ConstatWithDetails) = UserSearchFragment(constat)
     }
 
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
     private val userSearchViewModel: UserSearchViewModel by viewModels()
 
     override fun onCreateView(

@@ -37,6 +37,10 @@ class AddPropertyFragment : BaseFragment<Property>(), View.OnClickListener, Coro
         fun newInstance() = AddPropertyFragment()
     }
 
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

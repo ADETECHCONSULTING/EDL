@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.*
-import fr.atraore.edl.ui.edl.start.StartConstatViewModel
+import fr.atraore.edl.ui.edl.first_page.StartConstatViewModel
 
 class PrimaryInfoNoDataBindAdapter(private val dataSet: List<PrimaryInfo>, private val startConstatViewModel: StartConstatViewModel) : RecyclerView.Adapter<PrimaryInfoNoDataBindAdapter.ViewHolder>() {
     private val TAG: String? = PrimaryInfoNoDataBindAdapter::class.simpleName

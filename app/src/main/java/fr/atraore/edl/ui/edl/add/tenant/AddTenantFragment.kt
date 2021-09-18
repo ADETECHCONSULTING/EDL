@@ -31,6 +31,10 @@ class AddTenantFragment : BaseFragment<Tenant>(), View.OnClickListener, Coroutin
         fun newInstance() = AddTenantFragment()
     }
 
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

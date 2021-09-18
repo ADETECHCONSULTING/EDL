@@ -1,4 +1,4 @@
-package fr.atraore.edl.ui.edl.start
+package fr.atraore.edl.ui.edl.first_page
 
 import androidx.lifecycle.*
 import dagger.assisted.Assisted

@@ -30,6 +30,10 @@ class AddContractorFragment : BaseFragment<Contractor>(), View.OnClickListener, 
         fun newInstance() = AddContractorFragment()
     }
 
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
     private lateinit var viewModel: AddContractorViewModel
 
     override fun onCreateView(

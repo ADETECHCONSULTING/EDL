@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/startConstatFragment"
-        android:name="fr.atraore.edl.ui.edl.start.StartConstatFragment"
+        android:name="fr.atraore.edl.ui.edl.first_page.StartConstatFragment"
         android:label="start_constat_fragment"
         tools:layout="@layout/start_constat_fragment" >
         <action

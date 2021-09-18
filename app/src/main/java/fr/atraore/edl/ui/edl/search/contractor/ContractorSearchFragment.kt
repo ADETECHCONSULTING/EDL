@@ -26,6 +26,10 @@ class ContractorSearchFragment(private val constat: ConstatWithDetails) : BaseFr
         fun newInstance(constat: ConstatWithDetails) = ContractorSearchFragment(constat)
     }
 
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
     private val contractorViewModel: ContractorSearchViewModel by viewModels()
 
     override fun onCreateView(

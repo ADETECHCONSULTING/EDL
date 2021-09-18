@@ -27,6 +27,10 @@ class PropertySearchFragment(private val constat: ConstatWithDetails) : BaseFrag
         fun newInstance(constat: ConstatWithDetails) = PropertySearchFragment(constat)
     }
 
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
     private val propertySearchViewModel: PropertySearchViewModel by viewModels()
 
     override fun onCreateView(

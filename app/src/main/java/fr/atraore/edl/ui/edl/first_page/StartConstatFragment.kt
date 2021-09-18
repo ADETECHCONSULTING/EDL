@@ -1,4 +1,4 @@
-package fr.atraore.edl.ui.edl.start
+package fr.atraore.edl.ui.edl.first_page
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,18 +10,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
+import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.ui.hideKeyboard
 import fr.atraore.edl.utils.*
@@ -29,10 +29,17 @@ import kotlinx.android.synthetic.main.start_constat_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class StartConstatFragment : Fragment(), View.OnClickListener, LifecycleObserver {
+class StartConstatFragment() : BaseFragment<Constat>(), View.OnClickListener, LifecycleObserver {
+
+    override val title: String
+        get() = "Début de la mission"
 
     companion object {
         fun newInstance() = StartConstatFragment()
+    }
+
+    override fun goNext() {
+        TODO("Not yet implemented")
     }
 
     @Inject lateinit var startConstatViewModelFactory: StartConstatViewModel.AssistedStartFactory

@@ -27,6 +27,10 @@ class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragme
         fun newInstance(constat: ConstatWithDetails) = AgencySearchFragment(constat)
     }
 
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
     private val agencyViewModel: AgencySearchViewModel by viewModels()
 
 

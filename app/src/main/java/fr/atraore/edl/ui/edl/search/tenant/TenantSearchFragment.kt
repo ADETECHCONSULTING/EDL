@@ -26,6 +26,10 @@ class TenantSearchFragment(private val constat: ConstatWithDetails) : BaseFragme
         fun newInstance(constat: ConstatWithDetails) = TenantSearchFragment(constat)
     }
 
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
     private val tenantViewModel: TenantSearchViewModel by viewModels()
 
     override fun onCreateView(

@@ -26,6 +26,10 @@ class OwnerSearchFragment(private val constat: ConstatWithDetails) : BaseFragmen
         fun newInstance(constat: ConstatWithDetails) = OwnerSearchFragment(constat)
     }
 
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
     private val ownerSearchViewModel: OwnerSearchViewModel by viewModels()
 
     override fun onCreateView(

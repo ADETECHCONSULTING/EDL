@@ -38,6 +38,10 @@ class AddOwnerFragment : BaseFragment<Owner>(), View.OnClickListener, CoroutineS
         fun newInstance() = AddOwnerFragment()
     }
 
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

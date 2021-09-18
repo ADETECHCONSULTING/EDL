@@ -28,12 +28,14 @@ const val DATABASE_NAME = "edlDb"
         ConstatContractorCrossRef::class,
         ConstatAgencyCrossRef::class,
         ConstatUsersCrossRef::class,
+        ConstatRoomCrossRef::class,
         Owner::class,
         Property::class,
         Tenant::class,
         Contractor::class,
         Agency::class,
-        Users::class
+        Users::class,
+        RoomReference::class
     ], version = 1, exportSchema = false
 )
 @TypeConverters(DateTypeConverter::class)

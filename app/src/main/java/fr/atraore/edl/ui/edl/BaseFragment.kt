@@ -1,6 +1,7 @@
 package fr.atraore.edl.ui.edl
 
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.data.models.*
@@ -10,11 +11,13 @@ import fr.atraore.edl.repository.PropertyRepository
 import fr.atraore.edl.repository.TenantRepository
 
 abstract class BaseFragment<T> : Fragment() {
+
     abstract val title: String
     lateinit var tenantRepository: TenantRepository
     lateinit var propertyRepository: PropertyRepository
     lateinit var ownerRepository: OwnerRepository
     lateinit var contractorRepository: ContractorRepository
+
     /**
      * Sauvegarde dans le bon repository
      * https://stackoverflow.com/a/53589293
@@ -37,6 +40,12 @@ abstract class BaseFragment<T> : Fragment() {
             }
             else -> println("Type not recognized")
         }
+    }
+
+    abstract fun goNext()
+
+    fun goBack() {
+        findNavController().popBackStack()
     }
 
 }

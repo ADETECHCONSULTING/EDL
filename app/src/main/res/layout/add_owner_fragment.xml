@@ -16,6 +16,7 @@
         android:background="@drawable/spinner_background"
         android:entries="@array/civilites"
         android:padding="2dp"
+        android:minHeight="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -36,6 +37,7 @@
         android:background="@drawable/spinner_background"
         android:hint="@string/mandatory"
         android:padding="@dimen/padding_small"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@id/guideline_middle"
         app:layout_constraintStart_toStartOf="@id/spn_civilite"
         app:layout_constraintTop_toBottomOf="@id/txv_name" />
@@ -57,6 +59,7 @@
         android:background="@drawable/spinner_background"
         android:hint="@string/mandatory"
         android:padding="@dimen/padding_small"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@id/guideline_middle"
         app:layout_constraintStart_toStartOf="@id/spn_civilite"
         app:layout_constraintTop_toBottomOf="@id/txv_adresse" />
@@ -78,6 +81,7 @@
         android:background="@drawable/spinner_background"
         android:hint="@string/optional"
         android:padding="@dimen/padding_small"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@id/guideline_middle"
         app:layout_constraintStart_toStartOf="@id/spn_civilite"
         app:layout_constraintTop_toBottomOf="@id/txv_adresse2" />
@@ -100,6 +104,7 @@
         android:hint="@string/mandatory"
         android:inputType="textPostalAddress"
         android:padding="@dimen/padding_small"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@id/guideline_first_quarter"
         app:layout_constraintStart_toStartOf="@id/spn_civilite"
         app:layout_constraintTop_toBottomOf="@id/txv_postal_code" />
@@ -110,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small"
-        android:text="Ville"
+        android:text="@string/city"
         app:layout_constraintStart_toStartOf="@id/edt_city"
         app:layout_constraintTop_toBottomOf="@id/edt_address2" />
 
@@ -122,6 +127,7 @@
         android:background="@drawable/spinner_background"
         android:hint="@string/mandatory"
         android:padding="@dimen/padding_small"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@id/guideline_middle"
         app:layout_constraintStart_toEndOf="@id/edt_postal_code"
         app:layout_constraintTop_toBottomOf="@id/txv_postal_code" />
@@ -144,6 +150,7 @@
         android:hint="@string/optional"
         android:inputType="textPostalAddress"
         android:padding="@dimen/padding_small"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@id/guideline_first_quarter"
         app:layout_constraintStart_toStartOf="@id/spn_civilite"
         app:layout_constraintTop_toBottomOf="@id/txv_postal_code2" />
@@ -166,6 +173,7 @@
         android:background="@drawable/spinner_background"
         android:hint="@string/optional"
         android:padding="@dimen/padding_small"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@id/guideline_middle"
         app:layout_constraintStart_toEndOf="@id/edt_postal_code"
         app:layout_constraintTop_toBottomOf="@id/txv_city2" />
@@ -189,6 +197,7 @@
         android:hint="@string/mandatory"
         android:inputType="phone"
         android:padding="@dimen/padding_small"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@id/guideline_last_quarter"
         app:layout_constraintStart_toStartOf="@id/txv_tel"
         app:layout_constraintTop_toBottomOf="@id/txv_tel" />
@@ -211,6 +220,7 @@
         android:background="@drawable/spinner_background"
         android:hint="@string/optional"
         android:inputType="phone"
+        android:minHeight="48dp"
         android:padding="@dimen/padding_small"
         app:layout_constraintEnd_toEndOf="@id/guideline_last_quarter"
         app:layout_constraintStart_toStartOf="@id/txv_tel"
@@ -236,6 +246,7 @@
         android:hint="@string/optional"
         android:inputType="textEmailAddress"
         android:padding="@dimen/padding_small"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/txv_tel"
         app:layout_constraintTop_toBottomOf="@id/txv_mail" />
@@ -261,6 +272,7 @@
         android:inputType="textMultiLine"
         android:lines="4"
         android:padding="@dimen/padding_small"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/txv_tel"

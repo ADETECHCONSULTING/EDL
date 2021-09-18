@@ -6,7 +6,7 @@
     <data>
         <variable
             name="constatViewModel"
-            type="fr.atraore.edl.ui.edl.start.StartConstatViewModel" />
+            type="fr.atraore.edl.ui.edl.first_page.StartConstatViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/gradient_bg"
-        tools:context=".ui.edl.start.StartConstatFragment">
+        tools:context=".ui.edl.first_page.StartConstatFragment">
 
         <LinearLayout
             android:id="@+id/ctn_header"
