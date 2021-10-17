@@ -10,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import fr.atraore.edl.data.AppDatabase
 import fr.atraore.edl.data.DATABASE_NAME
 import fr.atraore.edl.data.dao.*
+import fr.atraore.edl.repository.PropertyRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)

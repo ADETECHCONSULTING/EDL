@@ -14,13 +14,14 @@ import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.Tenant
 import fr.atraore.edl.ui.adapter.TenantAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.utils.TENANT_LABEL
 import kotlinx.android.synthetic.main.tenant_search_fragment.*
 
 @AndroidEntryPoint
-class TenantSearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Tenant>() {
+class TenantSearchFragment(private val constat: ConstatWithDetails) : BaseFragment(TENANT_LABEL) {
 
     override val title: String
-        get() = "Locataire"
+        get() = TENANT_LABEL
 
     companion object {
         fun newInstance(constat: ConstatWithDetails) = TenantSearchFragment(constat)

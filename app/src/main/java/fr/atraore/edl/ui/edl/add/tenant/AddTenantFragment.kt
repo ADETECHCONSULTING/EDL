@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Tenant
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.utils.TENANT_LABEL
 import kotlinx.android.synthetic.main.add_tenant_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,14 +19,14 @@ import java.sql.Date
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class AddTenantFragment : BaseFragment<Tenant>(), View.OnClickListener, CoroutineScope {
+class AddTenantFragment : BaseFragment(TENANT_LABEL), View.OnClickListener, CoroutineScope {
     private val TAG = AddTenantFragment::class.simpleName
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
     override val title: String
-        get() = "Locataires"
+        get() = TENANT_LABEL
 
     companion object {
         fun newInstance() = AddTenantFragment()

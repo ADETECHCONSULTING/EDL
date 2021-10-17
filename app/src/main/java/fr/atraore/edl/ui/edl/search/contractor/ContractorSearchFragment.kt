@@ -14,13 +14,14 @@ import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.Contractor
 import fr.atraore.edl.ui.adapter.ContractorAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.utils.CONTRACTOR_LABEL
 import kotlinx.android.synthetic.main.contractor_search_fragment.*
 
 @AndroidEntryPoint
-class ContractorSearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Contractor>() {
+class ContractorSearchFragment(private val constat: ConstatWithDetails) : BaseFragment(CONTRACTOR_LABEL) {
 
     override val title: String
-        get() = "Mandataires"
+        get() = CONTRACTOR_LABEL
 
     companion object {
         fun newInstance(constat: ConstatWithDetails) = ContractorSearchFragment(constat)

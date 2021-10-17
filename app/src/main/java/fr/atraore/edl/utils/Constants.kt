@@ -11,6 +11,13 @@ val ARGS_CONSTAT_ID = "constatId"
 val ARGS_CONSTAT = "constat"
 val ARGS_ALREADY_ADDED = "alreadyAdded"
 
+val PROPERTY_LABEL = "Biens"
+val OWNER_LABEL = "Propriétaires"
+val CONTRACTOR_LABEL = "Mandataires"
+val TENANT_LABEL = "Locataires"
+val AGENCY_LABEL = "Agences"
+val USER_LABEL = "Utilisateurs"
+
 val ROOMS_LABELS = arrayOf(
     "ACCES / ENTREE",
     "DEGAGEMENT",

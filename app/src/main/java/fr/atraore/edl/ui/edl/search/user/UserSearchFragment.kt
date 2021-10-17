@@ -13,13 +13,14 @@ import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.Users
 import fr.atraore.edl.ui.adapter.UserAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.utils.USER_LABEL
 import kotlinx.android.synthetic.main.user_search_fragment.*
 
 @AndroidEntryPoint
-class UserSearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Users>() {
+class UserSearchFragment(private val constat: ConstatWithDetails) : BaseFragment(USER_LABEL) {
 
     override val title: String
-        get() = "Utilisateurs"
+        get() = USER_LABEL
 
     companion object {
         fun newInstance(constat: ConstatWithDetails) = UserSearchFragment(constat)

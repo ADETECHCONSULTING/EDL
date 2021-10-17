@@ -11,6 +11,7 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Owner
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.add.property.AddPropertyFragment
+import fr.atraore.edl.utils.OWNER_LABEL
 import kotlinx.android.synthetic.main.add_owner_fragment.*
 import kotlinx.android.synthetic.main.add_owner_fragment.btn_cancel
 import kotlinx.android.synthetic.main.add_owner_fragment.btn_create
@@ -25,14 +26,14 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class AddOwnerFragment : BaseFragment<Owner>(), View.OnClickListener, CoroutineScope {
+class AddOwnerFragment : BaseFragment(OWNER_LABEL), View.OnClickListener, CoroutineScope {
     private val TAG = AddOwnerFragment::class.simpleName
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
     override val title: String
-        get() = "Propriétaires"
+        get() = OWNER_LABEL
 
     companion object {
         fun newInstance() = AddOwnerFragment()

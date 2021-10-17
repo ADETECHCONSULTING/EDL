@@ -15,13 +15,14 @@ import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.ui.MainViewModel
 import fr.atraore.edl.ui.adapter.AgencyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.utils.AGENCY_LABEL
 import kotlinx.android.synthetic.main.agency_search_fragment.*
 
 @AndroidEntryPoint
-class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Agency>() {
+class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragment(AGENCY_LABEL) {
 
     override val title: String
-        get() = "Agences"
+        get() = AGENCY_LABEL
 
     companion object {
         fun newInstance(constat: ConstatWithDetails) = AgencySearchFragment(constat)

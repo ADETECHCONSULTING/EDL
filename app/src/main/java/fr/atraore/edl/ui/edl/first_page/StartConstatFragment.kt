@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.start_constat_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class StartConstatFragment() : BaseFragment<Constat>(), View.OnClickListener, LifecycleObserver {
+class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, LifecycleObserver {
 
     override val title: String
         get() = "Début de la mission"

@@ -15,13 +15,14 @@ import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.data.models.Property
 import fr.atraore.edl.ui.adapter.PropertyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.utils.PROPERTY_LABEL
 import kotlinx.android.synthetic.main.property_search_fragment.*
 
 @AndroidEntryPoint
-class PropertySearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Property>() {
+class PropertySearchFragment(private val constat: ConstatWithDetails) : BaseFragment(PROPERTY_LABEL) {
 
     override val title: String
-        get() = "Biens"
+        get() = PROPERTY_LABEL
 
     companion object {
         fun newInstance(constat: ConstatWithDetails) = PropertySearchFragment(constat)

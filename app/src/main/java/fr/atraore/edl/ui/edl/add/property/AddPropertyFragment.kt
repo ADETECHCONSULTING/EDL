@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Property
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.utils.PROPERTY_LABEL
 import kotlinx.android.synthetic.main.add_property_fragment.*
 import kotlinx.android.synthetic.main.add_property_fragment.btn_cancel
 import kotlinx.android.synthetic.main.add_property_fragment.btn_create
@@ -24,14 +25,14 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class AddPropertyFragment : BaseFragment<Property>(), View.OnClickListener, CoroutineScope {
+class AddPropertyFragment : BaseFragment(PROPERTY_LABEL), View.OnClickListener, CoroutineScope {
     private val TAG = AddPropertyFragment::class.simpleName
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
     override val title: String
-        get() = "Biens"
+        get() = PROPERTY_LABEL
 
     companion object {
         fun newInstance() = AddPropertyFragment()

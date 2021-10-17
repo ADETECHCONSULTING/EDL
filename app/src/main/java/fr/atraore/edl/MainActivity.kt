@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), PhotoPickerFragment.Callback {
 
     private fun goToFragment(actionNext: Boolean) {
         val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-        if (fragment is BaseFragment<*>) {
+        if (fragment is BaseFragment) {
             if (actionNext) {
                 fragment.goNext()
             } else {

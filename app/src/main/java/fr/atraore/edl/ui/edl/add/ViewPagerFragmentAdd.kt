@@ -40,7 +40,7 @@ class ViewPagerFragmentAdd : Fragment() {
         view.viewPager.adapter = adapter
 
         TabLayoutMediator(view.tab_layout, view.viewPager) { tab, position ->
-            tab.text = (fragmentList[position] as BaseFragment<*>).title
+            tab.text = (fragmentList[position] as BaseFragment).title
         }.attach()
 
         view.viewPager.setCurrentItem(arguments?.getInt(ARGS_TAB_POSITION) ?: 0, true)

@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Contractor
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.utils.CONTRACTOR_LABEL
+import fr.atraore.edl.utils.OWNER_LABEL
 import kotlinx.android.synthetic.main.add_contractor_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,14 +19,14 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class AddContractorFragment : BaseFragment<Contractor>(), View.OnClickListener, CoroutineScope {
+class AddContractorFragment : BaseFragment(CONTRACTOR_LABEL), View.OnClickListener, CoroutineScope {
     private val TAG = AddContractorFragment::class.simpleName
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
     override val title: String
-        get() = "Mandataires"
+        get() = CONTRACTOR_LABEL
 
     companion object {
         fun newInstance() = AddContractorFragment()

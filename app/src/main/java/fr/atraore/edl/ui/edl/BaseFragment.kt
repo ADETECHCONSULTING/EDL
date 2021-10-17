@@ -1,6 +1,7 @@
 package fr.atraore.edl.ui.edl
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.EdlApplication
@@ -9,14 +10,21 @@ import fr.atraore.edl.repository.ContractorRepository
 import fr.atraore.edl.repository.OwnerRepository
 import fr.atraore.edl.repository.PropertyRepository
 import fr.atraore.edl.repository.TenantRepository
+import fr.atraore.edl.ui.MainViewModel
+import fr.atraore.edl.ui.edl.add.property.AddPropertyViewModel
+import fr.atraore.edl.ui.edl.first_page.StartConstatViewModel
+import fr.atraore.edl.utils.ARGS_CONSTAT_ID
+import fr.atraore.edl.utils.assistedViewModel
+import java.util.*
+import javax.inject.Inject
+import kotlin.reflect.KClass
 
-abstract class BaseFragment<T> : Fragment() {
+@AndroidEntryPoint
+abstract class BaseFragment(val classType: String) : Fragment() {
 
     abstract val title: String
-    lateinit var tenantRepository: TenantRepository
-    lateinit var propertyRepository: PropertyRepository
-    lateinit var ownerRepository: OwnerRepository
-    lateinit var contractorRepository: ContractorRepository
+
+    private val mainViewModel: MainViewModel by viewModels()
 
     /**
      * Sauvegarde dans le bon repository
@@ -26,17 +34,17 @@ abstract class BaseFragment<T> : Fragment() {
 
         when (obj::class) {
             Tenant::class -> {
-                tenantRepository.save(obj as Tenant)
+                mainViewModel.tenantRepository.save(obj as Tenant)
             }
             Property::class -> {
                 val property: Property = obj as Property
-                propertyRepository.save(property)
+                mainViewModel.propertyRepository.save(property)
             }
             Owner::class -> {
-                ownerRepository.save(obj as Owner)
+                mainViewModel.ownerRepository.save(obj as Owner)
             }
             Contractor::class -> {
-                contractorRepository.save(obj as Contractor)
+                mainViewModel.contractorRepository.save(obj as Contractor)
             }
             else -> println("Type not recognized")
         }
