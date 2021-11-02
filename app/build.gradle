@@ -23,7 +23,7 @@ android {
     defaultConfig {
         applicationId "fr.atraore.edl"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -84,6 +84,8 @@ dependencies {
     //hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    //two pane layout
+    implementation "androidx.slidingpanelayout:slidingpanelayout:1.2.0-beta01"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
