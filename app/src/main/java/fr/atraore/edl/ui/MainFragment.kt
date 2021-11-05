@@ -2,6 +2,7 @@ package fr.atraore.edl.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
@@ -37,6 +38,16 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_next)?.isVisible = false
+        menu.findItem(R.id.action_previous)?.isVisible = false
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = ConstatAdapter()
@@ -52,21 +63,13 @@ class MainFragment : Fragment() {
 
     fun initListeners() {
         btn_entrant.setOnClickListener {
-            val constat = Constat(
-                constatId = UUID.randomUUID().toString(),
-                typeConstat = "E",
-                dateCreation = Date(System.currentTimeMillis()),
-                state = 0
-            )
-            mainViewModel.saveConstat(constat)
-            val bundle = bundleOf(ARGS_CONSTAT_ID to constat.constatId)
-            findNavController().navigate(R.id.go_to_start, bundle)
+            goToConstat("E")
         }
         btn_pre_etat.setOnClickListener {
-            findNavController().navigate(R.id.go_to_start)
+            goToConstat("P")
         }
         btn_sortant.setOnClickListener {
-            findNavController().navigate(R.id.go_to_start)
+            goToConstat("S")
         }
 
         if (BuildConfig.DEBUG) {
@@ -75,6 +78,18 @@ class MainFragment : Fragment() {
                 openPicker()
             }
         }
+    }
+
+    fun goToConstat(typeConstat: String) {
+        val constat = Constat(
+            constatId = UUID.randomUUID().toString(),
+            typeConstat = typeConstat,
+            dateCreation = Date(System.currentTimeMillis()),
+            state = 0
+        )
+        mainViewModel.saveConstat(constat)
+        val bundle = bundleOf(ARGS_CONSTAT_ID to constat.constatId)
+        findNavController().navigate(R.id.go_to_start, bundle)
     }
 
     private fun openPicker() {

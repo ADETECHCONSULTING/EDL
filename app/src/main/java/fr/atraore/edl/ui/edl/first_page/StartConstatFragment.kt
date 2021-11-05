@@ -1,6 +1,8 @@
 package fr.atraore.edl.ui.edl.first_page
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +18,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
+import fr.atraore.edl.ui.adapter.ContractorAdapter
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
@@ -29,7 +33,8 @@ import kotlinx.android.synthetic.main.start_constat_fragment.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, LifecycleObserver {
+class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, LifecycleObserver, MainActivity.OnNavigationFragment {
+    private val TAG = StartConstatFragment::class.simpleName
 
     override val title: String
         get() = "Début de la mission"
@@ -38,8 +43,22 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         fun newInstance() = StartConstatFragment()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context as MainActivity).mNavigationFragment = this
+    }
+
+    override fun navigateFragment(actionNext: Boolean) {
+        if (actionNext) {
+            goNext()
+        } else {
+            goBack()
+        }
+    }
+
     override fun goNext() {
-        TODO("Not yet implemented")
+        Log.d(TAG, "goNext: declenché")
+        findNavController().navigate(R.id.go_to_end)
     }
 
     @Inject lateinit var startConstatViewModelFactory: StartConstatViewModel.AssistedStartFactory

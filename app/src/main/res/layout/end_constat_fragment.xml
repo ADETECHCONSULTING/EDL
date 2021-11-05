@@ -1,20 +1,30 @@
 <!-- two_pane.xml -->
-<androidx.slidingpanelayout.widget.SlidingPaneLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.slidingpanelayout.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sliding_pane_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_pane"
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"/>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/detail_container"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
-        android:name="fr.atraore.edl.ui.edl.second_page.DetailEndConstatFragment" />
+        android:layout_gravity="start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline_slide_pane"/>
+
+    <fragment
+        android:id="@+id/detail_container"
+        android:name="fr.atraore.edl.ui.edl.second_page.DetailEndConstatFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline_slide_pane"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_slide_pane"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
 </androidx.slidingpanelayout.widget.SlidingPaneLayout>

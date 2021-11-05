@@ -74,6 +74,9 @@ class PrimaryInfoNoDataBindAdapter(private val dataSet: List<PrimaryInfo>, priva
     fun saveContent() {
         Log.d(TAG, "sauvegarde de l'entity")
         //type erasure m'empeche de checker toute la liste donc je check que la premire valeur
+        if (dataSet.isEmpty())
+            return
+
         when (dataSet.first()) {
             is Tenant -> {
                 //checked cast juste avant sur la premiere valeur

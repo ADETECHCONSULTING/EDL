@@ -1,10 +1,13 @@
 package fr.atraore.edl.ui.edl
 
+import android.os.Bundle
+import android.view.Menu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.EdlApplication
+import fr.atraore.edl.R
 import fr.atraore.edl.data.models.*
 import fr.atraore.edl.repository.ContractorRepository
 import fr.atraore.edl.repository.OwnerRepository
@@ -25,6 +28,16 @@ abstract class BaseFragment(val classType: String) : Fragment() {
     abstract val title: String
 
     private val mainViewModel: MainViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_next)?.isVisible = true
+        menu.findItem(R.id.action_previous)?.isVisible = true
+    }
 
     /**
      * Sauvegarde dans le bon repository

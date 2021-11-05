@@ -45,3 +45,29 @@ val ROOMS_LABELS = arrayOf(
     "LOCAL COMMERCIAL - CUISINE",
     "LOCAL COMMERCIAL - SANITAIRES"
 )
+
+val ELEMENTS_LABELS = arrayOf(
+    "Murs",
+    "Plafond",
+    "Plinthes",
+    "Sol",
+    "Compteur d'électricité HC",
+    "Compteur d'électricité",
+    "Compteur d'électricité HP",
+    "Compteur eau chaude",
+    "Compteur eau froide",
+    "Compteur gaz",
+    "Compteur eau",
+    "Porte palière"
+)
+
+val LOTS_LABELS = arrayOf(
+    "Batis",
+    "Ouvrants",
+    "Electricite",
+    "Plomberie",
+    "Chauffage/Climatisation",
+    "Electromenager",
+    "Rangements/Mobilier",
+    "Meublé"
+)

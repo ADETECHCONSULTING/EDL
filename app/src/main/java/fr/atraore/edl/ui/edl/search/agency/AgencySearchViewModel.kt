@@ -25,3 +25,7 @@ class AgencySearchViewModel @Inject constructor(
         constatRepository.saveConstatAgencyCrossRef(constat.constatId, agency.agencyId)
     }
 }
+
+
+open class Fruit(val name: String = "Fruit")
+class Apple: Fruit("")

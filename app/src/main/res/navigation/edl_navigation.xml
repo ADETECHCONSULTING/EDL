@@ -58,7 +58,7 @@
 
     <fragment
         android:id="@+id/doubleFragmentEndConstat"
-        android:name="fr.atraore.edl.ui.edl.add.ViewPagerFragmentAdd"
+        android:name="fr.atraore.edl.ui.edl.second_page.EndConstatFragment"
         android:label="fragment_view_end_constat"
         tools:layout="@layout/end_constat_fragment" />
 </navigation>
