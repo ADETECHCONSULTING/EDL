@@ -17,6 +17,7 @@ val CONTRACTOR_LABEL = "Mandataires"
 val TENANT_LABEL = "Locataires"
 val AGENCY_LABEL = "Agences"
 val USER_LABEL = "Utilisateurs"
+val SUITE_CONSTAT_LABEL = "Suite du constat"
 
 val ROOMS_LABELS = arrayOf(
     "ACCES / ENTREE",

@@ -51,6 +51,18 @@ data class ConstatWithDetails(
         associateBy = Junction(ConstatRoomCrossRef::class)
     )
     val rooms: MutableList<RoomReference>,
+    @Relation(
+        parentColumn = "constatId",
+        entityColumn = "lotReferenceId",
+        associateBy = Junction(ConstatLotCrossRef::class)
+    )
+    val lots: MutableList<LotReference>,
+    @Relation(
+        parentColumn = "constatId",
+        entityColumn = "elementReferenceId",
+        associateBy = Junction(ConstatElementCrossRef::class)
+    )
+    val elements: MutableList<ElementReference>,
 ) : Serializable {
     @Ignore
     fun getOwnersConcatenate(withPrefix: Boolean): String {
