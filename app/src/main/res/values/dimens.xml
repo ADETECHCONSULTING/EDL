@@ -4,6 +4,7 @@
     <dimen name="height_header">35dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="txt_size_small">16sp</dimen>
     <dimen name="textSizeSmall">14sp</dimen>

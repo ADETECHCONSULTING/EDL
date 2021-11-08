@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/startConstatFragment"
-        android:name="fr.atraore.edl.ui.edl.first_page.StartConstatFragment"
+        android:name="fr.atraore.edl.ui.edl.constat.first_page.StartConstatFragment"
         android:label="start_constat_fragment"
         tools:layout="@layout/start_constat_fragment" >
         <action
@@ -58,7 +58,7 @@
 
     <fragment
         android:id="@+id/doubleFragmentEndConstat"
-        android:name="fr.atraore.edl.ui.edl.second_page.EndConstatFragment"
+        android:name="fr.atraore.edl.ui.edl.constat.second_page.EndConstatFragment"
         android:label="fragment_view_end_constat"
         tools:layout="@layout/end_constat_fragment" />
 </navigation>

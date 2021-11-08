@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.edl.second_page.DetailEndConstatFragment" >
+    tools:context=".ui.edl.constat.second_page.DetailEndConstatFragment" >
 
     <Button
         android:id="@+id/btn_absent"

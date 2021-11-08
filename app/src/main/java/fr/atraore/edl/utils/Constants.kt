@@ -52,14 +52,13 @@ val ELEMENTS_LABELS = arrayOf(
     "Plafond",
     "Plinthes",
     "Sol",
-    "Compteur d'électricité HC",
-    "Compteur d'électricité",
-    "Compteur d'électricité HP",
-    "Compteur eau chaude",
-    "Compteur eau froide",
-    "Compteur gaz",
-    "Compteur eau",
-    "Porte palière"
+    "Compteurs",
+    "Ouvertures",
+    "Plomberie",
+    "Chauffage",
+    "Electricite",
+    "Amenagements",
+    "Electroménager",
 )
 
 val LOTS_LABELS = arrayOf(

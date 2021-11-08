@@ -1,4 +1,4 @@
-package fr.atraore.edl.ui.edl.first_page
+package fr.atraore.edl.ui.edl.constat
 
 import androidx.lifecycle.*
 import dagger.assisted.Assisted
@@ -10,25 +10,30 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class StartConstatViewModel @AssistedInject constructor(
+class ConstatViewModel @AssistedInject constructor(
     val repository: ConstatRepository,
     val tenantRepository: TenantRepository,
     val ownerRepository: OwnerRepository,
     val propertyRepository: PropertyRepository,
     val contractorRepository: ContractorRepository,
+    val roomRepository: RoomRepository,
     @Assisted val constatId: String
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
+    val firstRoomReference: LiveData<RoomReference> = roomRepository.firstRoomReference().asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
     val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
 
     @AssistedFactory
     interface AssistedStartFactory {
-        fun create(itemId: String): StartConstatViewModel
+        fun create(itemId: String): ConstatViewModel
     }
 
-    //TODO Update methods
+    suspend fun saveConstatRoomCrossRef(constatId: String, roomId: String) {
+        repository.saveConstatRoomCrossRef(constatId, roomId)
+    }
+
     fun saveConstat(constat: Constat) = viewModelScope.launch {
         repository.save(constat)
     }

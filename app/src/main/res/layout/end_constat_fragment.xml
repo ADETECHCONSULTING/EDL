@@ -12,7 +12,7 @@
 
     <fragment
         android:id="@+id/fragment_detail"
-        android:name="fr.atraore.edl.ui.edl.second_page.DetailEndConstatFragment"
+        android:name="fr.atraore.edl.ui.edl.constat.second_page.DetailEndConstatFragment"
         android:layout_width="@dimen/item_width"
         android:layout_height="match_parent"
         android:layout_weight="1" />

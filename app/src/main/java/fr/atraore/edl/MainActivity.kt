@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.photo.PhotoPickerFragment
-import fr.atraore.edl.ui.edl.first_page.StartConstatFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 @AndroidEntryPoint

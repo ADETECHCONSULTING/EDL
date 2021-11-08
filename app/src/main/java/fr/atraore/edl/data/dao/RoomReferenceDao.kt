@@ -15,4 +15,6 @@ interface RoomReferenceDao : BaseDao<RoomReference> {
     @Query("SELECT * FROM $ROOM_REFERENCE_TABLE")
     fun getAllRoomReferences(): Flow<List<RoomReference>>
 
+    @Query("SELECT * FROM $ROOM_REFERENCE_TABLE LIMIT 1")
+    fun getFirstRoomReferences(): Flow<RoomReference>
 }

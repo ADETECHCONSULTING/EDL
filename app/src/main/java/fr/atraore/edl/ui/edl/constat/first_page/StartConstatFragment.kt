@@ -1,4 +1,4 @@
-package fr.atraore.edl.ui.edl.first_page
+package fr.atraore.edl.ui.edl.constat.first_page
 
 import android.content.Context
 import android.os.Bundle
@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -20,21 +19,28 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.ConstatWithDetails
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
-import fr.atraore.edl.ui.adapter.ContractorAdapter
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.ui.hideKeyboard
 import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.start_constat_fragment.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
-class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, LifecycleObserver, MainActivity.OnNavigationFragment {
+class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, LifecycleObserver,
+    MainActivity.OnNavigationFragment, CoroutineScope {
     private val TAG = StartConstatFragment::class.simpleName
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     override val title: String
         get() = "Début de la mission"
@@ -58,12 +64,14 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
 
     override fun goNext() {
         Log.d(TAG, "goNext: declenché")
-        findNavController().navigate(R.id.go_to_end)
+        val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
+        findNavController().navigate(R.id.go_to_end, bundle)
     }
 
-    @Inject lateinit var startConstatViewModelFactory: StartConstatViewModel.AssistedStartFactory
-    private val startViewModel: StartConstatViewModel by assistedViewModel {
-        startConstatViewModelFactory.create(arguments?.getString(ARGS_CONSTAT_ID)!!)
+    @Inject
+    lateinit var constatViewModelFactory: ConstatViewModel.AssistedStartFactory
+    private val viewModel: ConstatViewModel by assistedViewModel {
+        constatViewModelFactory.create(arguments?.getString(ARGS_CONSTAT_ID)!!)
     }
 
     private lateinit var binding: StartConstatFragmentBinding
@@ -73,8 +81,9 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.start_constat_fragment, container, false)
-        binding.constatViewModel = startViewModel
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.start_constat_fragment, container, false)
+        binding.constatViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
@@ -82,21 +91,36 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        startViewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
+        viewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
             constatWithDetails?.let {
                 this.constat = constatWithDetails
-                startViewModel.constatHeaderInfo.value = "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
+                viewModel.constatHeaderInfo.value =
+                    "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
                 configRecyclerViewsLinear(
                     rcv_tenant,
                     rcv_biens,
                     rcv_contractor,
                     rcv_owner,
                     constatWithDetails = it,
-                    startConstatViewModel = startViewModel
+                    constatViewModel = viewModel
                 )
-
             }
         })
+
+        viewModel.firstRoomReference.observe(
+            viewLifecycleOwner,
+            Observer { roomReference ->
+                roomReference?.let {
+                    launch {
+                        viewModel.saveConstatRoomCrossRef(
+                            arguments?.getString(
+                                ARGS_CONSTAT_ID
+                            )!!, roomReference.roomReferenceId
+                        )
+                    }
+                }
+            })
+
 
         initListener()
     }
@@ -125,20 +149,36 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
     /**
      * Configure les recyclerviews de façon lineaire
      */
-    private fun configRecyclerViewsLinear(vararg recyclerViews: RecyclerView, constatWithDetails: ConstatWithDetails, startConstatViewModel: StartConstatViewModel) {
+    private fun configRecyclerViewsLinear(
+        vararg recyclerViews: RecyclerView,
+        constatWithDetails: ConstatWithDetails,
+        constatViewModel: ConstatViewModel
+    ) {
         recyclerViews.forEach {
             when (it.id) {
                 R.id.rcv_tenant -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.tenants, startConstatViewModel)
+                    it.adapter = PrimaryInfoNoDataBindAdapter(
+                        constatWithDetails.tenants,
+                        constatViewModel
+                    )
                 }
                 R.id.rcv_owner -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.owners, startConstatViewModel)
+                    it.adapter = PrimaryInfoNoDataBindAdapter(
+                        constatWithDetails.owners,
+                        constatViewModel
+                    )
                 }
                 R.id.rcv_biens -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.properties, startConstatViewModel)
+                    it.adapter = PrimaryInfoNoDataBindAdapter(
+                        constatWithDetails.properties,
+                        constatViewModel
+                    )
                 }
                 R.id.rcv_contractor -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(constatWithDetails.contractors, startConstatViewModel)
+                    it.adapter = PrimaryInfoNoDataBindAdapter(
+                        constatWithDetails.contractors,
+                        constatViewModel
+                    )
                 }
             }
             it.layoutManager = LinearLayoutManager(context)
@@ -159,23 +199,38 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         when (v?.id) {
             //click on Item : search icon
             R.id.imv_search_owner -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_PROPRIETAIRE, ARGS_CONSTAT to this.constat)
+                val bundle = bundleOf(
+                    ARGS_TAB_POSITION to POSITION_FRAGMENT_PROPRIETAIRE,
+                    ARGS_CONSTAT to this.constat
+                )
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_bien -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_BIENS, ARGS_CONSTAT to this.constat)
+                val bundle = bundleOf(
+                    ARGS_TAB_POSITION to POSITION_FRAGMENT_BIENS,
+                    ARGS_CONSTAT to this.constat
+                )
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_locataire -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_LOCATAIRE, ARGS_CONSTAT to this.constat)
+                val bundle = bundleOf(
+                    ARGS_TAB_POSITION to POSITION_FRAGMENT_LOCATAIRE,
+                    ARGS_CONSTAT to this.constat
+                )
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_mandataire -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE, ARGS_CONSTAT to this.constat)
+                val bundle = bundleOf(
+                    ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE,
+                    ARGS_CONSTAT to this.constat
+                )
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
             R.id.imv_search_agence -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_AGENCES, ARGS_CONSTAT to this.constat)
+                val bundle = bundleOf(
+                    ARGS_TAB_POSITION to POSITION_FRAGMENT_AGENCES,
+                    ARGS_CONSTAT to this.constat
+                )
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
 
@@ -214,14 +269,18 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
             }
 
             else -> {
-                Toast.makeText(context, "Une erreur est survenue. Veuillez revenir au menu principal et réessayer", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Une erreur est survenue. Veuillez revenir au menu principal et réessayer",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
     private fun editOrSave(primaryInfoAdapter: PrimaryInfoNoDataBindAdapter) {
         if (primaryInfoAdapter.edit) {
-            if (startViewModel.constatDetail.value != null) {
+            if (viewModel.constatDetail.value != null) {
                 primaryInfoAdapter.saveContent()
                 hideKeyboard() //utilisation de l'extension pour fermer le clavier
             }
@@ -232,7 +291,8 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
 
     fun getEditableDialog(text: String) {
         //inflate the layout for the body of the dialog
-        val viewInflated = LayoutInflater.from(context).inflate(R.layout.dialog_edit, start_constat_container, false)
+        val viewInflated = LayoutInflater.from(context)
+            .inflate(R.layout.dialog_edit, start_constat_container, false)
         //set up the input
         val input = viewInflated.findViewById<EditText>(R.id.edt_rename)
         input.setText(text)
@@ -265,7 +325,8 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
             }
             "S" -> {
                 return "sortant"
-            } else -> {
+            }
+            else -> {
                 return ""
             }
         }

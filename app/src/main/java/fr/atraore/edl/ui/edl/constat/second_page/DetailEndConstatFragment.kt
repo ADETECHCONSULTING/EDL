@@ -1,4 +1,4 @@
-package fr.atraore.edl.ui.edl.second_page
+package fr.atraore.edl.ui.edl.constat.second_page
 
 import android.os.Bundle
 import android.view.LayoutInflater

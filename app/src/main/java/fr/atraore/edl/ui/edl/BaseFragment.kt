@@ -6,21 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.*
-import fr.atraore.edl.repository.ContractorRepository
-import fr.atraore.edl.repository.OwnerRepository
-import fr.atraore.edl.repository.PropertyRepository
-import fr.atraore.edl.repository.TenantRepository
 import fr.atraore.edl.ui.MainViewModel
-import fr.atraore.edl.ui.edl.add.property.AddPropertyViewModel
-import fr.atraore.edl.ui.edl.first_page.StartConstatViewModel
-import fr.atraore.edl.utils.ARGS_CONSTAT_ID
-import fr.atraore.edl.utils.assistedViewModel
-import java.util.*
-import javax.inject.Inject
-import kotlin.reflect.KClass
 
 @AndroidEntryPoint
 abstract class BaseFragment(val classType: String) : Fragment() {
