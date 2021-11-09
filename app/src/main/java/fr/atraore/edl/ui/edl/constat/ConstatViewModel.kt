@@ -6,6 +6,8 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import fr.atraore.edl.data.models.*
 import fr.atraore.edl.repository.*
+import fr.atraore.edl.utils.CombinedLiveData
+import fr.atraore.edl.utils.TripleCombinedLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -17,10 +19,14 @@ class ConstatViewModel @AssistedInject constructor(
     val propertyRepository: PropertyRepository,
     val contractorRepository: ContractorRepository,
     val roomRepository: RoomRepository,
+    val elementRepository: ElementRepository,
     @Assisted val constatId: String
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
     val firstRoomReference: LiveData<RoomReference> = roomRepository.firstRoomReference().asLiveData()
+    val allElementReference: LiveData<List<ElementReference>> = elementRepository.allElementReference().asLiveData()
+    val combinedLiveData = TripleCombinedLiveData(constatDetail, firstRoomReference, allElementReference)
+    fun getRoomWithElements(roomId: String) : LiveData<RoomWithElements> = roomRepository.getRoomDetails(roomId).asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
     val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
@@ -32,6 +38,10 @@ class ConstatViewModel @AssistedInject constructor(
 
     suspend fun saveConstatRoomCrossRef(constatId: String, roomId: String) {
         repository.saveConstatRoomCrossRef(constatId, roomId)
+    }
+
+    suspend fun saveRoomElementCrossRef(roomId: String, elementId: String, rename: String?) {
+        repository.saveRoomElementCrossRef(roomId, elementId, rename)
     }
 
     fun saveConstat(constat: Constat) = viewModelScope.launch {

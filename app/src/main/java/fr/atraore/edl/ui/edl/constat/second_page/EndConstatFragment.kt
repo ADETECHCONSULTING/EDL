@@ -83,12 +83,14 @@ MainActivity.OnNavigationFragment, CoroutineScope {
                 parentList = constatWithDetails.rooms.map { ParentItem(it) }
 
                 parentList.forEach { parentIt ->
-                    ExpandableGroup(parentIt, false).apply {
-                        constatWithDetails.elements.let { childIt ->
-                            add(Section(childIt.map { ChildItem(it) }))
+                    viewModel.getRoomWithElements(parentIt.roomParent.roomReferenceId).observe(viewLifecycleOwner, { roomWithElements ->
+                        roomWithElements?.let {
+                            ExpandableGroup(parentIt, false).apply {
+                                add(Section(it.elements.map { ChildItem(it) }))
+                                groupAdapter.add(this)
+                            }
                         }
-                        groupAdapter.add(this)
-                    }
+                    })
                 }
             }
         })

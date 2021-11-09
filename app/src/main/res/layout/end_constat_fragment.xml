@@ -1,5 +1,6 @@
 <!-- two_pane.xml -->
 <androidx.slidingpanelayout.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sliding_pane_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,7 +9,8 @@
         android:id="@+id/rcv_rooms"
         android:layout_width="@dimen/list_width"
         android:layout_height="match_parent"
-        android:layout_gravity="start" />
+        android:layout_gravity="start"
+        tools:listitem="@layout/room_list_item"/>
 
     <fragment
         android:id="@+id/fragment_detail"

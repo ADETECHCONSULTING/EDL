@@ -50,12 +50,6 @@ class ConstatRepository @Inject constructor(
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun saveConstatElementCrossRef(constatId: String, elementId: String) {
-        constatDao.saveConstatElementCrossRef(ConstatElementCrossRef(constatId, elementId))
-    }
-
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
     suspend fun saveConstatLotCrossRef(constatId: String, lotId: String) {
         constatDao.saveConstatLotCrossRef(ConstatLotCrossRef(constatId, lotId))
     }
@@ -64,6 +58,12 @@ class ConstatRepository @Inject constructor(
     @WorkerThread
     suspend fun saveConstatAgencyCrossRef(constatId: String, agencyId: String) {
         constatDao.saveConstatAgencyCrossRef(ConstatAgencyCrossRef(constatId, agencyId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveRoomElementCrossRef(roomId: String, elementId: String, rename: String?) {
+        constatDao.saveRoomElementCrossRef(RoomElementCrossRef(roomId, elementId, rename))
     }
 
     @Suppress("RedundantSuspendModifier")

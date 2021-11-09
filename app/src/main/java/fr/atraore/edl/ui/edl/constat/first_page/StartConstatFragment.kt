@@ -91,8 +91,9 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.constatDetail.observe(viewLifecycleOwner, Observer { constatWithDetails ->
-            constatWithDetails?.let {
+        viewModel.combinedLiveData.observe(viewLifecycleOwner, {
+
+            it.first?.let { constatWithDetails ->
                 this.constat = constatWithDetails
                 viewModel.constatHeaderInfo.value =
                     "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
@@ -101,26 +102,31 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                     rcv_biens,
                     rcv_contractor,
                     rcv_owner,
-                    constatWithDetails = it,
+                    constatWithDetails = constatWithDetails,
                     constatViewModel = viewModel
                 )
             }
-        })
 
-        viewModel.firstRoomReference.observe(
-            viewLifecycleOwner,
-            Observer { roomReference ->
-                roomReference?.let {
-                    launch {
-                        viewModel.saveConstatRoomCrossRef(
-                            arguments?.getString(
-                                ARGS_CONSTAT_ID
-                            )!!, roomReference.roomReferenceId
-                        )
+            it.second?.let { roomRef ->
+                launch {
+                    viewModel.saveConstatRoomCrossRef(
+                        arguments?.getString(
+                            ARGS_CONSTAT_ID
+                        )!!, roomRef.roomReferenceId
+                    )
+
+                    //set liste des elements d'une piece pour un constat
+                    it.third?.let { listElementReferences ->
+                        listElementReferences.forEach { elementRef ->
+                            launch {
+                                viewModel.saveRoomElementCrossRef(roomRef.roomReferenceId, elementRef.elementReferenceId, null)
+                            }
+                        }
                     }
                 }
-            })
+            }
 
+        })
 
         initListener()
     }

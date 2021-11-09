@@ -3,6 +3,7 @@ package fr.atraore.edl.data.dao
 import androidx.room.*
 import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.data.models.ConstatWithDetails
+import fr.atraore.edl.data.models.RoomWithElements
 import fr.atraore.edl.data.models.crossRef.*
 import fr.atraore.edl.utils.CONSTAT_TABLE
 import kotlinx.coroutines.flow.Flow
@@ -49,10 +50,13 @@ interface ConstatDao : BaseDao<Constat> {
     suspend fun saveConstatRoomCrossRef(crossRef: ConstatRoomCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveConstatElementCrossRef(crossRef: ConstatElementCrossRef)
+    suspend fun saveConstatElementCrossRef(crossRef: RoomElementCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveConstatLotCrossRef(crossRef: ConstatLotCrossRef)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveRoomElementCrossRef(crossRef: RoomElementCrossRef)
 
     //** Update **
     @Query("UPDATE ConstatAgencyCrossRef SET agencyId =:agencyId WHERE constatId =:constatId")

@@ -21,7 +21,7 @@ const val DATABASE_NAME = "edlDb"
         ConstatUsersCrossRef::class,
         ConstatRoomCrossRef::class,
         ConstatLotCrossRef::class,
-        ConstatElementCrossRef::class,
+        RoomElementCrossRef::class,
         Owner::class,
         Property::class,
         Tenant::class,
