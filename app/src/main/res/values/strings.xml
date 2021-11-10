@@ -52,6 +52,10 @@
     <string name="picker_no_camera">No camera app is installed</string>
     <string name="city">Ville</string>
     <string name="next">Suivant</string>
+    <string name="rename">Renommer</string>
+    <string name="add_room">Ajouter une pièce</string>
+    <string name="done">Valider</string>
+    <string name="title_add_rooms">Liste des pièces</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

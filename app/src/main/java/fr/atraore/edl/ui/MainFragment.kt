@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.BuildConfig
+import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.photo.PhotoPickerFragment

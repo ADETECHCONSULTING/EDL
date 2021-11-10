@@ -49,9 +49,9 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         fun newInstance() = StartConstatFragment()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (context as MainActivity).mNavigationFragment = this
+    override fun onResume() {
+        super.onResume()
+        (activity as MainActivity).mNavigationFragment = this
     }
 
     override fun navigateFragment(actionNext: Boolean) {

@@ -13,7 +13,7 @@ class RoomRepository @Inject constructor(
     private val roomReferenceDao: RoomReferenceDao
 ) : BaseRepository<RoomReference>(roomReferenceDao) {
 
-    val allRoomReferences: Flow<List<RoomReference>> = roomReferenceDao.getAllRoomReferences()
+    fun allRoomReferences(): Flow<List<RoomReference>> = roomReferenceDao.getAllRoomReferences()
 
     fun firstRoomReference() : Flow<RoomReference> = roomReferenceDao.getFirstRoomReferences()
 
