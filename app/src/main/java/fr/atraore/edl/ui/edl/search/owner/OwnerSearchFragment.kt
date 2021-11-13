@@ -8,10 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.ConstatWithDetails
-import fr.atraore.edl.data.models.Owner
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.OwnerAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.OWNER_LABEL

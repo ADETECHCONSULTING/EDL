@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Proprete(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = false) val id: String,
     val label: String,
     val section: String,
     val equipement: String

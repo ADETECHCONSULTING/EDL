@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import fr.atraore.edl.data.models.ConstatWithDetails
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.Property
 import fr.atraore.edl.databinding.PropertyItemBinding
 import fr.atraore.edl.ui.edl.search.biens.PropertySearchViewModel

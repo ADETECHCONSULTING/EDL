@@ -12,6 +12,7 @@
         tools:text="@string/address_label_2"
         android:gravity="center"
         android:background="@color/colorAccent"
+        android:textSize="@dimen/textSizeMedium"
         android:padding="@dimen/padding_medium"/>
 
 </LinearLayout>

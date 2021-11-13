@@ -57,4 +57,22 @@ abstract class BaseFragment(val classType: String) : Fragment() {
         findNavController().popBackStack()
     }
 
+
+    fun getConstatEtat(etat: String): String {
+        when (etat) {
+            "E" -> {
+                return "entrant"
+            }
+            "PE" -> {
+                return "pré-état"
+            }
+            "S" -> {
+                return "sortant"
+            }
+            else -> {
+                return ""
+            }
+        }
+    }
+
 }

@@ -56,6 +56,12 @@
     <string name="add_room">Ajouter une pièce</string>
     <string name="done">Valider</string>
     <string name="title_add_rooms">Liste des pièces</string>
+    <string name="label_intitule">Intitulé :</string>
+    <string name="label_etat">état :</string>
+    <string name="label_proprete">Propreté :</string>
+    <string name="label_descriptif">Descriptif :</string>
+    <string name="label_alterations">Altérations :</string>
+    <string name="label_note">Notes :</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

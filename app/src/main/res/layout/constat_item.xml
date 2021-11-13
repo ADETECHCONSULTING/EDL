@@ -15,7 +15,7 @@
 
         <variable
             name="constatItem"
-            type="fr.atraore.edl.data.models.ConstatWithDetails" />
+            type="fr.atraore.edl.data.models.data.ConstatWithDetails" />
         
     </data>
 

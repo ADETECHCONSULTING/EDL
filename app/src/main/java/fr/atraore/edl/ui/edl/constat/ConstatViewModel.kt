@@ -5,6 +5,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import fr.atraore.edl.data.models.*
+import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.data.models.data.ElementWithRefsEtat
 import fr.atraore.edl.repository.*
 import fr.atraore.edl.utils.CombinedLiveData
 import fr.atraore.edl.utils.TripleCombinedLiveData
@@ -26,8 +28,9 @@ class ConstatViewModel @AssistedInject constructor(
     val firstRoomReference: LiveData<RoomReference> = roomRepository.firstRoomReference().asLiveData()
     val allRoomReference: LiveData<List<RoomReference>> = roomRepository.allRoomReferences().asLiveData()
     val allElementReference: LiveData<List<ElementReference>> = elementRepository.allElementReference().asLiveData()
-    fun getRoomWithElements(roomId: String) : LiveData<RoomWithElements> = roomRepository.getRoomDetails(roomId).asLiveData()
+    val allElementsWithRefsEtat : LiveData<List<ElementWithRefsEtat>> = elementRepository.allElementsWithRefsEtat().asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
+    fun getRoomWithElements(roomId: String) : LiveData<RoomWithElements> = roomRepository.getRoomDetails(roomId).asLiveData()
     //combined live data
     val combinedLiveData = TripleCombinedLiveData(constatDetail, firstRoomReference, allElementReference)
     fun roomCombinedLiveData(roomId: String) = CombinedLiveData(getRoomWithElements(roomId), allRoomReference)

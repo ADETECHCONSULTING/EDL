@@ -1,6 +1,5 @@
 package fr.atraore.edl.ui.edl.constat.first_page
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,14 +11,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.ConstatWithDetails
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
@@ -319,23 +317,6 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
 
         builder?.show()
 
-    }
-
-    fun getConstatEtat(etat: String): String {
-        when (etat) {
-            "E" -> {
-                return "entrant"
-            }
-            "PE" -> {
-                return "pré-état"
-            }
-            "S" -> {
-                return "sortant"
-            }
-            else -> {
-                return ""
-            }
-        }
     }
 
 }

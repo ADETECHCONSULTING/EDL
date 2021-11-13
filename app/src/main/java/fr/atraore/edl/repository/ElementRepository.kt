@@ -6,6 +6,7 @@ import fr.atraore.edl.data.dao.RoomReferenceDao
 import fr.atraore.edl.data.models.Agency
 import fr.atraore.edl.data.models.ElementReference
 import fr.atraore.edl.data.models.RoomReference
+import fr.atraore.edl.data.models.data.ElementWithRefsEtat
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -14,4 +15,5 @@ class ElementRepository @Inject constructor(
 ) : BaseRepository<ElementReference>(elementReferenceDao) {
 
     fun allElementReference() : Flow<List<ElementReference>> = elementReferenceDao.getAllElementReference()
+    fun allElementsWithRefsEtat() : Flow<List<ElementWithRefsEtat>> = elementReferenceDao.getAllElementWithRefsEtat()
 }

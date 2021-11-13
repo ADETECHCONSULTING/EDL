@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.ConstatWithDetails
-import fr.atraore.edl.data.models.Users
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.UserAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.USER_LABEL

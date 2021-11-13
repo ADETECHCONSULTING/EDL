@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.lifecycle.LifecycleObserver
@@ -27,11 +28,14 @@ import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.ElementReference
 import fr.atraore.edl.data.models.RoomReference
+import fr.atraore.edl.databinding.EndConstatFragmentBinding
+import fr.atraore.edl.databinding.StartConstatFragmentBinding
 import fr.atraore.edl.ui.adapter.AgencyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.edl.constat.second_page.groupie.ChildItem
 import fr.atraore.edl.ui.edl.constat.second_page.groupie.ParentItem
+import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import fr.atraore.edl.utils.TwoPaneOnBackPressedCallback
 import fr.atraore.edl.utils.assistedViewModel
@@ -63,6 +67,8 @@ MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
     private lateinit var parentList: List<ParentItem>
     var roomRefList: List<RoomReference>? = null
 
+    private lateinit var binding: EndConstatFragmentBinding
+
     companion object {
         fun newInstance() = EndConstatFragment()
     }
@@ -81,8 +87,12 @@ MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.end_constat_fragment, container, false)
+    ): View {
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.end_constat_fragment, container, false)
+        binding.constatViewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
 
@@ -115,10 +125,13 @@ MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
         rcv_rooms.apply {
             layoutManager = groupLayoutManager
             adapter = groupAdapter
+
         }
 
         viewModel.constatDetail.observe(viewLifecycleOwner, { constatWithDetails ->
             constatWithDetails?.let {
+                viewModel.constatHeaderInfo.value =
+                    "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
                 parentList = constatWithDetails.rooms.map { ParentItem(it) }
 
                 parentList.forEach { parentIt ->
@@ -126,7 +139,8 @@ MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
                     viewModel.roomCombinedLiveData(parentIt.roomParent.roomReferenceId).observe(viewLifecycleOwner, { pairInfoRoom ->
                         pairInfoRoom.first?.let { roomWithElements ->
                             ExpandableGroup(parentIt, false).apply {
-                                add(Section(roomWithElements.elements.map { ChildItem(it, this@EndConstatFragment) }))
+                                val sections = roomWithElements.elements.map { ChildItem(it, this@EndConstatFragment) }
+                                add(Section(sections))
                                 groupAdapter.add(this)
                             }
                         }
@@ -145,6 +159,10 @@ MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
                     })
                 }
             }
+        })
+
+        viewModel.allElementsWithRefsEtat.observe(viewLifecycleOwner, { elementWithRefsEtats ->
+            Log.d(TAG, "onViewCreated: element $elementWithRefsEtats")
         })
     }
 

@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
-import fr.atraore.edl.EdlApplication
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.ConstatWithDetails
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.ViewPagerAdapter
 import fr.atraore.edl.ui.edl.search.agency.AgencySearchFragment

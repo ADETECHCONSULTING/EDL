@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
@@ -12,8 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
 import fr.atraore.edl.databinding.ConstatItemBinding
-import fr.atraore.edl.data.models.Constat
-import fr.atraore.edl.data.models.ConstatWithDetails
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 
 class ConstatAdapter : ListAdapter<ConstatWithDetails, ConstatAdapter.ViewHolder>(DiffCallback()) {
 

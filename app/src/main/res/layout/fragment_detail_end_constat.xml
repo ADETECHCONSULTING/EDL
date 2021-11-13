@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:background="@drawable/gradient_bg"
     tools:context=".ui.edl.constat.second_page.DetailEndConstatFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_medium">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -21,8 +23,183 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.2" />
 
-            )
 
+            <TextView
+                android:id="@+id/txv_intitule"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_intitule"
+                android:textAllCaps="true"
+                style="@style/MyTextViewStyleLabel"
+                app:layout_constraintEnd_toStartOf="@id/guideline2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_intitule"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txv_intitule"
+                app:layout_constraintBottom_toBottomOf="@id/txv_intitule"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guideline2"
+                android:background="@drawable/spinner_background"
+                tools:text="@string/label_intitule"
+                android:padding="@dimen/padding_small" />
+
+
+            <TextView
+                android:id="@+id/txv_etat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_etat"
+                android:textAllCaps="true"
+                style="@style/MyTextViewStyleLabel"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:layout_constraintEnd_toStartOf="@id/guideline2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@id/edt_intitule"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ctn_etat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txv_etat"
+                app:layout_constraintBottom_toBottomOf="@id/txv_etat"
+                app:layout_constraintStart_toEndOf="@id/guideline2"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/imv_add_etat"
+                    android:layout_width="@dimen/buttons_width"
+                    android:layout_height="@dimen/buttons_height"
+                    android:src="@drawable/ic_add"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txv_proprete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_proprete"
+                android:textAllCaps="true"
+                style="@style/MyTextViewStyleLabel"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:layout_constraintEnd_toStartOf="@id/guideline2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@id/ctn_etat"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ctn_proprete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txv_proprete"
+                app:layout_constraintBottom_toBottomOf="@id/txv_proprete"
+                app:layout_constraintStart_toEndOf="@id/guideline2"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/imv_add_proprete"
+                    android:layout_width="@dimen/buttons_width"
+                    android:layout_height="@dimen/buttons_height"
+                    android:src="@drawable/ic_add"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txv_descriptif"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_descriptif"
+                android:textAllCaps="true"
+                style="@style/MyTextViewStyleLabel"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:layout_constraintEnd_toStartOf="@id/guideline2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@id/ctn_proprete"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <LinearLayout
+                android:id="@+id/ctn_descriptif"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txv_descriptif"
+                app:layout_constraintBottom_toBottomOf="@id/txv_descriptif"
+                app:layout_constraintStart_toEndOf="@id/guideline2"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/imv_add_descriptif"
+                    android:layout_width="@dimen/buttons_width"
+                    android:layout_height="@dimen/buttons_height"
+                    android:src="@drawable/ic_add"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txv_alterations"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_alterations"
+                android:textAllCaps="true"
+                style="@style/MyTextViewStyleLabel"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:layout_constraintEnd_toStartOf="@id/guideline2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@id/ctn_descriptif"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ctn_alterations"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txv_alterations"
+                app:layout_constraintBottom_toBottomOf="@id/txv_alterations"
+                app:layout_constraintStart_toEndOf="@id/guideline2"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/imv_add_alterations"
+                    android:layout_width="@dimen/buttons_width"
+                    android:layout_height="@dimen/buttons_height"
+                    android:src="@drawable/ic_add"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txv_note"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_note"
+                android:textAllCaps="true"
+                style="@style/MyTextViewStyleLabel"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:layout_constraintEnd_toStartOf="@id/guideline2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@id/ctn_alterations"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_note"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txv_note"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guideline2"
+                android:background="@drawable/spinner_background"
+                tools:text="@string/label_intitule"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:gravity="start"
+                android:paddingStart="@dimen/padding_small"
+                android:paddingEnd="@dimen/padding_small" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

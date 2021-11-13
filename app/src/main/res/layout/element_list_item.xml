@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:orientation="horizontal">
 
     <TextView
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         tools:text="@string/address_label_2"
         android:gravity="center"
+        android:textSize="@dimen/textSizeMedium"
         android:padding="@dimen/padding_medium"/>
 
 </LinearLayout>
