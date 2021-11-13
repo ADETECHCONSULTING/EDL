@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.room_list_item.view.*
 class ParentItem(var roomParent: RoomReference) : Item(), ExpandableItem {
 
     private lateinit var expandableGroup: ExpandableGroup
+    lateinit var childItems: List<ChildItem>
 
     override fun setExpandableGroup(onToggleListener: ExpandableGroup) {
         expandableGroup = onToggleListener

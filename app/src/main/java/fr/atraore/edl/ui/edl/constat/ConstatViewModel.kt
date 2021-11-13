@@ -30,10 +30,10 @@ class ConstatViewModel @AssistedInject constructor(
     val allElementReference: LiveData<List<ElementReference>> = elementRepository.allElementReference().asLiveData()
     val allElementsWithRefsEtat : LiveData<List<ElementWithRefsEtat>> = elementRepository.allElementsWithRefsEtat().asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
-    fun getRoomWithElements(roomId: String) : LiveData<RoomWithElements> = roomRepository.getRoomDetails(roomId).asLiveData()
+    fun getRoomWithElements() : LiveData<List<RoomWithElements>> = roomRepository.getRoomDetails().asLiveData()
     //combined live data
     val combinedLiveData = TripleCombinedLiveData(constatDetail, firstRoomReference, allElementReference)
-    fun roomCombinedLiveData(roomId: String) = CombinedLiveData(getRoomWithElements(roomId), allRoomReference)
+    fun roomCombinedLiveData() = TripleCombinedLiveData(getRoomWithElements(), allRoomReference, allElementReference)
 
     val coroutineContext: CoroutineContext
     get() = Dispatchers.IO

@@ -17,5 +17,5 @@ class RoomRepository @Inject constructor(
 
     fun firstRoomReference() : Flow<RoomReference> = roomReferenceDao.getFirstRoomReferences()
 
-    fun getRoomDetails(roomReferenceId: String) : Flow<RoomWithElements> = roomReferenceDao.getRoomDetails(roomReferenceId)
+    fun getRoomDetails() : Flow<List<RoomWithElements>> = roomReferenceDao.getRoomDetails()
 }

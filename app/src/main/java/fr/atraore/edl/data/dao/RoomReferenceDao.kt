@@ -21,6 +21,6 @@ interface RoomReferenceDao : BaseDao<RoomReference> {
     fun getFirstRoomReferences(): Flow<RoomReference>
 
     @Transaction
-    @Query("SELECT * FROM $ROOM_REFERENCE_TABLE WHERE roomReferenceId = :roomReferenceId")
-    fun getRoomDetails(roomReferenceId: String) : Flow<RoomWithElements>
+    @Query("SELECT * FROM $ROOM_REFERENCE_TABLE")
+    fun getRoomDetails() : Flow<List<RoomWithElements>>
 }

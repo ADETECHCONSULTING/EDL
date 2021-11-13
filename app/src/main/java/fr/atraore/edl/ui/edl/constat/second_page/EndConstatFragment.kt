@@ -1,5 +1,6 @@
 package fr.atraore.edl.ui.edl.constat.second_page
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -48,7 +49,7 @@ import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
-MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
+    MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
     private val TAG = EndConstatFragment::class.simpleName
 
     override val title: String
@@ -64,10 +65,13 @@ MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
     private val groupAdapter = GroupAdapter<GroupieViewHolder>()
     private lateinit var groupLayoutManager: LinearLayoutManager
 
-    private lateinit var parentList: List<ParentItem>
+    private var parentList: MutableList<ParentItem> = mutableListOf()
     var roomRefList: List<RoomReference>? = null
+    var elementRefList: List<ElementReference>? = null
 
     private lateinit var binding: EndConstatFragmentBinding
+
+    var listener: ((List<ParentItem>) -> Unit)? = null
 
     companion object {
         fun newInstance() = EndConstatFragment()
@@ -96,22 +100,45 @@ MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
     }
 
 
+    @SuppressLint("CheckResult")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Connect the SlidingPaneLayout to the system back button.
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
             TwoPaneOnBackPressedCallback(sliding_pane_layout)
         )
+
+        listener = {
+            val expandableGroups = mutableListOf<ExpandableGroup>()
+            it.forEach { parentItem ->
+                //ajout à la liste expandable
+                expandableGroups.add(ExpandableGroup(parentItem, false).apply {
+                    addAll(parentItem.childItems)
+                })
+            }
+            groupAdapter.updateAsync(expandableGroups)
+        }
 
         btn_add_room.setOnClickListener {
             MaterialDialog(requireContext()).show {
                 title(R.string.title_add_rooms)
-                listItemsMultiChoice(items = roomRefList?.map { roomReference -> roomReference.name }) { dialog, indices, items ->
-                    val roomsToAdd: List<RoomReference>? = roomRefList?.filter { roomRef -> roomRef.name in items }
+                listItemsMultiChoice(items = roomRefList?.map { roomReference -> roomReference.name }) { _, _, items ->
+                    val roomsToAdd: List<RoomReference>? =
+                        roomRefList?.filter { roomRef -> roomRef.name in items }
                     roomsToAdd?.forEach {
                         launch {
-                            viewModel.saveConstatRoomCrossRef(arguments?.getString(ARGS_CONSTAT_ID)!!, it.roomReferenceId)
+                            viewModel.saveConstatRoomCrossRef(
+                                arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                it.roomReferenceId
+                            )
+
+                            elementRefList?.forEach { elementRef ->
+                                launch {
+                                    viewModel.saveRoomElementCrossRef(it.roomReferenceId, elementRef.elementReferenceId, null)
+                                }
+                            }
                         }
                     }
                 }
@@ -128,36 +155,39 @@ MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
 
         }
 
+        //récupération du détail du constat
         viewModel.constatDetail.observe(viewLifecycleOwner, { constatWithDetails ->
             constatWithDetails?.let {
                 viewModel.constatHeaderInfo.value =
                     "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
-                parentList = constatWithDetails.rooms.map { ParentItem(it) }
 
-                parentList.forEach { parentIt ->
+                //récupération de toutes les pièces de ce constat
+                //Pour chaque pièces du constat, récupérer les éléments et les affecter dans l'expandable list
+                viewModel.roomCombinedLiveData().observe(viewLifecycleOwner, { pairInfoRoom ->
+                    pairInfoRoom.first?.let { roomsWithElements ->
+                        val parentListItems = mutableListOf<ParentItem>()
+                        roomsWithElements.filter { rse -> rse.elements.size > 0 }.forEach {
+                            val parentIt = ParentItem(it.rooms)
+                            parentIt.childItems = it.elements.map { elementRef ->
+                                ChildItem(elementRef, this@EndConstatFragment)
+                            }
 
-                    viewModel.roomCombinedLiveData(parentIt.roomParent.roomReferenceId).observe(viewLifecycleOwner, { pairInfoRoom ->
-                        pairInfoRoom.first?.let { roomWithElements ->
-                            ExpandableGroup(parentIt, false).apply {
-                                val sections = roomWithElements.elements.map { ChildItem(it, this@EndConstatFragment) }
-                                add(Section(sections))
-                                groupAdapter.add(this)
+                            if (parentIt.roomParent.roomReferenceId !in parentListItems.map { re -> re.roomParent }.map { roomReference -> roomReference.roomReferenceId } ) {
+                                parentListItems.add(parentIt)
                             }
                         }
+                        listener?.invoke(parentListItems)
 
                         pairInfoRoom.second?.let { listRoomReference ->
                             this.roomRefList = listRoomReference
-
                             btn_add_room.isEnabled = this.roomRefList?.isEmpty() != true
                         }
-                    })
 
-                    viewModel.getRoomWithElements(parentIt.roomParent.roomReferenceId).observe(viewLifecycleOwner, { roomWithElements ->
-                        roomWithElements?.let {
-
+                        pairInfoRoom.third?.let { listElementReference ->
+                            this.elementRefList = listElementReference
                         }
-                    })
-                }
+                    }
+                })
             }
         })
 

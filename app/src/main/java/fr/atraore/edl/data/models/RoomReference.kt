@@ -12,6 +12,4 @@ data class RoomReference (
     val name: String,
     var mandatory: Boolean? = false,
 ) {
-    @Ignore
-    lateinit var listElementReference: List<ElementReference>
 }
