@@ -86,6 +86,9 @@ interface ConstatDao : BaseDao<Constat> {
     @Delete
     suspend fun deleteConstatUsersCrossRef(crossRef: ConstatUsersCrossRef)
 
+    @Delete
+    suspend fun deleteRoomElementCrossRef(crossRef: RoomElementCrossRef)
+
     @Query("DELETE FROM $CONSTAT_TABLE")
     fun deleteAll()
 }

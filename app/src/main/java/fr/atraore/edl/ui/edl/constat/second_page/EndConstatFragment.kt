@@ -1,13 +1,15 @@
 package fr.atraore.edl.ui.edl.constat.second_page
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
+import android.sax.Element
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ListPopupWindow
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
@@ -15,14 +17,11 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.LifecycleObserver
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.input.getInputField
 import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
-import com.afollestad.materialdialogs.list.listItems
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
@@ -30,8 +29,6 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.ElementReference
 import fr.atraore.edl.data.models.RoomReference
 import fr.atraore.edl.databinding.EndConstatFragmentBinding
-import fr.atraore.edl.databinding.StartConstatFragmentBinding
-import fr.atraore.edl.ui.adapter.AgencyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.edl.constat.second_page.groupie.ChildItem
@@ -49,7 +46,7 @@ import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
-    MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler {
+    MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler, ParentItem.IActionHandler {
     private val TAG = EndConstatFragment::class.simpleName
 
     override val title: String
@@ -70,6 +67,10 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     var elementRefList: List<ElementReference>? = null
 
     private lateinit var binding: EndConstatFragmentBinding
+
+    private lateinit var listPopupWindow: ListPopupWindow
+    private lateinit var clickedChildItem: ElementReference
+    private lateinit var clickedParentItem: RoomReference
 
     var listener: ((List<ParentItem>) -> Unit)? = null
 
@@ -109,6 +110,26 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             viewLifecycleOwner,
             TwoPaneOnBackPressedCallback(sliding_pane_layout)
         )
+
+        //register dropdown
+        listPopupWindow = ListPopupWindow(requireContext(), null, R.attr.listPopupWindowStyle)
+        listPopupWindow.anchorView = rcv_rooms
+
+        val items = listOf("Renommer", "Supprimer")
+        val adapterDropD = ArrayAdapter(requireContext(), R.layout.list_popup_window_item, items)
+        listPopupWindow.setAdapter(adapterDropD)
+
+        listPopupWindow.setOnItemClickListener { parent: AdapterView<*>?, anchorView: View?, position: Int, id: Long ->
+            // Respond to list popup window item click.
+
+            when (position) {
+                0 -> rename()
+                1 -> delete()
+            }
+
+            // Dismiss popup.
+            listPopupWindow.dismiss()
+        }
 
         listener = {
             val expandableGroups = mutableListOf<ExpandableGroup>()
@@ -152,7 +173,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         rcv_rooms.apply {
             layoutManager = groupLayoutManager
             adapter = groupAdapter
-
         }
 
         //récupération du détail du constat
@@ -167,7 +187,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                     pairInfoRoom.first?.let { roomsWithElements ->
                         val parentListItems = mutableListOf<ParentItem>()
                         roomsWithElements.filter { rse -> rse.elements.size > 0 }.forEach {
-                            val parentIt = ParentItem(it.rooms)
+                            val parentIt = ParentItem(it.rooms, this)
                             parentIt.childItems = it.elements.map { elementRef ->
                                 ChildItem(elementRef, this@EndConstatFragment)
                             }
@@ -221,18 +241,50 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         }
     }
 
-    override fun onLongClick(elementReference: ElementReference) {
-        val dialog = MaterialDialog(requireContext()).show {
-            input(prefill = elementReference.name, allowEmpty = false) { _, text ->
-                elementReference.name = text.toString()
-            }
-            positiveButton(R.string.rename)
-        }
+    override fun onLongClick(anchorView: View, elementReference: ElementReference) {
+        clickedChildItem = elementReference
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.show()
 
     }
 
+    @SuppressLint("CheckResult")
+    private fun rename() {
+        MaterialDialog(requireContext()).show {
+            title(R.string.rename_dialog_title)
+            input(prefill = clickedChildItem.name, allowEmpty = false) { _, text ->
+                clickedChildItem.name = text.toString()
+                launch {
+                    viewModel.saveRoomElementCrossRef(clickedParentItem.roomReferenceId, clickedChildItem.elementReferenceId, clickedChildItem.name)
+                }
+            }
+            positiveButton(R.string.rename)
+        }
+    }
+
+    private fun delete() {
+        MaterialDialog(requireContext()).show {
+            title(R.string.delete_dialog_title)
+            message(R.string.delete_dialog_content)
+            positiveButton(R.string.done) {
+                launch {
+                    viewModel.deleteRoomElementCrossRef(clickedParentItem.roomReferenceId, clickedChildItem.elementReferenceId)
+                }
+            }
+            negativeButton(R.string.cancel_label) {
+                dismiss()
+            }
+        }
+    }
+
+    //click on child
     override fun onSimpleClick(elementReference: ElementReference) {
         openDetails(elementReference.elementReferenceId)
+    }
+
+    //click on parent
+    override fun onSimpleClick(roomParent: RoomReference) {
+        clickedParentItem = roomParent
     }
 
 

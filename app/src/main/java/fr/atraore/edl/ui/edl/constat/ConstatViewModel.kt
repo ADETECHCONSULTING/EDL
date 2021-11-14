@@ -70,4 +70,8 @@ class ConstatViewModel @AssistedInject constructor(
     fun saveContractor(contractors: List<Contractor>) = viewModelScope.launch {
         contractorRepository.saveList(contractors)
     }
+
+    suspend fun deleteRoomElementCrossRef(roomId: String, elementId: String) {
+        repository.deleteRoomElementCrossRef(roomId, elementId)
+    }
 }

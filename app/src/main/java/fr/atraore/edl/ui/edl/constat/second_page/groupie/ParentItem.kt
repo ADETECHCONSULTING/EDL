@@ -8,7 +8,11 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.RoomReference
 import kotlinx.android.synthetic.main.room_list_item.view.*
 
-class ParentItem(var roomParent: RoomReference) : Item(), ExpandableItem {
+class ParentItem(var roomParent: RoomReference, val actionHandler: IActionHandler) : Item(), ExpandableItem {
+
+    interface IActionHandler {
+        fun onSimpleClick(roomParent: RoomReference)
+    }
 
     private lateinit var expandableGroup: ExpandableGroup
     lateinit var childItems: List<ChildItem>
@@ -21,6 +25,7 @@ class ParentItem(var roomParent: RoomReference) : Item(), ExpandableItem {
         viewHolder.root.txv_room_parent.text = roomParent.name
         viewHolder.itemView.setOnClickListener {
             expandableGroup.onToggleExpanded()
+            actionHandler.onSimpleClick(roomParent)
         }
     }
 

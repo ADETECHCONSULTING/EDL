@@ -20,7 +20,7 @@
     <string name="phone_label2">Téléphone 2</string>
     <string name="email_label">Email</string>
     <string name="note_label">Note</string>
-    <string name="cancel_label">annuler</string>
+    <string name="cancel_label">Annuler</string>
     <string name="create_label">Créer</string>
     <string name="contractor_label">Mandataire</string>
     <string name="denomination_label">Dénomination</string>
@@ -53,6 +53,9 @@
     <string name="city">Ville</string>
     <string name="next">Suivant</string>
     <string name="rename">Renommer</string>
+    <string name="rename_dialog_title">Renommer l\'élément</string>
+    <string name="delete_dialog_title">Suppression de l\'élément</string>
+    <string name="delete_dialog_content">Êtes-vous certain de vouloir supprimer cet élément. Cette action est irréversible.</string>
     <string name="add_room">Ajouter une pièce</string>
     <string name="done">Valider</string>
     <string name="title_add_rooms">Liste des pièces</string>
@@ -62,6 +65,7 @@
     <string name="label_descriptif">Descriptif :</string>
     <string name="label_alterations">Altérations :</string>
     <string name="label_note">Notes :</string>
+    <string name="add_label">Ajouter</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>
