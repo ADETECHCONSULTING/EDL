@@ -8,10 +8,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_chauffage.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_elec.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_electromenager.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_meuble.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_mobilier.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_mur.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/drawable/ic_ouvrant.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_plomberie.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/lot_technique_fill.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/layout/agency_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/constat_item.xml" value="0.23958333333333334" />
         <entry key="app/src/main/res/layout/contractor_item.xml" value="0.23958333333333334" />
+        <entry key="app/src/main/res/layout/end_constat_fragment.xml" value="0.335" />
         <entry key="app/src/main/res/layout/list_popup_window_item.xml" value="0.23488562091503268" />
+        <entry key="app/src/main/res/layout/start_constat_fragment.xml" value="0.20588235294117646" />
+        <entry key="app/src/main/res/layout/tenant_item.xml" value="0.37604166666666666" />
       </map>
     </option>
   </component>

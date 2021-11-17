@@ -1,6 +1,8 @@
 package fr.atraore.edl.ui.edl.constat.second_page
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.sax.Element
 import android.util.Log
@@ -9,7 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.ListPopupWindow
+import androidx.annotation.StyleRes
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
@@ -72,6 +77,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private lateinit var clickedChildItem: ElementReference
     private lateinit var clickedParentItem: RoomReference
 
+    private lateinit var theme: Resources.Theme
+
     var listener: ((List<ParentItem>) -> Unit)? = null
 
     companion object {
@@ -97,6 +104,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             DataBindingUtil.inflate(inflater, R.layout.end_constat_fragment, container, false)
         binding.constatViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.fragment = this
         return binding.root
     }
 
@@ -110,6 +118,10 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             viewLifecycleOwner,
             TwoPaneOnBackPressedCallback(sliding_pane_layout)
         )
+
+        //set theme pour les lots techniques
+        theme = resources.newTheme()
+        unClickAllLotTechnique(theme)
 
         //register dropdown
         listPopupWindow = ListPopupWindow(requireContext(), null, R.attr.listPopupWindowStyle)
@@ -285,6 +297,45 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     //click on parent
     override fun onSimpleClick(roomParent: RoomReference) {
         clickedParentItem = roomParent
+    }
+
+    //click on lot technique
+    fun onLotTechniqueClick(view: View, idLot: Int) {
+        unClickAllLotTechnique(theme)
+        val themeClick = resources.newTheme()
+        themeClick.applyStyle(R.style.ClickedLot, false)
+        changeTheme(themeClick, view as ImageView, idLot)
+    }
+
+    private fun changeTheme(theme: Resources.Theme, view: ImageView, idLot: Int) {
+        val drawable = drawableLotTechnique(idLot, theme)
+        view.setImageDrawable(drawable)
+    }
+
+    private fun drawableLotTechnique(idLot: Int, theme: Resources.Theme): Drawable? {
+        return when(idLot) {
+            1 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_mur, theme)
+            2 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_ouvrant, theme)
+            3 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_elec, theme)
+            4 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_plomberie, theme)
+            5 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_chauffage, theme)
+            6 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_electromenager, theme)
+            7 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_mobilier, theme)
+            8 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_meuble, theme)
+            else -> null
+        }
+    }
+
+    private fun unClickAllLotTechnique(theme: Resources.Theme) {
+        theme.applyStyle(R.style.DefaultLot, false)
+        imv_lot_batis.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_mur, theme))
+        imv_ouvrants.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_ouvrant, theme))
+        imv_elec.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_elec, theme))
+        imv_plomberie.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_plomberie, theme))
+        imv_chauffage.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_chauffage, theme))
+        imv_electromenager.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_electromenager, theme))
+        imv_mobilier.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_mobilier, theme))
+        imv_meulbe.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_meuble, theme))
     }
 
 

@@ -48,4 +48,12 @@
         <item name="pickerDividerColor">@color/divider_light</item>
     </style>
 
+    <style name="ClickedLot" parent="DefaultLot">
+        <item name="lot_fill_color">@color/colorAccent</item>
+    </style>
+
+    <style name="DefaultLot">
+        <item name="lot_fill_color">@color/white</item>
+    </style>
+
 </resources>

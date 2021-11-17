@@ -8,4 +8,8 @@
     <attr name="pickerCameraIcon" format="reference" />
     <attr name="pickerCornerRadius" format="reference|dimension" />
     <attr name="pickerDividerColor" format="reference|color" />
+
+    <declare-styleable name="lot_technique_fills">
+        <attr name="lot_fill_color" format="color" />
+    </declare-styleable>
 </resources>
