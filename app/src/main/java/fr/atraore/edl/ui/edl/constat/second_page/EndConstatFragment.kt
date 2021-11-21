@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.sax.Element
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +11,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListPopupWindow
-import androidx.annotation.StyleRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -31,11 +28,13 @@ import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Detail
 import fr.atraore.edl.data.models.ElementReference
 import fr.atraore.edl.data.models.RoomReference
 import fr.atraore.edl.databinding.EndConstatFragmentBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
+import fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatFragment
 import fr.atraore.edl.ui.edl.constat.second_page.groupie.ChildItem
 import fr.atraore.edl.ui.edl.constat.second_page.groupie.ParentItem
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
@@ -46,6 +45,7 @@ import kotlinx.android.synthetic.main.end_constat_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -74,7 +74,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private lateinit var binding: EndConstatFragmentBinding
 
     private lateinit var listPopupWindow: ListPopupWindow
-    private lateinit var clickedChildItem: ElementReference
+    private lateinit var clickedChildItem: Detail
     private lateinit var clickedParentItem: RoomReference
 
     private lateinit var theme: Resources.Theme
@@ -169,7 +169,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
                             elementRefList?.forEach { elementRef ->
                                 launch {
-                                    viewModel.saveRoomElementCrossRef(it.roomReferenceId, elementRef.elementReferenceId, null)
+                                    val detail = Detail(it.roomReferenceId + elementRef.elementReferenceId, elementRef.elementReferenceId, it.roomReferenceId, elementRef.name)
+                                    viewModel.saveDetail(detail)
                                 }
                             }
                         }
@@ -196,12 +197,12 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 //récupération de toutes les pièces de ce constat
                 //Pour chaque pièces du constat, récupérer les éléments et les affecter dans l'expandable list
                 viewModel.roomCombinedLiveData().observe(viewLifecycleOwner, { pairInfoRoom ->
-                    pairInfoRoom.first?.let { roomsWithElements ->
+                    pairInfoRoom.first?.let { roomsWithDetails ->
                         val parentListItems = mutableListOf<ParentItem>()
-                        roomsWithElements.filter { rse -> rse.elements.size > 0 }.forEach {
+                        roomsWithDetails.filter { rse -> rse.details.size > 0 }.forEach {
                             val parentIt = ParentItem(it.rooms, this)
-                            parentIt.childItems = it.elements.map { elementRef ->
-                                ChildItem(elementRef, this@EndConstatFragment)
+                            parentIt.childItems = it.details.map { detail ->
+                                ChildItem(detail, this@EndConstatFragment)
                             }
 
                             if (parentIt.roomParent.roomReferenceId !in parentListItems.map { re -> re.roomParent }.map { roomReference -> roomReference.roomReferenceId } ) {
@@ -222,10 +223,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 })
             }
         })
-
-        viewModel.allElementsWithRefsEtat.observe(viewLifecycleOwner, { elementWithRefsEtats ->
-            Log.d(TAG, "onViewCreated: element $elementWithRefsEtats")
-        })
     }
 
     // A method on the Fragment that owns the SlidingPaneLayout,
@@ -234,7 +231,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         childFragmentManager.commit {
             setReorderingAllowed(true)
             val fragment = DetailEndConstatFragment.newInstance()
-            fragment.arguments = bundleOf("itemId" to itemId)
+            fragment.arguments = bundleOf("detailId" to itemId)
             replace(R.id.fragment_detail, fragment)
             // If we're already open and the detail pane is visible,
             // crossfade between the fragments.
@@ -253,8 +250,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         }
     }
 
-    override fun onLongClick(anchorView: View, elementReference: ElementReference) {
-        clickedChildItem = elementReference
+    override fun onLongClick(anchorView: View, detail: Detail) {
+        clickedChildItem = detail
         listPopupWindow.anchorView = anchorView
         listPopupWindow.show()
 
@@ -264,10 +261,10 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private fun rename() {
         MaterialDialog(requireContext()).show {
             title(R.string.rename_dialog_title)
-            input(prefill = clickedChildItem.name, allowEmpty = false) { _, text ->
-                clickedChildItem.name = text.toString()
+            input(prefill = clickedChildItem.intitule, allowEmpty = false) { _, text ->
                 launch {
-                    viewModel.saveRoomElementCrossRef(clickedParentItem.roomReferenceId, clickedChildItem.elementReferenceId, clickedChildItem.name)
+                    //TODO save du detail
+                    //viewModel.saveRoomDetailCrossRef(clickedParentItem.roomReferenceId, clickedChildItem.elementReferenceId, clickedChildItem.name)
                 }
             }
             positiveButton(R.string.rename)
@@ -280,7 +277,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             message(R.string.delete_dialog_content)
             positiveButton(R.string.done) {
                 launch {
-                    viewModel.deleteRoomElementCrossRef(clickedParentItem.roomReferenceId, clickedChildItem.elementReferenceId)
+                    viewModel.deleteRoomDetailCrossRef(clickedParentItem.roomReferenceId, clickedChildItem.idDetail)
                 }
             }
             negativeButton(R.string.cancel_label) {
@@ -290,8 +287,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     }
 
     //click on child
-    override fun onSimpleClick(elementReference: ElementReference) {
-        openDetails(elementReference.elementReferenceId)
+    override fun onSimpleClick(detail: Detail) {
+        openDetails(detail.idDetail)
     }
 
     //click on parent

@@ -6,7 +6,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.data.ConstatWithDetails
-import fr.atraore.edl.data.models.data.ElementWithRefsEtat
+import fr.atraore.edl.data.models.data.RoomWithDetails
 import fr.atraore.edl.repository.*
 import fr.atraore.edl.utils.CombinedLiveData
 import fr.atraore.edl.utils.TripleCombinedLiveData
@@ -22,18 +22,18 @@ class ConstatViewModel @AssistedInject constructor(
     val contractorRepository: ContractorRepository,
     val roomRepository: RoomRepository,
     val elementRepository: ElementRepository,
+    val detailRepository: DetailRepository,
     @Assisted val constatId: String
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
     val firstRoomReference: LiveData<RoomReference> = roomRepository.firstRoomReference().asLiveData()
     val allRoomReference: LiveData<List<RoomReference>> = roomRepository.allRoomReferences().asLiveData()
     val allElementReference: LiveData<List<ElementReference>> = elementRepository.allElementReference().asLiveData()
-    val allElementsWithRefsEtat : LiveData<List<ElementWithRefsEtat>> = elementRepository.allElementsWithRefsEtat().asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
-    fun getRoomWithElements() : LiveData<List<RoomWithElements>> = roomRepository.getRoomDetails().asLiveData()
+    fun getRoomWithDetails() : LiveData<List<RoomWithDetails>> = roomRepository.getRoomDetails().asLiveData()
     //combined live data
-    val combinedLiveData = TripleCombinedLiveData(constatDetail, firstRoomReference, allElementReference)
-    fun roomCombinedLiveData() = TripleCombinedLiveData(getRoomWithElements(), allRoomReference, allElementReference)
+    val initFirstRoomReference = CombinedLiveData(firstRoomReference, allElementReference)
+    fun roomCombinedLiveData() = TripleCombinedLiveData(getRoomWithDetails(), allRoomReference, allElementReference)
 
     val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
@@ -47,8 +47,12 @@ class ConstatViewModel @AssistedInject constructor(
         repository.saveConstatRoomCrossRef(constatId, roomId)
     }
 
-    suspend fun saveRoomElementCrossRef(roomId: String, elementId: String, rename: String?) {
-        repository.saveRoomElementCrossRef(roomId, elementId, rename)
+    suspend fun saveDetail(detail: Detail) {
+        detailRepository.save(detail)
+    }
+
+    suspend fun saveRoomDetailCrossRef(roomId: String, detailId: String) {
+        repository.saveRoomDetailCrossRef(roomId, detailId)
     }
 
     fun saveConstat(constat: Constat) = viewModelScope.launch {
@@ -71,7 +75,7 @@ class ConstatViewModel @AssistedInject constructor(
         contractorRepository.saveList(contractors)
     }
 
-    suspend fun deleteRoomElementCrossRef(roomId: String, elementId: String) {
-        repository.deleteRoomElementCrossRef(roomId, elementId)
+    suspend fun deleteRoomDetailCrossRef(roomId: String, detailId: String) {
+        repository.deleteRoomDetailCrossRef(roomId, detailId)
     }
 }

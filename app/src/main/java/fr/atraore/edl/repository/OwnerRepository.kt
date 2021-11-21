@@ -8,6 +8,5 @@ import javax.inject.Inject
 class OwnerRepository @Inject constructor(
     private val ownerDao: OwnerDao
 ) : BaseRepository<Owner>(ownerDao) {
-
     val allOwners: Flow<List<Owner>> = ownerDao.getAllOwners()
 }

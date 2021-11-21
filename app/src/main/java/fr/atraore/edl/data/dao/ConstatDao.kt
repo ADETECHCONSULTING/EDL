@@ -49,13 +49,13 @@ interface ConstatDao : BaseDao<Constat> {
     suspend fun saveConstatRoomCrossRef(crossRef: ConstatRoomCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveConstatElementCrossRef(crossRef: RoomElementCrossRef)
+    suspend fun saveConstatElementCrossRef(crossRef: RoomDetailCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveConstatLotCrossRef(crossRef: ConstatLotCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveRoomElementCrossRef(crossRef: RoomElementCrossRef)
+    suspend fun saveRoomDetailCrossRef(crossRef: RoomDetailCrossRef)
 
     //** Update **
     @Query("UPDATE ConstatAgencyCrossRef SET agencyId =:agencyId WHERE constatId =:constatId")
@@ -87,7 +87,7 @@ interface ConstatDao : BaseDao<Constat> {
     suspend fun deleteConstatUsersCrossRef(crossRef: ConstatUsersCrossRef)
 
     @Delete
-    suspend fun deleteRoomElementCrossRef(crossRef: RoomElementCrossRef)
+    suspend fun deleteRoomDetailCrossRef(crossRef: RoomDetailCrossRef)
 
     @Query("DELETE FROM $CONSTAT_TABLE")
     fun deleteAll()

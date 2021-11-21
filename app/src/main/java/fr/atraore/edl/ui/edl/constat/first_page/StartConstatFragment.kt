@@ -17,11 +17,13 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Detail
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
+import fr.atraore.edl.ui.edl.constat.second_page.groupie.ParentItem
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.ui.hideKeyboard
 import fr.atraore.edl.utils.*
@@ -29,6 +31,7 @@ import kotlinx.android.synthetic.main.start_constat_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -89,9 +92,9 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.combinedLiveData.observe(viewLifecycleOwner, {
+        viewModel.constatDetail.observe(viewLifecycleOwner, {
 
-            it.first?.let { constatWithDetails ->
+            it?.let { constatWithDetails ->
                 this.constat = constatWithDetails
                 viewModel.constatHeaderInfo.value =
                     "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
@@ -104,8 +107,10 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                     constatViewModel = viewModel
                 )
             }
+        })
 
-            it.second?.let { roomRef ->
+        viewModel.initFirstRoomReference.observe(viewLifecycleOwner, {
+            it.first?.let { roomRef ->
                 launch {
                     viewModel.saveConstatRoomCrossRef(
                         arguments?.getString(
@@ -114,16 +119,16 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                     )
 
                     //set liste des elements d'une piece pour un constat
-                    it.third?.let { listElementReferences ->
+                    it.second?.let { listElementReferences ->
                         listElementReferences.forEach { elementRef ->
                             launch {
-                                viewModel.saveRoomElementCrossRef(roomRef.roomReferenceId, elementRef.elementReferenceId, null)
+                                val detail = Detail(roomRef.roomReferenceId + elementRef.elementReferenceId, elementRef.elementReferenceId, roomRef.roomReferenceId, elementRef.name)
+                                viewModel.saveDetail(detail)
                             }
                         }
                     }
                 }
             }
-
         })
 
         initListener()

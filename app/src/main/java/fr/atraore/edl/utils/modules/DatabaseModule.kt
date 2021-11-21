@@ -34,52 +34,57 @@ class DatabaseModule {
 
     @Provides
     fun provideConstatDao(appDatabase: AppDatabase): ConstatDao {
-        return appDatabase.getConstatDao();
+        return appDatabase.getConstatDao()
     }
 
     @Provides
     fun provideUserDao(appDatabase: AppDatabase): UserDao {
-        return appDatabase.getUserDao();
+        return appDatabase.getUserDao()
     }
 
     @Provides
     fun provideAgencyDao(appDatabase: AppDatabase): AgencyDao {
-        return appDatabase.getAgencyDao();
+        return appDatabase.getAgencyDao()
     }
 
     @Provides
     fun provideContractorDao(appDatabase: AppDatabase): ContractorDao {
-        return appDatabase.getContractorDao();
+        return appDatabase.getContractorDao()
     }
 
     @Provides
     fun provideOwnerDao(appDatabase: AppDatabase): OwnerDao {
-        return appDatabase.getOwnerDao();
+        return appDatabase.getOwnerDao()
     }
 
     @Provides
     fun provideProperyDao(appDatabase: AppDatabase): PropertyDao {
-        return appDatabase.getPropertyDao();
+        return appDatabase.getPropertyDao()
     }
 
     @Provides
     fun provideTenantDao(appDatabase: AppDatabase): TenantDao {
-        return appDatabase.getTenantDao();
+        return appDatabase.getTenantDao()
     }
 
     @Provides
     fun provideRoomReferenceDao(appDatabase: AppDatabase): RoomReferenceDao {
-        return appDatabase.getRoomReferenceDao();
+        return appDatabase.getRoomReferenceDao()
     }
 
     @Provides
     fun provideElementReferenceDao(appDatabase: AppDatabase): ElementReferenceDao {
-        return appDatabase.getElementReferenceDao();
+        return appDatabase.getElementReferenceDao()
     }
 
     @Provides
     fun provideLotReferenceDao(appDatabase: AppDatabase): LotReferenceDao {
-        return appDatabase.getLotReferenceDao();
+        return appDatabase.getLotReferenceDao()
+    }
+
+    @Provides
+    fun provideDetailDao(appDatabase: AppDatabase): DetailDao {
+        return appDatabase.getDetailDao()
     }
 
     @Provides

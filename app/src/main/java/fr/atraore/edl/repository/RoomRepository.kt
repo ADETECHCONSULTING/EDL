@@ -1,11 +1,8 @@
 package fr.atraore.edl.repository
 
-import fr.atraore.edl.data.dao.AgencyDao
-import fr.atraore.edl.data.dao.ElementReferenceDao
 import fr.atraore.edl.data.dao.RoomReferenceDao
-import fr.atraore.edl.data.models.Agency
 import fr.atraore.edl.data.models.RoomReference
-import fr.atraore.edl.data.models.RoomWithElements
+import fr.atraore.edl.data.models.data.RoomWithDetails
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -17,5 +14,5 @@ class RoomRepository @Inject constructor(
 
     fun firstRoomReference() : Flow<RoomReference> = roomReferenceDao.getFirstRoomReferences()
 
-    fun getRoomDetails() : Flow<List<RoomWithElements>> = roomReferenceDao.getRoomDetails()
+    fun getRoomDetails() : Flow<List<RoomWithDetails>> = roomReferenceDao.getRoomDetails()
 }

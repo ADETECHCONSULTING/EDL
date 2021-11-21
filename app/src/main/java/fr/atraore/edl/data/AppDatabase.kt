@@ -21,7 +21,7 @@ const val DATABASE_NAME = "edlDb"
         ConstatUsersCrossRef::class,
         ConstatRoomCrossRef::class,
         ConstatLotCrossRef::class,
-        RoomElementCrossRef::class,
+        RoomDetailCrossRef::class,
         Owner::class,
         Property::class,
         Tenant::class,
@@ -34,7 +34,8 @@ const val DATABASE_NAME = "edlDb"
         Alteration::class,
         Descriptif::class,
         Etat::class,
-        Proprete::class
+        Proprete::class,
+        Detail::class
     ], version = 1, exportSchema = false
 )
 @TypeConverters(DateTypeConverter::class)
@@ -51,6 +52,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getRoomReferenceDao(): RoomReferenceDao
     abstract fun getElementReferenceDao(): ElementReferenceDao
     abstract fun getLotReferenceDao(): LotReferenceDao
+    abstract fun getDetailDao(): DetailDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
