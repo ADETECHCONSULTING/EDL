@@ -88,6 +88,26 @@ class DatabaseModule {
     }
 
     @Provides
+    fun provideEtatDao(appDatabase: AppDatabase): EtatDao {
+        return appDatabase.getEtatDao()
+    }
+
+    @Provides
+    fun provideAlterationDao(appDatabase: AppDatabase): AlterationDao {
+        return appDatabase.getAlterationDao()
+    }
+
+    @Provides
+    fun provideDescriptifDao(appDatabase: AppDatabase): DescriptifDao {
+        return appDatabase.getDescriptifDao()
+    }
+
+    @Provides
+    fun providePropreteDao(appDatabase: AppDatabase): PropreteDao {
+        return appDatabase.getPropreteDao()
+    }
+
+    @Provides
     @Singleton
     fun provideAppDatabase(
         @ApplicationContext applicationContext: Context,

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Descriptif(
     @PrimaryKey(autoGenerate = false) val id: String,
     val label: String,
-    val section: String,
+    val section: Int,
     val equipement: String
 ) {
 }

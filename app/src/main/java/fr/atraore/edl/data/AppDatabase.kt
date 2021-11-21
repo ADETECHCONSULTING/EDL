@@ -53,6 +53,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getElementReferenceDao(): ElementReferenceDao
     abstract fun getLotReferenceDao(): LotReferenceDao
     abstract fun getDetailDao(): DetailDao
+    abstract fun getEtatDao(): EtatDao
+    abstract fun getDescriptifDao(): DescriptifDao
+    abstract fun getPropreteDao(): PropreteDao
+    abstract fun getAlterationDao(): AlterationDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

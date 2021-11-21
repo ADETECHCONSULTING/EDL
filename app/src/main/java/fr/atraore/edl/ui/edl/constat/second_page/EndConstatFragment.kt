@@ -48,6 +48,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
@@ -76,6 +77,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private lateinit var listPopupWindow: ListPopupWindow
     private lateinit var clickedChildItem: Detail
     private lateinit var clickedParentItem: RoomReference
+    private var clickedLot by Delegates.notNull<Int>()
 
     private lateinit var theme: Resources.Theme
 
@@ -122,6 +124,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         //set theme pour les lots techniques
         theme = resources.newTheme()
         unClickAllLotTechnique(theme)
+        //theme batis pré sélectionné
+        onLotTechniqueClick(imv_lot_batis, 1)
 
         //register dropdown
         listPopupWindow = ListPopupWindow(requireContext(), null, R.attr.listPopupWindowStyle)
@@ -231,7 +235,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         childFragmentManager.commit {
             setReorderingAllowed(true)
             val fragment = DetailEndConstatFragment.newInstance()
-            fragment.arguments = bundleOf("detailId" to itemId)
+            fragment.arguments = bundleOf("detailId" to itemId, "idLot" to clickedLot)
             replace(R.id.fragment_detail, fragment)
             // If we're already open and the detail pane is visible,
             // crossfade between the fragments.
@@ -263,8 +267,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             title(R.string.rename_dialog_title)
             input(prefill = clickedChildItem.intitule, allowEmpty = false) { _, text ->
                 launch {
-                    //TODO save du detail
-                    //viewModel.saveRoomDetailCrossRef(clickedParentItem.roomReferenceId, clickedChildItem.elementReferenceId, clickedChildItem.name)
+                    clickedChildItem.intitule = text.toString()
+                    viewModel.saveDetail(clickedChildItem)
                 }
             }
             positiveButton(R.string.rename)
@@ -302,6 +306,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         val themeClick = resources.newTheme()
         themeClick.applyStyle(R.style.ClickedLot, false)
         changeTheme(themeClick, view as ImageView, idLot)
+        clickedLot = idLot
     }
 
     private fun changeTheme(theme: Resources.Theme, view: ImageView, idLot: Int) {

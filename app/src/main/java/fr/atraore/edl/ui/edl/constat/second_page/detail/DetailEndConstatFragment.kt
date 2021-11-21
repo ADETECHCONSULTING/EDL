@@ -1,32 +1,52 @@
 package fr.atraore.edl.ui.edl.constat.second_page.detail
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Detail
+import fr.atraore.edl.data.models.*
 import fr.atraore.edl.databinding.FragmentDetailEndConstatBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.SUITE_CONSTAT_LABEL
+import kotlinx.android.synthetic.main.fragment_detail_end_constat.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 
 @AndroidEntryPoint
-class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL), MainActivity.OnNavigationFragment {
+class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
+    MainActivity.OnNavigationFragment, CoroutineScope {
 
     override val title: String
         get() = SUITE_CONSTAT_LABEL
 
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
     private lateinit var binding: FragmentDetailEndConstatBinding
 
     private val viewModel: DetailEndConstatViewModel by viewModels()
+    private lateinit var detail: Detail
+    private lateinit var alterations: List<Alteration>
+    private lateinit var etats: List<Etat>
+    private lateinit var proprete: List<Proprete>
+    private lateinit var descriptif: List<Descriptif>
 
     companion object {
         fun newInstance() = DetailEndConstatFragment()
@@ -46,8 +66,14 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL), MainActivity
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_detail_end_constat, container, false)
+            DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_detail_end_constat,
+                container,
+                false
+            )
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.fragment = this
         return binding.root
     }
 
@@ -59,6 +85,44 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL), MainActivity
                 viewModel.getDetailById(detailId).observe(viewLifecycleOwner, {
                     it?.let {
                         binding.detail = it
+                        detail = it
+                    }
+                })
+
+                viewModel.getAllAlterations.observe(viewLifecycleOwner, {
+                    Log.d("TAG", "onViewCreated: ")
+                })
+
+                viewModel.getDetailReferentiel().observe(viewLifecycleOwner, {
+                    it.first.let { firstPair ->
+                        firstPair.first.let { list: List<Alteration>? ->
+                            cg_alterations.removeAllViews()
+                            list?.forEach { item ->
+                                createChipsInCG(item.label, cg_alterations)
+                            }
+                        }
+
+                        firstPair.second.let { list: List<Descriptif>? ->
+                            cg_descriptif.removeAllViews()
+                            list?.forEach { item ->
+                                createChipsInCG(item.label, cg_descriptif)
+                            }
+                        }
+                    }
+                    it.second.let { secondPair ->
+                        secondPair.first.let { list: List<Etat>? ->
+                            cg_etat.removeAllViews()
+                            list?.forEach { item ->
+                                createChipsInCG(item.label, cg_etat)
+                            }
+                        }
+
+                        secondPair.second.let { list: List<Proprete>? ->
+                            cg_proprete.removeAllViews()
+                            list?.forEach { item ->
+                                createChipsInCG(item.label, cg_proprete)
+                            }
+                        }
                     }
                 })
             }
@@ -74,13 +138,59 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL), MainActivity
     }
 
     private fun createChipsInCG(text: String, cg: ChipGroup) {
-        val chip = Chip(requireContext())
+        val chip: Chip = layoutInflater.inflate(R.layout.chip_only, null) as Chip
         chip.text = text
-        chip.setChipBackgroundColorResource(R.color.white)
-        chip.setTextColor(resources.getColor(R.color.black))
 
         cg.addView(chip)
     }
 
-
+    @SuppressLint("CheckResult")
+    fun onAddClicked(view: View, id: Int) {
+        arguments?.getInt("idLot").let { idLot ->
+            if (idLot != null) {
+                MaterialDialog(requireContext()).show {
+                    title(R.string.add_element_label)
+                    input(allowEmpty = false) { _, text ->
+                        launch {
+                            when (id) {
+                                1 -> viewModel.saveEtat(
+                                    Etat(
+                                        UUID.randomUUID().toString(),
+                                        text.toString(),
+                                        idLot,
+                                        detail.idDetail
+                                    )
+                                )
+                                2 -> viewModel.saveProprete(
+                                    Proprete(
+                                        UUID.randomUUID().toString(),
+                                        text.toString(),
+                                        idLot,
+                                        detail.idDetail
+                                    )
+                                )
+                                3 -> viewModel.saveDescriptif(
+                                    Descriptif(
+                                        UUID.randomUUID().toString(),
+                                        text.toString(),
+                                        idLot,
+                                        detail.idDetail
+                                    )
+                                )
+                                4 -> viewModel.saveAlteration(
+                                    Alteration(
+                                        UUID.randomUUID().toString(),
+                                        text.toString(),
+                                        idLot,
+                                        detail.idDetail
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    positiveButton(R.string.done)
+                }
+            }
+        }
+    }
 }

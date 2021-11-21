@@ -10,6 +10,7 @@
     <color name="colorPrimary">#0288D1</color>
     <color name="colorPrimaryDark">#016195</color>
     <color name="colorAccent">#CDDC39</color>
+    <color name="colorAccentLighter">#80CDDC39</color>
     <color name="lightBlue">#03A9F4</color>
     <color name="darkBlue">#02557A</color>
     <color name="red">#ce1212</color>

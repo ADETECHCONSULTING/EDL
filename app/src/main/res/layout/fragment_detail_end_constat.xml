@@ -8,6 +8,10 @@
             name="detail"
             type="fr.atraore.edl.data.models.Detail" />
 
+        <variable
+            name="fragment"
+            type="fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatFragment" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,7 +97,8 @@
                         android:id="@+id/imv_add_etat"
                         android:layout_width="@dimen/buttons_width"
                         android:layout_height="@dimen/buttons_height"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/ic_add"
+                        android:onClick="@{(view) -> fragment.onAddClicked(view, 1)}" />
 
                 </LinearLayout>
 
@@ -131,7 +136,8 @@
                         android:id="@+id/imv_add_proprete"
                         android:layout_width="@dimen/buttons_width"
                         android:layout_height="@dimen/buttons_height"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/ic_add"
+                        android:onClick="@{(view) -> fragment.onAddClicked(view, 2)}"/>
 
                 </LinearLayout>
 
@@ -146,7 +152,7 @@
                     app:layout_constraintEnd_toStartOf="@id/guideline2"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ctn_proprete" />
+                    app:layout_constraintTop_toBottomOf="@id/ctn_proprete"/>
 
                 <LinearLayout
                     android:id="@+id/ctn_descriptif"
@@ -169,7 +175,8 @@
                         android:id="@+id/imv_add_descriptif"
                         android:layout_width="@dimen/buttons_width"
                         android:layout_height="@dimen/buttons_height"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/ic_add"
+                        android:onClick="@{(view) -> fragment.onAddClicked(view, 3)}"  />
 
                 </LinearLayout>
 
@@ -201,13 +208,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
 
+
                     </com.google.android.material.chip.ChipGroup>
 
                     <ImageView
                         android:id="@+id/imv_add_alterations"
                         android:layout_width="@dimen/buttons_width"
                         android:layout_height="@dimen/buttons_height"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/ic_add"
+                        android:onClick="@{(view) -> fragment.onAddClicked(view, 4)}" />
 
                 </LinearLayout>
 

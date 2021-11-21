@@ -66,6 +66,7 @@
     <string name="label_alterations">Altérations :</string>
     <string name="label_note">Notes :</string>
     <string name="add_label">Ajouter</string>
+    <string name="add_element_label">Ajouter un élément</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>
