@@ -90,38 +90,37 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                 })
 
                 viewModel.getAllAlterations.observe(viewLifecycleOwner, {
-                    Log.d("TAG", "onViewCreated: ")
-                })
-
-                viewModel.getDetailReferentiel().observe(viewLifecycleOwner, {
-                    it.first.let { firstPair ->
-                        firstPair.first.let { list: List<Alteration>? ->
-                            cg_alterations.removeAllViews()
-                            list?.forEach { item ->
-                                createChipsInCG(item.label, cg_alterations)
-                            }
-                        }
-
-                        firstPair.second.let { list: List<Descriptif>? ->
-                            cg_descriptif.removeAllViews()
-                            list?.forEach { item ->
-                                createChipsInCG(item.label, cg_descriptif)
-                            }
+                    it.let { list ->
+                        cg_alterations.removeAllViews()
+                        list.forEach { item ->
+                            createChipsInCG(item.label, cg_alterations)
                         }
                     }
-                    it.second.let { secondPair ->
-                        secondPair.first.let { list: List<Etat>? ->
-                            cg_etat.removeAllViews()
-                            list?.forEach { item ->
-                                createChipsInCG(item.label, cg_etat)
-                            }
-                        }
+                })
 
-                        secondPair.second.let { list: List<Proprete>? ->
-                            cg_proprete.removeAllViews()
-                            list?.forEach { item ->
-                                createChipsInCG(item.label, cg_proprete)
-                            }
+                viewModel.getAllEtats.observe(viewLifecycleOwner, {
+                    it.let { list: List<Etat> ->
+                        cg_etat.removeAllViews()
+                        list.forEach { item ->
+                            createChipsInCG(item.label, cg_etat)
+                        }
+                    }
+                })
+
+                viewModel.getAllDescriptifs.observe(viewLifecycleOwner, {
+                    it.let { list: List<Descriptif> ->
+                        cg_descriptif.removeAllViews()
+                        list.forEach { item ->
+                            createChipsInCG(item.label, cg_descriptif)
+                        }
+                    }
+                })
+
+                viewModel.getAllPropretes.observe(viewLifecycleOwner, {
+                    it.let { list: List<Proprete> ->
+                        cg_proprete.removeAllViews()
+                        list.forEach { item ->
+                            createChipsInCG(item.label, cg_proprete)
                         }
                     }
                 })
@@ -138,8 +137,11 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
     }
 
     private fun createChipsInCG(text: String, cg: ChipGroup) {
-        val chip: Chip = layoutInflater.inflate(R.layout.chip_only, null) as Chip
+        val chip: Chip = layoutInflater.inflate(R.layout.chip_only, cg) as Chip
         chip.text = text
+        chip.setOnClickListener { view ->
+
+        }
 
         cg.addView(chip)
     }

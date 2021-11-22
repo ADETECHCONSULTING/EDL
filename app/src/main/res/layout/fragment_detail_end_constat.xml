@@ -89,16 +89,57 @@
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/cg_etat"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent" >
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_neuf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:text="@string/neuf_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_neuf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:text="@string/neuf_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_neuf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:text="@string/neuf_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_neuf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:text="@string/neuf_label" />
 
                     </com.google.android.material.chip.ChipGroup>
-
-                    <ImageView
-                        android:id="@+id/imv_add_etat"
-                        android:layout_width="@dimen/buttons_width"
-                        android:layout_height="@dimen/buttons_height"
-                        android:src="@drawable/ic_add"
-                        android:onClick="@{(view) -> fragment.onAddClicked(view, 1)}" />
 
                 </LinearLayout>
 

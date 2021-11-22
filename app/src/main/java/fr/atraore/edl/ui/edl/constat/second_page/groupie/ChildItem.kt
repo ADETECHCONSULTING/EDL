@@ -13,8 +13,6 @@ import fr.atraore.edl.data.models.Detail
 var allChildItems: MutableList<View> = mutableListOf()
 
 class ChildItem(val detail : Detail, val actionHandler: IActionHandler) : Item() {
-    var rowIndex = -1
-
     interface IActionHandler {
         fun onLongClick(anchorView: View, detail : Detail)
 
