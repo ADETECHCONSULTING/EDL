@@ -9,10 +9,12 @@ data class Detail (
     @PrimaryKey(autoGenerate = false) val idDetail: String,
     val idElement: String,
     val idRoom: String,
+    val idConstat: String,
     var intitule: String,
-    val idEtat: String? = "",
-    val idDescriptif: String? = "",
-    val idAlteration: String? = "",
+    var etat: String? = "",
+    var idDescriptif: String? = "",
+    var idAlteration: String? = "",
+    var idProprete: String? = "",
     val notes: String? = ""
 ) {
 }

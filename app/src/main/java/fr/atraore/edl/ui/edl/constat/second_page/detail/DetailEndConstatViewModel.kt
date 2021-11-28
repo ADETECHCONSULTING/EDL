@@ -26,7 +26,11 @@ class DetailEndConstatViewModel @Inject constructor(
     fun getDetailReferentiel() = QuadrupleCombinedLiveData(getAllAlterations, getAllDescriptifs, getAllEtats, getAllPropretes)
 
     suspend fun saveDetail(detail: Detail) {
-        detailRepository.save()
+        detailRepository.save(detail)
+    }
+
+    suspend fun updateEtat(etat: String, idDetail: String) {
+        detailRepository.updateEtat(etat, idDetail)
     }
 
     suspend fun saveAlteration(alteration: Alteration) {

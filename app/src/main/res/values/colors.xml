@@ -19,4 +19,9 @@
     <color name="controls_light">#5F9BB2</color>
     <color name="text_primary_light">#8A8A8A</color>
     <color name="text_secondary_light">@color/black</color>
+    <color name="chip_neuf">#B681CB</color>
+    <color name="chip_bon">#97DC39</color>
+    <color name="chip_usage">#D8E34F</color>
+    <color name="chip_mauvais">#FFB01A</color>
+    <color name="chip_hs">#F71515</color>
 </resources>

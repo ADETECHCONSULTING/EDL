@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
+import com.afollestad.materialdialogs.list.checkItems
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
@@ -31,6 +32,7 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Detail
 import fr.atraore.edl.data.models.ElementReference
 import fr.atraore.edl.data.models.RoomReference
+import fr.atraore.edl.data.models.data.RoomWithDetails
 import fr.atraore.edl.databinding.EndConstatFragmentBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
@@ -52,7 +54,8 @@ import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
-    MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler, ParentItem.IActionHandler {
+    MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler,
+    ParentItem.IActionHandler {
     private val TAG = EndConstatFragment::class.simpleName
 
     override val title: String
@@ -71,6 +74,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private var parentList: MutableList<ParentItem> = mutableListOf()
     var roomRefList: List<RoomReference>? = null
     var elementRefList: List<ElementReference>? = null
+    private lateinit var roomsWithDetails: List<RoomWithDetails>
 
     private lateinit var binding: EndConstatFragmentBinding
 
@@ -155,26 +159,60 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                     addAll(parentItem.childItems)
                 })
             }
-            groupAdapter.updateAsync(expandableGroups)
+            groupAdapter.update(expandableGroups)
         }
 
         btn_add_room.setOnClickListener {
-            MaterialDialog(requireContext()).show {
+            val indexes = mutableListOf<Int>()
+            roomsWithDetails.forEach { roomWithDetails ->
+                if (roomWithDetails.details.size > 0) {
+                    roomRefList?.indexOf(roomWithDetails.rooms)?.let { index ->
+                        indexes.add(index)
+                    }
+                }
+            }
+            val dialog = MaterialDialog(requireContext()).show {
                 title(R.string.title_add_rooms)
                 listItemsMultiChoice(items = roomRefList?.map { roomReference -> roomReference.name }) { _, _, items ->
-                    val roomsToAdd: List<RoomReference>? =
-                        roomRefList?.filter { roomRef -> roomRef.name in items }
-                    roomsToAdd?.forEach {
-                        launch {
-                            viewModel.saveConstatRoomCrossRef(
-                                arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                it.roomReferenceId
-                            )
+                    val roomsToAdd: List<RoomReference>? = roomRefList?.filter { roomRef -> roomRef.name in items }
+                    val roomsToCompare = roomsWithDetails.filter { rm -> rm.details.size > 0 }.map { rm2 ->  rm2.rooms }//récupérer que les pièces qui ont des éléments
 
-                            elementRefList?.forEach { elementRef ->
+                    //check des rooms à supprimer
+                    roomsToCompare.forEach { roomToCompare ->
+                        if (roomsToAdd != null) {
+                            if (roomToCompare !in roomsToAdd) {
+                                //delete
                                 launch {
-                                    val detail = Detail(it.roomReferenceId + elementRef.elementReferenceId, elementRef.elementReferenceId, it.roomReferenceId, elementRef.name)
-                                    viewModel.saveDetail(detail)
+                                    viewModel.deleteConstatRoomCrossRef(
+                                        arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                        roomToCompare.roomReferenceId
+                                    )
+
+                                    viewModel.deleteAllDetailsFromRoom(roomToCompare.roomReferenceId)
+                                }
+                            }
+                        }
+                    }
+
+                    roomsToAdd?.forEach { roomToAdd ->
+                        if (roomToAdd !in roomsToCompare) {
+                            launch {
+                                viewModel.saveConstatRoomCrossRef(
+                                    arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                    roomToAdd.roomReferenceId
+                                )
+
+                                elementRefList?.forEach { elementRef ->
+                                    val detail = Detail(
+                                        roomToAdd.roomReferenceId + elementRef.elementReferenceId,
+                                        elementRef.elementReferenceId,
+                                        roomToAdd.roomReferenceId,
+                                        arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                        elementRef.name
+                                    )
+                                    launch {
+                                        viewModel.saveDetail(detail)
+                                    }
                                 }
                             }
                         }
@@ -183,6 +221,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 lifecycleOwner(this@EndConstatFragment)
                 positiveButton(R.string.done)
             }
+            dialog.checkItems(indexes.toIntArray())
         }
 
         groupLayoutManager = LinearLayoutManager(activity)
@@ -202,26 +241,41 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 //Pour chaque pièces du constat, récupérer les éléments et les affecter dans l'expandable list
                 viewModel.roomCombinedLiveData().observe(viewLifecycleOwner, { pairInfoRoom ->
                     pairInfoRoom.first?.let { roomsWithDetails ->
-                        val parentListItems = mutableListOf<ParentItem>()
-                        roomsWithDetails.filter { rse -> rse.details.size > 0 }.forEach {
-                            val parentIt = ParentItem(it.rooms, this)
-                            parentIt.childItems = it.details.map { detail ->
-                                ChildItem(detail, this@EndConstatFragment)
-                            }
-
-                            if (parentIt.roomParent.roomReferenceId !in parentListItems.map { re -> re.roomParent }.map { roomReference -> roomReference.roomReferenceId } ) {
-                                parentListItems.add(parentIt)
-                            }
-                        }
-                        listener?.invoke(parentListItems)
-
-                        pairInfoRoom.second?.let { listRoomReference ->
-                            this.roomRefList = listRoomReference
-                            btn_add_room.isEnabled = this.roomRefList?.isEmpty() != true
+                        var roomsIsDifferent = true
+                        if (this@EndConstatFragment::roomsWithDetails.isInitialized) {
+                            val numberOfRoomsPreviouslyAdded =
+                                this.roomsWithDetails.filter { rse -> rse.details.size > 0 }.size
+                            val numberOfRoomsCurrentlyAdded =
+                                roomsWithDetails.filter { rse -> rse.details.size > 0 }.size
+                            roomsIsDifferent =
+                                numberOfRoomsPreviouslyAdded != numberOfRoomsCurrentlyAdded
                         }
 
-                        pairInfoRoom.third?.let { listElementReference ->
-                            this.elementRefList = listElementReference
+                        if (roomsIsDifferent) {
+                            val parentListItems = mutableListOf<ParentItem>()
+                            this@EndConstatFragment.roomsWithDetails = roomsWithDetails
+                            roomsWithDetails.filter { rse -> rse.details.size > 0 }.forEach {
+                                val parentIt = ParentItem(it.rooms, this)
+                                it.details.sortBy { it.intitule }
+                                parentIt.childItems = it.details.map { detail ->
+                                    ChildItem(detail, this@EndConstatFragment)
+                                }
+
+                                if (parentIt.roomParent.roomReferenceId !in parentListItems.map { re -> re.roomParent }
+                                        .map { roomReference -> roomReference.roomReferenceId }) {
+                                    parentListItems.add(parentIt)
+                                }
+                            }
+                            listener?.invoke(parentListItems)
+
+                            pairInfoRoom.second?.let { listRoomReference ->
+                                this.roomRefList = listRoomReference
+                                btn_add_room.isEnabled = this.roomRefList?.isEmpty() != true
+                            }
+
+                            pairInfoRoom.third?.let { listElementReference ->
+                                this.elementRefList = listElementReference
+                            }
                         }
                     }
                 })
@@ -281,7 +335,10 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             message(R.string.delete_dialog_content)
             positiveButton(R.string.done) {
                 launch {
-                    viewModel.deleteRoomDetailCrossRef(clickedParentItem.roomReferenceId, clickedChildItem.idDetail)
+                    viewModel.deleteRoomDetailCrossRef(
+                        clickedParentItem.roomReferenceId,
+                        clickedChildItem.idDetail
+                    )
                 }
             }
             negativeButton(R.string.cancel_label) {
@@ -315,7 +372,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     }
 
     private fun drawableLotTechnique(idLot: Int, theme: Resources.Theme): Drawable? {
-        return when(idLot) {
+        return when (idLot) {
             1 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_mur, theme)
             2 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_ouvrant, theme)
             3 -> ResourcesCompat.getDrawable(resources, R.drawable.ic_elec, theme)
@@ -330,14 +387,56 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
     private fun unClickAllLotTechnique(theme: Resources.Theme) {
         theme.applyStyle(R.style.DefaultLot, false)
-        imv_lot_batis.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_mur, theme))
-        imv_ouvrants.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_ouvrant, theme))
+        imv_lot_batis.setImageDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.ic_mur,
+                theme
+            )
+        )
+        imv_ouvrants.setImageDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.ic_ouvrant,
+                theme
+            )
+        )
         imv_elec.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_elec, theme))
-        imv_plomberie.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_plomberie, theme))
-        imv_chauffage.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_chauffage, theme))
-        imv_electromenager.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_electromenager, theme))
-        imv_mobilier.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_mobilier, theme))
-        imv_meulbe.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_meuble, theme))
+        imv_plomberie.setImageDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.ic_plomberie,
+                theme
+            )
+        )
+        imv_chauffage.setImageDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.ic_chauffage,
+                theme
+            )
+        )
+        imv_electromenager.setImageDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.ic_electromenager,
+                theme
+            )
+        )
+        imv_mobilier.setImageDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.ic_mobilier,
+                theme
+            )
+        )
+        imv_meulbe.setImageDrawable(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.ic_meuble,
+                theme
+            )
+        )
     }
 
 

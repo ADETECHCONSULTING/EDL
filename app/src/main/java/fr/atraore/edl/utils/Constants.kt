@@ -71,3 +71,10 @@ val LOTS_LABELS = arrayOf(
     "Rangements/Mobilier",
     "Meublé"
 )
+
+enum class IdDetailStatesEnum(val value: Int) {
+    ETAT(1),
+    PROPRETE(2),
+    DESCRIPTIF(3),
+    ALTERATION(4),
+}

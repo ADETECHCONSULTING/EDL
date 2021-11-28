@@ -12,10 +12,15 @@ data class DetailWithEntities(
     )
     val elementReference: ElementReference,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "idEtat"
+        parentColumn = "roomReferenceId",
+        entityColumn = "idRoom"
     )
-    val etat: Etat,
+    val roomReference: RoomReference,
+    @Relation(
+        parentColumn = "constatId",
+        entityColumn = "idConstat"
+    )
+    val constat: Constat,
     @Relation(
         parentColumn = "id",
         entityColumn = "idDescriptif"

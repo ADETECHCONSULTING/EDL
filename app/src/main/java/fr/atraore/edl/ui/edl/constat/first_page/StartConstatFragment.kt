@@ -121,10 +121,20 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                     //set liste des elements d'une piece pour un constat
                     it.second?.let { listElementReferences ->
                         listElementReferences.forEach { elementRef ->
-                            launch {
-                                val detail = Detail(roomRef.roomReferenceId + elementRef.elementReferenceId, elementRef.elementReferenceId, roomRef.roomReferenceId, elementRef.name)
-                                viewModel.saveDetail(detail)
-                            }
+                            viewModel.getDetailsByIdRoomAndIdConstat(roomRef.roomReferenceId, arguments?.getString(ARGS_CONSTAT_ID)!!).observe(viewLifecycleOwner, {
+                                if (it.isNullOrEmpty()) {
+                                    val detail = Detail(
+                                        roomRef.roomReferenceId + elementRef.elementReferenceId,
+                                        elementRef.elementReferenceId,
+                                        roomRef.roomReferenceId,
+                                        arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                        elementRef.name
+                                    )
+                                    launch {
+                                        viewModel.saveDetail(detail)
+                                    }
+                                }
+                            })
                         }
                     }
                 }

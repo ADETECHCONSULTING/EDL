@@ -89,7 +89,8 @@
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/cg_etat"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent" >
+                        android:layout_height="match_parent"
+                        app:singleSelection="true">
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/cp_neuf"
@@ -98,46 +99,70 @@
                             android:minWidth="@dimen/chips_width"
                             android:minHeight="@dimen/buttons_height"
                             android:textSize="@dimen/textSizeMedium"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            app:chipBackgroundColor="@color/chip_neuf"
+                            style="@style/ChipStyle"
                             android:theme="@style/Theme.MaterialComponents.Light"
                             android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipEtatClicked(view)}"
                             android:text="@string/neuf_label" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/cp_neuf"
+                            android:id="@+id/cp_bon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minWidth="@dimen/chips_width"
                             android:minHeight="@dimen/buttons_height"
                             android:textSize="@dimen/textSizeMedium"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            app:chipBackgroundColor="@color/chip_bon"
+                            style="@style/ChipStyle"
                             android:theme="@style/Theme.MaterialComponents.Light"
                             android:textAlignment="center"
-                            android:text="@string/neuf_label" />
+                            android:onClick="@{(view) -> fragment.chipEtatClicked(view)}"
+                            android:text="@string/bon_label" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/cp_neuf"
+                            android:id="@+id/cp_usage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minWidth="@dimen/chips_width"
                             android:minHeight="@dimen/buttons_height"
                             android:textSize="@dimen/textSizeMedium"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            app:chipBackgroundColor="@color/chip_usage"
+                            style="@style/ChipStyle"
                             android:theme="@style/Theme.MaterialComponents.Light"
                             android:textAlignment="center"
-                            android:text="@string/neuf_label" />
+                            android:onClick="@{(view) -> fragment.chipEtatClicked(view)}"
+                            android:text="@string/usage_label" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/cp_neuf"
+                            android:id="@+id/cp_mauvais"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minWidth="@dimen/chips_width"
                             android:minHeight="@dimen/buttons_height"
                             android:textSize="@dimen/textSizeMedium"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            app:chipBackgroundColor="@color/chip_mauvais"
+                            style="@style/ChipStyle"
                             android:theme="@style/Theme.MaterialComponents.Light"
                             android:textAlignment="center"
-                            android:text="@string/neuf_label" />
+                            android:onClick="@{(view) -> fragment.chipEtatClicked(view)}"
+                            android:text="@string/mauvais_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_hs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            app:chipBackgroundColor="@color/chip_hs"
+                            android:textColor="@color/white"
+                            style="@style/ChipStyle"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipEtatClicked(view)}"
+                            android:text="@string/hs_label" />
+
 
                     </com.google.android.material.chip.ChipGroup>
 
@@ -169,7 +194,8 @@
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/cg_proprete"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        app:singleSelection="true">
 
                     </com.google.android.material.chip.ChipGroup>
 
@@ -208,7 +234,8 @@
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/cg_descriptif"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        app:singleSelection="true">
 
                     </com.google.android.material.chip.ChipGroup>
 
@@ -247,7 +274,8 @@
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/cg_alterations"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        app:singleSelection="true">
 
 
                     </com.google.android.material.chip.ChipGroup>

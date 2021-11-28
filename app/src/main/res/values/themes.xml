@@ -56,4 +56,9 @@
         <item name="lot_fill_color">@color/white</item>
     </style>
 
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipStrokeColor">@color/color_choice_chip_strokecolor_selector</item>
+        <item name="chipStrokeWidth">2dp</item>
+    </style>
+
 </resources>

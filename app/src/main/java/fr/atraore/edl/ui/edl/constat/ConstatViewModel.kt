@@ -31,6 +31,7 @@ class ConstatViewModel @AssistedInject constructor(
     val allElementReference: LiveData<List<ElementReference>> = elementRepository.allElementReference().asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
     fun getRoomWithDetails() : LiveData<List<RoomWithDetails>> = roomRepository.getRoomDetails().asLiveData()
+    fun getDetailsByIdRoomAndIdConstat(idRoom: String, idConstat: String) : LiveData<List<Detail>> = detailRepository.detailsByIdRoomAndIdConstat(idRoom, idConstat).asLiveData()
     //combined live data
     val initFirstRoomReference = CombinedLiveData(firstRoomReference, allElementReference)
     fun roomCombinedLiveData() = TripleCombinedLiveData(getRoomWithDetails(), allRoomReference, allElementReference)
@@ -78,4 +79,13 @@ class ConstatViewModel @AssistedInject constructor(
     suspend fun deleteRoomDetailCrossRef(roomId: String, detailId: String) {
         repository.deleteRoomDetailCrossRef(roomId, detailId)
     }
+
+    suspend fun deleteConstatRoomCrossRef(constatId: String, roomId: String) {
+        repository.deleteConstatRoomCrossRef(constatId, roomId)
+    }
+
+    suspend fun deleteAllDetailsFromRoom(roomId: String) {
+        detailRepository.deleteAllDetailsFromRoom(roomId)
+    }
+
 }

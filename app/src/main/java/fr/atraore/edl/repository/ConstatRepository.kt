@@ -92,6 +92,12 @@ class ConstatRepository @Inject constructor(
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
+    suspend fun deleteConstatRoomCrossRef(constatId: String, roomId: String) {
+        constatDao.deleteConstatRoomCrossRef(ConstatRoomCrossRef(constatId, roomId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
     suspend fun deleteRoomDetailCrossRef(roomId: String, detailId: String) {
         constatDao.deleteRoomDetailCrossRef(RoomDetailCrossRef(roomId, detailId))
     }

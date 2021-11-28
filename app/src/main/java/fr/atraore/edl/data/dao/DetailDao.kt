@@ -19,4 +19,12 @@ interface DetailDao : BaseDao<Detail> {
     @Query("SELECT * FROM $DETAIL_TABLE WHERE idDetail =:id")
     fun getDetailById(id: String): Flow<Detail>
 
+    @Query("SELECT * FROM $DETAIL_TABLE WHERE idRoom =:idRoom and idConstat = :idConstat")
+    fun getDetailsByIdRoomAndIdConstat(idRoom: String, idConstat: String): Flow<List<Detail>>
+
+    @Query("UPDATE Detail SET etat =:etat WHERE idDetail =:idDetail")
+    suspend fun updateEtat(etat: String, idDetail: String)
+
+    @Query("DELETE FROM Detail WHERE idRoom =:idRoom")
+    suspend fun deleteAllDetailsFromRoom(idRoom: String)
 }

@@ -72,6 +72,9 @@ interface ConstatDao : BaseDao<Constat> {
     suspend fun deleteConstatPropertyCrossRef(crossRef: ConstatPropertyCrossRef)
 
     @Delete
+    suspend fun deleteConstatRoomCrossRef(crossRef: ConstatRoomCrossRef)
+
+    @Delete
     suspend fun deleteConstatOwnerCrossRef(crossRef: ConstatOwnerCrossRef)
 
     @Delete

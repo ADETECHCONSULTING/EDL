@@ -19,6 +19,6 @@ interface RoomReferenceDao : BaseDao<RoomReference> {
     fun getFirstRoomReferences(): Flow<RoomReference>
 
     @Transaction
-    @Query("SELECT * FROM $ROOM_REFERENCE_TABLE")
+    @Query("SELECT * FROM $ROOM_REFERENCE_TABLE ORDER BY name asc")
     fun getRoomDetails() : Flow<List<RoomWithDetails>>
 }

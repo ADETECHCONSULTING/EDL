@@ -68,6 +68,10 @@
     <string name="add_label">Ajouter</string>
     <string name="add_element_label">Ajouter un élément</string>
     <string name="neuf_label">Neuf</string>
+    <string name="bon_label">Bon</string>
+    <string name="usage_label">D\'usage</string>
+    <string name="mauvais_label">Mauvais</string>
+    <string name="hs_label">H.S</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

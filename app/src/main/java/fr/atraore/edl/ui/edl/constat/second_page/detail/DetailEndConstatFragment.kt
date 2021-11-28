@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -20,6 +19,7 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.*
 import fr.atraore.edl.databinding.FragmentDetailEndConstatBinding
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.utils.IdDetailStatesEnum
 import fr.atraore.edl.utils.SUITE_CONSTAT_LABEL
 import kotlinx.android.synthetic.main.fragment_detail_end_constat.*
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +33,8 @@ import kotlin.coroutines.CoroutineContext
 class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
     MainActivity.OnNavigationFragment, CoroutineScope {
 
+    private val TAG = DetailEndConstatFragment::class.simpleName
+
     override val title: String
         get() = SUITE_CONSTAT_LABEL
 
@@ -43,10 +45,11 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
 
     private val viewModel: DetailEndConstatViewModel by viewModels()
     private lateinit var detail: Detail
-    private lateinit var alterations: List<Alteration>
-    private lateinit var etats: List<Etat>
-    private lateinit var proprete: List<Proprete>
-    private lateinit var descriptif: List<Descriptif>
+    private lateinit var alterationRefs: List<Alteration>
+    private lateinit var etatsRefs: List<Etat>
+    private lateinit var propreteRefs: List<Proprete>
+    private lateinit var descriptifRefs: List<Descriptif>
+    private lateinit var currentEtat: String
 
     companion object {
         fun newInstance() = DetailEndConstatFragment()
@@ -86,41 +89,70 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     it?.let {
                         binding.detail = it
                         detail = it
-                    }
-                })
 
-                viewModel.getAllAlterations.observe(viewLifecycleOwner, {
-                    it.let { list ->
-                        cg_alterations.removeAllViews()
-                        list.forEach { item ->
-                            createChipsInCG(item.label, cg_alterations)
+
+                        if (!this::currentEtat.isInitialized) {
+                            chipCheckedState(
+                                cg_etat,
+                                IdDetailStatesEnum.ETAT.value
+                            )
                         }
-                    }
-                })
 
-                viewModel.getAllEtats.observe(viewLifecycleOwner, {
-                    it.let { list: List<Etat> ->
-                        cg_etat.removeAllViews()
-                        list.forEach { item ->
-                            createChipsInCG(item.label, cg_etat)
+                        if (!this::descriptifRefs.isInitialized) {
+                            viewModel.getAllDescriptifs.observe(viewLifecycleOwner, { listRefs ->
+                                listRefs.let { list: List<Descriptif> ->
+                                    descriptifRefs = list
+                                    cg_descriptif.removeAllViews()
+                                    list.forEach { item ->
+                                        createChipsInCG(
+                                            item.label,
+                                            cg_descriptif,
+                                            IdDetailStatesEnum.DESCRIPTIF.value
+                                        )
+                                    }
+                                    chipCheckedState(
+                                        cg_descriptif,
+                                        IdDetailStatesEnum.DESCRIPTIF.value
+                                    )
+                                }
+                            })
                         }
-                    }
-                })
 
-                viewModel.getAllDescriptifs.observe(viewLifecycleOwner, {
-                    it.let { list: List<Descriptif> ->
-                        cg_descriptif.removeAllViews()
-                        list.forEach { item ->
-                            createChipsInCG(item.label, cg_descriptif)
+                        if (!this::propreteRefs.isInitialized) {
+                            viewModel.getAllPropretes.observe(viewLifecycleOwner, { listRefs ->
+                                listRefs.let { list: List<Proprete> ->
+                                    propreteRefs = list
+                                    cg_proprete.removeAllViews()
+                                    list.forEach { item ->
+                                        createChipsInCG(
+                                            item.label,
+                                            cg_proprete,
+                                            IdDetailStatesEnum.PROPRETE.value
+                                        )
+                                    }
+                                    chipCheckedState(cg_proprete, IdDetailStatesEnum.PROPRETE.value)
+                                }
+                            })
                         }
-                    }
-                })
 
-                viewModel.getAllPropretes.observe(viewLifecycleOwner, {
-                    it.let { list: List<Proprete> ->
-                        cg_proprete.removeAllViews()
-                        list.forEach { item ->
-                            createChipsInCG(item.label, cg_proprete)
+                        if (!this::alterationRefs.isInitialized) {
+                            viewModel.getAllAlterations.observe(viewLifecycleOwner, { listRefs ->
+                                listRefs.let { list: List<Alteration> ->
+                                    alterationRefs = list
+                                    cg_alterations.removeAllViews()
+                                    list.forEach { item ->
+                                        createChipsInCG(
+                                            item.label,
+                                            cg_alterations,
+                                            IdDetailStatesEnum.ALTERATION.value
+                                        )
+                                    }
+                                    chipCheckedState(
+                                        cg_alterations,
+                                        IdDetailStatesEnum.ALTERATION.value
+                                    )
+                                }
+                            })
                         }
                     }
                 })
@@ -136,14 +168,110 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
         }
     }
 
-    private fun createChipsInCG(text: String, cg: ChipGroup) {
-        val chip: Chip = layoutInflater.inflate(R.layout.chip_only, cg) as Chip
+    fun chipEtatClicked(view: View) {
+        (view as Chip).let {
+            launch {
+                Log.d(TAG, "chipEtatClicked: ${it.text}")
+                arguments?.getString("detailId")?.let { idDetail ->
+                    viewModel.updateEtat(
+                        it.text.toString(),
+                        idDetail
+                    )
+                }
+            }
+        }
+    }
+
+    @SuppressLint("InflateParams")
+    private fun createChipsInCG(text: String, cg: ChipGroup, idOtherState: Int) {
+        val chip: Chip = layoutInflater.inflate(R.layout.chip_only, null) as Chip
         chip.text = text
         chip.setOnClickListener { view ->
-
+            chipOtherStatesClickListener(view, idOtherState)
         }
 
         cg.addView(chip)
+    }
+
+    /**
+     * Gère la pre selection des chips
+     */
+    private fun chipCheckedState(viewGroup: ViewGroup, id: Int) {
+        val views = getAllChildrenInsideViewGroup(viewGroup)
+        if (!views.isNullOrEmpty()) {
+            views.forEach { view ->
+                if (view is Chip) {
+                    when (id) {
+                        IdDetailStatesEnum.ETAT.value -> {
+                            if (view.text == detail.etat) {
+                                view.isChecked = true
+                                currentEtat = detail.etat.toString()
+                            }
+                        }
+                        IdDetailStatesEnum.PROPRETE.value -> {
+                            val proprete = this.propreteRefs.find { stt -> stt.label == view.text }
+                            proprete?.let {
+                                view.isChecked = proprete.id == detail.idProprete
+                            }
+                        }
+                        IdDetailStatesEnum.DESCRIPTIF.value -> {
+                            val descriptif =
+                                this.descriptifRefs.find { stt -> stt.label == view.text }
+                            descriptif?.let {
+                                view.isChecked = descriptif.id == detail.idDescriptif
+                            }
+                        }
+                        IdDetailStatesEnum.ALTERATION.value -> {
+                            val alteration =
+                                this.alterationRefs.find { stt -> stt.label == view.text }
+                            alteration?.let {
+                                view.isChecked = alteration.id == detail.idAlteration
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun chipOtherStatesClickListener(view: View, id: Int) {
+        if (view is Chip) {
+            when (id) {
+                IdDetailStatesEnum.PROPRETE.value -> {
+                    val idProprete =
+                        this.propreteRefs.find { stt -> stt.label == view.text }
+                    idProprete?.let {
+                        detail.idProprete = it.id
+                        launch {
+                            Log.d(TAG, "set de la propreté dans le detail : ${it.id}")
+                            viewModel.saveDetail(detail)
+                        }
+                    }
+                }
+                IdDetailStatesEnum.DESCRIPTIF.value -> {
+                    val idDescriptif =
+                        this.descriptifRefs.find { stt -> stt.label == view.text }
+                    idDescriptif?.let {
+                        detail.idDescriptif = it.id
+                        launch {
+                            Log.d(TAG, "set du descriptif dans le detail : ${it.id}")
+                            viewModel.saveDetail(detail)
+                        }
+                    }
+                }
+                IdDetailStatesEnum.ALTERATION.value -> {
+                    val idAlteration =
+                        this.alterationRefs.find { stt -> stt.label == view.text }
+                    idAlteration?.let {
+                        detail.idAlteration = it.id
+                        launch {
+                            Log.d(TAG, "set de l'alteration dans le detail : ${it.id}")
+                            viewModel.saveDetail(detail)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -155,7 +283,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     input(allowEmpty = false) { _, text ->
                         launch {
                             when (id) {
-                                1 -> viewModel.saveEtat(
+                                IdDetailStatesEnum.ETAT.value -> viewModel.saveEtat(
                                     Etat(
                                         UUID.randomUUID().toString(),
                                         text.toString(),
@@ -163,7 +291,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                         detail.idDetail
                                     )
                                 )
-                                2 -> viewModel.saveProprete(
+                                IdDetailStatesEnum.PROPRETE.value -> viewModel.saveProprete(
                                     Proprete(
                                         UUID.randomUUID().toString(),
                                         text.toString(),
@@ -171,7 +299,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                         detail.idDetail
                                     )
                                 )
-                                3 -> viewModel.saveDescriptif(
+                                IdDetailStatesEnum.DESCRIPTIF.value -> viewModel.saveDescriptif(
                                     Descriptif(
                                         UUID.randomUUID().toString(),
                                         text.toString(),
@@ -179,7 +307,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                         detail.idDetail
                                     )
                                 )
-                                4 -> viewModel.saveAlteration(
+                                IdDetailStatesEnum.ALTERATION.value -> viewModel.saveAlteration(
                                     Alteration(
                                         UUID.randomUUID().toString(),
                                         text.toString(),
@@ -194,5 +322,17 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                 }
             }
         }
+    }
+
+    private fun getAllChildrenInsideViewGroup(viewGroup: ViewGroup): MutableList<View> {
+        val list = mutableListOf<View>()
+        val childCount = viewGroup.childCount
+        for (childIndex in 0..childCount) {
+            val view = viewGroup.getChildAt(childIndex)
+            view?.let {
+                list.add(it)
+            }
+        }
+        return Collections.unmodifiableList(list)
     }
 }
