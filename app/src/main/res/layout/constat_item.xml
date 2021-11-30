@@ -20,8 +20,8 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="350dp"
-        android:layout_height="200dp"
+        android:layout_width="400dp"
+        android:layout_height="250dp"
         android:layout_marginBottom="20dp"
         android:onClick="@{constatClickListener}"
         android:background="@color/white">
@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/white"
+                android:text='@{constatItem.constat.dateCreationFormatted}'
                 tools:text="001 - Mercredi 10 Septembre 2020 - 16h52" />
         </LinearLayout>
 
@@ -169,6 +170,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/black"
+                android:text='@{constatItem.user.name}'
                 tools:text="Adama Traore - Entreprise Name" />
         </LinearLayout>
 

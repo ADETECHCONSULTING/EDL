@@ -1,9 +1,7 @@
 package fr.atraore.edl.data.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.CONSTAT_TABLE
 import java.io.Serializable
 import java.sql.Date
@@ -17,5 +15,6 @@ data class Constat(
     var procuration: String? = "",
     val state: Int?
 ) : Serializable {
-
+    @Ignore
+    val dateCreationFormatted = dateCreation.formatToServerDateTimeDefaults()
 }
