@@ -14,6 +14,7 @@ data class Constat(
     @PrimaryKey(autoGenerate = false) val constatId: String,
     @ColumnInfo(name = "type_constat") val typeConstat: String, //ESP - Entrant - Pre-etat - Sortant
     @ColumnInfo(name = "date_creation") val dateCreation: Date,
+    var procuration: String? = "",
     val state: Int?
 ) : Serializable {
 

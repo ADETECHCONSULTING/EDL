@@ -62,6 +62,12 @@ class ConstatRepository @Inject constructor(
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
+    suspend fun saveProcuration(constatId: String, procuration: String) {
+        constatDao.updateProcuration(constatId, procuration)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
     suspend fun saveRoomDetailCrossRef(roomId: String, detailId: String) {
         constatDao.saveRoomDetailCrossRef(RoomDetailCrossRef(roomId, detailId))
     }
@@ -118,6 +124,30 @@ class ConstatRepository @Inject constructor(
     @WorkerThread
     suspend fun deleteConstatContractorCrossRef(constatId: String, contractorId: String) {
         constatDao.deleteConstatContractorCrossRef(ConstatContractorCrossRef(constatId, contractorId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteConstatPropertyCrossRefByIds(constatId: String, ids: List<String>) {
+        constatDao.deleteConstatPropertyRefByIds(constatId, ids)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteConstatContractorCrossRefByIds(constatId: String, ids: List<String>) {
+        constatDao.deleteConstatContractorRefByIds(constatId, ids)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteConstatTenantCrossRefByIds(constatId: String, ids: List<String>) {
+        constatDao.deleteConstatTenantRefByIds(constatId, ids)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteConstatOwnerCrossRefByIds(constatId: String, ids: List<String>) {
+        constatDao.deleteConstatOwnerRefByIds(constatId, ids)
     }
 
 }

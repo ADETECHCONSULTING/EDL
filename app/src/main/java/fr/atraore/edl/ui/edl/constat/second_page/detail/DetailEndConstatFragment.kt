@@ -283,14 +283,6 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     input(allowEmpty = false) { _, text ->
                         launch {
                             when (id) {
-                                IdDetailStatesEnum.ETAT.value -> viewModel.saveEtat(
-                                    Etat(
-                                        UUID.randomUUID().toString(),
-                                        text.toString(),
-                                        idLot,
-                                        detail.idDetail
-                                    )
-                                )
                                 IdDetailStatesEnum.PROPRETE.value -> viewModel.saveProprete(
                                     Proprete(
                                         UUID.randomUUID().toString(),

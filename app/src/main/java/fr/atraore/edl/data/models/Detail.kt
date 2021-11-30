@@ -10,11 +10,12 @@ data class Detail (
     val idElement: String,
     val idRoom: String,
     val idConstat: String,
+    val idLot: Int,
     var intitule: String,
     var etat: String? = "",
     var idDescriptif: String? = "",
     var idAlteration: String? = "",
     var idProprete: String? = "",
-    val notes: String? = ""
+    var notes: String? = ""
 ) {
 }

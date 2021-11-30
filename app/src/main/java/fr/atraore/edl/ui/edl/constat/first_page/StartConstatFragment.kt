@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Detail
+import fr.atraore.edl.data.models.LotReference
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.databinding.StartConstatFragmentBinding
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
@@ -77,6 +78,7 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
 
     private lateinit var binding: StartConstatFragmentBinding
     private lateinit var constat: ConstatWithDetails
+    private lateinit var listLotReference: List<LotReference>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -117,25 +119,40 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                             ARGS_CONSTAT_ID
                         )!!, roomRef.roomReferenceId
                     )
+                }
 
-                    //set liste des elements d'une piece pour un constat
-                    it.second?.let { listElementReferences ->
-                        listElementReferences.forEach { elementRef ->
-                            viewModel.getDetailsByIdRoomAndIdConstat(roomRef.roomReferenceId, arguments?.getString(ARGS_CONSTAT_ID)!!).observe(viewLifecycleOwner, {
-                                if (it.isNullOrEmpty()) {
-                                    val detail = Detail(
-                                        roomRef.roomReferenceId + elementRef.elementReferenceId,
-                                        elementRef.elementReferenceId,
-                                        roomRef.roomReferenceId,
-                                        arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                        elementRef.name
-                                    )
-                                    launch {
-                                        viewModel.saveDetail(detail)
-                                    }
-                                }
-                            })
-                        }
+                //set liste des elements d'une piece pour un constat
+                it.second?.let { listElementReferences ->
+                    listElementReferences.forEach { elementRef ->
+                        viewModel.getDetailsByIdRoomAndIdConstat(
+                            roomRef.roomReferenceId,
+                            arguments?.getString(ARGS_CONSTAT_ID)!!
+                        ).observe(viewLifecycleOwner, {
+                            if (it.isNullOrEmpty() && !this@StartConstatFragment::listLotReference.isInitialized) {
+                                viewModel.getAllLotReference.observe(
+                                    viewLifecycleOwner, { listLotRef ->
+                                        this@StartConstatFragment.listLotReference = listLotRef
+                                        listLotRef.forEach {
+                                            val detail = Detail(
+                                                roomRef.roomReferenceId + elementRef.elementReferenceId + it.lotReferenceId,
+                                                elementRef.elementReferenceId,
+                                                roomRef.roomReferenceId,
+                                                arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                                it.lotReferenceId,
+                                                elementRef.name
+                                            )
+                                            Log.d(
+                                                TAG,
+                                                "onViewCreated: sauvegarde de l'item $detail"
+                                            )
+                                            launch {
+                                                viewModel.saveDetail(detail)
+                                            }
+                                        }
+                                    })
+
+                            }
+                        })
                     }
                 }
             }
@@ -153,6 +170,7 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         imv_search_locataire.setOnClickListener(this)
         imv_search_mandataire.setOnClickListener(this)
         imv_search_agence.setOnClickListener(this)
+        imv_search_user.setOnClickListener(this)
 
         imv_edit_owner.setOnClickListener(this)
         imv_edit_bien.setOnClickListener(this)
@@ -163,6 +181,13 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         imv_add_contractor.setOnClickListener(this)
         imv_add_locataire.setOnClickListener(this)
         imv_add_owner.setOnClickListener(this)
+
+        imv_delete_locataire.setOnClickListener(this)
+        imv_delete_bien.setOnClickListener(this)
+        imv_delete_mandataire.setOnClickListener(this)
+        imv_delete_owner.setOnClickListener(this)
+
+        imb_save_procuration.setOnClickListener(this)
     }
 
     /**
@@ -252,6 +277,13 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                 )
                 findNavController().navigate(R.id.go_to_search, bundle)
             }
+            R.id.imv_search_user -> {
+                val bundle = bundleOf(
+                    ARGS_TAB_POSITION to POSITION_FRAGMENT_USER,
+                    ARGS_CONSTAT to this.constat
+                )
+                findNavController().navigate(R.id.go_to_search, bundle)
+            }
 
             //click on Item : Edit icon
             //click true active l'edition
@@ -285,6 +317,33 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
             R.id.imv_add_contractor -> {
                 val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE)
                 findNavController().navigate(R.id.go_to_add, bundle)
+            }
+            R.id.imv_delete_bien -> {
+                launch {
+                    viewModel.deleteConstatPropertyCrossRefByIds()
+                }
+            }
+            R.id.imv_delete_owner -> {
+                launch {
+                    viewModel.deleteConstatOwnerCrossRefByIds()
+                }
+            }
+            R.id.imv_delete_locataire -> {
+                launch {
+                    viewModel.deleteConstatTenantCrossRefByIds()
+                }
+            }
+            R.id.imv_delete_mandataire -> {
+                launch {
+                    viewModel.deleteConstatContractorCrossRefByIds()
+                }
+            }
+
+            //procuration
+            R.id.imb_save_procuration -> {
+                launch {
+                    viewModel.saveProcuration(this@StartConstatFragment.constat.constat.constatId, edt_procuration.text.toString())
+                }
             }
 
             else -> {

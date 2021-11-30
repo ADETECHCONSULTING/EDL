@@ -113,7 +113,21 @@
                 android:layout_margin="12dp"
                 android:src="@drawable/ic_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/imv_search_bien" />
+                app:layout_constraintEnd_toStartOf="@id/imv_search_bien"
+                app:layout_constraintStart_toEndOf="@id/imv_delete_bien"/>
+
+
+            <ImageView
+                android:id="@+id/imv_delete_bien"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/ic_minus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imv_edit_bien"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -188,7 +202,21 @@
                 android:layout_margin="12dp"
                 android:src="@drawable/ic_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/imv_search_owner" />
+                app:layout_constraintEnd_toStartOf="@id/imv_search_owner"
+                app:layout_constraintStart_toEndOf="@id/imv_delete_owner"/>
+
+            <ImageView
+                android:id="@+id/imv_delete_owner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/ic_minus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imv_edit_owner"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -269,18 +297,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imv_search_locataire"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imv_exchange_locataire" />
-
-            <ImageView
-                android:id="@+id/imv_exchange_locataire"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginBottom="12dp"
-                android:src="@drawable/ic_exchange"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imv_edit_locataire"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imv_delete_locataire" />
 
             <ImageView
@@ -291,11 +307,41 @@
                 android:layout_marginBottom="12dp"
                 android:src="@drawable/ic_minus"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imv_exchange_locataire"
+                app:layout_constraintEnd_toStartOf="@+id/imv_edit_locataire"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/ctn_locataire"
+            app:layout_constraintStart_toStartOf="@id/ctn_locataire"
+            app:layout_constraintEnd_toEndOf="@id/ctn_locataire">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_procuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/procuration_background"
+                android:hint="@string/label_procuration"
+                android:padding="@dimen/padding_small"
+                android:text="@{constatViewModel.constatDetail.constat.procuration}"
+                android:minHeight="48dp"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imb_save_procuration"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:src="@android:drawable/ic_menu_save"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:background="@color/colorAccent" />
+
+        </LinearLayout>
+
 
         <!-- Mandataire -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -370,7 +416,21 @@
                 android:layout_margin="12dp"
                 android:src="@drawable/ic_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/imv_search_mandataire" />
+                app:layout_constraintEnd_toStartOf="@id/imv_search_mandataire"
+                app:layout_constraintStart_toEndOf="@id/imv_delete_mandataire"/>
+
+
+            <ImageView
+                android:id="@+id/imv_delete_mandataire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/ic_minus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imv_edit_mandataire"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

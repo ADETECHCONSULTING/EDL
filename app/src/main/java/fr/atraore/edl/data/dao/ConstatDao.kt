@@ -16,11 +16,11 @@ interface ConstatDao : BaseDao<Constat> {
 
     @Transaction
     @Query("SELECT * FROM $CONSTAT_TABLE")
-    fun getAllConstatWithDetails() : Flow<List<ConstatWithDetails>>
+    fun getAllConstatWithDetails(): Flow<List<ConstatWithDetails>>
 
     @Transaction
     @Query("SELECT * FROM constat WHERE constatId = :constatId")
-    fun getConstatDetails(constatId: String) : Flow<ConstatWithDetails>
+    fun getConstatDetails(constatId: String): Flow<ConstatWithDetails>
 
     //Select constat by id
     @Query("SELECT * FROM $CONSTAT_TABLE WHERE constatId = :constatId")
@@ -64,6 +64,9 @@ interface ConstatDao : BaseDao<Constat> {
     @Query("UPDATE ConstatUsersCrossRef SET userId =:userId WHERE constatId =:constatId")
     suspend fun updateExistingUsersCrossRef(constatId: String, userId: String)
 
+    @Query("UPDATE Constat SET procuration =:procuration WHERE constatId =:constatId")
+    suspend fun updateProcuration(constatId: String, procuration: String)
+
     //** DELETE **
     @Delete
     fun delete(constat: Constat)
@@ -94,4 +97,16 @@ interface ConstatDao : BaseDao<Constat> {
 
     @Query("DELETE FROM $CONSTAT_TABLE")
     fun deleteAll()
+
+    @Query("DELETE FROM CONSTATPROPERTYCROSSREF WHERE constatId = :constatId and propertyId in (:ids)")
+    fun deleteConstatPropertyRefByIds(constatId: String, ids: List<String>)
+
+    @Query("DELETE FROM CONSTATOWNERCROSSREF WHERE constatId = :constatId and ownerId in (:ids)")
+    fun deleteConstatOwnerRefByIds(constatId: String, ids: List<String>)
+
+    @Query("DELETE FROM CONSTATCONTRACTORCROSSREF WHERE constatId = :constatId and contractorId in (:ids)")
+    fun deleteConstatContractorRefByIds(constatId: String, ids: List<String>)
+
+    @Query("DELETE FROM CONSTATTENANTCROSSREF WHERE constatId = :constatId and tenantId in (:ids)")
+    fun deleteConstatTenantRefByIds(constatId: String, ids: List<String>)
 }

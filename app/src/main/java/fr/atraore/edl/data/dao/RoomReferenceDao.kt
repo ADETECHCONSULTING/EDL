@@ -19,6 +19,6 @@ interface RoomReferenceDao : BaseDao<RoomReference> {
     fun getFirstRoomReferences(): Flow<RoomReference>
 
     @Transaction
-    @Query("SELECT * FROM $ROOM_REFERENCE_TABLE ORDER BY name asc")
-    fun getRoomDetails() : Flow<List<RoomWithDetails>>
+    @Query("SELECT * FROM $ROOM_REFERENCE_TABLE INNER JOIN DETAIL ON DETAIL.idRoom = $ROOM_REFERENCE_TABLE.roomReferenceId WHERE DETAIL.idLot = :idLot ORDER BY name asc")
+    fun getRoomDetails(idLot: Int) : Flow<List<RoomWithDetails>>
 }

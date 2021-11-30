@@ -13,4 +13,6 @@ interface LotReferenceDao : BaseDao<LotReference> {
     @Query("SELECT * FROM $LOT_REFERENCE_TABLE")
     fun getAllLotReference(): Flow<List<LotReference>>
 
+    @Query("SELECT * FROM $LOT_REFERENCE_TABLE WHERE mandatory = 1")
+    fun getAllMandatoryLotReference(): Flow<List<LotReference>>
 }

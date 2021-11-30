@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -204,10 +205,11 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
                                 elementRefList?.forEach { elementRef ->
                                     val detail = Detail(
-                                        roomToAdd.roomReferenceId + elementRef.elementReferenceId,
+                                        roomToAdd.roomReferenceId + elementRef.elementReferenceId + clickedLot,
                                         elementRef.elementReferenceId,
                                         roomToAdd.roomReferenceId,
                                         arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                        clickedLot,
                                         elementRef.name
                                     )
                                     launch {
@@ -239,7 +241,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
                 //récupération de toutes les pièces de ce constat
                 //Pour chaque pièces du constat, récupérer les éléments et les affecter dans l'expandable list
-                viewModel.roomCombinedLiveData().observe(viewLifecycleOwner, { pairInfoRoom ->
+                viewModel.roomCombinedLiveData(clickedLot).observe(viewLifecycleOwner, { pairInfoRoom ->
                     pairInfoRoom.first?.let { roomsWithDetails ->
                         var roomsIsDifferent = true
                         if (this@EndConstatFragment::roomsWithDetails.isInitialized) {

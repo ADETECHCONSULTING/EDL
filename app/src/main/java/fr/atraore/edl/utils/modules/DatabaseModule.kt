@@ -182,7 +182,7 @@ class DatabaseModule {
 
     }
 
-    suspend fun createRoomsReference(roomReferenceDao: RoomReferenceDao) {
+    private suspend fun createRoomsReference(roomReferenceDao: RoomReferenceDao) {
         ROOMS_LABELS.forEach {
             val roomReference = RoomReference(UUID.randomUUID().toString(), it)
             if (it == "ACCES / ENTREE") {
@@ -192,21 +192,21 @@ class DatabaseModule {
         }
     }
 
-    suspend fun createElementReferences(elementReferenceDao: ElementReferenceDao) {
+    private suspend fun createElementReferences(elementReferenceDao: ElementReferenceDao) {
         ELEMENTS_LABELS.forEach {
             val elementReference = ElementReference(UUID.randomUUID().toString(), it)
             elementReferenceDao.save(elementReference)
         }
     }
 
-    suspend fun createLotReferences(lotReferenceDao: LotReferenceDao) {
-        LOTS_LABELS.forEach {
-            val lotReference = LotReference(UUID.randomUUID().toString(), it)
+    private suspend fun createLotReferences(lotReferenceDao: LotReferenceDao) {
+        for ((index, value) in LOTS_LABELS.withIndex()) {
+            val lotReference = LotReference(index+1, value)
             lotReferenceDao.save(lotReference)
         }
     }
 
-    suspend fun toDeleteForProd(
+    private suspend fun toDeleteForProd(
         constatDao: ConstatDao,
         propertyDao: PropertyDao,
         agencyDao: AgencyDao,
