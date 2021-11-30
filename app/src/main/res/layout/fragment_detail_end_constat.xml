@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="android.view.View"/>
         <variable
             name="detail"
             type="fr.atraore.edl.data.models.Detail" />
@@ -18,11 +18,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@drawable/gradient_bg"
+        android:visibility="@{detail == null ? View.VISIBLE : View.INVISIBLE}"
         tools:context=".ui.edl.constat.second_page.detail.DetailEndConstatFragment">
+
+        <LinearLayout
+            android:id="@+id/ctn_no_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSizeLarge"
+                style="@style/MyTextViewStyleLabel"
+                android:text="@string/label_empty_detail" />
+
+        </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="@{detail == null ? View.INVISIBLE : View.VISIBLE}"
             android:padding="@dimen/padding_medium">
 
             <androidx.constraintlayout.widget.ConstraintLayout

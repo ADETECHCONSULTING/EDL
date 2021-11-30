@@ -73,6 +73,7 @@
     <string name="mauvais_label">Mauvais</string>
     <string name="hs_label">H.S</string>
     <string name="label_procuration">Représenté par</string>
+    <string name="label_empty_detail">Veuillez sélectionner un lot technique, une pièce et un élément</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>
