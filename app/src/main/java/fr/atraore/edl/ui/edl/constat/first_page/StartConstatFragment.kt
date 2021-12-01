@@ -2,9 +2,7 @@ package fr.atraore.edl.ui.edl.constat.first_page
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -70,6 +68,11 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         findNavController().navigate(R.id.go_to_end, bundle)
     }
 
+    fun goCompteur() {
+        val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
+        findNavController().navigate(R.id.go_to_compteur, bundle)
+    }
+
     @Inject
     lateinit var constatViewModelFactory: ConstatViewModel.AssistedStartFactory
     private val viewModel: ConstatViewModel by assistedViewModel {
@@ -89,6 +92,24 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         binding.constatViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_add_room)?.isVisible = false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_compteur -> {
+                goCompteur()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

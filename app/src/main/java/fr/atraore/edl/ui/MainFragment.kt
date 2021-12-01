@@ -47,6 +47,8 @@ class MainFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_next)?.isVisible = false
         menu.findItem(R.id.action_previous)?.isVisible = false
+        menu.findItem(R.id.action_add_room)?.isVisible = false
+        menu.findItem(R.id.action_compteur)?.isVisible = false
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

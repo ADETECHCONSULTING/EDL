@@ -74,6 +74,15 @@
     <string name="hs_label">H.S</string>
     <string name="label_procuration">Représenté par</string>
     <string name="label_empty_detail">Veuillez sélectionner un lot technique, une pièce et un élément</string>
+    <string name="compteur_eau_froide_label">Compteur d\'eau froide</string>
+    <string name="previous">Précédent</string>
+    <string name="en_service_label">En Service</string>
+    <string name="coupe_label">Coupé</string>
+    <string name="m3">m3</string>
+    <string name="localisation">Localisation</string>
+    <string name="non_releve_label">Non relevé (motif)</string>
+    <string name="hp">HP (kWh)</string>
+    <string name="hc">HC (kWh)</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

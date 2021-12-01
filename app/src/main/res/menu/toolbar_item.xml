@@ -6,13 +6,25 @@
     <item
         android:id="@+id/action_previous"
         android:icon="@drawable/ic_back"
-        android:title="@string/next"
+        android:title="@string/previous"
         app:showAsAction="ifRoom"/>
 
 
     <item
         android:id="@+id/action_next"
         android:icon="@drawable/ic_next"
+        android:title="@string/next"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_compteur"
+        android:icon="@drawable/ic_compteur"
+        android:title="@string/next"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_add_room"
+        android:icon="@drawable/ic_add_menu"
         android:title="@string/next"
         app:showAsAction="ifRoom"/>
 

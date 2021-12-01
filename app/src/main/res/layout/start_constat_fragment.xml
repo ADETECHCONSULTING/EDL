@@ -101,16 +101,19 @@
                 android:id="@+id/imv_search_bien"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="12dp"
                 android:src="@drawable/ic_loupe"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imv_edit_bien"/>
 
             <ImageView
                 android:id="@+id/imv_edit_bien"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="12dp"
                 android:src="@drawable/ic_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/imv_search_bien"
@@ -190,16 +193,19 @@
                 android:id="@+id/imv_search_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="12dp"
                 android:src="@drawable/ic_loupe"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/imv_edit_owner"/>
 
             <ImageView
                 android:id="@+id/imv_edit_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginBottom="12dp"
                 android:src="@drawable/ic_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/imv_search_owner"
