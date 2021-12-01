@@ -58,6 +58,11 @@ data class ConstatWithDetails(
         associateBy = Junction(ConstatLotCrossRef::class)
     )
     val lots: MutableList<LotReference>,
+    @Relation(
+        parentColumn = "constatId",
+        entityColumn = "constat_id"
+    )
+    val compteurs: MutableList<Compteur>
 ) : Serializable {
     @Ignore
     fun getOwnersConcatenate(withPrefix: Boolean): String {

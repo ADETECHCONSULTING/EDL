@@ -18,6 +18,7 @@ import fr.atraore.edl.databinding.CompteurFragmentBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.edl.constat.first_page.StartConstatFragment
+import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import fr.atraore.edl.utils.assistedViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -69,6 +70,12 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.constatDetail.observe(viewLifecycleOwner, { constatWithDetails ->
+            constatWithDetails?.let {
+                viewModel.constatHeaderInfo.value =
+                    "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
+            }
+        })
     }
 
     override fun onClick(p0: View?) {

@@ -5,5 +5,5 @@ import androidx.room.Entity
 @Entity(primaryKeys = ["constatId", "lotReferenceId"])
 data class ConstatLotCrossRef(
     val constatId: String,
-    val lotReferenceId: String
+    val lotReferenceId: Int
 )

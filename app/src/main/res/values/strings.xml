@@ -83,6 +83,11 @@
     <string name="non_releve_label">Non relevé (motif)</string>
     <string name="hp">HP (kWh)</string>
     <string name="hc">HC (kWh)</string>
+    <string name="compteur_elec_label">Compteur d\'électricité</string>
+    <string name="detecteur_fumee_label">Détecteur de fumée</string>
+    <string name="equipe_label">Equipé</string>
+    <string name="non_equipe_label">Non équipé</string>
+    <string name="asterix">*</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

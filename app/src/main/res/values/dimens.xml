@@ -10,6 +10,7 @@
     <dimen name="textSizeSmall">14sp</dimen>
     <dimen name="textSizeMedium">16sp</dimen>
     <dimen name="textSizeLarge">21sp</dimen>
+    <dimen name="textSizeExtraLarge">28sp</dimen>
     <dimen name="background_corner_radius">24dp</dimen>
     <dimen name="item_width">400dp</dimen>
     <dimen name="list_width">200dp</dimen>

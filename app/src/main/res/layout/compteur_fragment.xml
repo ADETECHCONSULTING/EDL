@@ -41,10 +41,11 @@
             app:layout_constraintTop_toBottomOf="@id/ctn_header">
 
             <GridLayout
-                android:id="@+id/choice_grid"
+                android:id="@+id/grid_compteur"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:columnCount="2">
+                android:columnCount="2"
+                android:useDefaultMargins="true">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/ctn_compteur_eau_froide"
@@ -60,17 +61,26 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@color/blackLight"
+                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@color/blackLight"
                                 style="@style/MyTextViewStyleLabel"
                                 android:text="@string/compteur_eau_froide_label"
                                 android:textColor="@color/white"
                                 android:gravity="center"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="@string/asterix"
+                                android:textColor="@color/red"
+                                android:layout_marginStart="@dimen/margin_small"
+                                android:textSize="@dimen/textSizeLarge"
+                                />
 
                         </LinearLayout>
 
@@ -230,17 +240,26 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@color/blackLight"
+                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@color/blackLight"
                                 style="@style/MyTextViewStyleLabel"
-                                android:text="@string/compteur_eau_froide_label"
+                                android:text="@string/compteur_elec_label"
                                 android:textColor="@color/white"
                                 android:gravity="center"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="@string/asterix"
+                                android:textColor="@color/red"
+                                android:layout_marginStart="@dimen/margin_small"
+                                android:textSize="@dimen/textSizeLarge"
+                                />
 
                         </LinearLayout>
 
@@ -408,7 +427,87 @@
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-                <Space android:layout_width="0dp" android:layout_columnWeight="1"/>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/ctn_detecteur_fumee"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/blackLight"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/MyTextViewStyleLabel"
+                                android:text="@string/detecteur_fumee_label"
+                                android:textColor="@color/white"
+                                android:gravity="center"/>
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="@string/asterix"
+                                android:textColor="@color/red"
+                                android:layout_marginStart="@dimen/margin_small"
+                                android:textSize="@dimen/textSizeLarge"
+                                />
+
+                        </LinearLayout>
+
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/state_radiobutton"
+                                android:textColor="@drawable/state_radiobutton_text"
+                                android:button="@null"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="@dimen/textSizeLarge"
+                                android:text="@string/equipe_label"/>
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/blackLight"/>
+
+                            <RadioButton
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/state_radiobutton"
+                                android:textColor="@drawable/state_radiobutton_text"
+                                android:button="@null"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="@dimen/textSizeLarge"
+                                android:text="@string/non_equipe_label"/>
+
+                        </RadioGroup>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/blackLight"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <View android:layout_width="0dp" android:layout_columnWeight="1"/>
 
             </GridLayout>
         </ScrollView>

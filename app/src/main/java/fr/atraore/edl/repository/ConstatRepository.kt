@@ -50,7 +50,7 @@ class ConstatRepository @Inject constructor(
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun saveConstatLotCrossRef(constatId: String, lotId: String) {
+    suspend fun saveConstatLotCrossRef(constatId: String, lotId: Int) {
         constatDao.saveConstatLotCrossRef(ConstatLotCrossRef(constatId, lotId))
     }
 
