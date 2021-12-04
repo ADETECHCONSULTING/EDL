@@ -11,7 +11,7 @@ import fr.atraore.edl.photo.PhotoPickerFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), PhotoPickerFragment.Callback {
+class MainActivity : AppCompatActivity() {
 
     lateinit var mNavigationFragment: OnNavigationFragment
 
@@ -22,9 +22,6 @@ class MainActivity : AppCompatActivity(), PhotoPickerFragment.Callback {
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
-    override fun onImagesPicked(photos: ArrayList<Uri>) {
-        Log.d("MainActivity", "photos ajoutées ${photos}")
-    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_item, menu)

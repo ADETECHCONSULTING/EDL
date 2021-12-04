@@ -5,8 +5,37 @@
 
     <data>
         <variable
-            name="constatViewModel"
-            type="fr.atraore.edl.ui.edl.constat.ConstatViewModel" />
+            name="compteurViewModel"
+            type="fr.atraore.edl.ui.edl.constat.second_page.CompteurViewModel" />
+
+        <variable
+            name="compteurEauFroide"
+            type="fr.atraore.edl.data.models.Compteur" />
+
+        <variable
+            name="compteurElec"
+            type="fr.atraore.edl.data.models.Compteur" />
+
+        <variable
+            name="compteurDetectFumee"
+            type="fr.atraore.edl.data.models.Compteur" />
+
+        <variable
+            name="compteurCuveFioul"
+            type="fr.atraore.edl.data.models.Compteur" />
+
+        <variable
+            name="compteurEauChaude"
+            type="fr.atraore.edl.data.models.Compteur" />
+
+        <variable
+            name="compteurGaz"
+            type="fr.atraore.edl.data.models.Compteur" />
+
+        <variable
+            name="photoClickListener"
+            type="android.view.View.OnClickListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,487 +59,1112 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:text="@{constatViewModel.constatHeaderInfo}"
+                android:text="@{compteurViewModel.constatHeaderInfo}"
                 tools:text="Constat d’état des lieux entrant Nº003 - Mercredi 30 septembre à 16H52" />
 
         </LinearLayout>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             app:layout_constraintTop_toBottomOf="@id/ctn_header">
 
-            <GridLayout
-                android:id="@+id/grid_compteur"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:columnCount="2"
-                android:useDefaultMargins="true">
+                android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ctn_compteur_eau_froide"
-                    android:layout_width="0dp"
-                    android:layout_height="300dp"
-                    android:layout_columnWeight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/blackLight"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/MyTextViewStyleLabel"
-                                android:text="@string/compteur_eau_froide_label"
-                                android:textColor="@color/white"
-                                android:gravity="center"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="@string/asterix"
-                                android:textColor="@color/red"
-                                android:layout_marginStart="@dimen/margin_small"
-                                android:textSize="@dimen/textSizeLarge"
-                                />
-
-                        </LinearLayout>
-
-
-                        <RadioGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/state_radiobutton"
-                                android:textColor="@drawable/state_radiobutton_text"
-                                android:button="@null"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="@dimen/textSizeLarge"
-                                android:text="@string/en_service_label"/>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:background="@color/blackLight"/>
-
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/state_radiobutton"
-                                android:textColor="@drawable/state_radiobutton_text"
-                                android:button="@null"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="@dimen/textSizeLarge"
-                                android:text="@string/coupe_label"/>
-
-                        </RadioGroup>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/blackLight"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/padding_small"
-                            android:layout_marginTop="@dimen/margin_small">
-
-                            <TextView
-                                android:id="@+id/txv_compteur_eau_froide"
-                                style="@style/MyTextViewStyleLabel"
-                                android:textColor="@color/blackLight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/margin_small"
-                                android:text="@string/m3"
-                                android:layout_marginStart="@dimen/margin_medium"
-                                android:layout_marginEnd="@dimen/margin_medium"
-                                android:layout_gravity="center_vertical" />
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edt_m3_eau_froide"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/spinner_background"
-                                android:hint="@string/mandatory"
-                                android:padding="@dimen/padding_small"
-                                android:minHeight="48dp"/>
-
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/padding_small">
-
-                            <TextView
-                                android:id="@+id/txv_compteur_localisation_eau_froide"
-                                style="@style/MyTextViewStyleLabel"
-                                android:textColor="@color/blackLight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/margin_small"
-                                android:text="@string/localisation"
-                                android:layout_marginStart="@dimen/margin_medium"
-                                android:layout_marginEnd="@dimen/margin_medium"
-                                android:layout_gravity="center_vertical"/>
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edt_localisation_eau_froide"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/edt_background"
-                                android:hint="@string/mandatory"
-                                android:padding="@dimen/padding_small"
-                                android:minHeight="48dp"/>
-
-                            <androidx.appcompat.widget.AppCompatImageButton
-                                android:id="@+id/imb_photo_eau_froide"
-                                android:layout_width="0dp"
-                                android:layout_weight="0.2"
-                                android:src="@drawable/ic_photo"
-                                android:foreground="?attr/selectableItemBackgroundBorderless"
-                                android:background="@color/colorAccent"
-                                android:layout_height="match_parent" />
-
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/padding_small">
-
-                            <TextView
-                                android:id="@+id/txv_non_releve_eau_froide"
-                                style="@style/MyTextViewStyleLabel"
-                                android:textColor="@color/blackLight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/margin_small"
-                                android:text="@string/non_releve_label"
-                                android:layout_marginStart="@dimen/margin_medium"
-                                android:layout_marginEnd="@dimen/margin_medium"
-                                android:layout_gravity="center_vertical"/>
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edt_non_releve_eau_froide"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/spinner_background"
-                                android:padding="@dimen/padding_small"
-                                android:minHeight="48dp"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ctn_compteur_elec"
-                    android:layout_width="0dp"
-                    android:layout_height="300dp"
-                    android:layout_columnWeight="1">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/blackLight"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/MyTextViewStyleLabel"
-                                android:text="@string/compteur_elec_label"
-                                android:textColor="@color/white"
-                                android:gravity="center"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="@string/asterix"
-                                android:textColor="@color/red"
-                                android:layout_marginStart="@dimen/margin_small"
-                                android:textSize="@dimen/textSizeLarge"
-                                />
-
-                        </LinearLayout>
-
-
-                        <RadioGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/state_radiobutton"
-                                android:textColor="@drawable/state_radiobutton_text"
-                                android:button="@null"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="@dimen/textSizeLarge"
-                                android:text="@string/en_service_label"/>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:background="@color/blackLight"/>
-
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/state_radiobutton"
-                                android:textColor="@drawable/state_radiobutton_text"
-                                android:button="@null"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="@dimen/textSizeLarge"
-                                android:text="@string/coupe_label"/>
-
-                        </RadioGroup>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/blackLight"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/padding_small"
-                            android:layout_marginTop="@dimen/margin_small">
-
-                            <TextView
-                                android:id="@+id/txv_compteur_hp"
-                                style="@style/MyTextViewStyleLabel"
-                                android:textColor="@color/blackLight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/margin_small"
-                                android:text="@string/hp"
-                                android:layout_marginStart="@dimen/margin_medium"
-                                android:layout_marginEnd="@dimen/margin_medium"
-                                android:layout_gravity="center_vertical" />
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edt_hp"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/spinner_background"
-                                android:hint="@string/mandatory"
-                                android:padding="@dimen/padding_small"
-                                android:minHeight="48dp"/>
-
-
-                            <TextView
-                                android:id="@+id/txv_compteur_hc"
-                                style="@style/MyTextViewStyleLabel"
-                                android:textColor="@color/blackLight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/margin_small"
-                                android:text="@string/hc"
-                                android:layout_marginStart="@dimen/margin_medium"
-                                android:layout_marginEnd="@dimen/margin_medium"
-                                android:layout_gravity="center_vertical" />
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edt_hc"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/spinner_background"
-                                android:padding="@dimen/padding_small"
-                                android:minHeight="48dp"/>
-
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/padding_small">
-
-                            <TextView
-                                android:id="@+id/txv_compteur_localisation_elec"
-                                style="@style/MyTextViewStyleLabel"
-                                android:textColor="@color/blackLight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/margin_small"
-                                android:text="@string/localisation"
-                                android:layout_marginStart="@dimen/margin_medium"
-                                android:layout_marginEnd="@dimen/margin_medium"
-                                android:layout_gravity="center_vertical"/>
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edt_localisation_elec"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/edt_background"
-                                android:hint="@string/mandatory"
-                                android:padding="@dimen/padding_small"
-                                android:minHeight="48dp"/>
-
-                            <androidx.appcompat.widget.AppCompatImageButton
-                                android:id="@+id/imb_photo_elec"
-                                android:layout_width="0dp"
-                                android:layout_weight="0.2"
-                                android:src="@drawable/ic_photo"
-                                android:foreground="?attr/selectableItemBackgroundBorderless"
-                                android:background="@color/colorAccent"
-                                android:layout_height="match_parent" />
-
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/padding_small">
-
-                            <TextView
-                                android:id="@+id/txv_non_releve_elec"
-                                style="@style/MyTextViewStyleLabel"
-                                android:textColor="@color/blackLight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/margin_small"
-                                android:text="@string/non_releve_label"
-                                android:layout_marginStart="@dimen/margin_medium"
-                                android:layout_marginEnd="@dimen/margin_medium"
-                                android:layout_gravity="center_vertical"/>
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edt_non_releve_elec"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@drawable/spinner_background"
-                                android:padding="@dimen/padding_small"
-                                android:minHeight="48dp"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/ctn_detecteur_fumee"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1">
+                    android:background="@color/white">
 
                     <LinearLayout
+                        android:id="@+id/ctn_header_eau_froide"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:background="@color/blackLight"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@color/blackLight"
-                            android:gravity="center"
-                            android:orientation="horizontal">
+                            style="@style/MyTextViewStyleLabel"
+                            android:text="@string/compteur_eau_froide_label"
+                            android:textColor="@color/white"
+                            android:gravity="center"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                style="@style/MyTextViewStyleLabel"
-                                android:text="@string/detecteur_fumee_label"
-                                android:textColor="@color/white"
-                                android:gravity="center"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/asterix"
+                            android:textColor="@color/red"
+                            android:layout_marginStart="@dimen/margin_small"
+                            android:textSize="@dimen/textSizeLarge"
+                            />
 
+                    </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:text="@string/asterix"
-                                android:textColor="@color/red"
-                                android:layout_marginStart="@dimen/margin_small"
-                                android:textSize="@dimen/textSizeLarge"
-                                />
+                    <RadioGroup
+                        android:id="@+id/rdg_compteur_eau"
+                        android:layout_width="200dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_eau_froide"
+                        app:layout_constraintBottom_toBottomOf="parent">
 
-                        </LinearLayout>
-
-
-                        <RadioGroup
+                        <RadioButton
                             android:layout_width="match_parent"
-                            android:layout_height="80dp"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/state_radiobutton"
-                                android:textColor="@drawable/state_radiobutton_text"
-                                android:button="@null"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="@dimen/textSizeLarge"
-                                android:text="@string/equipe_label"/>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:background="@color/blackLight"/>
-
-                            <RadioButton
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/state_radiobutton"
-                                android:textColor="@drawable/state_radiobutton_text"
-                                android:button="@null"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="@dimen/textSizeLarge"
-                                android:text="@string/non_equipe_label"/>
-
-                        </RadioGroup>
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/en_service_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/blackLight"/>
+                            android:layout_height="2dp"
+                            android:background="@color/blackLight" />
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/coupe_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                    </RadioGroup>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="0dp"
+                        android:background="@color/blackLight"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_eau_froide"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/rdg_compteur_eau"/>
+
+                    <TextView
+                        android:id="@+id/txv_compteur_eau_froide"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/m3"
+                        android:textColor="@color/blackLight"
+                        android:textSize="@dimen/textSizeLarge"
+                        app:layout_constraintBottom_toTopOf="@+id/txv_compteur_localisation_eau_froide"
+                        app:layout_constraintStart_toEndOf="@id/rdg_compteur_eau"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_eau_froide"/>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_m3_eau_froide"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="120dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurEauFroide.getPrimaryQuantity}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_eau_froide"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_eau_froide"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_eau_froide"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                    <TextView
+                        android:id="@+id/txv_compteur_localisation_eau_froide"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/localisation"
+                        android:textColor="@color/blackLight"
+                        app:layout_constraintBottom_toTopOf="@+id/txv_non_releve_eau_froide"
+                        app:layout_constraintStart_toStartOf="@id/txv_compteur_eau_froide"
+                        app:layout_constraintTop_toBottomOf="@+id/txv_compteur_eau_froide" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_localisation_eau_froide"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/edt_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="200dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurEauFroide.getLocalisation}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_localisation_eau_froide"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_localisation_eau_froide"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_localisation_eau_froide" />
+
+                    <TextView
+                        android:id="@+id/txv_non_releve_eau_froide"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/non_releve_label"
+                        android:textColor="@color/blackLight"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/txv_compteur_eau_froide"
+                        app:layout_constraintTop_toBottomOf="@+id/txv_compteur_localisation_eau_froide" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_non_releve_eau_froide"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/facultatif_label"
+                        android:minWidth="200dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurEauFroide.getMotifNonReleve}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_eau_froide"
+                        app:layout_constraintStart_toEndOf="@id/txv_non_releve_eau_froide"
+                        app:layout_constraintTop_toTopOf="@id/txv_non_releve_eau_froide"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/imb_photo_eau_froide_1"
+                        android:layout_width="100dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        app:layout_constraintBottom_toTopOf="@+id/imb_photo_eau_froide_2"
+                        android:backgroundTint="@color/colorAccent"
+                        android:src="@drawable/photo_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:onClick="@{photoClickListener}"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_eau_froide" />
+
+                    <ImageButton
+                        android:id="@+id/imb_photo_eau_froide_2"
+                        android:layout_width="100dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:background="@color/colorAccent"
+                        android:src="@drawable/photo_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:onClick="@{photoClickListener}"
+                        app:layout_constraintTop_toBottomOf="@+id/imb_photo_eau_froide_1"
+                        android:contentDescription="@string/ajout_photo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ctn_compteur_elec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <LinearLayout
+                        android:id="@+id/ctn_header_elec"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blackLight"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/MyTextViewStyleLabel"
+                            android:text="@string/compteur_elec_label"
+                            android:textColor="@color/white"
+                            android:gravity="center"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/asterix"
+                            android:textColor="@color/red"
+                            android:layout_marginStart="@dimen/margin_small"
+                            android:textSize="@dimen/textSizeLarge"
+                            />
 
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                <View android:layout_width="0dp" android:layout_columnWeight="1"/>
 
-            </GridLayout>
-        </ScrollView>
+                    <RadioGroup
+                        android:id="@+id/rdg_compteur_elec"
+                        android:layout_width="200dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_elec"
+                        android:background="@drawable/button_outline_shape"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/en_service_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/blackLight" />
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/coupe_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                    </RadioGroup>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="0dp"
+                        android:background="@color/blackLight"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_elec"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/rdg_compteur_elec"/>
+
+
+                    <TextView
+                        android:id="@+id/txv_compteur_elec"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/hp"
+                        android:textColor="@color/blackLight"
+                        android:textSize="@dimen/textSizeLarge"
+                        app:layout_constraintBottom_toTopOf="@+id/txv_compteur_localisation_elec"
+                        app:layout_constraintStart_toEndOf="@id/rdg_compteur_elec"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_elec"/>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_m3_elec"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="120dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurElec.getPrimaryQuantity}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_elec"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_elec"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_elec"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+
+                    <TextView
+                        android:id="@+id/txv_compteur_secondary_elec"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:text="@string/hc"
+                        android:textColor="@color/blackLight"
+                        android:textSize="@dimen/textSizeLarge"
+                        app:layout_constraintStart_toEndOf="@id/edt_m3_elec"
+                        app:layout_constraintTop_toTopOf="@id/edt_m3_elec"
+                        app:layout_constraintBottom_toBottomOf="@id/edt_m3_elec"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_secondary_elec"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="120dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurElec.getSecondaryQuantity}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_secondary_elec"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_secondary_elec"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_secondary_elec"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+
+                    <TextView
+                        android:id="@+id/txv_compteur_localisation_elec"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/localisation"
+                        android:textColor="@color/blackLight"
+                        app:layout_constraintBottom_toTopOf="@+id/txv_non_releve_elec"
+                        app:layout_constraintStart_toStartOf="@id/txv_compteur_elec"
+                        app:layout_constraintTop_toBottomOf="@+id/txv_compteur_elec" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_localisation_elec"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/edt_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="200dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurElec.getLocalisation}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_localisation_elec"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_localisation_elec"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_localisation_elec" />
+
+                    <TextView
+                        android:id="@+id/txv_non_releve_elec"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/non_releve_label"
+                        android:textColor="@color/blackLight"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/txv_compteur_elec"
+                        app:layout_constraintTop_toBottomOf="@+id/txv_compteur_localisation_elec" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_non_releve_elec"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/facultatif_label"
+                        android:minWidth="200dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurElec.getMotifNonReleve}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_elec"
+                        app:layout_constraintStart_toEndOf="@id/txv_non_releve_elec"
+                        app:layout_constraintTop_toTopOf="@id/txv_non_releve_elec"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/imb_photo_elec_1"
+                        android:layout_width="100dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        app:layout_constraintBottom_toTopOf="@+id/imb_photo_elec_2"
+                        android:backgroundTint="@color/colorAccent"
+                        android:src="@drawable/photo_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_elec" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/imb_photo_elec_2"
+                        android:layout_width="100dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:backgroundTint="@color/colorAccent"
+                        android:src="@drawable/photo_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imb_photo_elec_1" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ctn_detect_fumee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <LinearLayout
+                        android:id="@+id/ctn_header_detect_fumee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blackLight"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/MyTextViewStyleLabel"
+                            android:text="@string/detecteur_fumee_label"
+                            android:textColor="@color/white"
+                            android:gravity="center"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/asterix"
+                            android:textColor="@color/red"
+                            android:layout_marginStart="@dimen/margin_small"
+                            android:textSize="@dimen/textSizeLarge"
+                            />
+
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:id="@+id/rdg_compteur_detect_fumee"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_detect_fumee"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/equipe_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                        <View
+                            android:layout_width="2dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/blackLight" />
+
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/non_equipe_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                    </RadioGroup>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ctn_compteur_eau_chaude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <LinearLayout
+                        android:id="@+id/ctn_header_eau_chaude"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blackLight"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/MyTextViewStyleLabel"
+                            android:text="@string/compteur_eau_chaude_label"
+                            android:textColor="@color/white"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:id="@+id/rdg_compteur_eau_chaude"
+                        android:layout_width="200dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_eau_chaude"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/en_service_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/blackLight" />
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/coupe_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                    </RadioGroup>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="0dp"
+                        android:background="@color/blackLight"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_eau_chaude"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/rdg_compteur_eau_chaude"/>
+
+                    <TextView
+                        android:id="@+id/txv_compteur_eau_chaude"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/m3"
+                        android:textColor="@color/blackLight"
+                        android:textSize="@dimen/textSizeLarge"
+                        app:layout_constraintBottom_toTopOf="@+id/txv_compteur_localisation_eau_chaude"
+                        app:layout_constraintStart_toEndOf="@id/rdg_compteur_eau_chaude"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_eau_chaude"/>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_m3_eau_chaude"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="120dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurEauChaude.getPrimaryQuantity}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_eau_chaude"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_eau_chaude"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_eau_chaude"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                    <TextView
+                        android:id="@+id/txv_compteur_localisation_eau_chaude"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/localisation"
+                        android:textColor="@color/blackLight"
+                        app:layout_constraintBottom_toTopOf="@+id/txv_non_releve_eau_chaude"
+                        app:layout_constraintStart_toStartOf="@id/txv_compteur_eau_chaude"
+                        app:layout_constraintTop_toBottomOf="@+id/txv_compteur_eau_chaude" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_localisation_eau_chaude"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/edt_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="200dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurEauChaude.getLocalisation}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_localisation_eau_chaude"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_localisation_eau_chaude"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_localisation_eau_chaude" />
+
+                    <TextView
+                        android:id="@+id/txv_non_releve_eau_chaude"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/non_releve_label"
+                        android:textColor="@color/blackLight"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/txv_compteur_eau_chaude"
+                        app:layout_constraintTop_toBottomOf="@+id/txv_compteur_localisation_eau_chaude" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_non_releve_eau_chaude"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/facultatif_label"
+                        android:minWidth="200dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurEauChaude.getMotifNonReleve}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_eau_chaude"
+                        app:layout_constraintStart_toEndOf="@id/txv_non_releve_eau_chaude"
+                        app:layout_constraintTop_toTopOf="@id/txv_non_releve_eau_chaude"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/imb_photo_eau_chaude_1"
+                        android:layout_width="100dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        app:layout_constraintBottom_toTopOf="@+id/imb_photo_eau_chaude_2"
+                        android:backgroundTint="@color/colorAccent"
+                        android:src="@drawable/photo_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_eau_chaude" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/imb_photo_eau_chaude_2"
+                        android:layout_width="100dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:backgroundTint="@color/colorAccent"
+                        android:src="@drawable/photo_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imb_photo_eau_chaude_1" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ctn_compteur_gaz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <LinearLayout
+                        android:id="@+id/ctn_header_gaz"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blackLight"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/MyTextViewStyleLabel"
+                            android:text="@string/compteur_gaz"
+                            android:textColor="@color/white"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:id="@+id/rdg_compteur_gaz"
+                        android:layout_width="200dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_gaz"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/en_service_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/blackLight" />
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/coupe_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                    </RadioGroup>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="0dp"
+                        android:background="@color/blackLight"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_gaz"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/rdg_compteur_gaz"/>
+
+
+                    <TextView
+                        android:id="@+id/txv_compteur_gaz"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/m3"
+                        android:textColor="@color/blackLight"
+                        android:textSize="@dimen/textSizeLarge"
+                        app:layout_constraintBottom_toTopOf="@+id/txv_compteur_localisation_gaz"
+                        app:layout_constraintStart_toEndOf="@id/rdg_compteur_gaz"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_gaz"/>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_m3_gaz"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="120dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurGaz.getPrimaryQuantity}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_gaz"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_gaz"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_gaz"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                    <TextView
+                        android:id="@+id/txv_compteur_localisation_gaz"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/localisation"
+                        android:textColor="@color/blackLight"
+                        app:layout_constraintBottom_toTopOf="@+id/txv_non_releve_gaz"
+                        app:layout_constraintStart_toStartOf="@id/txv_compteur_gaz"
+                        app:layout_constraintTop_toBottomOf="@+id/txv_compteur_gaz" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_localisation_gaz"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/edt_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="200dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurGaz.getLocalisation}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_localisation_gaz"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_localisation_gaz"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_localisation_gaz" />
+
+                    <TextView
+                        android:id="@+id/txv_non_releve_gaz"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/non_releve_label"
+                        android:textColor="@color/blackLight"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/txv_compteur_gaz"
+                        app:layout_constraintTop_toBottomOf="@+id/txv_compteur_localisation_gaz" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_non_releve_gaz"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/facultatif_label"
+                        android:minWidth="200dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurGaz.getMotifNonReleve}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_gaz"
+                        app:layout_constraintStart_toEndOf="@id/txv_non_releve_gaz"
+                        app:layout_constraintTop_toTopOf="@id/txv_non_releve_gaz"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/imb_photo_gaz_1"
+                        android:layout_width="100dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        app:layout_constraintBottom_toTopOf="@+id/imb_photo_gaz_2"
+                        android:backgroundTint="@color/colorAccent"
+                        android:src="@drawable/photo_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_gaz" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/imb_photo_gaz_2"
+                        android:layout_width="100dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:backgroundTint="@color/colorAccent"
+                        android:src="@drawable/photo_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imb_photo_gaz_1" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ctn_cuve"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <LinearLayout
+                        android:id="@+id/ctn_header_cuve"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blackLight"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/MyTextViewStyleLabel"
+                            android:text="@string/cuve_fioul_label"
+                            android:textColor="@color/white"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:id="@+id/rdg_compteur_cuve"
+                        android:layout_width="200dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_cuve"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/en_service_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/blackLight" />
+
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/state_radiobutton"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/coupe_label"
+                            android:textColor="@drawable/state_radiobutton_text"
+                            android:textSize="@dimen/textSizeLarge" />
+
+                    </RadioGroup>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="0dp"
+                        android:background="@color/blackLight"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_cuve"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/rdg_compteur_cuve"/>
+
+
+                    <TextView
+                        android:id="@+id/txv_compteur_cuve"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/quantité"
+                        android:textColor="@color/blackLight"
+                        android:textSize="@dimen/textSizeLarge"
+                        app:layout_constraintBottom_toTopOf="@+id/txv_compteur_localisation_cuve"
+                        app:layout_constraintStart_toEndOf="@id/rdg_compteur_cuve"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_cuve"/>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_m3_cuve"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="120dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurCuveFioul.getPrimaryQuantity}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_cuve"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_cuve"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_cuve"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                    <TextView
+                        android:id="@+id/txv_compteur_secondary_cuve"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:text="@string/unité"
+                        android:textColor="@color/blackLight"
+                        android:textSize="@dimen/textSizeLarge"
+                        app:layout_constraintBottom_toTopOf="@+id/edt_m3_cuve"
+                        app:layout_constraintStart_toEndOf="@id/edt_m3_cuve"
+                        app:layout_constraintTop_toBottomOf="@id/edt_m3_cuve"/>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_secondary_cuve"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="120dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurCuveFioul.getSecondaryQuantity}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_secondary_cuve"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_secondary_cuve"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_secondary_cuve"/>
+
+
+                    <TextView
+                        android:id="@+id/txv_compteur_localisation_cuve"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/localisation"
+                        android:textColor="@color/blackLight"
+                        app:layout_constraintBottom_toTopOf="@+id/txv_non_releve_cuve"
+                        app:layout_constraintStart_toStartOf="@id/txv_compteur_cuve"
+                        app:layout_constraintTop_toBottomOf="@+id/txv_compteur_cuve" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_localisation_cuve"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:background="@drawable/edt_background"
+                        android:hint="@string/mandatory"
+                        android:lines="1"
+                        android:minWidth="200dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurCuveFioul.getLocalisation}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_compteur_localisation_cuve"
+                        app:layout_constraintStart_toEndOf="@id/txv_compteur_localisation_cuve"
+                        app:layout_constraintTop_toTopOf="@id/txv_compteur_localisation_cuve" />
+
+                    <TextView
+                        android:id="@+id/txv_non_releve_cuve"
+                        style="@style/MyTextViewStyleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:text="@string/non_releve_label"
+                        android:textColor="@color/blackLight"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/txv_compteur_cuve"
+                        app:layout_constraintTop_toBottomOf="@+id/txv_compteur_localisation_cuve" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edt_non_releve_cuve"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_small"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_background"
+                        android:hint="@string/facultatif_label"
+                        android:minWidth="200dp"
+                        android:minHeight="48dp"
+                        android:padding="@dimen/padding_small"
+                        android:text="@={compteurCuveFioul.getMotifNonReleve}"
+                        app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_cuve"
+                        app:layout_constraintStart_toEndOf="@id/txv_non_releve_cuve"
+                        app:layout_constraintTop_toTopOf="@id/txv_non_releve_cuve"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/imb_photo_cuve_1"
+                        android:layout_width="100dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        app:layout_constraintBottom_toTopOf="@+id/imb_photo_cuve_2"
+                        android:backgroundTint="@color/colorAccent"
+                        android:src="@drawable/photo_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ctn_header_cuve" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/imb_photo_cuve_2"
+                        android:layout_width="100dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:backgroundTint="@color/colorAccent"
+                        android:src="@drawable/photo_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imb_photo_cuve_1" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -73,6 +73,15 @@ val LOTS_LABELS = arrayOf(
     "Meublé"
 )
 
+val COMPTEUR_LABELS = listOf(
+    "Compteur d'eau froide",
+    "Compteur d'électricité",
+    "Détecteur de fumée",
+    "Compteur d'eau chaude",
+    "Compteur Gaz",
+    "Cuve à fuel / gaz"
+)
+
 enum class IdDetailStatesEnum(val value: Int) {
     ETAT(1),
     PROPRETE(2),

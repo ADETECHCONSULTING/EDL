@@ -15,6 +15,7 @@ import fr.atraore.edl.data.DATABASE_NAME
 import fr.atraore.edl.data.dao.*
 import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.crossRef.*
+import fr.atraore.edl.utils.COMPTEUR_LABELS
 import fr.atraore.edl.utils.ELEMENTS_LABELS
 import fr.atraore.edl.utils.LOTS_LABELS
 import fr.atraore.edl.utils.ROOMS_LABELS
@@ -108,6 +109,24 @@ class DatabaseModule {
     }
 
     @Provides
+    fun provideCompteurDao(appDatabase: AppDatabase): CompteurDao {
+        return appDatabase.getCompteurDao()
+    }
+
+
+    @Provides
+    fun provideCompteurReferenceDao(appDatabase: AppDatabase): CompteurReferenceDao {
+        return appDatabase.getCompteurReferenceDao()
+    }
+
+    @Provides
+    fun providePhotoCompteurDao(appDatabase: AppDatabase): PhotoCompteurDao {
+        return appDatabase.getPhotoCompteurDao()
+    }
+
+
+
+    @Provides
     @Singleton
     fun provideAppDatabase(
         @ApplicationContext applicationContext: Context,
@@ -120,7 +139,8 @@ class DatabaseModule {
         contractorDao: Provider<ContractorDao>,
         roomReferenceDao: Provider<RoomReferenceDao>,
         elementReferenceDao: Provider<ElementReferenceDao>,
-        lotReferenceDao: Provider<LotReferenceDao>
+        lotReferenceDao: Provider<LotReferenceDao>,
+        compteurReferenceDao: Provider<CompteurReferenceDao>
     ): AppDatabase {
         return Room.databaseBuilder(
             applicationContext,
@@ -141,7 +161,8 @@ class DatabaseModule {
                             contractorDao.get(),
                             roomReferenceDao.get(),
                             elementReferenceDao.get(),
-                            lotReferenceDao.get()
+                            lotReferenceDao.get(),
+                            compteurReferenceDao.get()
                         )
                     }
                 }
@@ -159,9 +180,11 @@ class DatabaseModule {
         ownerDao: OwnerDao,
         userDao: UserDao,
         contractorDao: ContractorDao,
+        //
         roomReferenceDao: RoomReferenceDao,
         elementReferenceDao: ElementReferenceDao,
-        lotReferenceDao: LotReferenceDao
+        lotReferenceDao: LotReferenceDao,
+        compteurReferenceDao: CompteurReferenceDao
     ) {
         // Delete all content
         constatDao.deleteAll()
@@ -179,7 +202,7 @@ class DatabaseModule {
         createRoomsReference(roomReferenceDao)
         createElementReferences(elementReferenceDao)
         createLotReferences(lotReferenceDao)
-
+        createCompteurReferences(compteurReferenceDao)
     }
 
     private suspend fun createRoomsReference(roomReferenceDao: RoomReferenceDao) {
@@ -203,6 +226,13 @@ class DatabaseModule {
         for ((index, value) in LOTS_LABELS.withIndex()) {
             val lotReference = LotReference(index+1, value)
             lotReferenceDao.save(lotReference)
+        }
+    }
+
+    private suspend fun createCompteurReferences(compteurReferenceDao: CompteurReferenceDao) {
+        for ((index, value) in COMPTEUR_LABELS.withIndex()) {
+            val compteurReference = CompteurReference(index+1, value)
+            compteurReferenceDao.save(compteurReference)
         }
     }
 
