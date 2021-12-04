@@ -78,6 +78,7 @@
                     android:id="@+id/ctn_compteur_eau_froide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="250dp"
                     android:background="@color/white">
 
                     <LinearLayout
@@ -241,32 +242,34 @@
                         android:text="@={compteurEauFroide.getMotifNonReleve}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_eau_froide"
                         app:layout_constraintStart_toEndOf="@id/txv_non_releve_eau_froide"
-                        app:layout_constraintTop_toTopOf="@id/txv_non_releve_eau_froide"
-                        tools:ignore="SpeakableTextPresentCheck" />
+                        app:layout_constraintTop_toTopOf="@id/txv_non_releve_eau_froide" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageView
                         android:id="@+id/imb_photo_eau_froide_1"
-                        android:layout_width="100dp"
+                        android:layout_width="80dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintBottom_toTopOf="@+id/imb_photo_eau_froide_2"
-                        android:backgroundTint="@color/colorAccent"
-                        android:src="@drawable/photo_white"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:src="@drawable/camera"
+                        android:scaleType="centerCrop"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:onClick="@{photoClickListener}"
                         app:layout_constraintTop_toBottomOf="@id/ctn_header_eau_froide" />
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/imb_photo_eau_froide_2"
-                        android:layout_width="100dp"
+                        android:layout_width="80dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:foreground="?attr/selectableItemBackgroundBorderless"
-                        android:background="@color/colorAccent"
-                        android:src="@drawable/photo_white"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:src="@drawable/camera"
+                        android:scaleType="centerCrop"
                         android:onClick="@{photoClickListener}"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imb_photo_eau_froide_1"
                         android:contentDescription="@string/ajout_photo" />
 
@@ -275,6 +278,7 @@
                     android:id="@+id/ctn_compteur_elec"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="250dp"
                     android:background="@color/white">
 
                     <LinearLayout
@@ -476,25 +480,30 @@
                         app:layout_constraintTop_toTopOf="@id/txv_non_releve_elec"
                         tools:ignore="SpeakableTextPresentCheck" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageView
                         android:id="@+id/imb_photo_elec_1"
-                        android:layout_width="100dp"
+                        android:layout_width="80dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintBottom_toTopOf="@+id/imb_photo_elec_2"
-                        android:backgroundTint="@color/colorAccent"
-                        android:src="@drawable/photo_white"
+                        android:src="@drawable/camera"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:onClick="@{photoClickListener}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/ctn_header_elec" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageView
                         android:id="@+id/imb_photo_elec_2"
-                        android:layout_width="100dp"
+                        android:layout_width="80dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:backgroundTint="@color/colorAccent"
-                        android:src="@drawable/photo_white"
+                        android:src="@drawable/camera"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:scaleType="centerCrop"
+                        android:onClick="@{photoClickListener}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imb_photo_elec_1" />
 
@@ -578,6 +587,7 @@
                     android:id="@+id/ctn_compteur_eau_chaude"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="250dp"
                     android:background="@color/white">
 
                     <LinearLayout
@@ -735,25 +745,30 @@
                         app:layout_constraintTop_toTopOf="@id/txv_non_releve_eau_chaude"
                         tools:ignore="SpeakableTextPresentCheck" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageView
                         android:id="@+id/imb_photo_eau_chaude_1"
-                        android:layout_width="100dp"
+                        android:layout_width="80dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintBottom_toTopOf="@+id/imb_photo_eau_chaude_2"
-                        android:backgroundTint="@color/colorAccent"
-                        android:src="@drawable/photo_white"
+                        android:src="@drawable/camera"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:onClick="@{photoClickListener}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/ctn_header_eau_chaude" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageView
                         android:id="@+id/imb_photo_eau_chaude_2"
-                        android:layout_width="100dp"
+                        android:layout_width="80dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:backgroundTint="@color/colorAccent"
-                        android:src="@drawable/photo_white"
+                        android:src="@drawable/camera"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:onClick="@{photoClickListener}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imb_photo_eau_chaude_1" />
 
@@ -763,6 +778,7 @@
                     android:id="@+id/ctn_compteur_gaz"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="250dp"
                     android:background="@color/white">
 
                     <LinearLayout
@@ -921,25 +937,30 @@
                         app:layout_constraintTop_toTopOf="@id/txv_non_releve_gaz"
                         tools:ignore="SpeakableTextPresentCheck" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageView
                         android:id="@+id/imb_photo_gaz_1"
-                        android:layout_width="100dp"
+                        android:layout_width="80dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintBottom_toTopOf="@+id/imb_photo_gaz_2"
-                        android:backgroundTint="@color/colorAccent"
-                        android:src="@drawable/photo_white"
+                        android:src="@drawable/camera"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:onClick="@{photoClickListener}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/ctn_header_gaz" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageView
                         android:id="@+id/imb_photo_gaz_2"
-                        android:layout_width="100dp"
+                        android:layout_width="80dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:backgroundTint="@color/colorAccent"
-                        android:src="@drawable/photo_white"
+                        android:src="@drawable/camera"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:onClick="@{photoClickListener}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imb_photo_gaz_1" />
 
@@ -949,6 +970,7 @@
                     android:id="@+id/ctn_cuve"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="250dp"
                     android:background="@color/white">
 
                     <LinearLayout
@@ -1137,25 +1159,30 @@
                         app:layout_constraintTop_toTopOf="@id/txv_non_releve_cuve"
                         tools:ignore="SpeakableTextPresentCheck" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageView
                         android:id="@+id/imb_photo_cuve_1"
-                        android:layout_width="100dp"
+                        android:layout_width="80dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintBottom_toTopOf="@+id/imb_photo_cuve_2"
-                        android:backgroundTint="@color/colorAccent"
-                        android:src="@drawable/photo_white"
+                        android:src="@drawable/camera"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:onClick="@{photoClickListener}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/ctn_header_cuve" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageView
                         android:id="@+id/imb_photo_cuve_2"
-                        android:layout_width="100dp"
+                        android:layout_width="80dp"
                         android:layout_height="0dp"
                         android:layout_marginEnd="@dimen/margin_medium"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:backgroundTint="@color/colorAccent"
-                        android:src="@drawable/photo_white"
+                        android:src="@drawable/camera"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:onClick="@{photoClickListener}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imb_photo_cuve_1" />
 

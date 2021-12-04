@@ -5,16 +5,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ImageButton
-import android.widget.ListPopupWindow
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
@@ -59,7 +57,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
 
     private lateinit var binding: CompteurFragmentBinding
     private lateinit var listPopupWindow: ListPopupWindow
-    private lateinit var currentImageButton: View
+    private lateinit var currentImageView: ImageView
 
     @Inject
     lateinit var compteurViewModelFactory: CompteurViewModel.AssistedStartFactory
@@ -75,9 +73,9 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
             DataBindingUtil.inflate(inflater, R.layout.compteur_fragment, container, false)
         binding.compteurViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.compteurEauFroide = viewModel.compteurEauFroid
-        binding.compteurElec = viewModel.compteurElec
-        binding.compteurDetectFumee = viewModel.compteurDetecFumee
+//        binding.compteurEauFroide = viewModel.compteurEauFroide
+//        binding.compteurElec = viewModel.compteurElec
+//        binding.compteurDetectFumee = viewModel.compteurDetecFumee
         binding.photoClickListener = this
         return binding.root
     }
@@ -110,8 +108,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
+        viewModel.setCompteurs()
         viewModel.constatDetail.observe(viewLifecycleOwner, { constatWithDetails ->
             constatWithDetails?.let {
                 viewModel.constatHeaderInfo.value =
@@ -164,19 +161,23 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
     }
 
     private fun openPicker(view: View) {
-        if (view is ImageButton) {
-            currentImageButton = view
+        if (view is ImageView) {
+            currentImageView = view
             PhotoPickerFragment.newInstance(
-                multiple = true,
+                multiple = false,
                 allowCamera = true,
-                maxSelection = 2,
+                maxSelection = 1,
                 theme = R.style.ChiliPhotoPicker_Light
             ).show(childFragmentManager, "picker")
         }
     }
 
     override fun onImagesPicked(photos: ArrayList<Uri>) {
-        Log.d(TAG, "onImagesPicked: $photos")
+        if (photos.isNotEmpty()) {
+            Glide.with(requireContext())
+                .load(photos[0])
+                .into(currentImageView)
+        }
     }
 
 }

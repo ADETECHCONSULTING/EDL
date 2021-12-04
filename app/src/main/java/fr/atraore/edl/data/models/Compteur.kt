@@ -12,7 +12,7 @@ import fr.atraore.edl.utils.COMPTEUR_TABLE
 data class Compteur (
     @ColumnInfo(name = "constat_id") val constatId: String,
     @ColumnInfo(name = "compteur_ref_id") val compteurRefId: Int,
-    var etat: Boolean? = null,
+    var etat: String? = null,
     @ColumnInfo(name = "primary_quantity") var primaryQuantity: String? = null,
     @ColumnInfo(name = "secondary_quantity") var secondaryQuantity: String? = null,
     var localisation: String? = null,
@@ -21,7 +21,7 @@ data class Compteur (
 
     @get:Bindable
     @Ignore
-    var getEtat: Boolean? = null
+    var getEtat: String? = null
     set(value) {
         field = value
         etat = value

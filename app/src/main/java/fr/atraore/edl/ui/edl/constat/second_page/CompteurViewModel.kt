@@ -12,26 +12,51 @@ import fr.atraore.edl.utils.COMPTEUR_LABELS
 import fr.atraore.edl.utils.CombinedLiveData
 import fr.atraore.edl.utils.TripleCombinedLiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class CompteurViewModel @AssistedInject constructor(
     val repository: ConstatRepository,
+    val compteurRepository: CompteurRepository,
     @Assisted val constatId: String,
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
 
-    val compteurEauFroid = Compteur(constatId, 1)
-    val compteurElec = Compteur(constatId, 2)
-    val compteurDetecFumee = Compteur(constatId, 3)
-    val compteurEauChaude = Compteur(constatId, 4)
-    val compteurGaz = Compteur(constatId, 5)
-    val compteurCuve = Compteur(constatId, 6)
+    lateinit var compteurEauFroide: Compteur
+    lateinit var compteurElec: Compteur
+    lateinit var compteurDetecFumee: Compteur
+    lateinit var compteurEauChaude: Compteur
+    lateinit var compteurGaz: Compteur
+    lateinit var compteurCuve: Compteur
 
     @AssistedFactory
     interface AssistedStartFactory {
         fun create(itemId: String): CompteurViewModel
+    }
+
+    fun setCompteurs() {
+        viewModelScope.launch {
+            compteurRepository.getById(constatId, 1).collect {
+                compteurEauFroide = it ?: Compteur(constatId, 1)
+            }
+            compteurRepository.getById(constatId, 2).collect {
+                compteurElec = it ?: Compteur(constatId, 2)
+            }
+            compteurRepository.getById(constatId, 3).collect {
+                compteurDetecFumee = it ?: Compteur(constatId, 3)
+            }
+            compteurRepository.getById(constatId, 4).collect {
+                compteurEauChaude = it ?: Compteur(constatId, 4)
+            }
+            compteurRepository.getById(constatId, 5).collect {
+                compteurGaz = it ?: Compteur(constatId, 5)
+            }
+            compteurRepository.getById(constatId, 6).collect {
+                compteurCuve = it ?: Compteur(constatId, 6)
+            }
+        }
     }
 
 }
