@@ -15,4 +15,9 @@ interface CompteurDao : BaseDao<Compteur> {
     @Query("SELECT * FROM Compteur WHERE constat_id =:idConstat and compteur_ref_id = :idCompteurRef")
     fun getById(idConstat: String, idCompteurRef: Int): Flow<Compteur>
 
+    @Query("UPDATE Compteur SET image_path =:imagePath WHERE compteur_ref_id =:idCompteurRef")
+    suspend fun updateImagePath(imagePath: String, idCompteurRef: Int)
+
+    @Query("UPDATE Compteur SET image_path_second =:imagePath WHERE compteur_ref_id =:idCompteurRef")
+    suspend fun updateImagePathSecond(imagePath: String, idCompteurRef: Int)
 }

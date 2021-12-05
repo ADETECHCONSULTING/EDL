@@ -23,4 +23,5 @@ interface BaseDao<T> {
 
     @Update
     suspend fun saveList(objs: List<T>)
+
 }

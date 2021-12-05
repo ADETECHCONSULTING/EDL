@@ -20,6 +20,11 @@ val AGENCY_LABEL = "Agences"
 val USER_LABEL = "Utilisateurs"
 val SUITE_CONSTAT_LABEL = "Suite du constat"
 
+val EN_SERVICE_LABEL = "En Service"
+val COUPE_LABEL = "Coupé"
+val EQUIPE_LABEL = "Equipé"
+val NON_EQUIPE_LABEL = "Non équipé"
+
 val ROOMS_LABELS = arrayOf(
     "ACCES / ENTREE",
     "DEGAGEMENT",
@@ -77,6 +82,12 @@ val COMPTEUR_LABELS = listOf(
     "Compteur d'eau froide",
     "Compteur d'électricité",
     "Détecteur de fumée",
+    "Compteur d'eau chaude",
+    "Compteur Gaz",
+    "Cuve à fuel / gaz"
+)
+
+val COMPTEUR_LABELS_LIGHT = listOf(
     "Compteur d'eau chaude",
     "Compteur Gaz",
     "Cuve à fuel / gaz"

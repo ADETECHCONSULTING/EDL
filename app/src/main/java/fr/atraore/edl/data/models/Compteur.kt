@@ -17,6 +17,8 @@ data class Compteur (
     @ColumnInfo(name = "secondary_quantity") var secondaryQuantity: String? = null,
     var localisation: String? = null,
     @ColumnInfo(name = "motif_non_releve") var motifNonReleve: String? = null,
+    @ColumnInfo(name = "image_path") val imagePath: String? = null,
+    @ColumnInfo(name = "image_path_second") val imagePathSecond: String? = null
 ) : BaseObservable() {
 
     @get:Bindable

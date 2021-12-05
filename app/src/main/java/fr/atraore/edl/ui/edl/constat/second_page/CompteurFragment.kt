@@ -17,6 +17,7 @@ import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.Compteur
 import fr.atraore.edl.databinding.CompteurFragmentBinding
 import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.edl.BaseFragment
@@ -24,6 +25,7 @@ import fr.atraore.edl.ui.edl.constat.first_page.StartConstatFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import fr.atraore.edl.utils.COMPTEUR_LABELS
+import fr.atraore.edl.utils.COMPTEUR_LABELS_LIGHT
 import fr.atraore.edl.utils.assistedViewModel
 import kotlinx.android.synthetic.main.compteur_fragment.*
 import kotlinx.android.synthetic.main.compteur_item.view.*
@@ -32,6 +34,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.log
 
 
 @AndroidEntryPoint
@@ -73,9 +76,12 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
             DataBindingUtil.inflate(inflater, R.layout.compteur_fragment, container, false)
         binding.compteurViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-//        binding.compteurEauFroide = viewModel.compteurEauFroide
-//        binding.compteurElec = viewModel.compteurElec
-//        binding.compteurDetectFumee = viewModel.compteurDetecFumee
+        binding.compteurEauFroide = viewModel.compteurEauFroide
+        binding.compteurElec = viewModel.compteurElec
+        binding.compteurDetectFumee = viewModel.compteurDetecFumee
+        binding.compteurEauChaude = viewModel.compteurEauChaude
+        binding.compteurGaz = viewModel.compteurGaz
+        binding.compteurCuveFioul = viewModel.compteurCuve
         binding.photoClickListener = this
         return binding.root
     }
@@ -96,7 +102,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
             R.id.action_add_room -> {
                 MaterialDialog(requireContext()).show {
                     title(text = "Ajouter un compteur")
-                    listItemsSingleChoice(items = COMPTEUR_LABELS) { _, _, text ->
+                    listItemsSingleChoice(items = COMPTEUR_LABELS_LIGHT) { _, _, text ->
                         createCompteur(text.toString())
                     }
                     positiveButton(R.string.done)
@@ -108,7 +114,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setCompteurs()
+        viewModel.setCompteurs(binding)
         viewModel.constatDetail.observe(viewLifecycleOwner, { constatWithDetails ->
             constatWithDetails?.let {
                 viewModel.constatHeaderInfo.value =
@@ -133,31 +139,34 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
 
 
     private fun createCompteur(text: String) {
-
         when(text) {
-            "Compteur d'eau froide" -> {
-
-            }
-            "Compteur d'électricité" -> {
-
-            }
-            "Détecteur de fumée" -> {
-
-            }
             "Compteur d'eau chaude" -> {
-
+                viewModel.getCompteurEauChaudeVisibility = View.VISIBLE
+                ctn_compteur_eau_chaude.visibility = View.VISIBLE
+                if (viewModel.compteurEauChaude == null) {
+                    viewModel.saveCompteur(4)
+                }
             }
             "Compteur Gaz" -> {
-
+                viewModel.getCompteurGazVisibility = View.VISIBLE
+                ctn_compteur_gaz.visibility = View.VISIBLE
+                if (viewModel.compteurGaz == null) {
+                    viewModel.saveCompteur(5)
+                }
             }
             "Cuve à fuel / gaz" -> {
-
+                viewModel.getCompteurCuveVisibility = View.VISIBLE
+                ctn_cuve.visibility = View.VISIBLE
+                if (viewModel.compteurCuve == null) {
+                    viewModel.saveCompteur(6)
+                }
             }
         }
     }
 
     override fun onStop() {
         super.onStop()
+        viewModel.saveCompteurs()
     }
 
     private fun openPicker(view: View) {
@@ -174,9 +183,46 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
 
     override fun onImagesPicked(photos: ArrayList<Uri>) {
         if (photos.isNotEmpty()) {
+            val imagePath = photos[0]
+            
             Glide.with(requireContext())
-                .load(photos[0])
+                .load(imagePath)
                 .into(currentImageView)
+
+            when(currentImageView.resources.getResourceEntryName(currentImageView.id)) {
+                "imb_photo_eau_froide_1" -> {
+                    viewModel.saveImagePathOnCompteur(1, imagePath.toString(), false)
+                }
+                "imb_photo_eau_froide_2" -> {
+                    viewModel.saveImagePathOnCompteur(1, imagePath.toString(), true)
+
+                }
+                "imb_photo_elec_1" -> {
+                    viewModel.saveImagePathOnCompteur(2, imagePath.toString(), false)
+                }
+                "imb_photo_elec_2" ->  {
+                    viewModel.saveImagePathOnCompteur(2, imagePath.toString(), true)
+                }
+                "imb_photo_eau_chaude_1" ->  {
+                    viewModel.saveImagePathOnCompteur(4, imagePath.toString(), false)
+                }
+                "imb_photo_eau_chaude_2" ->  {
+                    viewModel.saveImagePathOnCompteur(4, imagePath.toString(), true)
+                }
+                "imb_photo_gaz_1" ->  {
+                    viewModel.saveImagePathOnCompteur(5, imagePath.toString(), false)
+                }
+                "imb_photo_gaz_2" ->  {
+                    viewModel.saveImagePathOnCompteur(5, imagePath.toString(), true)
+                }
+                "imb_photo_cuve_1" ->  {
+                    viewModel.saveImagePathOnCompteur(6, imagePath.toString(), false)
+                }
+                "imb_photo_cuve_2" ->  {
+                    viewModel.saveImagePathOnCompteur(6, imagePath.toString(), true)
+                }
+            }
+
         }
     }
 
