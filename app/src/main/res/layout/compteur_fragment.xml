@@ -119,6 +119,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
+                            android:checked="@{compteurViewModel.compteurEauFroide.getEtat.equals(ConstantsKt.COUPE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[0], ConstantsKt.COUPE_LABEL)}"
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
@@ -307,6 +309,8 @@
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{compteurViewModel.compteurElec.getEtat.equals(ConstantsKt.EN_SERVICE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[1], ConstantsKt.EN_SERVICE_LABEL)}"
                             android:text="@string/en_service_label"
                             android:textColor="@drawable/state_radiobutton_text"
                             android:textSize="@dimen/textSizeLarge" />
@@ -323,6 +327,8 @@
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{compteurViewModel.compteurElec.getEtat.equals(ConstantsKt.COUPE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[1], ConstantsKt.COUPE_LABEL)}"
                             android:text="@string/coupe_label"
                             android:textColor="@drawable/state_radiobutton_text"
                             android:textSize="@dimen/textSizeLarge" />
@@ -540,6 +546,8 @@
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{compteurViewModel.compteurDetecFumee.getEtat.equals(ConstantsKt.EQUIPE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[2], ConstantsKt.EQUIPE_LABEL)}"
                             android:text="@string/equipe_label"
                             android:textColor="@drawable/state_radiobutton_text"
                             android:textSize="@dimen/textSizeLarge" />
@@ -556,6 +564,8 @@
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{compteurViewModel.compteurDetecFumee.getEtat.equals(ConstantsKt.NON_EQUIPE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[2], ConstantsKt.NON_EQUIPE_LABEL)}"
                             android:text="@string/non_equipe_label"
                             android:textColor="@drawable/state_radiobutton_text"
                             android:textSize="@dimen/textSizeLarge" />
@@ -569,7 +579,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="250dp"
-                    android:visibility="@{compteurViewModel.getCompteurEauChaudeVisibility, default=gone}"
+                    android:visibility="@{compteurViewModel.visibilityEauChaude, default=gone}"
                     android:background="@color/white">
 
                     <LinearLayout
@@ -607,6 +617,8 @@
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{compteurViewModel.compteurEauChaude.getEtat.equals(ConstantsKt.EN_SERVICE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[3], ConstantsKt.EN_SERVICE_LABEL)}"
                             android:text="@string/en_service_label"
                             android:textColor="@drawable/state_radiobutton_text"
                             android:textSize="@dimen/textSizeLarge" />
@@ -623,6 +635,8 @@
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{compteurViewModel.compteurEauChaude.getEtat.equals(ConstantsKt.COUPE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[3], ConstantsKt.COUPE_LABEL)}"
                             android:text="@string/coupe_label"
                             android:textColor="@drawable/state_radiobutton_text"
                             android:textSize="@dimen/textSizeLarge" />
@@ -761,7 +775,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="250dp"
-                    android:visibility="@{compteurViewModel.getCompteurGazVisibility, default=gone}"
+                    android:visibility="@{compteurViewModel.visibilityGaz, default=gone}"
                     android:background="@color/white">
 
                     <LinearLayout
@@ -799,6 +813,8 @@
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{compteurViewModel.compteurGaz.getEtat.equals(ConstantsKt.EN_SERVICE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[4], ConstantsKt.EN_SERVICE_LABEL)}"
                             android:text="@string/en_service_label"
                             android:textColor="@drawable/state_radiobutton_text"
                             android:textSize="@dimen/textSizeLarge" />
@@ -815,6 +831,8 @@
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{compteurViewModel.compteurGaz.getEtat.equals(ConstantsKt.COUPE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[4], ConstantsKt.COUPE_LABEL)}"
                             android:text="@string/coupe_label"
                             android:textColor="@drawable/state_radiobutton_text"
                             android:textSize="@dimen/textSizeLarge" />
@@ -953,7 +971,7 @@
                     android:id="@+id/ctn_cuve"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="@{compteurViewModel.getCompteurCuveVisibility, default=gone}"
+                    android:visibility="@{compteurViewModel.visibilityCuve, default=gone}"
                     android:minHeight="250dp"
                     android:background="@color/white">
 
@@ -992,6 +1010,8 @@
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{compteurViewModel.compteurCuve.getEtat.equals(ConstantsKt.EN_SERVICE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[5], ConstantsKt.EN_SERVICE_LABEL)}"
                             android:text="@string/en_service_label"
                             android:textColor="@drawable/state_radiobutton_text"
                             android:textSize="@dimen/textSizeLarge" />
@@ -1008,6 +1028,8 @@
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
                             android:gravity="center"
+                            android:checked="@{compteurViewModel.compteurCuve.getEtat.equals(ConstantsKt.COUPE_LABEL)}"
+                            android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[5], ConstantsKt.COUPE_LABEL)}"
                             android:text="@string/coupe_label"
                             android:textColor="@drawable/state_radiobutton_text"
                             android:textSize="@dimen/textSizeLarge" />

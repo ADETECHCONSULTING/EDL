@@ -37,9 +37,9 @@ class CompteurViewModel @AssistedInject constructor(
     val compteurGaz: MutableLiveData<Compteur> = MutableLiveData()
     val compteurCuve: MutableLiveData<Compteur> = MutableLiveData()
 
-    var visibilityEauChaude: Int = View.GONE
-    var visibilityGaz: Int = View.GONE
-    var visibilityCuve: Int = View.GONE
+    var visibilityEauChaude: MutableLiveData<Int> = MutableLiveData(View.GONE)
+    var visibilityGaz: MutableLiveData<Int> = MutableLiveData(View.GONE)
+    var visibilityCuve: MutableLiveData<Int> = MutableLiveData(View.GONE)
 
 
     @AssistedFactory
@@ -47,7 +47,7 @@ class CompteurViewModel @AssistedInject constructor(
         fun create(itemId: String): CompteurViewModel
     }
 
-    fun setCompteurs(binding: CompteurFragmentBinding) {
+    fun setCompteurs() {
         viewModelScope.launch {
             compteurRepository.getById(constatId, 1).collect {
                 compteurEauFroide.value = it ?: Compteur(constatId, 1)
@@ -77,6 +77,7 @@ class CompteurViewModel @AssistedInject constructor(
                 //les compteurs optionnels on n'instancie pas directement mais que lorsque
                 //la visibilite passe à true
                 it?.let {
+                    visibilityEauChaude.value = View.VISIBLE
                     compteurEauChaude.value = it
                 }
             }
@@ -84,6 +85,7 @@ class CompteurViewModel @AssistedInject constructor(
         viewModelScope.launch {
             compteurRepository.getById(constatId, 5).collect {
                 it?.let {
+                    visibilityGaz.value = View.VISIBLE
                     compteurGaz.value = it
                 }
             }
@@ -91,6 +93,7 @@ class CompteurViewModel @AssistedInject constructor(
         viewModelScope.launch {
             compteurRepository.getById(constatId, 6).collect {
                 it?.let {
+                    visibilityCuve.value = View.VISIBLE
                     compteurCuve.value = it
                 }
             }
@@ -121,24 +124,6 @@ class CompteurViewModel @AssistedInject constructor(
             compteurRepository.save(Compteur(constatId, compteurRefId))
         }
     }
-
-    var getCompteurEauChaudeVisibility: Int = View.GONE
-        set(value) {
-            field = value
-            visibilityEauChaude = value
-        }
-
-    var getCompteurGazVisibility: Int = View.GONE
-        set(value) {
-            field = value
-            visibilityGaz = value
-        }
-
-    var getCompteurCuveVisibility: Int = View.GONE
-        set(value) {
-            field = value
-            visibilityCuve = value
-        }
 
 
     fun getEnServiceState(compteurLabel: String): Boolean {
@@ -213,7 +198,7 @@ class CompteurViewModel @AssistedInject constructor(
             }
             "Cuve à fuel / gaz" -> {
                 compteurCuve.value?.etat = etat
-                compteurEauFroide.value?.let { viewModelScope.launch {compteurRepository.save(it) }}
+                compteurCuve.value?.let { viewModelScope.launch {compteurRepository.save(it) }}
             }
         }
     }

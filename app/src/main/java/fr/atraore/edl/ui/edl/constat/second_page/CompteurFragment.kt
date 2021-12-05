@@ -5,36 +5,29 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.*
-import androidx.cardview.widget.CardView
+import android.widget.ImageView
+import android.widget.ListPopupWindow
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.bumptech.glide.Glide
-import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Compteur
 import fr.atraore.edl.databinding.CompteurFragmentBinding
 import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.first_page.StartConstatFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
-import fr.atraore.edl.utils.COMPTEUR_LABELS
 import fr.atraore.edl.utils.COMPTEUR_LABELS_LIGHT
 import fr.atraore.edl.utils.assistedViewModel
-import kotlinx.android.synthetic.main.compteur_fragment.*
-import kotlinx.android.synthetic.main.compteur_item.view.*
-import kotlinx.android.synthetic.main.end_constat_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
-import kotlin.math.log
 
 
 @AndroidEntryPoint
@@ -108,7 +101,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setCompteurs(binding)
+        viewModel.setCompteurs()
         viewModel.constatDetail.observe(viewLifecycleOwner, { constatWithDetails ->
             constatWithDetails?.let {
                 viewModel.constatHeaderInfo.value =
@@ -135,23 +128,20 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
     private fun createCompteur(text: String) {
         when(text) {
             "Compteur d'eau chaude" -> {
-                viewModel.getCompteurEauChaudeVisibility = View.VISIBLE
-                ctn_compteur_eau_chaude.visibility = View.VISIBLE
-                if (viewModel.compteurEauChaude == null) {
+                viewModel.visibilityEauChaude.value = View.VISIBLE
+                if (viewModel.compteurEauChaude.value == null) {
                     viewModel.saveCompteur(4)
                 }
             }
             "Compteur Gaz" -> {
-                viewModel.getCompteurGazVisibility = View.VISIBLE
-                ctn_compteur_gaz.visibility = View.VISIBLE
-                if (viewModel.compteurGaz == null) {
+                viewModel.visibilityGaz.value = View.VISIBLE
+                if (viewModel.compteurGaz.value == null) {
                     viewModel.saveCompteur(5)
                 }
             }
             "Cuve à fuel / gaz" -> {
-                viewModel.getCompteurCuveVisibility = View.VISIBLE
-                ctn_cuve.visibility = View.VISIBLE
-                if (viewModel.compteurCuve == null) {
+                viewModel.visibilityCuve.value = View.VISIBLE
+                if (viewModel.compteurCuve.value == null) {
                     viewModel.saveCompteur(6)
                 }
             }
