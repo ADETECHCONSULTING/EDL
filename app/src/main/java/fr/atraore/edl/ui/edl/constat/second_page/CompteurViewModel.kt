@@ -30,12 +30,12 @@ class CompteurViewModel @AssistedInject constructor(
         repository.getConstatDetail(constatId).asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
 
-    var compteurEauFroide: Compteur? = null
-    var compteurElec: Compteur? = null
-    var compteurDetecFumee: Compteur? = null
-    var compteurEauChaude: Compteur? = null
-    var compteurGaz: Compteur? = null
-    var compteurCuve: Compteur? = null
+    val compteurEauFroide: MutableLiveData<Compteur> = MutableLiveData()
+    val compteurElec: MutableLiveData<Compteur> = MutableLiveData()
+    val compteurDetecFumee: MutableLiveData<Compteur> = MutableLiveData()
+    val compteurEauChaude: MutableLiveData<Compteur> = MutableLiveData()
+    val compteurGaz: MutableLiveData<Compteur> = MutableLiveData()
+    val compteurCuve: MutableLiveData<Compteur> = MutableLiveData()
 
     var visibilityEauChaude: Int = View.GONE
     var visibilityGaz: Int = View.GONE
@@ -50,26 +50,25 @@ class CompteurViewModel @AssistedInject constructor(
     fun setCompteurs(binding: CompteurFragmentBinding) {
         viewModelScope.launch {
             compteurRepository.getById(constatId, 1).collect {
-                compteurEauFroide = it ?: Compteur(constatId, 1)
+                compteurEauFroide.value = it ?: Compteur(constatId, 1)
                 if (it == null) {
-                    compteurRepository.save(compteurEauFroide!!)
+                    compteurRepository.save(compteurEauFroide.value!!)
                 }
-                binding.invalidateAll()
             }
         }
         viewModelScope.launch {
             compteurRepository.getById(constatId, 2).collect {
-                compteurElec = it ?: Compteur(constatId, 2)
+                compteurElec.value = it ?: Compteur(constatId, 2)
                 if (it == null) {
-                    compteurRepository.save(compteurElec!!)
+                    compteurRepository.save(compteurElec.value!!)
                 }
             }
         }
         viewModelScope.launch {
             compteurRepository.getById(constatId, 3).collect {
-                compteurDetecFumee = it ?: Compteur(constatId, 3)
+                compteurDetecFumee.value = it ?: Compteur(constatId, 3)
                 if (it == null) {
-                    compteurRepository.save(compteurDetecFumee!!)
+                    compteurRepository.save(compteurDetecFumee.value!!)
                 }
             }
         }
@@ -78,21 +77,21 @@ class CompteurViewModel @AssistedInject constructor(
                 //les compteurs optionnels on n'instancie pas directement mais que lorsque
                 //la visibilite passe à true
                 it?.let {
-                    compteurEauChaude = it
+                    compteurEauChaude.value = it
                 }
             }
         }
         viewModelScope.launch {
             compteurRepository.getById(constatId, 5).collect {
                 it?.let {
-                    compteurGaz = it
+                    compteurGaz.value = it
                 }
             }
         }
         viewModelScope.launch {
             compteurRepository.getById(constatId, 6).collect {
                 it?.let {
-                    compteurCuve = it
+                    compteurCuve.value = it
                 }
             }
         }
@@ -101,12 +100,12 @@ class CompteurViewModel @AssistedInject constructor(
     fun saveCompteurs() {
         viewModelScope.launch {
             compteurRepository.saveArgsNullable(
-                compteurEauFroide,
-                compteurElec,
-                compteurDetecFumee,
-                compteurEauChaude,
-                compteurGaz,
-                compteurCuve
+                compteurEauFroide.value,
+                compteurElec.value,
+                compteurDetecFumee.value,
+                compteurEauChaude.value,
+                compteurGaz.value,
+                compteurCuve.value
             )
         }
     }
@@ -145,22 +144,22 @@ class CompteurViewModel @AssistedInject constructor(
     fun getEnServiceState(compteurLabel: String): Boolean {
         when (compteurLabel) {
             "Compteur d'eau froide" -> {
-                return compteurEauFroide?.etat == EN_SERVICE_LABEL
+                return compteurEauFroide.value?.etat == EN_SERVICE_LABEL
             }
             "Compteur d'électricité" -> {
-                return compteurElec?.etat == EN_SERVICE_LABEL
+                return compteurElec.value?.etat == EN_SERVICE_LABEL
             }
             "Détecteur de fumée" -> {
-                return compteurDetecFumee?.etat == EQUIPE_LABEL
+                return compteurDetecFumee.value?.etat == EQUIPE_LABEL
             }
             "Compteur d'eau chaude" -> {
-                return compteurEauChaude?.etat == EN_SERVICE_LABEL
+                return compteurEauChaude.value?.etat == EN_SERVICE_LABEL
             }
             "Compteur Gaz" -> {
-                return compteurGaz?.etat == EN_SERVICE_LABEL
+                return compteurGaz.value?.etat == EN_SERVICE_LABEL
             }
             "Cuve à fuel / gaz" -> {
-                return compteurCuve?.etat == EN_SERVICE_LABEL
+                return compteurCuve.value?.etat == EN_SERVICE_LABEL
             }
         }
         return false
@@ -169,22 +168,22 @@ class CompteurViewModel @AssistedInject constructor(
     fun getCoupeState(compteurLabel: String): Boolean {
         when (compteurLabel) {
             "Compteur d'eau froide" -> {
-                return compteurEauFroide?.etat == COUPE_LABEL
+                return compteurEauFroide.value?.etat == COUPE_LABEL
             }
             "Compteur d'électricité" -> {
-                return compteurElec?.etat == COUPE_LABEL
+                return compteurElec.value?.etat == COUPE_LABEL
             }
             "Détecteur de fumée" -> {
-                return compteurDetecFumee?.etat == NON_EQUIPE_LABEL
+                return compteurDetecFumee.value?.etat == NON_EQUIPE_LABEL
             }
             "Compteur d'eau chaude" -> {
-                return compteurEauChaude?.etat == COUPE_LABEL
+                return compteurEauChaude.value?.etat == COUPE_LABEL
             }
             "Compteur Gaz" -> {
-                return compteurGaz?.etat == COUPE_LABEL
+                return compteurGaz.value?.etat == COUPE_LABEL
             }
             "Cuve à fuel / gaz" -> {
-                return compteurCuve?.etat == COUPE_LABEL
+                return compteurCuve.value?.etat == COUPE_LABEL
             }
         }
         return false
@@ -193,28 +192,28 @@ class CompteurViewModel @AssistedInject constructor(
     fun setEtatCompteur(compteurLabel: String, etat: String) {
         when (compteurLabel) {
             "Compteur d'eau froide" -> {
-                compteurEauFroide?.etat = etat
-                compteurEauFroide?.let { viewModelScope.launch {compteurRepository.save(it) }}
+                compteurEauFroide.value?.etat = etat
+                compteurEauFroide.value?.let { viewModelScope.launch {compteurRepository.save(it) }}
             }
             "Compteur d'électricité" -> {
-                compteurElec?.etat = etat
-                compteurElec?.let { viewModelScope.launch {compteurRepository.save(it) }}
+                compteurElec.value?.etat = etat
+                compteurElec.value?.let { viewModelScope.launch {compteurRepository.save(it) }}
             }
             "Détecteur de fumée" -> {
-                compteurDetecFumee?.etat = etat
-                compteurDetecFumee?.let { viewModelScope.launch {compteurRepository.save(it) }}
+                compteurDetecFumee.value?.etat = etat
+                compteurDetecFumee.value?.let { viewModelScope.launch {compteurRepository.save(it) }}
             }
             "Compteur d'eau chaude" -> {
-                compteurEauChaude?.etat = etat
-                compteurEauChaude?.let { viewModelScope.launch {compteurRepository.save(it) }}
+                compteurEauChaude.value?.etat = etat
+                compteurEauChaude.value?.let { viewModelScope.launch {compteurRepository.save(it) }}
             }
             "Compteur Gaz" -> {
-                compteurGaz?.etat = etat
-                compteurGaz?.let { viewModelScope.launch {compteurRepository.save(it) }}
+                compteurGaz.value?.etat = etat
+                compteurGaz.value?.let { viewModelScope.launch {compteurRepository.save(it) }}
             }
             "Cuve à fuel / gaz" -> {
-                compteurCuve?.etat = etat
-                compteurEauFroide?.let { viewModelScope.launch {compteurRepository.save(it) }}
+                compteurCuve.value?.etat = etat
+                compteurEauFroide.value?.let { viewModelScope.launch {compteurRepository.save(it) }}
             }
         }
     }

@@ -23,7 +23,7 @@ data class Compteur (
 
     @get:Bindable
     @Ignore
-    var getEtat: String? = null
+    var getEtat: String? = etat
     set(value) {
         field = value
         etat = value
@@ -32,7 +32,7 @@ data class Compteur (
 
     @get:Bindable
     @Ignore
-    var getPrimaryQuantity: String? = null
+    var getPrimaryQuantity: String? = primaryQuantity
         set(value) {
             field = value
             primaryQuantity = value
@@ -41,7 +41,7 @@ data class Compteur (
 
     @get:Bindable
     @Ignore
-    var getSecondaryQuantity: String? = null
+    var getSecondaryQuantity: String? = secondaryQuantity
         set(value) {
             field = value
             secondaryQuantity = value
@@ -50,7 +50,7 @@ data class Compteur (
 
     @get:Bindable
     @Ignore
-    var getLocalisation: String? = null
+    var getLocalisation: String? = localisation
         set(value) {
             field = value
             localisation = value
@@ -59,7 +59,7 @@ data class Compteur (
 
     @get:Bindable
     @Ignore
-    var getMotifNonReleve: String? = null
+    var getMotifNonReleve: String? = motifNonReleve
         set(value) {
             field = value
             motifNonReleve = value

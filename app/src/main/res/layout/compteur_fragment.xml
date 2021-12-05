@@ -12,30 +12,6 @@
             type="fr.atraore.edl.ui.edl.constat.second_page.CompteurViewModel" />
 
         <variable
-            name="compteurEauFroide"
-            type="fr.atraore.edl.data.models.Compteur" />
-
-        <variable
-            name="compteurElec"
-            type="fr.atraore.edl.data.models.Compteur" />
-
-        <variable
-            name="compteurDetectFumee"
-            type="fr.atraore.edl.data.models.Compteur" />
-
-        <variable
-            name="compteurCuveFioul"
-            type="fr.atraore.edl.data.models.Compteur" />
-
-        <variable
-            name="compteurEauChaude"
-            type="fr.atraore.edl.data.models.Compteur" />
-
-        <variable
-            name="compteurGaz"
-            type="fr.atraore.edl.data.models.Compteur" />
-
-        <variable
             name="photoClickListener"
             type="android.view.View.OnClickListener" />
 
@@ -125,7 +101,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:checked="@{compteurEauFroide.getEtat.equals(ConstantsKt.EN_SERVICE_LABEL)}"
+                            android:checked="@{compteurViewModel.compteurEauFroide.getEtat.equals(ConstantsKt.EN_SERVICE_LABEL)}"
                             android:onClick="@{()->compteurViewModel.setEtatCompteur(ConstantsKt.COMPTEUR_LABELS[0], ConstantsKt.EN_SERVICE_LABEL)}"
                             android:background="@drawable/state_radiobutton"
                             android:button="@null"
@@ -185,7 +161,7 @@
                         android:minWidth="120dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurEauFroide.getPrimaryQuantity}"
+                        android:text="@={compteurViewModel.compteurEauFroide.getPrimaryQuantity}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_eau_froide"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_eau_froide"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_eau_froide"
@@ -215,7 +191,7 @@
                         android:minWidth="200dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurEauFroide.getLocalisation}"
+                        android:text="@={compteurViewModel.compteurEauFroide.getLocalisation}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_localisation_eau_froide"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_localisation_eau_froide"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_localisation_eau_froide" />
@@ -244,7 +220,7 @@
                         android:minWidth="200dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurEauFroide.getMotifNonReleve}"
+                        android:text="@={compteurViewModel.compteurEauFroide.getMotifNonReleve}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_eau_froide"
                         app:layout_constraintStart_toEndOf="@id/txv_non_releve_eau_froide"
                         app:layout_constraintTop_toTopOf="@id/txv_non_releve_eau_froide" />
@@ -387,7 +363,7 @@
                         android:minWidth="120dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurElec.getPrimaryQuantity}"
+                        android:text="@={compteurViewModel.compteurElec.getPrimaryQuantity}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_elec"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_elec"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_elec"
@@ -419,7 +395,7 @@
                         android:minWidth="120dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurElec.getSecondaryQuantity}"
+                        android:text="@={compteurViewModel.compteurElec.getSecondaryQuantity}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_secondary_elec"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_secondary_elec"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_secondary_elec"
@@ -450,7 +426,7 @@
                         android:minWidth="200dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurElec.getLocalisation}"
+                        android:text="@={compteurViewModel.compteurElec.getLocalisation}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_localisation_elec"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_localisation_elec"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_localisation_elec" />
@@ -479,7 +455,7 @@
                         android:minWidth="200dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurElec.getMotifNonReleve}"
+                        android:text="@={compteurViewModel.compteurElec.getMotifNonReleve}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_elec"
                         app:layout_constraintStart_toEndOf="@id/txv_non_releve_elec"
                         app:layout_constraintTop_toTopOf="@id/txv_non_releve_elec"
@@ -686,7 +662,7 @@
                         android:minWidth="120dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurEauChaude.getPrimaryQuantity}"
+                        android:text="@={compteurViewModel.compteurEauChaude.getPrimaryQuantity}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_eau_chaude"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_eau_chaude"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_eau_chaude"
@@ -716,7 +692,7 @@
                         android:minWidth="200dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurEauChaude.getLocalisation}"
+                        android:text="@={compteurViewModel.compteurEauChaude.getLocalisation}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_localisation_eau_chaude"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_localisation_eau_chaude"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_localisation_eau_chaude" />
@@ -745,7 +721,7 @@
                         android:minWidth="200dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurEauChaude.getMotifNonReleve}"
+                        android:text="@={compteurViewModel.compteurEauChaude.getMotifNonReleve}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_eau_chaude"
                         app:layout_constraintStart_toEndOf="@id/txv_non_releve_eau_chaude"
                         app:layout_constraintTop_toTopOf="@id/txv_non_releve_eau_chaude"
@@ -879,7 +855,7 @@
                         android:minWidth="120dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurGaz.getPrimaryQuantity}"
+                        android:text="@={compteurViewModel.compteurGaz.getPrimaryQuantity}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_gaz"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_gaz"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_gaz"
@@ -909,7 +885,7 @@
                         android:minWidth="200dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurGaz.getLocalisation}"
+                        android:text="@={compteurViewModel.compteurGaz.getLocalisation}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_localisation_gaz"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_localisation_gaz"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_localisation_gaz" />
@@ -938,7 +914,7 @@
                         android:minWidth="200dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurGaz.getMotifNonReleve}"
+                        android:text="@={compteurViewModel.compteurGaz.getMotifNonReleve}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_gaz"
                         app:layout_constraintStart_toEndOf="@id/txv_non_releve_gaz"
                         app:layout_constraintTop_toTopOf="@id/txv_non_releve_gaz"
@@ -1072,7 +1048,7 @@
                         android:minWidth="120dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurCuveFioul.getPrimaryQuantity}"
+                        android:text="@={compteurViewModel.compteurCuve.getPrimaryQuantity}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_cuve"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_cuve"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_cuve"
@@ -1102,7 +1078,7 @@
                         android:minWidth="120dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurCuveFioul.getSecondaryQuantity}"
+                        android:text="@={compteurViewModel.compteurCuve.getSecondaryQuantity}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_secondary_cuve"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_secondary_cuve"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_secondary_cuve"/>
@@ -1132,7 +1108,7 @@
                         android:minWidth="200dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurCuveFioul.getLocalisation}"
+                        android:text="@={compteurViewModel.compteurCuve.getLocalisation}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_compteur_localisation_cuve"
                         app:layout_constraintStart_toEndOf="@id/txv_compteur_localisation_cuve"
                         app:layout_constraintTop_toTopOf="@id/txv_compteur_localisation_cuve" />
@@ -1161,7 +1137,7 @@
                         android:minWidth="200dp"
                         android:minHeight="48dp"
                         android:padding="@dimen/padding_small"
-                        android:text="@={compteurCuveFioul.getMotifNonReleve}"
+                        android:text="@={compteurViewModel.compteurCuve.getMotifNonReleve}"
                         app:layout_constraintBottom_toBottomOf="@id/txv_non_releve_cuve"
                         app:layout_constraintStart_toEndOf="@id/txv_non_releve_cuve"
                         app:layout_constraintTop_toTopOf="@id/txv_non_releve_cuve"

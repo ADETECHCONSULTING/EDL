@@ -76,12 +76,6 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
             DataBindingUtil.inflate(inflater, R.layout.compteur_fragment, container, false)
         binding.compteurViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.compteurEauFroide = viewModel.compteurEauFroide
-        binding.compteurElec = viewModel.compteurElec
-        binding.compteurDetectFumee = viewModel.compteurDetecFumee
-        binding.compteurEauChaude = viewModel.compteurEauChaude
-        binding.compteurGaz = viewModel.compteurGaz
-        binding.compteurCuveFioul = viewModel.compteurCuve
         binding.photoClickListener = this
         return binding.root
     }
