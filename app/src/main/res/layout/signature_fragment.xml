@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="fr.atraore.edl.utils.ConstantsKt" />
+
+        <variable
+            name="signatureViewModel"
+            type="fr.atraore.edl.ui.edl.constat.signature.SignatureViewModel" />
+
+        <variable
+            name="click"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_bg"
+        tools:context=".ui.edl.constat.second_page.CompteurFragment">
+
+        <LinearLayout
+            android:id="@+id/ctn_header"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/txv_header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@{signatureViewModel.constatHeaderInfo}"
+                android:textColor="@color/black"
+                tools:text="Constat d’état des lieux entrant Nº003 - Mercredi 30 septembre à 16H52" />
+
+        </LinearLayout>
+
+        <com.github.gcacace.signaturepad.views.SignaturePad
+            android:id="@+id/signature_pad"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_medium"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ctn_header" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_marginStart="8dp"
+            android:minWidth="@dimen/buttons_large_width"
+            android:text="@string/sauvegarder"
+            app:layout_constraintStart_toEndOf="@+id/signature_pad"
+            app:layout_constraintTop_toTopOf="@+id/signature_pad" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_clear_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/red"
+            android:minWidth="@dimen/buttons_large_width"
+            android:text="@string/effacer_label"
+            app:layout_constraintStart_toEndOf="@+id/signature_pad"
+            app:layout_constraintTop_toBottomOf="@+id/btn_save_signature" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.6" />
+
+        <ImageView
+            android:id="@+id/imv_pdf_export"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_pdf_svgrepo_com"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/signature_pad"
+            app:layout_constraintTop_toBottomOf="@+id/btn_clear_signature" />
+
+        <TextView
+            android:id="@+id/txv_pdf_export"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/imv_pdf_export"
+            android:layout_marginBottom="@dimen/margin_medium"
+            style="@style/MyTextViewStyleLabel"
+            android:text="@string/export_pdf_label"
+            app:layout_constraintStart_toStartOf="@id/imv_pdf_export"
+            app:layout_constraintEnd_toEndOf="@id/imv_pdf_export"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

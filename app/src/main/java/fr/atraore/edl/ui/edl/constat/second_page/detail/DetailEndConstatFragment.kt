@@ -61,7 +61,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
     }
 
     override fun goNext() {
-        Toast.makeText(activity, "vers signature", Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onCreateView(

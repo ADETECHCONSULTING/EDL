@@ -124,6 +124,10 @@ class DatabaseModule {
         return appDatabase.getPhotoCompteurDao()
     }
 
+    @Provides
+    fun provideConfigPdfDao(appDatabase: AppDatabase): ConfigPdfDao {
+        return appDatabase.getConfigPdfDao()
+    }
 
 
     @Provides
@@ -140,7 +144,8 @@ class DatabaseModule {
         roomReferenceDao: Provider<RoomReferenceDao>,
         elementReferenceDao: Provider<ElementReferenceDao>,
         lotReferenceDao: Provider<LotReferenceDao>,
-        compteurReferenceDao: Provider<CompteurReferenceDao>
+        compteurReferenceDao: Provider<CompteurReferenceDao>,
+        configPdfDao: Provider<ConfigPdfDao>
     ): AppDatabase {
         return Room.databaseBuilder(
             applicationContext,
@@ -162,7 +167,8 @@ class DatabaseModule {
                             roomReferenceDao.get(),
                             elementReferenceDao.get(),
                             lotReferenceDao.get(),
-                            compteurReferenceDao.get()
+                            compteurReferenceDao.get(),
+                            configPdfDao.get()
                         )
                     }
                 }
@@ -184,7 +190,8 @@ class DatabaseModule {
         roomReferenceDao: RoomReferenceDao,
         elementReferenceDao: ElementReferenceDao,
         lotReferenceDao: LotReferenceDao,
-        compteurReferenceDao: CompteurReferenceDao
+        compteurReferenceDao: CompteurReferenceDao,
+        configPdfDao: ConfigPdfDao
     ) {
         // Delete all content
         constatDao.deleteAll()
@@ -203,6 +210,7 @@ class DatabaseModule {
         createElementReferences(elementReferenceDao)
         createLotReferences(lotReferenceDao)
         createCompteurReferences(compteurReferenceDao)
+        createConfigPdfReference(configPdfDao)
     }
 
     private suspend fun createRoomsReference(roomReferenceDao: RoomReferenceDao) {
@@ -234,6 +242,22 @@ class DatabaseModule {
             val compteurReference = CompteurReference(index+1, value)
             compteurReferenceDao.save(compteurReference)
         }
+    }
+
+    private suspend fun createConfigPdfReference(configPdfDao: ConfigPdfDao) {
+        configPdfDao.save(ConfigPdf(
+            "Pré-état des lieux de sortie",
+            "Les soussignés reconnaissent exactes les constatations sur l'état du logement,\n" +
+                    " sous réserve du bon fonctionnement des canalisations,\n" +
+                    " appareils et installations sanitaires, électriques et du chauffage qui n'a pu être vérifié ce jour, toute défectuosité dans le fonctionnement\n" +
+                    "  de ceux-ci devant être signalée dans le délai maximum de huit jours, et pendant le premier mois de la période de chauffe en ce qui\n" +
+                    "  concerne les éléments de chauffage.\n",
+            "Les co-signataires reconnaissent avoir reçu chacun un exemplaire du présent état des lieux et s'accordent pour y faire référence lors du\n" +
+                    " départ du locataire\n",
+            "Les soussignés reconnaissent exactes les constatations sur l'état du logement,\n" +
+                    " et reconnaissent avoir reçu chacun l'ensemble des élements leur permettant de récupérer un exemplaire du présent état des lieux et s'accordent pour y faire référence.\n",
+            "Le présent état des lieux, a été établi contradictoirement entre les parties qui le reconnaissent exact."
+        ))
     }
 
     private suspend fun toDeleteForProd(

@@ -38,7 +38,8 @@ const val DATABASE_NAME = "edlDb"
         Detail::class,
         Compteur::class,
         PhotoCompteur::class,
-        CompteurReference::class
+        CompteurReference::class,
+        ConfigPdf::class
     ], version = 1, exportSchema = false
 )
 @TypeConverters(DateTypeConverter::class)
@@ -63,6 +64,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getCompteurReferenceDao(): CompteurReferenceDao
     abstract fun getCompteurDao(): CompteurDao
     abstract fun getPhotoCompteurDao(): PhotoCompteurDao
+    abstract fun getConfigPdfDao(): ConfigPdfDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

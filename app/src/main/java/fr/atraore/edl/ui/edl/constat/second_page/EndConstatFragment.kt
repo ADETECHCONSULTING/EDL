@@ -6,16 +6,14 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.ListPopupWindow
+import android.widget.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
 import androidx.lifecycle.LifecycleObserver
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
@@ -40,10 +38,7 @@ import fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatFragment
 import fr.atraore.edl.ui.edl.constat.second_page.groupie.ChildItem
 import fr.atraore.edl.ui.edl.constat.second_page.groupie.ParentItem
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
-import fr.atraore.edl.utils.ARGS_CONSTAT_ID
-import fr.atraore.edl.utils.COMPTEUR_LABELS_LIGHT
-import fr.atraore.edl.utils.TwoPaneOnBackPressedCallback
-import fr.atraore.edl.utils.assistedViewModel
+import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.end_constat_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -63,7 +58,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         get() = "Deuxieme partie du constat"
 
     override fun goNext() {
-        TODO("Not yet implemented")
     }
 
     override val coroutineContext: CoroutineContext
@@ -127,6 +121,10 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     @SuppressLint("CheckResult")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
+            R.id.action_next -> {
+                val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
+                findNavController().navigate(R.id.go_to_signature, bundle)
+            }
             R.id.action_add_room -> {
                 val indexes = mutableListOf<Int>()
                 roomsWithDetails.forEach { roomWithDetails ->
@@ -310,7 +308,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         childFragmentManager.commit {
             setReorderingAllowed(true)
             val fragment = DetailEndConstatFragment.newInstance()
-            fragment.arguments = bundleOf("detailId" to itemId, "idLot" to clickedLot)
+            fragment.arguments = bundleOf("detailId" to itemId, "idLot" to clickedLot, ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
             replace(R.id.fragment_detail, fragment)
             // If we're already open and the detail pane is visible,
             // crossfade between the fragments.

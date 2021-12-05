@@ -1,6 +1,11 @@
 package fr.atraore.edl.data.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import fr.atraore.edl.utils.CONFIG_PDF_TABLE
+
 const val PDF_ID_CONFIG = 1
+@Entity(tableName = CONFIG_PDF_TABLE)
 data class ConfigPdf (
     val textPreEtat: String?,
     val textPdfSignature: String?,
@@ -8,5 +13,5 @@ data class ConfigPdf (
     val textPdfSignature2bis: String?,
     val textPdfSignature3: String?,
 ) {
-    var id: Int = PDF_ID_CONFIG
+    @PrimaryKey(autoGenerate = false) var id: Int = PDF_ID_CONFIG
 }

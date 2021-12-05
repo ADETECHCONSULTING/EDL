@@ -95,6 +95,9 @@
     <string name="asterix">*</string>
     <string name="facultatif_label">Facultatif</string>
     <string name="ajout_photo">ajout photo</string>
+    <string name="effacer_label">Effacer</string>
+    <string name="sauvegarder">Sauvegarder</string>
+    <string name="export_pdf_label">Exporter le constat sous le format PDF</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>
