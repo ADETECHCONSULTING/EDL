@@ -3,6 +3,7 @@ package fr.atraore.edl.data.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
+import fr.atraore.edl.data.models.Detail
 import fr.atraore.edl.data.models.RoomReference
 import fr.atraore.edl.data.models.data.RoomWithDetails
 import fr.atraore.edl.utils.ROOM_REFERENCE_TABLE
@@ -19,6 +20,6 @@ interface RoomReferenceDao : BaseDao<RoomReference> {
     fun getFirstRoomReferences(): Flow<RoomReference>
 
     @Transaction
-    @Query("SELECT * FROM $ROOM_REFERENCE_TABLE INNER JOIN DETAIL ON DETAIL.idRoom = $ROOM_REFERENCE_TABLE.roomReferenceId WHERE DETAIL.idLot = :idLot ORDER BY name asc")
-    fun getRoomDetails(idLot: Int) : Flow<List<RoomWithDetails>>
+    @Query("SELECT * FROM RoomReference JOIN DETAIL dt ON dt.idRoom = roomReferenceId WHERE dt.idLot = :idLot ORDER BY name asc")
+    fun getRoomDetails(idLot: Int) : Flow<Map<RoomReference, List<Detail>>>
 }

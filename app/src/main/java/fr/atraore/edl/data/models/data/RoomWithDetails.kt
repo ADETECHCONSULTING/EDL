@@ -13,7 +13,7 @@ data class RoomWithDetails (
     @Embedded val rooms: RoomReference,
     @Relation(
         parentColumn = "roomReferenceId",
-        entityColumn = "idRoom",
+        entityColumn = "idRoom"
     )
     val details: MutableList<Detail>,
 ) : Serializable {

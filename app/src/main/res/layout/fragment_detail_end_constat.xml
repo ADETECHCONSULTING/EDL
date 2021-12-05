@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@drawable/gradient_bg"
-        android:visibility="@{detail == null ? View.VISIBLE : View.INVISIBLE}"
+        android:visibility="@{detail == null ? View.VISIBLE : View.GONE}"
         tools:context=".ui.edl.constat.second_page.detail.DetailEndConstatFragment">
 
         <LinearLayout
@@ -39,11 +39,11 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{detail == null ? View.INVISIBLE : View.VISIBLE}"
             android:padding="@dimen/padding_medium">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:visibility="@{detail == null ? View.GONE : View.VISIBLE}"
                 android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.Guideline

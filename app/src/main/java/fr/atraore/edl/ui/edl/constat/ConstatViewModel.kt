@@ -31,7 +31,7 @@ class ConstatViewModel @AssistedInject constructor(
     val allRoomReference: LiveData<List<RoomReference>> = roomRepository.allRoomReferences().asLiveData()
     val allElementReference: LiveData<List<ElementReference>> = elementRepository.allElementReference().asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
-    fun getRoomWithDetails(idLot: Int) : LiveData<List<RoomWithDetails>> = roomRepository.getRoomDetails(idLot).asLiveData()
+    fun getRoomWithDetails(idLot: Int) : LiveData<Map<RoomReference, List<Detail>>> = roomRepository.getRoomDetails(idLot).asLiveData()
     fun getDetailsByIdRoomAndIdConstat(idRoom: String, idConstat: String) : LiveData<List<Detail>> = detailRepository.detailsByIdRoomAndIdConstat(idRoom, idConstat).asLiveData()
     //combined live data
     val initFirstRoomReference = CombinedLiveData(firstRoomReference, allElementReference)

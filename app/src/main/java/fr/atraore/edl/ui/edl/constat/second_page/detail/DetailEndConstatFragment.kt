@@ -90,7 +90,6 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                         binding.detail = it
                         detail = it
 
-
                         if (!this::currentEtat.isInitialized) {
                             chipCheckedState(
                                 cg_etat,

@@ -5,9 +5,7 @@ import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageView
@@ -24,6 +22,7 @@ import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.checkItems
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
@@ -42,6 +41,7 @@ import fr.atraore.edl.ui.edl.constat.second_page.groupie.ChildItem
 import fr.atraore.edl.ui.edl.constat.second_page.groupie.ParentItem
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
+import fr.atraore.edl.utils.COMPTEUR_LABELS_LIGHT
 import fr.atraore.edl.utils.TwoPaneOnBackPressedCallback
 import fr.atraore.edl.utils.assistedViewModel
 import kotlinx.android.synthetic.main.end_constat_fragment.*
@@ -75,14 +75,14 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private var parentList: MutableList<ParentItem> = mutableListOf()
     var roomRefList: List<RoomReference>? = null
     var elementRefList: List<ElementReference>? = null
-    private lateinit var roomsWithDetails: List<RoomWithDetails>
+    private lateinit var roomsWithDetails: Map<RoomReference, List<Detail>>
 
     private lateinit var binding: EndConstatFragmentBinding
 
     private lateinit var listPopupWindow: ListPopupWindow
     private lateinit var clickedChildItem: Detail
     private lateinit var clickedParentItem: RoomReference
-    private var clickedLot by Delegates.notNull<Int>()
+    private var clickedLot: Int = 1
 
     private lateinit var theme: Resources.Theme
 
@@ -113,6 +113,84 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         binding.lifecycleOwner = viewLifecycleOwner
         binding.fragment = this
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_compteur)?.isVisible = false
+    }
+
+    @SuppressLint("CheckResult")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_add_room -> {
+                val indexes = mutableListOf<Int>()
+                roomsWithDetails.forEach { roomWithDetails ->
+                    if (roomWithDetails.value.isNotEmpty()) {
+                        roomRefList?.indexOf(roomWithDetails.key)?.let { index ->
+                            indexes.add(index)
+                        }
+                    }
+                }
+                val dialog = MaterialDialog(requireContext()).show {
+                    title(R.string.title_add_rooms)
+                    listItemsMultiChoice(items = roomRefList?.map { roomReference -> roomReference.name }) { _, _, items ->
+                        val roomsToAdd: List<RoomReference>? = roomRefList?.filter { roomRef -> roomRef.name in items }
+                        val roomsToCompare = roomsWithDetails.filter { rm -> rm.value.isNotEmpty() }.map { rm2 ->  rm2.key }//récupérer que les pièces qui ont des éléments
+
+                        //check des rooms à supprimer
+                        roomsToCompare.forEach { roomToCompare ->
+                            if (roomsToAdd != null) {
+                                if (roomToCompare !in roomsToAdd) {
+                                    //delete
+                                    launch {
+                                        viewModel.deleteConstatRoomCrossRef(
+                                            arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                            roomToCompare.roomReferenceId
+                                        )
+
+                                        viewModel.deleteAllDetailsFromRoom(roomToCompare.roomReferenceId)
+                                    }
+                                }
+                            }
+                        }
+
+                        roomsToAdd?.forEach { roomToAdd ->
+                            if (roomToAdd !in roomsToCompare) {
+                                launch {
+                                    viewModel.saveConstatRoomCrossRef(
+                                        arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                        roomToAdd.roomReferenceId
+                                    )
+
+                                    elementRefList?.forEach { elementRef ->
+                                        val detail = Detail(
+                                            roomToAdd.roomReferenceId + elementRef.elementReferenceId + clickedLot,
+                                            elementRef.elementReferenceId,
+                                            roomToAdd.roomReferenceId,
+                                            arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                            clickedLot,
+                                            elementRef.name
+                                        )
+                                        launch {
+                                            viewModel.saveDetail(detail)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    lifecycleOwner(this@EndConstatFragment)
+                    positiveButton(R.string.done)
+                }
+                dialog.checkItems(indexes.toIntArray())
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 
@@ -163,69 +241,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             groupAdapter.update(expandableGroups)
         }
 
-        btn_add_room.setOnClickListener {
-            val indexes = mutableListOf<Int>()
-            roomsWithDetails.forEach { roomWithDetails ->
-                if (roomWithDetails.details.size > 0) {
-                    roomRefList?.indexOf(roomWithDetails.rooms)?.let { index ->
-                        indexes.add(index)
-                    }
-                }
-            }
-            val dialog = MaterialDialog(requireContext()).show {
-                title(R.string.title_add_rooms)
-                listItemsMultiChoice(items = roomRefList?.map { roomReference -> roomReference.name }) { _, _, items ->
-                    val roomsToAdd: List<RoomReference>? = roomRefList?.filter { roomRef -> roomRef.name in items }
-                    val roomsToCompare = roomsWithDetails.filter { rm -> rm.details.size > 0 }.map { rm2 ->  rm2.rooms }//récupérer que les pièces qui ont des éléments
-
-                    //check des rooms à supprimer
-                    roomsToCompare.forEach { roomToCompare ->
-                        if (roomsToAdd != null) {
-                            if (roomToCompare !in roomsToAdd) {
-                                //delete
-                                launch {
-                                    viewModel.deleteConstatRoomCrossRef(
-                                        arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                        roomToCompare.roomReferenceId
-                                    )
-
-                                    viewModel.deleteAllDetailsFromRoom(roomToCompare.roomReferenceId)
-                                }
-                            }
-                        }
-                    }
-
-                    roomsToAdd?.forEach { roomToAdd ->
-                        if (roomToAdd !in roomsToCompare) {
-                            launch {
-                                viewModel.saveConstatRoomCrossRef(
-                                    arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                    roomToAdd.roomReferenceId
-                                )
-
-                                elementRefList?.forEach { elementRef ->
-                                    val detail = Detail(
-                                        roomToAdd.roomReferenceId + elementRef.elementReferenceId + clickedLot,
-                                        elementRef.elementReferenceId,
-                                        roomToAdd.roomReferenceId,
-                                        arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                        clickedLot,
-                                        elementRef.name
-                                    )
-                                    launch {
-                                        viewModel.saveDetail(detail)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                lifecycleOwner(this@EndConstatFragment)
-                positiveButton(R.string.done)
-            }
-            dialog.checkItems(indexes.toIntArray())
-        }
-
         groupLayoutManager = LinearLayoutManager(activity)
 
         rcv_rooms.apply {
@@ -241,46 +256,50 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
                 //récupération de toutes les pièces de ce constat
                 //Pour chaque pièces du constat, récupérer les éléments et les affecter dans l'expandable list
-                viewModel.roomCombinedLiveData(clickedLot).observe(viewLifecycleOwner, { pairInfoRoom ->
-                    pairInfoRoom.first?.let { roomsWithDetails ->
-                        var roomsIsDifferent = true
-                        if (this@EndConstatFragment::roomsWithDetails.isInitialized) {
-                            val numberOfRoomsPreviouslyAdded =
-                                this.roomsWithDetails.filter { rse -> rse.details.size > 0 }.size
-                            val numberOfRoomsCurrentlyAdded =
-                                roomsWithDetails.filter { rse -> rse.details.size > 0 }.size
-                            roomsIsDifferent =
-                                numberOfRoomsPreviouslyAdded != numberOfRoomsCurrentlyAdded
+                initExpendableList();
+            }
+        })
+    }
+
+    private fun initExpendableList() {
+        viewModel.roomCombinedLiveData(clickedLot).observe(viewLifecycleOwner, { pairInfoRoom ->
+            Log.d(TAG, "onViewCreated: CLICKED LOT $clickedLot")
+            pairInfoRoom.first?.let { roomsWithDetails ->
+                var roomsIsDifferent = true
+                if (this@EndConstatFragment::roomsWithDetails.isInitialized) {
+                    val numberOfRoomsPreviouslyAdded =
+                        this.roomsWithDetails.filter { rse -> rse.value.isNotEmpty() }.size
+                    val numberOfRoomsCurrentlyAdded =
+                        roomsWithDetails.filter { rse -> rse.value.isNotEmpty() }.size
+                    roomsIsDifferent =
+                        numberOfRoomsPreviouslyAdded != numberOfRoomsCurrentlyAdded
+                }
+
+                if (roomsIsDifferent) {
+                    val parentListItems = mutableListOf<ParentItem>()
+                    this@EndConstatFragment.roomsWithDetails = roomsWithDetails
+                    roomsWithDetails.filter { rse -> rse.value.isNotEmpty() }.forEach { it ->
+                        val parentIt = ParentItem(it.key, this)
+                        it.value.sortedBy { value -> value.intitule }
+                        parentIt.childItems = it.value.map { detail ->
+                            ChildItem(detail, this@EndConstatFragment)
                         }
 
-                        if (roomsIsDifferent) {
-                            val parentListItems = mutableListOf<ParentItem>()
-                            this@EndConstatFragment.roomsWithDetails = roomsWithDetails
-                            roomsWithDetails.filter { rse -> rse.details.size > 0 }.forEach {
-                                val parentIt = ParentItem(it.rooms, this)
-                                it.details.sortBy { it.intitule }
-                                parentIt.childItems = it.details.map { detail ->
-                                    ChildItem(detail, this@EndConstatFragment)
-                                }
-
-                                if (parentIt.roomParent.roomReferenceId !in parentListItems.map { re -> re.roomParent }
-                                        .map { roomReference -> roomReference.roomReferenceId }) {
-                                    parentListItems.add(parentIt)
-                                }
-                            }
-                            listener?.invoke(parentListItems)
-
-                            pairInfoRoom.second?.let { listRoomReference ->
-                                this.roomRefList = listRoomReference
-                                btn_add_room.isEnabled = this.roomRefList?.isEmpty() != true
-                            }
-
-                            pairInfoRoom.third?.let { listElementReference ->
-                                this.elementRefList = listElementReference
-                            }
+                        if (parentIt.roomParent.roomReferenceId !in parentListItems.map { re -> re.roomParent }
+                                .map { roomReference -> roomReference.roomReferenceId }) {
+                            parentListItems.add(parentIt)
                         }
                     }
-                })
+                    listener?.invoke(parentListItems)
+
+                    pairInfoRoom.second?.let { listRoomReference ->
+                        this.roomRefList = listRoomReference
+                    }
+
+                    pairInfoRoom.third?.let { listElementReference ->
+                        this.elementRefList = listElementReference
+                    }
+                }
             }
         })
     }
@@ -365,7 +384,10 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         val themeClick = resources.newTheme()
         themeClick.applyStyle(R.style.ClickedLot, false)
         changeTheme(themeClick, view as ImageView, idLot)
-        clickedLot = idLot
+        if (clickedLot != idLot) {
+            clickedLot = idLot
+            initExpendableList()
+        }
     }
 
     private fun changeTheme(theme: Resources.Theme, view: ImageView, idLot: Int) {

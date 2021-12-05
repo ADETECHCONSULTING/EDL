@@ -43,18 +43,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_add_room"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
-                    android:drawableStart="@android:drawable/ic_menu_add"
-                    android:text="@string/add_room"
-                    android:textAllCaps="false"
-                    android:textSize="@dimen/textSizeMedium"
-                    android:textColor="@color/white" />
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
