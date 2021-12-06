@@ -9,6 +9,10 @@ val POSITION_FRAGMENT_USER = 5
 
 val ARGS_TAB_POSITION = "tabPosition"
 val ARGS_CONSTAT_ID = "constatId"
+val ARGS_TENANT_ID = "tenantItemId"
+val ARGS_OWNER_ID = "ownerItemId"
+val ARGS_PROPERTY_ID = "propertyItemId"
+val ARGS_CONTRACTOR_ID = "contractorItemId"
 val ARGS_CONSTAT = "constat"
 val ARGS_ALREADY_ADDED = "alreadyAdded"
 

@@ -115,7 +115,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        menu.findItem(R.id.action_compteur)?.isVisible = false
+
     }
 
     @SuppressLint("CheckResult")
@@ -124,6 +124,10 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             R.id.action_next -> {
                 val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
                 findNavController().navigate(R.id.go_to_signature, bundle)
+            }
+            R.id.action_compteur -> {
+                val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
+                findNavController().navigate(R.id.go_to_compteur, bundle)
             }
             R.id.action_add_room -> {
                 val indexes = mutableListOf<Int>()

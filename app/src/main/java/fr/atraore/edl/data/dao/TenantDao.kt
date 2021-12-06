@@ -14,4 +14,6 @@ interface TenantDao : BaseDao<Tenant> {
     @Query("SELECT * FROM $TENANT_TABLE")
     fun getAllTenants(): Flow<List<Tenant>>
 
+    @Query("SELECT * FROM $TENANT_TABLE WHERE tenantId = :id")
+    fun getById(id: String): Flow<Tenant>
 }

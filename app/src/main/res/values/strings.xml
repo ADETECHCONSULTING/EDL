@@ -22,6 +22,7 @@
     <string name="note_label">Note</string>
     <string name="cancel_label">Annuler</string>
     <string name="create_label">Créer</string>
+    <string name="modifier_label">Modifier</string>
     <string name="contractor_label">Mandataire</string>
     <string name="denomination_label">Dénomination</string>
     <string name="nature_label">Nature</string>
@@ -98,6 +99,7 @@
     <string name="effacer_label">Effacer</string>
     <string name="sauvegarder">Sauvegarder</string>
     <string name="export_pdf_label">Exporter le constat sous le format PDF</string>
+    <string name="permission_camera">Cette application nécessite votre permission pour avoir accès à la caméra et aux accès fichiers.</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

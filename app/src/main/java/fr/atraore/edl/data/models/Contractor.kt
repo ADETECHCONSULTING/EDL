@@ -12,13 +12,17 @@ data class Contractor (
     @PrimaryKey(autoGenerate = false) val contractorId: String,
     var denomination: String,
     val mail: String?,
+    val tel: String?,
+    @ColumnInfo(name = "tel_2") val tel2: String?,
     @ColumnInfo(name = "address_1") val address1: String?,
     @ColumnInfo(name = "address_2") val address2: String?,
     @ColumnInfo(name = "address_3") val address3: String?,
     @ColumnInfo(name = "postal_code_1") val postalCode1: String?,
     @ColumnInfo(name = "postal_code_2") val postalCode2: String?,
     @ColumnInfo(name = "postal_code_3") val postalCode3: String?,
-    val city: String?
+    val city: String?,
+    @ColumnInfo(name = "city_2") val city2: String?,
+    val notes: String?
 ) : PrimaryInfo(), Serializable {
     @Ignore
     override fun primaryInfo(): String {

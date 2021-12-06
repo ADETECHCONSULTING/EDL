@@ -70,6 +70,14 @@
         tools:layout="@layout/end_constat_fragment">
 
         <action
+            android:id="@+id/go_to_compteur"
+            app:destination="@id/compteurFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
             android:id="@+id/go_to_signature"
             app:destination="@id/signatureFragment"
             app:enterAnim="@android:anim/slide_in_left"

@@ -1,9 +1,11 @@
 package fr.atraore.edl.ui.edl.constat.first_page
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
@@ -12,6 +14,9 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
@@ -310,16 +315,20 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
             //click true active l'edition
             //click false sauvegarde le contenu
             R.id.imv_edit_owner -> {
-                editOrSave(rcv_owner.adapter as PrimaryInfoNoDataBindAdapter)
+                whoToEdit(this.constat.owners.map { it.name }, OWNER_LABEL)
+                //editOrSave(rcv_owner.adapter as PrimaryInfoNoDataBindAdapter, v as ImageView)
             }
             R.id.imv_edit_locataire -> {
-                editOrSave(rcv_tenant.adapter as PrimaryInfoNoDataBindAdapter)
+                whoToEdit(this.constat.tenants.map { it.name }, TENANT_LABEL)
+                //editOrSave(rcv_tenant.adapter as PrimaryInfoNoDataBindAdapter, v as ImageView)
             }
             R.id.imv_edit_mandataire -> {
-                editOrSave(rcv_contractor.adapter as PrimaryInfoNoDataBindAdapter)
+                whoToEdit(this.constat.contractors.map { it.denomination }, CONTRACTOR_LABEL)
+                //editOrSave(rcv_contractor.adapter as PrimaryInfoNoDataBindAdapter, v as ImageView)
             }
             R.id.imv_edit_bien -> {
-                editOrSave(rcv_biens.adapter as PrimaryInfoNoDataBindAdapter)
+                whoToEdit(this.constat.properties.map { it.address }, PROPERTY_LABEL)
+                //editOrSave(rcv_biens.adapter as PrimaryInfoNoDataBindAdapter, v as ImageView)
             }
 
             //Click on Add
@@ -377,41 +386,58 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         }
     }
 
-    private fun editOrSave(primaryInfoAdapter: PrimaryInfoNoDataBindAdapter) {
+    private fun editOrSave(primaryInfoAdapter: PrimaryInfoNoDataBindAdapter, view: ImageView) {
         if (primaryInfoAdapter.edit) {
+            view.setImageResource(R.drawable.ic_edit)
             if (viewModel.constatDetail.value != null) {
                 primaryInfoAdapter.saveContent()
                 hideKeyboard() //utilisation de l'extension pour fermer le clavier
             }
+        } else {
+            view.setImageResource(R.drawable.ic_edit_checked)
         }
 
         primaryInfoAdapter.editUpdate()
     }
 
-    fun getEditableDialog(text: String) {
-        //inflate the layout for the body of the dialog
-        val viewInflated = LayoutInflater.from(context)
-            .inflate(R.layout.dialog_edit, start_constat_container, false)
-        //set up the input
-        val input = viewInflated.findViewById<EditText>(R.id.edt_rename)
-        input.setText(text)
-
-        val builder = context?.let {
-            AlertDialog.Builder(it)
-                .setTitle("Voulez-vous effectuer un renommage ?")
-                .setPositiveButton("Renommer") { dialog, _ ->
-                    dialog.dismiss()
+    @SuppressLint("CheckResult")
+    private fun whoToEdit(rows: List<String>, type: String) {
+        MaterialDialog(requireContext()).show {
+            title(text = "Quelle ligne voulez-vous modifier ?")
+            listItemsSingleChoice(items = rows) { _, _, text ->
+                when(type) {
+                    PROPERTY_LABEL -> {
+                        val property = constat.properties.find { it.address == text.toString() }
+                        property?.let {
+                            val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_BIENS, ARGS_PROPERTY_ID to it.propertyId)
+                            findNavController().navigate(R.id.go_to_add, bundle)
+                        }
+                    }
+                    OWNER_LABEL -> {
+                        val owner = constat.owners.find { it.name == text.toString() }
+                        owner?.let {
+                            val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_PROPRIETAIRE, ARGS_OWNER_ID to it.ownerId)
+                            findNavController().navigate(R.id.go_to_add, bundle)
+                        }
+                    }
+                    CONTRACTOR_LABEL -> {
+                        val tenant = constat.contractors.find { it.denomination == text.toString() }
+                        tenant?.let {
+                            val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE, ARGS_CONTRACTOR_ID to it.contractorId)
+                            findNavController().navigate(R.id.go_to_add, bundle)
+                        }
+                    }
+                    TENANT_LABEL -> {
+                        val tenant = constat.tenants.find { it.name == text.toString() }
+                        tenant?.let {
+                            val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_LOCATAIRE, ARGS_TENANT_ID to it.tenantId)
+                            findNavController().navigate(R.id.go_to_add, bundle)
+                        }
+                    }
                 }
-                .setNegativeButton("Annuler") { dialog, _ ->
-                    dialog.dismiss()
-                }
+            }
+            positiveButton(R.string.done)
         }
-
-        //specify the body to inflate
-        builder?.setView(viewInflated)
-
-        builder?.show()
-
     }
 
 }

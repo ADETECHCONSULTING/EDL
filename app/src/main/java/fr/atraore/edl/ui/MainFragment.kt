@@ -1,10 +1,12 @@
 package fr.atraore.edl.ui
 
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -73,13 +75,6 @@ class MainFragment : Fragment() {
         }
         btn_sortant.setOnClickListener {
             goToConstat("S")
-        }
-
-        if (BuildConfig.DEBUG) {
-            btn_photo.visibility = View.VISIBLE
-            btn_photo.setOnClickListener {
-                openPicker()
-            }
         }
     }
 

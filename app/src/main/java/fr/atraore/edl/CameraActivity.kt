@@ -81,14 +81,7 @@ internal class CameraActivity : AppCompatActivity() {
     private fun requestImageCapture() =
         startActivityForResult(
             Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                .putExtra(MediaStore.EXTRA_OUTPUT, output)
-                .also { intent ->
-                    grantUriPermission(
-                        intent.resolveActivity(packageManager).packageName,
-                        output,
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    )
-                },
+                .putExtra(MediaStore.EXTRA_OUTPUT, output),
             Request.IMAGE_CAPTURE
         )
 

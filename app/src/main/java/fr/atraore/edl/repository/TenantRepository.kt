@@ -9,4 +9,5 @@ class TenantRepository @Inject constructor(
     private val tenantDao: TenantDao
 ) : BaseRepository<Tenant>(tenantDao) {
     val allTenants: Flow<List<Tenant>> = tenantDao.getAllTenants()
+    fun getById(id: String): Flow<Tenant> = tenantDao.getById(id)
 }

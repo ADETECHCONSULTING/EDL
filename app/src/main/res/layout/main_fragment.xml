@@ -57,20 +57,6 @@
             app:strokeWidth="4dp"
             android:text="@string/sortant_label" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_photo"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_marginBottom="20dp"
-            app:cornerRadius="30dp"
-            android:theme="@style/Theme.MaterialComponents"
-            android:textColor="@color/white"
-            android:visibility="gone"
-            app:strokeColor="@color/white"
-            app:strokeWidth="4dp"
-            android:text="Photo" />
-
 
     </LinearLayout>
 

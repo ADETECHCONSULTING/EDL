@@ -274,7 +274,7 @@ class DatabaseModule {
         val constat = Constat(
             constatId = UUID.randomUUID().toString(),
             typeConstat = "E",
-            dateCreation = Date(1607686070062),
+            dateCreation = Date(System.currentTimeMillis()),
             state = 0
         )
         constatDao.save(constat)
@@ -427,13 +427,17 @@ class DatabaseModule {
             UUID.randomUUID().toString(),
             "Guy Hoquet",
             "a.traore.pro@gmail.com",
+            "0627562283",
+            "",
             "18 rue Léandre vaillat",
+            "",
             "",
             "",
             "74100",
             "",
+            "Annemasse",
             "",
-            "Annemasse"
+            ""
         )
         contractorDao.save(contractor)
 
@@ -453,7 +457,7 @@ class DatabaseModule {
             "",
             "",
             "",
-            Date(1607686070062)
+            Date(System.currentTimeMillis())
         )
         val tenant2 = Tenant(
             UUID.randomUUID().toString(),
@@ -471,7 +475,7 @@ class DatabaseModule {
             "",
             "",
             "",
-            Date(1607686070062)
+            Date(System.currentTimeMillis())
         )
         tenantDao.save(tenant)
         tenantDao.save(tenant2)

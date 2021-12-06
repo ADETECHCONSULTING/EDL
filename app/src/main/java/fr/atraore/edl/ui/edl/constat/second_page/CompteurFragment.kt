@@ -81,6 +81,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_compteur)?.isVisible = false
+        menu.findItem(R.id.action_next)?.isVisible = false
     }
 
     @SuppressLint("CheckResult")

@@ -6,10 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Property
+import fr.atraore.edl.databinding.AddContractorFragmentBinding
+import fr.atraore.edl.databinding.AddPropertyFragmentBinding
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.ui.edl.add.AddViewModel
 import fr.atraore.edl.utils.PROPERTY_LABEL
 import kotlinx.android.synthetic.main.add_property_fragment.*
 import kotlinx.android.synthetic.main.add_property_fragment.btn_cancel
@@ -25,8 +30,10 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class AddPropertyFragment : BaseFragment(PROPERTY_LABEL), View.OnClickListener, CoroutineScope {
+class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), View.OnClickListener, CoroutineScope {
     private val TAG = AddPropertyFragment::class.simpleName
+    private val addViewModel: AddViewModel by viewModels()
+    private lateinit var binding: AddPropertyFragmentBinding
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
@@ -35,7 +42,7 @@ class AddPropertyFragment : BaseFragment(PROPERTY_LABEL), View.OnClickListener, 
         get() = PROPERTY_LABEL
 
     companion object {
-        fun newInstance() = AddPropertyFragment()
+        fun newInstance(idArgs: String?) = AddPropertyFragment(idArgs)
     }
 
     override fun goNext() {
@@ -45,13 +52,25 @@ class AddPropertyFragment : BaseFragment(PROPERTY_LABEL), View.OnClickListener, 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.add_property_fragment, container, false)
+    ): View {
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.add_property_fragment, container, false)
+        binding.viewModel = addViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initListeners()
+
+        idArgs?.let { itemId ->
+            addViewModel.getPropertyById(itemId).observe(viewLifecycleOwner, {
+                it?.let {
+                    addViewModel.property.value = it
+                }
+                initListeners()
+            })
+        }
     }
 
     private fun initListeners() {
@@ -82,9 +101,13 @@ class AddPropertyFragment : BaseFragment(PROPERTY_LABEL), View.OnClickListener, 
         val appartmentDoor = edt_appartment_door.text.toString()
         val comment = edt_note.text.toString()
 
+        var id = UUID.randomUUID().toString()
+        addViewModel.property.value?.let {
+            id = it.propertyId
+        }
 
         val property = Property(
-            UUID.randomUUID().toString(),
+            id,
             address,
             address2,
             postalCode,

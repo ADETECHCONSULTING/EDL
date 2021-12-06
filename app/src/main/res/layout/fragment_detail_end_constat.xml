@@ -18,13 +18,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:background="@drawable/gradient_bg"
-        android:visibility="@{detail == null ? View.VISIBLE : View.GONE}"
         tools:context=".ui.edl.constat.second_page.detail.DetailEndConstatFragment">
 
         <LinearLayout
             android:id="@+id/ctn_no_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="@{detail == null ? View.VISIBLE : View.GONE}"
             android:gravity="center">
 
             <TextView
