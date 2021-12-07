@@ -1,12 +1,10 @@
 package fr.atraore.edl.ui
 
-import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,20 +12,25 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import fr.atraore.edl.BuildConfig
-import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Constat
 import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.adapter.ConstatAdapter
+import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
+import fr.atraore.edl.utils.PROPERTY_LABEL
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.sql.Date
 import java.util.*
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
+class MainFragment : BaseFragment("MainFrag") {
+    override val title: String
+        get() = "Main"
 
+    override fun goNext() {
+
+    }
     companion object {
         fun newInstance() = MainFragment()
     }
@@ -41,11 +44,6 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_next)?.isVisible = false
         menu.findItem(R.id.action_previous)?.isVisible = false
@@ -55,6 +53,8 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+
         val adapter = ConstatAdapter()
         rcv_constat.adapter = adapter
         rcv_constat.layoutManager = LinearLayoutManager(context)
