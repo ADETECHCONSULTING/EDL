@@ -25,6 +25,9 @@ interface DetailDao : BaseDao<Detail> {
     @Query("UPDATE Detail SET etat =:etat WHERE idDetail =:idDetail")
     suspend fun updateEtat(etat: String, idDetail: String)
 
+    @Query("UPDATE Detail SET proprete =:proprete WHERE idDetail =:idDetail")
+    suspend fun updateProprete(proprete: String, idDetail: String)
+
     @Query("DELETE FROM Detail WHERE idRoom =:idRoom")
     suspend fun deleteAllDetailsFromRoom(idRoom: String)
 }

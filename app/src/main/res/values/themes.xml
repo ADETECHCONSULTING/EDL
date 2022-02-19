@@ -61,4 +61,9 @@
         <item name="chipStrokeWidth">2dp</item>
     </style>
 
+    <style name="CheckboxBlackedLargeColored" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:buttonTint">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

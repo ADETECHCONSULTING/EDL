@@ -15,7 +15,7 @@ data class Detail (
     var etat: String? = "",
     var idDescriptif: String? = "",
     var idAlteration: String? = "",
-    var idProprete: String? = "",
+    var proprete: String? = "",
     var notes: String? = ""
 ) {
 }

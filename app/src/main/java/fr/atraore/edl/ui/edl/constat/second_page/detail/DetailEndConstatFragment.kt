@@ -1,15 +1,16 @@
 package fr.atraore.edl.ui.edl.constat.second_page.detail
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color.*
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.view.*
+import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.color.colorChooser
 import com.afollestad.materialdialogs.input.input
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -181,6 +182,20 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
         }
     }
 
+    fun chipPropreteClicked(view: View) {
+        (view as Chip).let {
+            launch {
+                Log.d(TAG, "chipPropreteClicked: ${it.text}")
+                arguments?.getString("detailId")?.let { idDetail ->
+                    viewModel.updateProprete(
+                        it.text.toString(),
+                        idDetail
+                    )
+                }
+            }
+        }
+    }
+
     @SuppressLint("InflateParams")
     private fun createChipsInCG(text: String, cg: ChipGroup, idOtherState: Int) {
         val chip: Chip = layoutInflater.inflate(R.layout.chip_only, null) as Chip
@@ -207,12 +222,6 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                 currentEtat = detail.etat.toString()
                             }
                         }
-                        IdDetailStatesEnum.PROPRETE.value -> {
-                            val proprete = this.propreteRefs.find { stt -> stt.label == view.text }
-                            proprete?.let {
-                                view.isChecked = proprete.id == detail.idProprete
-                            }
-                        }
                         IdDetailStatesEnum.DESCRIPTIF.value -> {
                             val descriptif =
                                 this.descriptifRefs.find { stt -> stt.label == view.text }
@@ -233,20 +242,10 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun chipOtherStatesClickListener(view: View, id: Int) {
         if (view is Chip) {
             when (id) {
-                IdDetailStatesEnum.PROPRETE.value -> {
-                    val idProprete =
-                        this.propreteRefs.find { stt -> stt.label == view.text }
-                    idProprete?.let {
-                        detail.idProprete = it.id
-                        launch {
-                            Log.d(TAG, "set de la propreté dans le detail : ${it.id}")
-                            viewModel.saveDetail(detail)
-                        }
-                    }
-                }
                 IdDetailStatesEnum.DESCRIPTIF.value -> {
                     val idDescriptif =
                         this.descriptifRefs.find { stt -> stt.label == view.text }
@@ -259,14 +258,35 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     }
                 }
                 IdDetailStatesEnum.ALTERATION.value -> {
-                    val idAlteration =
-                        this.alterationRefs.find { stt -> stt.label == view.text }
-                    idAlteration?.let {
-                        detail.idAlteration = it.id
-                        launch {
-                            Log.d(TAG, "set de l'alteration dans le detail : ${it.id}")
-                            viewModel.saveDetail(detail)
+                    val dialog = Dialog(requireContext())
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    dialog.setCancelable(false)
+                    dialog.setContentView(R.layout.dialog_color_picker)
+                    //val body = dialog.findViewById(R.id.body) as TextView
+                    //body.text = title
+                    val rdgLevel = dialog.findViewById(R.id.rdg_level) as RadioGroup
+                    rdgLevel.setOnCheckedChangeListener { _, _ ->
+                        val rdb = dialog.findViewById(rdgLevel.checkedRadioButtonId) as RadioButton
+                        val foundAlteration =
+                            alterationRefs.find { stt -> stt.label == view.text }
+                        foundAlteration?.let {
+                            detail.idAlteration = it.id
+                            Toast.makeText(requireContext(), rdb.text, Toast.LENGTH_SHORT).show()
+                            launch {
+                                Log.d(TAG, "set de l'alteration dans le detail : ${it.id}")
+                                viewModel.saveDetail(detail)
+                            }
                         }
+                        dialog.dismiss()
+                    }
+                    dialog.show()
+                    //control width
+                    val lp = WindowManager.LayoutParams()
+                    dialog.window?.let {
+                        lp.copyFrom(it.attributes)
+                        lp.width = 1000
+                        lp.height = 300
+                        it.attributes = lp
                     }
                 }
             }
@@ -325,5 +345,21 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
             }
         }
         return Collections.unmodifiableList(list)
+    }
+
+    private fun showDialog(title: String) {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_color_picker)
+        //val body = dialog.findViewById(R.id.body) as TextView
+        //body.text = title
+        val rdgLevel = dialog.findViewById(R.id.rdg_level) as RadioGroup
+        rdgLevel.setOnCheckedChangeListener { view, isChecked ->
+            val rdb = dialog.findViewById(rdgLevel.checkedRadioButtonId) as RadioButton
+
+        }
+        dialog.show()
+
     }
 }

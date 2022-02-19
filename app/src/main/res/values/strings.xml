@@ -100,6 +100,11 @@
     <string name="sauvegarder">Sauvegarder</string>
     <string name="export_pdf_label">Exporter le constat sous le format PDF</string>
     <string name="permission_camera">Cette application nécessite votre permission pour avoir accès à la caméra et aux accès fichiers.</string>
+    <string name="raz">RAZ</string>
+    <string name="propre_label">propre</string>
+    <string name="poussiere_label">poussière</string>
+    <string name="gras_label">gras</string>
+    <string name="non_nettoye_label">non nettoyé</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

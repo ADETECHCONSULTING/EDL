@@ -53,6 +53,91 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.2" />
 
+                <LinearLayout
+                    android:id="@+id/ctn_static_events"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:backgroundTint="@color/colorAccent"
+                        android:textColor="@color/black"
+                        android:text="@string/raz"/>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"/>
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cg_proprete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_propre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipPropreteClicked(view)}"
+                            android:text="@string/propre_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_poussiere"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipPropreteClicked(view)}"
+                            android:text="@string/poussiere_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_gras"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipPropreteClicked(view)}"
+                            android:text="@string/gras_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_non_nettoye"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipPropreteClicked(view)}"
+                            android:text="@string/non_nettoye_label" />
+
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                </LinearLayout>
+
+
 
                 <TextView
                     android:id="@+id/txv_intitule"
@@ -61,10 +146,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/label_intitule"
                     android:textAllCaps="true"
+                    android:layout_marginTop="@dimen/margin_large"
                     app:layout_constraintEnd_toStartOf="@id/guideline2"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/ctn_static_events" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edt_intitule"
@@ -186,46 +272,6 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txv_proprete"
-                    style="@style/MyTextViewStyleLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:text="@string/label_proprete"
-                    android:textAllCaps="true"
-                    app:layout_constraintEnd_toStartOf="@id/guideline2"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ctn_etat" />
-
-                <LinearLayout
-                    android:id="@+id/ctn_proprete"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    app:layout_constraintBottom_toBottomOf="@id/txv_proprete"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/guideline2"
-                    app:layout_constraintTop_toTopOf="@id/txv_proprete">
-
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/cg_proprete"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:singleSelection="true">
-
-                    </com.google.android.material.chip.ChipGroup>
-
-                    <ImageView
-                        android:id="@+id/imv_add_proprete"
-                        android:layout_width="@dimen/buttons_width"
-                        android:layout_height="@dimen/buttons_height"
-                        android:src="@drawable/ic_add"
-                        android:onClick="@{(view) -> fragment.onAddClicked(view, 2)}"/>
-
-                </LinearLayout>
-
-                <TextView
                     android:id="@+id/txv_descriptif"
                     style="@style/MyTextViewStyleLabel"
                     android:layout_width="0dp"
@@ -236,7 +282,7 @@
                     app:layout_constraintEnd_toStartOf="@id/guideline2"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ctn_proprete"/>
+                    app:layout_constraintTop_toBottomOf="@id/ctn_etat"/>
 
                 <LinearLayout
                     android:id="@+id/ctn_descriptif"

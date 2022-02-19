@@ -25,4 +25,10 @@
     <color name="chip_usage">#D8E34F</color>
     <color name="chip_mauvais">#FFB01A</color>
     <color name="chip_hs">#F71515</color>
+
+    <color name="dialog_peu">#A9E5BB</color>
+    <color name="dialog_moyen">#FCF6B1</color>
+    <color name="dialog_beaucoup">#F7B32B</color>
+    <color name="dialog_verifier">#4A6D7C</color>
+    <color name="dialog_chiffrer">#393A10</color>
 </resources>

@@ -33,6 +33,10 @@ class DetailEndConstatViewModel @Inject constructor(
         detailRepository.updateEtat(etat, idDetail)
     }
 
+    suspend fun updateProprete(proprete: String, idDetail: String) {
+        detailRepository.updateProprete(proprete, idDetail)
+    }
+
     suspend fun saveAlteration(alteration: Alteration) {
         alterationRepository.save(alteration)
     }

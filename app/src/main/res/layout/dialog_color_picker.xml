@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RadioGroup
+        android:id="@+id/rdg_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/checkbox_peu"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:text="Un peu"
+            style="@style/CheckboxBlackedLargeColored"
+            android:background="@color/dialog_peu"
+            />
+
+        <RadioButton
+            android:id="@+id/checkbox_moyen"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:text="Moyen"
+            style="@style/CheckboxBlackedLargeColored"
+            android:background="@color/dialog_moyen"
+            />
+
+        <RadioButton
+            android:id="@+id/checkbox_beaucoup"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:text="Beaucoup"
+            style="@style/CheckboxBlackedLargeColored"
+            android:background="@color/dialog_beaucoup"
+            />
+
+        <RadioButton
+            android:id="@+id/checkbox_verifier"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:text="à vérifier"
+            android:textColor="@color/white"
+            android:background="@color/dialog_verifier"
+            />
+
+        <RadioButton
+            android:id="@+id/checkbox_chiffrer"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:text="à chiffrer"
+            android:textColor="@color/white"
+            android:background="@color/dialog_chiffrer"
+            />
+
+    </RadioGroup>
+
+</LinearLayout>
