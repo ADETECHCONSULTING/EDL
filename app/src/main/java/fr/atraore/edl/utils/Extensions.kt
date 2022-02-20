@@ -23,3 +23,16 @@ fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observ
         }
     })
 }
+
+//check not null
+fun <T: Any, R: Any> whenAllNotNull(vararg options: T?, block: (List<T>)->R) {
+    if (options.all { it != null }) {
+        block(options.filterNotNull()) // or do unsafe cast to non null collection
+    }
+}
+
+fun <T: Any, R: Any> whenAnyNotNull(vararg options: T?, block: (List<T>)->R) {
+    if (options.any { it != null }) {
+        block(options.filterNotNull())
+    }
+}

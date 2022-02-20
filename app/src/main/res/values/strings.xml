@@ -101,6 +101,8 @@
     <string name="export_pdf_label">Exporter le constat sous le format PDF</string>
     <string name="permission_camera">Cette application nécessite votre permission pour avoir accès à la caméra et aux accès fichiers.</string>
     <string name="raz">RAZ</string>
+    <string name="raz_title">Réinitilisation du détail</string>
+    <string name="raz_message">Êtes-vous certain de vouloir réinitiliaser le détail. Il sera impossible de récupérer les valeurs réinitialisées.</string>
     <string name="propre_label">propre</string>
     <string name="poussiere_label">poussière</string>
     <string name="gras_label">gras</string>

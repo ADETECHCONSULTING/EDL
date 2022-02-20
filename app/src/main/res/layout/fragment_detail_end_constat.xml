@@ -66,6 +66,7 @@
                         android:layout_weight="0.2"
                         android:backgroundTint="@color/colorAccent"
                         android:textColor="@color/black"
+                        android:onClick="@{(view) -> fragment.razDetail()}"
                         android:text="@string/raz"/>
 
                     <Space
@@ -284,21 +285,35 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ctn_etat"/>
 
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_descriptions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_background"
+                    android:gravity="start"
+                    android:inputType="textMultiLine"
+                    android:minLines="4"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    android:text="@{detail.descriptif}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/txv_descriptif"/>
+
                 <LinearLayout
                     android:id="@+id/ctn_descriptif"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    app:layout_constraintBottom_toBottomOf="@id/txv_descriptif"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/guideline2"
-                    app:layout_constraintTop_toTopOf="@id/txv_descriptif">
+                    app:layout_constraintTop_toBottomOf="@id/edt_descriptions">
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/cg_descriptif"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:singleSelection="true">
+                        android:layout_height="match_parent">
 
                     </com.google.android.material.chip.ChipGroup>
 
@@ -324,21 +339,34 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ctn_descriptif" />
 
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_alterations"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_background"
+                    android:gravity="start"
+                    android:inputType="textMultiLine"
+                    android:minLines="4"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    android:text="@{detail.alteration}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/txv_alterations" />
+
                 <LinearLayout
                     android:id="@+id/ctn_alterations"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    app:layout_constraintBottom_toBottomOf="@id/txv_alterations"
+                    app:layout_constraintTop_toBottomOf="@id/edt_alterations"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/guideline2"
-                    app:layout_constraintTop_toTopOf="@id/txv_alterations">
+                    app:layout_constraintStart_toEndOf="@id/guideline2">
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/cg_alterations"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:singleSelection="true">
+                        android:layout_height="match_parent">
 
 
                     </com.google.android.material.chip.ChipGroup>

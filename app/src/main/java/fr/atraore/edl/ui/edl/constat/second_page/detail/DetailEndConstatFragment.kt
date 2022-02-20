@@ -2,15 +2,15 @@ package fr.atraore.edl.ui.edl.constat.second_page.detail
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.graphics.Color.*
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.*
+import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.color.colorChooser
 import com.afollestad.materialdialogs.input.input
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -22,11 +22,13 @@ import fr.atraore.edl.databinding.FragmentDetailEndConstatBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.IdDetailStatesEnum
 import fr.atraore.edl.utils.SUITE_CONSTAT_LABEL
+import fr.atraore.edl.utils.whenAllNotNull
 import kotlinx.android.synthetic.main.fragment_detail_end_constat.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import java.util.stream.Collectors
 import kotlin.coroutines.CoroutineContext
 
 
@@ -222,20 +224,6 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                 currentEtat = detail.etat.toString()
                             }
                         }
-                        IdDetailStatesEnum.DESCRIPTIF.value -> {
-                            val descriptif =
-                                this.descriptifRefs.find { stt -> stt.label == view.text }
-                            descriptif?.let {
-                                view.isChecked = descriptif.id == detail.idDescriptif
-                            }
-                        }
-                        IdDetailStatesEnum.ALTERATION.value -> {
-                            val alteration =
-                                this.alterationRefs.find { stt -> stt.label == view.text }
-                            alteration?.let {
-                                view.isChecked = alteration.id == detail.idAlteration
-                            }
-                        }
                     }
                 }
             }
@@ -247,10 +235,14 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
         if (view is Chip) {
             when (id) {
                 IdDetailStatesEnum.DESCRIPTIF.value -> {
-                    val idDescriptif =
-                        this.descriptifRefs.find { stt -> stt.label == view.text }
+                    val idDescriptif = this.descriptifRefs.find { stt -> stt.label == view.text }
                     idDescriptif?.let {
-                        detail.idDescriptif = it.id
+                        //séparation par virgules
+                        if (detail.descriptif.isNullOrEmpty()) {
+                            detail.descriptif = it.label
+                        } else {
+                            detail.descriptif += ", ${it.label}"
+                        }
                         launch {
                             Log.d(TAG, "set du descriptif dans le detail : ${it.id}")
                             viewModel.saveDetail(detail)
@@ -268,16 +260,52 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     val rdgVerif = dialog.findViewById(R.id.rdg_verif_alteration) as RadioGroup
 
                     btnDone.setOnClickListener {
-                        val rdbLevel = dialog.findViewById(rdgLevel.checkedRadioButtonId) as RadioButton
-                        val rdbVerif = dialog.findViewById(rdgVerif.checkedRadioButtonId) as RadioButton
+                        var rdbLevel: RadioButton? = null
+                        var rdbVerif: RadioButton? = null
 
-                        val foundAlteration = alterationRefs.find { stt -> stt.label == view.text }
+                        if (rdgLevel.checkedRadioButtonId > 0) {
+                            rdbLevel = dialog.findViewById(rdgLevel.checkedRadioButtonId)
+                        }
+
+                        if (rdgVerif.checkedRadioButtonId > 0) {
+                            rdbVerif = dialog.findViewById(rdgVerif.checkedRadioButtonId)
+                        }
+
+                        val foundAlteration =
+                            alterationRefs.find { stt -> stt.label == view.text }
                         //Si alteration trouvée dans la liste
-                        foundAlteration?.let {
-                            detail.idAlteration = it.id
-                            launch {
-                                Log.d(TAG, "set de l'alteration dans le detail : ${it.id}")
-                                viewModel.saveDetail(detail)
+                        foundAlteration?.let { alteration ->
+                            if (!this.detail.alteration!!.contains(alteration.label)) {
+                                var alterationLevelVerif = alteration.label
+                                var levelVerifPassed = false
+                                whenAllNotNull(rdbLevel, rdbVerif) {
+                                    levelVerifPassed = true
+                                    alterationLevelVerif += " (${rdbLevel?.text} - ${rdbVerif?.text})"
+                                }
+
+                                if (!levelVerifPassed) {
+                                    rdbLevel?.let {
+                                        alterationLevelVerif += " (${rdbLevel.text})"
+                                    }
+                                    rdbVerif?.let {
+                                        alterationLevelVerif += " (${rdbVerif.text})"
+                                    }
+                                }
+
+                                //séparation par virgules
+                                if (detail.alteration.isNullOrEmpty()) {
+                                    detail.alteration = alterationLevelVerif
+                                } else {
+                                    detail.alteration += ", ${alterationLevelVerif}"
+                                }
+
+                                launch {
+                                    Log.d(
+                                        TAG,
+                                        "set de l'alteration dans le detail : ${alteration.id}"
+                                    )
+                                    viewModel.saveDetail(detail)
+                                }
                             }
                         }
                         dialog.dismiss()
@@ -348,5 +376,24 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
             }
         }
         return Collections.unmodifiableList(list)
+    }
+
+    fun razDetail() {
+        MaterialDialog(requireContext()).show {
+            title(R.string.raz_title)
+            message(R.string.raz_message)
+            positiveButton(R.string.done) { _ ->
+                run {
+                    this@DetailEndConstatFragment.detail.razDetail()
+                    launch {
+                        Log.d(
+                            TAG,
+                            "RAZ du détail : ${this@DetailEndConstatFragment.detail.idDetail}"
+                        )
+                        viewModel.saveDetail(detail)
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package fr.atraore.edl.data.models
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 //Detail des constats
@@ -13,9 +14,17 @@ data class Detail (
     val idLot: Int,
     var intitule: String,
     var etat: String? = "",
-    var idDescriptif: String? = "",
-    var idAlteration: String? = "",
+    var descriptif: String? = "",
+    var alteration: String? = "",
     var proprete: String? = "",
     var notes: String? = ""
 ) {
+    @Ignore
+    fun razDetail() {
+        this.etat = ""
+        this.descriptif = ""
+        this.alteration = ""
+        this.proprete = ""
+        this.notes = ""
+    }
 }

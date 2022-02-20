@@ -44,9 +44,9 @@ class UserSearchFragment(private val constat: ConstatWithDetails) : BaseFragment
         rcv_users.adapter = adapter
         rcv_users.layoutManager = GridLayoutManager(context, 4)
 
-        userSearchViewModel.allUsers.observe(viewLifecycleOwner, { users ->
+        userSearchViewModel.allUsers.observe(viewLifecycleOwner) { users ->
             users?.let { adapter.submitList(it) }
-        })
+        }
     }
 
 }
