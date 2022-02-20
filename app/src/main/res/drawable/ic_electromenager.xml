@@ -9,11 +9,6 @@
       android:fillColor="?attr/lot_fill_color"
       android:strokeColor="#00000000"/>
   <path
-      android:pathData="M0.5,0.5h62v61h-62z"
-      android:strokeWidth="1"
-      android:fillColor="#00000000"
-      android:strokeColor="#707070"/>
-  <path
       android:pathData="M37.203,32.537a3.141,3.141 0,0 0,-0.268 -0.94c-0.124,-0.259 -0.226,-0.136 -0.439,0.021a2.1,2.1 0,0 0,0.044 3.409c0.309,0.216 0.346,0.16 0.451,-0.188A5.64,5.64 0,0 0,37.203 32.537Z"
       android:fillColor="#807878"/>
   <path

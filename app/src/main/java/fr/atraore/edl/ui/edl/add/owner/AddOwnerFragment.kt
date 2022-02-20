@@ -46,7 +46,7 @@ class AddOwnerFragment(val idArgs: String?) : BaseFragment(OWNER_LABEL), View.On
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.add_owner_fragment, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_owner, container, false)
         binding.viewModel = addViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

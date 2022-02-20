@@ -12,11 +12,9 @@ import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Contractor
 import fr.atraore.edl.databinding.AddContractorFragmentBinding
-import fr.atraore.edl.databinding.AddTenantFragmentBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.add.AddViewModel
 import fr.atraore.edl.utils.CONTRACTOR_LABEL
-import fr.atraore.edl.utils.OWNER_LABEL
 import kotlinx.android.synthetic.main.add_contractor_fragment.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +47,7 @@ class AddContractorFragment(val idArgs: String?) : BaseFragment(CONTRACTOR_LABEL
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.add_contractor_fragment, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_contractor, container, false)
         binding.viewModel = addViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -18,7 +17,6 @@ import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.adapter.ConstatAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
-import fr.atraore.edl.utils.PROPERTY_LABEL
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.sql.Date
 import java.util.*
@@ -41,7 +39,7 @@ class MainFragment : BaseFragment("MainFrag") {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {

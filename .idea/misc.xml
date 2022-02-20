@@ -29,8 +29,13 @@
         <entry key="app/src/main/res/drawable/imageview_outline_shape.xml" value="0.3921875" />
         <entry key="app/src/main/res/drawable/lot_technique_fill.xml" value="0.2557291666666667" />
         <entry key="app/src/main/res/drawable/procuration_background.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/rounded_edittext.xml" value="0.4335" />
+        <entry key="app/src/main/res/drawable/rounded_rdg.xml" value="0.4335" />
         <entry key="app/src/main/res/drawable/spinner_background.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/square_button.xml" value="0.5565" />
+        <entry key="app/src/main/res/drawable/square_radiobutton.xml" value="0.5565" />
         <entry key="app/src/main/res/drawable/state_radiobutton.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/drawable/state_radiobutton_alteration.xml" value="0.4335" />
         <entry key="app/src/main/res/drawable/state_radiobutton_text.xml" value="0.1203125" />
         <entry key="app/src/main/res/drawable/textcolor_chip.xml" value="0.23020833333333332" />
         <entry key="app/src/main/res/layout/add_contractor_fragment.xml" value="0.25833333333333336" />
@@ -44,9 +49,11 @@
         <entry key="app/src/main/res/layout/compteur_item.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/constat_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/contractor_item.xml" value="0.23958333333333334" />
+        <entry key="app/src/main/res/layout/dialog_color_picker.xml" value="0.25" />
         <entry key="app/src/main/res/layout/element_list_item.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/end_constat_fragment.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/fragment_detail_end_constat.xml" value="0.3590664272890485" />
+        <entry key="app/src/main/res/layout/fragment_detail_end_constat.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_photo_picker.xml" value="0.5635416666666667" />
         <entry key="app/src/main/res/layout/list_popup_window_item.xml" value="0.23488562091503268" />
         <entry key="app/src/main/res/layout/main_fragment.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/property_item.xml" value="0.36642156862745096" />

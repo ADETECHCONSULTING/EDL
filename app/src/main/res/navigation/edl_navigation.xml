@@ -9,7 +9,7 @@
         android:id="@+id/mainFragment"
         android:name="fr.atraore.edl.ui.MainFragment"
         android:label="main_fragment"
-        tools:layout="@layout/main_fragment" >
+        tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/go_to_start"
             app:destination="@id/startConstatFragment"
@@ -21,7 +21,7 @@
         android:id="@+id/startConstatFragment"
         android:name="fr.atraore.edl.ui.edl.constat.first_page.StartConstatFragment"
         android:label="start_constat_fragment"
-        tools:layout="@layout/start_constat_fragment" >
+        tools:layout="@layout/fragment_start_constat" >
         <action
             android:id="@+id/go_to_search"
             app:destination="@id/viewPagerFragment"
@@ -67,7 +67,7 @@
         android:id="@+id/doubleFragmentEndConstat"
         android:name="fr.atraore.edl.ui.edl.constat.second_page.EndConstatFragment"
         android:label="fragment_view_end_constat"
-        tools:layout="@layout/end_constat_fragment">
+        tools:layout="@layout/fragment_end_constat">
 
         <action
             android:id="@+id/go_to_compteur"
@@ -91,11 +91,11 @@
         android:id="@+id/compteurFragment"
         android:name="fr.atraore.edl.ui.edl.constat.second_page.CompteurFragment"
         android:label="fragment_view_compteur_constat"
-        tools:layout="@layout/compteur_fragment" />
+        tools:layout="@layout/fragment_compteur" />
 
     <fragment
         android:id="@+id/signatureFragment"
         android:name="fr.atraore.edl.ui.edl.constat.signature.SignatureFragment"
         android:label="fragment_view_signature_fragment"
-        tools:layout="@layout/signature_fragment" />
+        tools:layout="@layout/fragment_signature" />
 </navigation>

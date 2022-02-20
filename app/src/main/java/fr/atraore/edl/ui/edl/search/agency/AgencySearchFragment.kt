@@ -36,7 +36,7 @@ class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragme
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.agency_search_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_agency_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

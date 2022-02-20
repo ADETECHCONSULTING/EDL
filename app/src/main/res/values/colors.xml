@@ -27,8 +27,8 @@
     <color name="chip_hs">#F71515</color>
 
     <color name="dialog_peu">#A9E5BB</color>
-    <color name="dialog_moyen">#FCF6B1</color>
-    <color name="dialog_beaucoup">#F7B32B</color>
-    <color name="dialog_verifier">#4A6D7C</color>
+    <color name="dialog_moyen">#FF9F45</color>
+    <color name="dialog_beaucoup">#FC4F4F</color>
+    <color name="dialog_verifier">#B681CB</color>
     <color name="dialog_chiffrer">#393A10</color>
 </resources>

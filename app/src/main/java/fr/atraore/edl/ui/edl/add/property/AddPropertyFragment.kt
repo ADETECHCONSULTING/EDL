@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Property
-import fr.atraore.edl.databinding.AddContractorFragmentBinding
 import fr.atraore.edl.databinding.AddPropertyFragmentBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.add.AddViewModel
@@ -25,7 +24,6 @@ import kotlinx.android.synthetic.main.add_property_fragment.edt_city
 import kotlinx.android.synthetic.main.add_property_fragment.edt_postal_code
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
@@ -54,7 +52,7 @@ class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), V
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.add_property_fragment, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_property, container, false)
         binding.viewModel = addViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

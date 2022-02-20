@@ -65,85 +65,69 @@
                         <ImageView
                             android:id="@+id/imv_lot_batis"
                             android:layout_width="@dimen/buttons_width"
-                            android:layout_height="@dimen/buttons_height"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:src="@drawable/ic_mur"
                             android:onClick="@{(view) -> fragment.onLotTechniqueClick(view, 1)}"/>
-
-                        <View android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
 
                         <ImageView
                             android:id="@+id/imv_ouvrants"
                             android:layout_width="@dimen/buttons_width"
-                            android:layout_height="@dimen/buttons_height"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:src="@drawable/ic_ouvrant"
                             android:onClick="@{(view) -> fragment.onLotTechniqueClick(view, 2)}"/>
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"/>
 
                         <ImageView
                             android:id="@+id/imv_elec"
                             android:layout_width="@dimen/buttons_width"
-                            android:layout_height="@dimen/buttons_height"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:src="@drawable/ic_elec"
                             android:onClick="@{(view) -> fragment.onLotTechniqueClick(view, 3)}"/>
-
-                        <View android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
 
                         <ImageView
                             android:id="@+id/imv_plomberie"
                             android:layout_width="@dimen/buttons_width"
-                            android:layout_height="@dimen/buttons_height"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:src="@drawable/ic_plomberie"
                             android:onClick="@{(view) -> fragment.onLotTechniqueClick(view, 4)}" />
 
-                        <View android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
 
                         <ImageView
                             android:id="@+id/imv_chauffage"
                             android:layout_width="@dimen/buttons_width"
-                            android:layout_height="@dimen/buttons_height"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:src="@drawable/ic_chauffage"
                             android:onClick="@{(view) -> fragment.onLotTechniqueClick(view, 5)}"/>
 
-                        <View android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
 
                         <ImageView
                             android:id="@+id/imv_electromenager"
                             android:layout_width="@dimen/buttons_width"
-                            android:layout_height="@dimen/buttons_height"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:src="@drawable/ic_electromenager"
                             android:onClick="@{(view) -> fragment.onLotTechniqueClick(view, 6)}"/>
 
-                        <View android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
 
                         <ImageView
                             android:id="@+id/imv_mobilier"
                             android:layout_width="@dimen/buttons_width"
-                            android:layout_height="@dimen/buttons_height"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:src="@drawable/ic_mobilier"
                             android:onClick="@{(view) -> fragment.onLotTechniqueClick(view, 7)}"/>
 
-                        <View android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
 
                         <ImageView
                             android:id="@+id/imv_meulbe"
                             android:layout_width="@dimen/buttons_width"
-                            android:layout_height="@dimen/buttons_height"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:src="@drawable/ic_meuble"
                             android:onClick="@{(view) -> fragment.onLotTechniqueClick(view, 8)}"/>
 

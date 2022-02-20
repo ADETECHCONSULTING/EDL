@@ -71,7 +71,7 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.signature_fragment, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_signature, container, false)
         binding.signatureViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

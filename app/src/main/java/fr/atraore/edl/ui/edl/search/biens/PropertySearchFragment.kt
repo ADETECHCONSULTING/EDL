@@ -35,7 +35,7 @@ class PropertySearchFragment(private val constat: ConstatWithDetails) : BaseFrag
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.property_search_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_property_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

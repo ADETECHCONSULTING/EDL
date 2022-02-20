@@ -35,7 +35,7 @@ class OwnerSearchFragment(private val constat: ConstatWithDetails) : BaseFragmen
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.owner_search_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_owner_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

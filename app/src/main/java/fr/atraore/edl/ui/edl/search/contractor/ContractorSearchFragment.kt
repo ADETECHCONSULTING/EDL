@@ -35,7 +35,7 @@ class ContractorSearchFragment(private val constat: ConstatWithDetails) : BaseFr
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.contractor_search_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_contractor_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

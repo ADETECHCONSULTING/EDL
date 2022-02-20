@@ -86,7 +86,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
 
         arguments?.getString("detailId").let { detailId ->
             if (!detailId.isNullOrEmpty()) {
-                viewModel.getDetailById(detailId).observe(viewLifecycleOwner, {
+                viewModel.getDetailById(detailId).observe(viewLifecycleOwner) {
                     it?.let {
                         binding.detail = it
                         detail = it
@@ -99,7 +99,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                         }
 
                         if (!this::descriptifRefs.isInitialized) {
-                            viewModel.getAllDescriptifs.observe(viewLifecycleOwner, { listRefs ->
+                            viewModel.getAllDescriptifs.observe(viewLifecycleOwner) { listRefs ->
                                 listRefs.let { list: List<Descriptif> ->
                                     descriptifRefs = list
                                     cg_descriptif.removeAllViews()
@@ -115,11 +115,11 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                         IdDetailStatesEnum.DESCRIPTIF.value
                                     )
                                 }
-                            })
+                            }
                         }
 
                         if (!this::propreteRefs.isInitialized) {
-                            viewModel.getAllPropretes.observe(viewLifecycleOwner, { listRefs ->
+                            viewModel.getAllPropretes.observe(viewLifecycleOwner) { listRefs ->
                                 listRefs.let { list: List<Proprete> ->
                                     propreteRefs = list
                                     cg_proprete.removeAllViews()
@@ -132,11 +132,11 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                     }
                                     chipCheckedState(cg_proprete, IdDetailStatesEnum.PROPRETE.value)
                                 }
-                            })
+                            }
                         }
 
                         if (!this::alterationRefs.isInitialized) {
-                            viewModel.getAllAlterations.observe(viewLifecycleOwner, { listRefs ->
+                            viewModel.getAllAlterations.observe(viewLifecycleOwner) { listRefs ->
                                 listRefs.let { list: List<Alteration> ->
                                     alterationRefs = list
                                     cg_alterations.removeAllViews()
@@ -152,10 +152,10 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                         IdDetailStatesEnum.ALTERATION.value
                                     )
                                 }
-                            })
+                            }
                         }
                     }
-                })
+                }
             }
         }
     }
@@ -260,18 +260,21 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                 IdDetailStatesEnum.ALTERATION.value -> {
                     val dialog = Dialog(requireContext())
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                    dialog.setCancelable(false)
+                    dialog.setCancelable(true)
                     dialog.setContentView(R.layout.dialog_color_picker)
-                    //val body = dialog.findViewById(R.id.body) as TextView
-                    //body.text = title
-                    val rdgLevel = dialog.findViewById(R.id.rdg_level) as RadioGroup
-                    rdgLevel.setOnCheckedChangeListener { _, _ ->
-                        val rdb = dialog.findViewById(rdgLevel.checkedRadioButtonId) as RadioButton
-                        val foundAlteration =
-                            alterationRefs.find { stt -> stt.label == view.text }
+
+                    val btnDone = dialog.findViewById(R.id.btn_save) as Button
+                    val rdgLevel = dialog.findViewById(R.id.rdg_level_alteration) as RadioGroup
+                    val rdgVerif = dialog.findViewById(R.id.rdg_verif_alteration) as RadioGroup
+
+                    btnDone.setOnClickListener {
+                        val rdbLevel = dialog.findViewById(rdgLevel.checkedRadioButtonId) as RadioButton
+                        val rdbVerif = dialog.findViewById(rdgVerif.checkedRadioButtonId) as RadioButton
+
+                        val foundAlteration = alterationRefs.find { stt -> stt.label == view.text }
+                        //Si alteration trouvée dans la liste
                         foundAlteration?.let {
                             detail.idAlteration = it.id
-                            Toast.makeText(requireContext(), rdb.text, Toast.LENGTH_SHORT).show()
                             launch {
                                 Log.d(TAG, "set de l'alteration dans le detail : ${it.id}")
                                 viewModel.saveDetail(detail)
@@ -285,7 +288,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     dialog.window?.let {
                         lp.copyFrom(it.attributes)
                         lp.width = 1000
-                        lp.height = 300
+                        lp.height = 700
                         it.attributes = lp
                     }
                 }
@@ -345,21 +348,5 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
             }
         }
         return Collections.unmodifiableList(list)
-    }
-
-    private fun showDialog(title: String) {
-        val dialog = Dialog(requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.dialog_color_picker)
-        //val body = dialog.findViewById(R.id.body) as TextView
-        //body.text = title
-        val rdgLevel = dialog.findViewById(R.id.rdg_level) as RadioGroup
-        rdgLevel.setOnCheckedChangeListener { view, isChecked ->
-            val rdb = dialog.findViewById(rdgLevel.checkedRadioButtonId) as RadioButton
-
-        }
-        dialog.show()
-
     }
 }

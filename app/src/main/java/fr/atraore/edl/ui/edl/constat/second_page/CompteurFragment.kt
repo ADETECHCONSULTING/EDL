@@ -66,7 +66,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.compteur_fragment, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_compteur, container, false)
         binding.compteurViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.photoClickListener = this

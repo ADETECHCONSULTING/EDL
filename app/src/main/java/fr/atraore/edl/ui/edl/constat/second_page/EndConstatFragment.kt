@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -20,7 +21,6 @@ import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.checkItems
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
-import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
@@ -30,7 +30,6 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Detail
 import fr.atraore.edl.data.models.ElementReference
 import fr.atraore.edl.data.models.RoomReference
-import fr.atraore.edl.data.models.data.RoomWithDetails
 import fr.atraore.edl.databinding.EndConstatFragmentBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
@@ -46,7 +45,6 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
@@ -102,7 +100,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.end_constat_fragment, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_end_constat, container, false)
         binding.constatViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.fragment = this
@@ -120,7 +118,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
     @SuppressLint("CheckResult")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.action_next -> {
                 val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
                 findNavController().navigate(R.id.go_to_signature, bundle)
@@ -141,8 +139,10 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 val dialog = MaterialDialog(requireContext()).show {
                     title(R.string.title_add_rooms)
                     listItemsMultiChoice(items = roomRefList?.map { roomReference -> roomReference.name }) { _, _, items ->
-                        val roomsToAdd: List<RoomReference>? = roomRefList?.filter { roomRef -> roomRef.name in items }
-                        val roomsToCompare = roomsWithDetails.filter { rm -> rm.value.isNotEmpty() }.map { rm2 ->  rm2.key }//récupérer que les pièces qui ont des éléments
+                        val roomsToAdd: List<RoomReference>? =
+                            roomRefList?.filter { roomRef -> roomRef.name in items }
+                        val roomsToCompare = roomsWithDetails.filter { rm -> rm.value.isNotEmpty() }
+                            .map { rm2 -> rm2.key }//récupérer que les pièces qui ont des éléments
 
                         //check des rooms à supprimer
                         roomsToCompare.forEach { roomToCompare ->
@@ -208,7 +208,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
         //set theme pour les lots techniques
         theme = resources.newTheme()
-        unClickAllLotTechnique(theme)
         //theme batis pré sélectionné
         onLotTechniqueClick(imv_lot_batis, 1)
 
@@ -264,7 +263,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     }
 
     private fun initExpendableList() {
-        viewModel.roomCombinedLiveData(clickedLot).observe(viewLifecycleOwner, { pairInfoRoom ->
+        viewModel.roomCombinedLiveData(clickedLot).observe(viewLifecycleOwner) { pairInfoRoom ->
             Log.d(TAG, "onViewCreated: CLICKED LOT $clickedLot")
             pairInfoRoom.first?.let { roomsWithDetails ->
                 var roomsIsDifferent = true
@@ -303,7 +302,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                     }
                 }
             }
-        })
+        }
     }
 
     // A method on the Fragment that owns the SlidingPaneLayout,
@@ -312,7 +311,11 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         childFragmentManager.commit {
             setReorderingAllowed(true)
             val fragment = DetailEndConstatFragment.newInstance()
-            fragment.arguments = bundleOf("detailId" to itemId, "idLot" to clickedLot, ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
+            fragment.arguments = bundleOf(
+                "detailId" to itemId,
+                "idLot" to clickedLot,
+                ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!
+            )
             replace(R.id.fragment_detail, fragment)
             // If we're already open and the detail pane is visible,
             // crossfade between the fragments.
@@ -385,6 +388,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         unClickAllLotTechnique(theme)
         val themeClick = resources.newTheme()
         themeClick.applyStyle(R.style.ClickedLot, false)
+        view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
         changeTheme(themeClick, view as ImageView, idLot)
         if (clickedLot != idLot) {
             clickedLot = idLot
@@ -420,6 +424,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 theme
             )
         )
+        imv_lot_batis.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         imv_ouvrants.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
@@ -427,7 +432,9 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 theme
             )
         )
+        imv_ouvrants.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         imv_elec.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_elec, theme))
+        imv_elec.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         imv_plomberie.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
@@ -435,6 +442,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 theme
             )
         )
+        imv_plomberie.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         imv_chauffage.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
@@ -442,6 +450,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 theme
             )
         )
+        imv_chauffage.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         imv_electromenager.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
@@ -449,6 +458,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 theme
             )
         )
+        imv_electromenager.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         imv_mobilier.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
@@ -456,6 +466,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 theme
             )
         )
+        imv_mobilier.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         imv_meulbe.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
@@ -463,6 +474,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 theme
             )
         )
+        imv_meulbe.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
     }
 
 

@@ -89,6 +89,7 @@ dependencies {
     implementation "com.afollestad.material-dialogs:core:$material_dialog"
     implementation "com.afollestad.material-dialogs:input:$material_dialog"
     implementation "com.afollestad.material-dialogs:lifecycle:$material_dialog"
+    implementation "com.afollestad.material-dialogs:color:$material_dialog"
     //signature
     implementation "com.github.gcacace:signature-pad:$signature_version"
     implementation 'com.vmadalin:easypermissions-ktx:1.0.0'

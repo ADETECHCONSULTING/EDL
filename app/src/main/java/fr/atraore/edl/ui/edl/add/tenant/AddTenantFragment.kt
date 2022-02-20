@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
@@ -53,7 +52,7 @@ class AddTenantFragment(val idArgs: String?) : BaseFragment(TENANT_LABEL), View.
     ): View {
         // Inflate the layout for this fragment
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.add_tenant_fragment, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_tenant, container, false)
         binding.viewModel = addViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

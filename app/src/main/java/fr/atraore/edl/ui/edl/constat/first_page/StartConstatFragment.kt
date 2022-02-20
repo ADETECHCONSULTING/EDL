@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
@@ -15,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
@@ -27,7 +24,6 @@ import fr.atraore.edl.databinding.StartConstatFragmentBinding
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
-import fr.atraore.edl.ui.edl.constat.second_page.groupie.ParentItem
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.ui.hideKeyboard
 import fr.atraore.edl.utils.*
@@ -93,7 +89,7 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.start_constat_fragment, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_start_constat, container, false)
         binding.constatViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
