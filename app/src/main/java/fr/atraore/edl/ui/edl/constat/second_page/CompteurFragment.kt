@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.databinding.CompteurFragmentBinding
+import fr.atraore.edl.databinding.FragmentCompteurBinding
 import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.first_page.StartConstatFragment
@@ -51,7 +51,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
         fun newInstance() = CompteurFragment()
     }
 
-    private lateinit var binding: CompteurFragmentBinding
+    private lateinit var binding: FragmentCompteurBinding
     private lateinit var listPopupWindow: ListPopupWindow
     private lateinit var currentImageView: ImageView
 

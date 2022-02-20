@@ -17,7 +17,7 @@ import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.adapter.ConstatAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
-import kotlinx.android.synthetic.main.main_fragment.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import java.sql.Date
 import java.util.*
 

@@ -12,7 +12,7 @@ import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.UserAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.USER_LABEL
-import kotlinx.android.synthetic.main.user_search_fragment.*
+import kotlinx.android.synthetic.main.fragment_user_search.*
 
 @AndroidEntryPoint
 class UserSearchFragment(private val constat: ConstatWithDetails) : BaseFragment(USER_LABEL) {

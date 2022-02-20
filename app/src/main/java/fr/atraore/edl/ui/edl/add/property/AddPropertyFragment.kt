@@ -11,17 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Property
-import fr.atraore.edl.databinding.AddPropertyFragmentBinding
+import fr.atraore.edl.databinding.FragmentAddPropertyBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.add.AddViewModel
 import fr.atraore.edl.utils.PROPERTY_LABEL
-import kotlinx.android.synthetic.main.add_property_fragment.*
-import kotlinx.android.synthetic.main.add_property_fragment.btn_cancel
-import kotlinx.android.synthetic.main.add_property_fragment.btn_create
-import kotlinx.android.synthetic.main.add_property_fragment.edt_address
-import kotlinx.android.synthetic.main.add_property_fragment.edt_address2
-import kotlinx.android.synthetic.main.add_property_fragment.edt_city
-import kotlinx.android.synthetic.main.add_property_fragment.edt_postal_code
+import kotlinx.android.synthetic.main.fragment_add_property.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +25,7 @@ import kotlin.coroutines.CoroutineContext
 class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), View.OnClickListener, CoroutineScope {
     private val TAG = AddPropertyFragment::class.simpleName
     private val addViewModel: AddViewModel by viewModels()
-    private lateinit var binding: AddPropertyFragmentBinding
+    private lateinit var binding: FragmentAddPropertyBinding
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main

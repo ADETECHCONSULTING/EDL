@@ -13,7 +13,7 @@ import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.PropertyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.PROPERTY_LABEL
-import kotlinx.android.synthetic.main.property_search_fragment.*
+import kotlinx.android.synthetic.main.fragment_property_search.*
 
 @AndroidEntryPoint
 class PropertySearchFragment(private val constat: ConstatWithDetails) : BaseFragment(PROPERTY_LABEL) {

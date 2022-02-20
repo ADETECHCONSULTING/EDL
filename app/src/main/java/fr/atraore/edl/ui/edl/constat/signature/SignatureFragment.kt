@@ -18,12 +18,12 @@ import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.ConfigPdf
-import fr.atraore.edl.databinding.SignatureFragmentBinding
+import fr.atraore.edl.databinding.FragmentSignatureBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import fr.atraore.edl.utils.assistedViewModel
-import kotlinx.android.synthetic.main.signature_fragment.*
+import kotlinx.android.synthetic.main.fragment_signature.*
 import java.io.File
 import java.io.File.separator
 import java.io.FileOutputStream
@@ -37,7 +37,7 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
     override val title: String
         get() = "Signature du constat"
 
-    private lateinit var binding: SignatureFragmentBinding
+    private lateinit var binding: FragmentSignatureBinding
     private lateinit var configPdf: ConfigPdf
 
     companion object {

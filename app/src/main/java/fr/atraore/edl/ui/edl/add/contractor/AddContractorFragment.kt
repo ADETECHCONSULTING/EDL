@@ -11,11 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Contractor
-import fr.atraore.edl.databinding.AddContractorFragmentBinding
+import fr.atraore.edl.databinding.FragmentAddContractorBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.add.AddViewModel
 import fr.atraore.edl.utils.CONTRACTOR_LABEL
-import kotlinx.android.synthetic.main.add_contractor_fragment.*
+import kotlinx.android.synthetic.main.fragment_add_contractor.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ import kotlin.coroutines.CoroutineContext
 class AddContractorFragment(val idArgs: String?) : BaseFragment(CONTRACTOR_LABEL), View.OnClickListener, CoroutineScope {
     private val TAG = AddContractorFragment::class.simpleName
     private val addViewModel: AddViewModel by viewModels()
-    private lateinit var binding: AddContractorFragmentBinding
+    private lateinit var binding: FragmentAddContractorBinding
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main

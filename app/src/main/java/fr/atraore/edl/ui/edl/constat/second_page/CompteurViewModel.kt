@@ -1,25 +1,20 @@
 package fr.atraore.edl.ui.edl.constat.second_page
 
 import android.view.View
-import androidx.databinding.Bindable
-import androidx.databinding.Observable
-import androidx.databinding.PropertyChangeRegistry
-import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.*
-import androidx.room.Ignore
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import fr.atraore.edl.data.models.*
+import fr.atraore.edl.data.models.Compteur
 import fr.atraore.edl.data.models.data.ConstatWithDetails
-import fr.atraore.edl.data.models.data.RoomWithDetails
-import fr.atraore.edl.databinding.CompteurFragmentBinding
-import fr.atraore.edl.repository.*
-import fr.atraore.edl.utils.*
-import kotlinx.coroutines.Dispatchers
+import fr.atraore.edl.repository.CompteurRepository
+import fr.atraore.edl.repository.ConstatRepository
+import fr.atraore.edl.utils.COUPE_LABEL
+import fr.atraore.edl.utils.EN_SERVICE_LABEL
+import fr.atraore.edl.utils.EQUIPE_LABEL
+import fr.atraore.edl.utils.NON_EQUIPE_LABEL
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 class CompteurViewModel @AssistedInject constructor(
     val repository: ConstatRepository,

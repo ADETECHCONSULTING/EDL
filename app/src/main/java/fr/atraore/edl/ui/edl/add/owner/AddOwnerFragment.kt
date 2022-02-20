@@ -11,11 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Owner
-import fr.atraore.edl.databinding.AddOwnerFragmentBinding
+import fr.atraore.edl.databinding.FragmentAddOwnerBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.add.AddViewModel
 import fr.atraore.edl.utils.OWNER_LABEL
-import kotlinx.android.synthetic.main.add_owner_fragment.*
+import kotlinx.android.synthetic.main.fragment_add_owner.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ import kotlin.coroutines.CoroutineContext
 class AddOwnerFragment(val idArgs: String?) : BaseFragment(OWNER_LABEL), View.OnClickListener, CoroutineScope {
     private val TAG = AddOwnerFragment::class.simpleName
     private val addViewModel: AddViewModel by viewModels()
-    private lateinit var binding: AddOwnerFragmentBinding
+    private lateinit var binding: FragmentAddOwnerBinding
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main

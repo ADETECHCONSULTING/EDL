@@ -12,11 +12,11 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Tenant
-import fr.atraore.edl.databinding.AddTenantFragmentBinding
+import fr.atraore.edl.databinding.FragmentAddTenantBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.add.AddViewModel
 import fr.atraore.edl.utils.TENANT_LABEL
-import kotlinx.android.synthetic.main.add_tenant_fragment.*
+import kotlinx.android.synthetic.main.fragment_add_tenant.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ class AddTenantFragment(val idArgs: String?) : BaseFragment(TENANT_LABEL), View.
     override val title: String
         get() = TENANT_LABEL
 
-    private lateinit var binding: AddTenantFragmentBinding
+    private lateinit var binding: FragmentAddTenantBinding
 
     companion object {
         fun newInstance(idArgs: String?) = AddTenantFragment(idArgs)

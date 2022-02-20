@@ -20,14 +20,14 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Detail
 import fr.atraore.edl.data.models.LotReference
 import fr.atraore.edl.data.models.data.ConstatWithDetails
-import fr.atraore.edl.databinding.StartConstatFragmentBinding
+import fr.atraore.edl.databinding.FragmentStartConstatBinding
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.ui.hideKeyboard
 import fr.atraore.edl.utils.*
-import kotlinx.android.synthetic.main.start_constat_fragment.*
+import kotlinx.android.synthetic.main.fragment_start_constat.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -80,7 +80,7 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         constatViewModelFactory.create(arguments?.getString(ARGS_CONSTAT_ID)!!)
     }
 
-    private lateinit var binding: StartConstatFragmentBinding
+    private lateinit var binding: FragmentStartConstatBinding
     private lateinit var constat: ConstatWithDetails
     private lateinit var listLotReference: List<LotReference>
 

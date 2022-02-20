@@ -13,7 +13,7 @@ import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.AgencyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.AGENCY_LABEL
-import kotlinx.android.synthetic.main.agency_search_fragment.*
+import kotlinx.android.synthetic.main.fragment_agency_search.*
 
 @AndroidEntryPoint
 class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragment(AGENCY_LABEL) {

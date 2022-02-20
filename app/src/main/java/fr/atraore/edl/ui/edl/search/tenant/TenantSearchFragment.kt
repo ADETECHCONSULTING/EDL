@@ -13,7 +13,7 @@ import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.TenantAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.TENANT_LABEL
-import kotlinx.android.synthetic.main.tenant_search_fragment.*
+import kotlinx.android.synthetic.main.fragment_tenant_search.*
 
 @AndroidEntryPoint
 class TenantSearchFragment(private val constat: ConstatWithDetails) : BaseFragment(TENANT_LABEL) {

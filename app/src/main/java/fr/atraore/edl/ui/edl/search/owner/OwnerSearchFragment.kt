@@ -13,7 +13,7 @@ import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.OwnerAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.OWNER_LABEL
-import kotlinx.android.synthetic.main.owner_search_fragment.*
+import kotlinx.android.synthetic.main.fragment_owner_search.*
 
 @AndroidEntryPoint
 class OwnerSearchFragment(private val constat: ConstatWithDetails) : BaseFragment(OWNER_LABEL) {

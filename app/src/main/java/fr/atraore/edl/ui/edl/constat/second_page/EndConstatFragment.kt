@@ -30,7 +30,7 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Detail
 import fr.atraore.edl.data.models.ElementReference
 import fr.atraore.edl.data.models.RoomReference
-import fr.atraore.edl.databinding.EndConstatFragmentBinding
+import fr.atraore.edl.databinding.FragmentEndConstatBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatFragment
@@ -38,7 +38,7 @@ import fr.atraore.edl.ui.edl.constat.second_page.groupie.ChildItem
 import fr.atraore.edl.ui.edl.constat.second_page.groupie.ParentItem
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.*
-import kotlinx.android.synthetic.main.end_constat_fragment.*
+import kotlinx.android.synthetic.main.fragment_end_constat.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,7 +69,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     var elementRefList: List<ElementReference>? = null
     private lateinit var roomsWithDetails: Map<RoomReference, List<Detail>>
 
-    private lateinit var binding: EndConstatFragmentBinding
+    private lateinit var binding: FragmentEndConstatBinding
 
     private lateinit var listPopupWindow: ListPopupWindow
     private lateinit var clickedChildItem: Detail

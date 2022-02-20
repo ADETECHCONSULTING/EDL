@@ -13,7 +13,7 @@ import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.ContractorAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.CONTRACTOR_LABEL
-import kotlinx.android.synthetic.main.contractor_search_fragment.*
+import kotlinx.android.synthetic.main.fragment_contractor_search.*
 
 @AndroidEntryPoint
 class ContractorSearchFragment(private val constat: ConstatWithDetails) : BaseFragment(CONTRACTOR_LABEL) {
