@@ -61,9 +61,9 @@ class SimpleSubItem : AbstractExpandableItem<SimpleSubItem.ViewHolder>(), IExpan
         }
 
         if (isExpanded) {
-            holder.icon.rotation = 0f
-        } else {
             holder.icon.rotation = 180f
+        } else {
+            holder.icon.rotation = 0f
         }
     }
 
