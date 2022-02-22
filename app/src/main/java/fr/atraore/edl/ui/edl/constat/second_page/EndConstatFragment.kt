@@ -21,36 +21,37 @@ import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.checkItems
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
+import com.mikepenz.fastadapter.expandable.getExpandableExtension
+import com.mikepenz.fastadapter.select.getSelectExtension
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Detail
 import fr.atraore.edl.data.models.ElementReference
 import fr.atraore.edl.data.models.RoomReference
+import fr.atraore.edl.data.models.expandable.SimpleSubExpandableItem
+import fr.atraore.edl.data.models.expandable.SimpleSubItem
 import fr.atraore.edl.databinding.FragmentEndConstatBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatFragment
-import fr.atraore.edl.ui.edl.constat.second_page.groupie.ChildItem
-import fr.atraore.edl.ui.edl.constat.second_page.groupie.ParentItem
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.*
+import fr.atraore.edl.utils.itemanimators.SlideDownAlphaAnimator
 import kotlinx.android.synthetic.main.fragment_end_constat.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
-    MainActivity.OnNavigationFragment, CoroutineScope, ChildItem.IActionHandler,
-    ParentItem.IActionHandler {
+    MainActivity.OnNavigationFragment, CoroutineScope {
     private val TAG = EndConstatFragment::class.simpleName
+
+    private lateinit var fastItemAdapter: GenericFastItemAdapter
 
     override val title: String
         get() = "Deuxieme partie du constat"
@@ -61,10 +62,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    private val groupAdapter = GroupAdapter<GroupieViewHolder>()
-    private lateinit var groupLayoutManager: LinearLayoutManager
-
-    private var parentList: MutableList<ParentItem> = mutableListOf()
     var roomRefList: List<RoomReference>? = null
     var elementRefList: List<ElementReference>? = null
     private lateinit var roomsWithDetails: Map<RoomReference, List<Detail>>
@@ -77,8 +74,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private var clickedLot: Int = 1
 
     private lateinit var theme: Resources.Theme
-
-    var listener: ((List<ParentItem>) -> Unit)? = null
 
     companion object {
         fun newInstance() = EndConstatFragment()
@@ -104,6 +99,13 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         binding.constatViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.fragment = this
+
+        //init fastAdapter
+        fastItemAdapter = FastItemAdapter()
+        fastItemAdapter.getExpandableExtension()
+        val selectExtension = fastItemAdapter.getSelectExtension()
+        selectExtension.isSelectable = true
+
         return binding.root
     }
 
@@ -231,26 +233,14 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             listPopupWindow.dismiss()
         }
 
-        listener = {
-            val expandableGroups = mutableListOf<ExpandableGroup>()
-            it.forEach { parentItem ->
-                //ajout à la liste expandable
-                expandableGroups.add(ExpandableGroup(parentItem, false).apply {
-                    addAll(parentItem.childItems)
-                })
-            }
-            groupAdapter.update(expandableGroups)
-        }
-
-        groupLayoutManager = LinearLayoutManager(activity)
-
         rcv_rooms.apply {
-            layoutManager = groupLayoutManager
-            adapter = groupAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = fastItemAdapter
+            itemAnimator = SlideDownAlphaAnimator()
         }
 
         //récupération du détail du constat
-        viewModel.constatDetail.observe(viewLifecycleOwner, { constatWithDetails ->
+        viewModel.constatDetail.observe(viewLifecycleOwner) { constatWithDetails ->
             constatWithDetails?.let {
                 viewModel.constatHeaderInfo.value =
                     "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
@@ -259,12 +249,22 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 //Pour chaque pièces du constat, récupérer les éléments et les affecter dans l'expandable list
                 initExpendableList();
             }
-        })
+        }
+    }
+
+    override fun onSaveInstanceState(_outState: Bundle) {
+        var outState = _outState
+        //add the values which need to be saved from the adapter to the bundle
+        outState = fastItemAdapter.saveInstanceState(outState)
+        super.onSaveInstanceState(outState)
     }
 
     private fun initExpendableList() {
+        val itemToBeExpanded: SimpleSubExpandableItem? = null
+
         viewModel.roomCombinedLiveData(clickedLot).observe(viewLifecycleOwner) { pairInfoRoom ->
             Log.d(TAG, "onViewCreated: CLICKED LOT $clickedLot")
+            val identifier = AtomicLong(1)
             pairInfoRoom.first?.let { roomsWithDetails ->
                 var roomsIsDifferent = true
                 if (this@EndConstatFragment::roomsWithDetails.isInitialized) {
@@ -277,21 +277,38 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 }
 
                 if (roomsIsDifferent) {
-                    val parentListItems = mutableListOf<ParentItem>()
+                    val parentListItems = mutableListOf<SimpleSubExpandableItem>()
                     this@EndConstatFragment.roomsWithDetails = roomsWithDetails
                     roomsWithDetails.filter { rse -> rse.value.isNotEmpty() }.forEach { it ->
-                        val parentIt = ParentItem(it.key, this)
+                        //Parent
+                        val parentIt = SimpleSubExpandableItem().withHeader(it.key)
+                        parentIt.identifier = identifier.getAndIncrement()
                         it.value.sortedBy { value -> value.intitule }
-                        parentIt.childItems = it.value.map { detail ->
-                            ChildItem(detail, this@EndConstatFragment)
+
+                        //Enfant
+                        val subItems = it.value.map { detail ->
+                            SimpleSubItem().withHeader(detail)
                         }
 
+                        subItems.forEach { subItem ->
+                            run {
+                                subItem.identifier = identifier.getAndIncrement()
+                            }
+                        }
+
+                        parentIt.subItems.addAll(subItems)
+
+                        /*
                         if (parentIt.roomParent.roomReferenceId !in parentListItems.map { re -> re.roomParent }
                                 .map { roomReference -> roomReference.roomReferenceId }) {
                             parentListItems.add(parentIt)
                         }
+                         */
+
+                        parentListItems.add(parentIt)
                     }
-                    listener?.invoke(parentListItems)
+
+                    fastItemAdapter.setNewList(parentListItems)
 
                     pairInfoRoom.second?.let { listRoomReference ->
                         this.roomRefList = listRoomReference
@@ -334,12 +351,14 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         }
     }
 
+    /*
     override fun onLongClick(anchorView: View, detail: Detail) {
         clickedChildItem = detail
         listPopupWindow.anchorView = anchorView
         listPopupWindow.show()
-
     }
+
+     */
 
     @SuppressLint("CheckResult")
     private fun rename() {
@@ -371,16 +390,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 dismiss()
             }
         }
-    }
-
-    //click on child
-    override fun onSimpleClick(detail: Detail) {
-        openDetails(detail.idDetail)
-    }
-
-    //click on parent
-    override fun onSimpleClick(roomParent: RoomReference) {
-        clickedParentItem = roomParent
     }
 
     //click on lot technique

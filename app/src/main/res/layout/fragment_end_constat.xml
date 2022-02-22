@@ -53,7 +53,8 @@
                         android:layout_width="@dimen/list_width"
                         android:layout_height="match_parent"
                         android:layout_gravity="start"
-                        tools:listitem="@layout/room_list_item" />
+                        tools:listitem="@layout/room_list_item"
+                        />
 
                     <LinearLayout
                         android:id="@+id/ctn_lot_technique"

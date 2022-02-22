@@ -8,11 +8,20 @@
 
     <TextView
         android:id="@+id/txv_element_child"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         tools:text="@string/address_label_2"
         android:gravity="center"
         android:textSize="@dimen/textSizeMedium"
         android:padding="@dimen/padding_medium"/>
+
+    <ImageView
+        android:id="@+id/material_drawer_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:src="@drawable/ic_arrow_down_black"/>
 
 </LinearLayout>

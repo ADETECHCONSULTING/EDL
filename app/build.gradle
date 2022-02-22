@@ -94,6 +94,12 @@ dependencies {
     implementation "com.github.gcacace:signature-pad:$signature_version"
     implementation 'com.vmadalin:easypermissions-ktx:1.0.0'
 
+    //expandable
+    implementation "com.mikepenz:fastadapter:$fastadapter_version"
+    implementation "com.mikepenz:fastadapter-extensions-expandable:$fastadapter_version"
+    implementation "com.mikepenz:fastadapter-extensions-ui:$fastadapter_version" // pre-defined ui components
+
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
