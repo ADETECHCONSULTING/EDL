@@ -3,18 +3,26 @@ package fr.atraore.edl.data.models.expandable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.mikepenz.fastadapter.ClickListener
+import com.mikepenz.fastadapter.IAdapter
+import com.mikepenz.fastadapter.IClickable
 import com.mikepenz.fastadapter.IExpandable
 import com.mikepenz.fastadapter.expandable.items.AbstractExpandableItem
-import com.mikepenz.fastadapter.ui.utils.StringHolder
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.Detail
 
-class SimpleSubItem : AbstractExpandableItem<SimpleSubItem.ViewHolder>(), IExpandable<SimpleSubItem.ViewHolder> {
+class SimpleSubItem(val actionHandler: IActionHandler) : AbstractExpandableItem<SimpleSubItem.ViewHolder>(), IExpandable<SimpleSubItem.ViewHolder>, IClickable<SimpleSubItem> {
+
+    interface IActionHandler {
+        fun onSimpleClick(detail: Detail)
+        fun onLongClick(anchorView: View, detail: Detail)
+    }
 
     var header: Detail? = null
+    private var mOnClickListener: ClickListener<SimpleSubItem>? = null
 
     /**
      * defines the type defining this item. must be unique. preferably an id
@@ -36,6 +44,34 @@ class SimpleSubItem : AbstractExpandableItem<SimpleSubItem.ViewHolder>(), IExpan
         this.header = detail
         return this
     }
+
+    //we define a clickListener in here so we can directly animate
+    /**
+     * we overwrite the item specific click listener so we can automatically animate within the item
+     *
+     * @return
+     */
+    @Suppress("SetterBackingFieldAssignment")
+    override var onItemClickListener: ClickListener<SimpleSubItem>? = { v: View?, adapter: IAdapter<SimpleSubItem>, item: SimpleSubItem, position: Int ->
+        if (item.subItems.isNotEmpty()) {
+            v?.findViewById<View>(R.id.material_drawer_icon)?.let {
+                if (!item.isExpanded) {
+                    ViewCompat.animate(it).rotation(180f).start()
+                } else {
+                    ViewCompat.animate(it).rotation(0f).start()
+                }
+            }
+        }
+        mOnClickListener?.invoke(v, adapter, item, position) ?: true
+    }
+        set(onClickListener) {
+            this.mOnClickListener = onClickListener // on purpose
+        }
+
+    override var onPreItemClickListener: ClickListener<SimpleSubItem>?
+        get() = null
+        set(_) {}
+
 
     /**
      * binds the data of this item onto the viewHolder
@@ -64,6 +100,19 @@ class SimpleSubItem : AbstractExpandableItem<SimpleSubItem.ViewHolder>(), IExpan
             holder.icon.rotation = 180f
         } else {
             holder.icon.rotation = 0f
+        }
+
+        holder.itemView.setOnClickListener {
+            header?.let {
+                actionHandler.onSimpleClick(it)
+            }
+        }
+
+        holder.itemView.setOnLongClickListener {
+            header?.let {
+                actionHandler.onLongClick(holder.itemView, it)
+            }
+            true
         }
     }
 

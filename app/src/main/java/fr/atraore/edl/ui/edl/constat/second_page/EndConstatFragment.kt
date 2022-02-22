@@ -16,11 +16,13 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.checkItems
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
+import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.expandable.getExpandableExtension
 import com.mikepenz.fastadapter.select.getSelectExtension
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,7 +50,7 @@ import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
-    MainActivity.OnNavigationFragment, CoroutineScope {
+    MainActivity.OnNavigationFragment, CoroutineScope, SimpleSubItem.IActionHandler {
     private val TAG = EndConstatFragment::class.simpleName
 
     private lateinit var fastItemAdapter: GenericFastItemAdapter
@@ -105,6 +107,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         fastItemAdapter.getExpandableExtension()
         val selectExtension = fastItemAdapter.getSelectExtension()
         selectExtension.isSelectable = true
+        selectExtension.selectOnLongClick = true
 
         return binding.root
     }
@@ -252,16 +255,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         }
     }
 
-    override fun onSaveInstanceState(_outState: Bundle) {
-        var outState = _outState
-        //add the values which need to be saved from the adapter to the bundle
-        outState = fastItemAdapter.saveInstanceState(outState)
-        super.onSaveInstanceState(outState)
-    }
-
     private fun initExpendableList() {
-        val itemToBeExpanded: SimpleSubExpandableItem? = null
-
         viewModel.roomCombinedLiveData(clickedLot).observe(viewLifecycleOwner) { pairInfoRoom ->
             Log.d(TAG, "onViewCreated: CLICKED LOT $clickedLot")
             val identifier = AtomicLong(1)
@@ -287,7 +281,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
                         //Enfant
                         val subItems = it.value.map { detail ->
-                            SimpleSubItem().withHeader(detail)
+                            SimpleSubItem(this).withHeader(detail)
                         }
 
                         subItems.forEach { subItem ->
@@ -295,7 +289,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                                 subItem.identifier = identifier.getAndIncrement()
                             }
                         }
-
                         parentIt.subItems.addAll(subItems)
 
                         /*
@@ -350,15 +343,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             goBack()
         }
     }
-
-    /*
-    override fun onLongClick(anchorView: View, detail: Detail) {
-        clickedChildItem = detail
-        listPopupWindow.anchorView = anchorView
-        listPopupWindow.show()
-    }
-
-     */
 
     @SuppressLint("CheckResult")
     private fun rename() {
@@ -484,6 +468,16 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             )
         )
         imv_meulbe.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+    }
+
+    override fun onSimpleClick(detail: Detail) {
+        openDetails(detail.idDetail)
+    }
+
+    override fun onLongClick(anchorView: View, detail: Detail) {
+        clickedChildItem = detail
+        listPopupWindow.anchorView = anchorView
+        listPopupWindow.show()
     }
 
 
