@@ -11,7 +11,7 @@
 
         <variable
             name="propertyItem"
-            type="fr.atraore.edl.data.models.Property" />
+            type="fr.atraore.edl.data.models.entity.Property" />
 
         <variable
             name="state"

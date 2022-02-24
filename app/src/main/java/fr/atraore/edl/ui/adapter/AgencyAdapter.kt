@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.data.models.entity.Agency
 import fr.atraore.edl.databinding.AgencyItemBinding
 import fr.atraore.edl.ui.edl.search.agency.AgencySearchViewModel
 import kotlinx.coroutines.CoroutineScope

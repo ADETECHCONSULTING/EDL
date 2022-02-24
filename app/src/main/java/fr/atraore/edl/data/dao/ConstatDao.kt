@@ -1,7 +1,7 @@
 package fr.atraore.edl.data.dao
 
 import androidx.room.*
-import fr.atraore.edl.data.models.Constat
+import fr.atraore.edl.data.models.entity.Constat
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.crossRef.*
 import fr.atraore.edl.utils.CONSTAT_TABLE

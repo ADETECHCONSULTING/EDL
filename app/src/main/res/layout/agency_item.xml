@@ -11,7 +11,7 @@
 
         <variable
             name="agencyItem"
-            type="fr.atraore.edl.data.models.Agency" />
+            type="fr.atraore.edl.data.models.entity.Agency" />
 
     </data>
 

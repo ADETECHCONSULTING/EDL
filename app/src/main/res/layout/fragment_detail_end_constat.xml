@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="detail"
-            type="fr.atraore.edl.data.models.Detail" />
+            type="fr.atraore.edl.data.models.entity.Detail" />
 
         <variable
             name="fragment"

@@ -11,7 +11,7 @@
 
         <variable
             name="contractorItem"
-            type="fr.atraore.edl.data.models.Contractor" />
+            type="fr.atraore.edl.data.models.entity.Contractor" />
 
         <variable
             name="state"

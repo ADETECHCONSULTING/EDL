@@ -17,7 +17,7 @@ import androidx.lifecycle.LifecycleObserver
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.ConfigPdf
+import fr.atraore.edl.data.models.entity.ConfigPdf
 import fr.atraore.edl.databinding.FragmentSignatureBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults

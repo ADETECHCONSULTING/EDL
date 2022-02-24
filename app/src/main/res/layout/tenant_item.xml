@@ -11,7 +11,7 @@
 
         <variable
             name="tenantItem"
-            type="fr.atraore.edl.data.models.Tenant" />
+            type="fr.atraore.edl.data.models.entity.Tenant" />
 
         <variable
             name="state"

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.atraore.edl.data.models.Owner
+import fr.atraore.edl.data.models.entity.Owner
 import fr.atraore.edl.repository.ConstatRepository
 import fr.atraore.edl.repository.OwnerRepository
 import javax.inject.Inject

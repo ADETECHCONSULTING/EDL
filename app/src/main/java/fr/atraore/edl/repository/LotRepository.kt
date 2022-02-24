@@ -1,10 +1,9 @@
 package fr.atraore.edl.repository
 
 import fr.atraore.edl.data.dao.LotReferenceDao
-import fr.atraore.edl.data.models.LotReference
+import fr.atraore.edl.data.models.entity.LotReference
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import java.util.*
 
 class LotRepository @Inject constructor(
     private val dao: LotReferenceDao

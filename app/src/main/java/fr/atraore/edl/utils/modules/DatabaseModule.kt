@@ -1,7 +1,6 @@
 package fr.atraore.edl.utils.modules
 
 import android.content.Context
-import android.sax.Element
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -13,19 +12,17 @@ import dagger.hilt.components.SingletonComponent
 import fr.atraore.edl.data.AppDatabase
 import fr.atraore.edl.data.DATABASE_NAME
 import fr.atraore.edl.data.dao.*
-import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.crossRef.*
+import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.utils.COMPTEUR_LABELS
 import fr.atraore.edl.utils.ELEMENTS_LABELS
 import fr.atraore.edl.utils.LOTS_LABELS
 import fr.atraore.edl.utils.ROOMS_LABELS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.sql.Date
 import java.util.*
-import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 
@@ -245,7 +242,8 @@ class DatabaseModule {
     }
 
     private suspend fun createConfigPdfReference(configPdfDao: ConfigPdfDao) {
-        configPdfDao.save(ConfigPdf(
+        configPdfDao.save(
+            ConfigPdf(
             "Pré-état des lieux de sortie",
             "Les soussignés reconnaissent exactes les constatations sur l'état du logement,\n" +
                     " sous réserve du bon fonctionnement des canalisations,\n" +
@@ -257,7 +255,8 @@ class DatabaseModule {
             "Les soussignés reconnaissent exactes les constatations sur l'état du logement,\n" +
                     " et reconnaissent avoir reçu chacun l'ensemble des élements leur permettant de récupérer un exemplaire du présent état des lieux et s'accordent pour y faire référence.\n",
             "Le présent état des lieux, a été établi contradictoirement entre les parties qui le reconnaissent exact."
-        ))
+        )
+        )
     }
 
     private suspend fun toDeleteForProd(

@@ -4,8 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import fr.atraore.edl.data.dao.*
-import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.crossRef.*
+import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.utils.*
 
 const val DATABASE_NAME = "edlDb"

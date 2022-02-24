@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Property
+import fr.atraore.edl.data.models.entity.Property
 import fr.atraore.edl.databinding.FragmentAddPropertyBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.add.AddViewModel

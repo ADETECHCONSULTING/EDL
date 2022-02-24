@@ -2,7 +2,7 @@ package fr.atraore.edl.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import fr.atraore.edl.data.models.CompteurReference
+import fr.atraore.edl.data.models.entity.CompteurReference
 import kotlinx.coroutines.flow.Flow
 
 @Dao

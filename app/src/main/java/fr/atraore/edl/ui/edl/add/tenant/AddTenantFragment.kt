@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Tenant
+import fr.atraore.edl.data.models.entity.Tenant
 import fr.atraore.edl.databinding.FragmentAddTenantBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.add.AddViewModel

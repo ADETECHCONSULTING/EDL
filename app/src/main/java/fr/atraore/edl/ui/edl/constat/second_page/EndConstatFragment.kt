@@ -16,23 +16,21 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.checkItems
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
-import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.expandable.getExpandableExtension
 import com.mikepenz.fastadapter.select.getSelectExtension
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Detail
-import fr.atraore.edl.data.models.ElementReference
-import fr.atraore.edl.data.models.RoomReference
-import fr.atraore.edl.data.models.expandable.SimpleSubExpandableItem
-import fr.atraore.edl.data.models.expandable.SimpleSubItem
+import fr.atraore.edl.data.models.entity.Detail
+import fr.atraore.edl.data.models.entity.ElementReference
+import fr.atraore.edl.data.models.entity.RoomReference
+import fr.atraore.edl.data.models.adaptermodel.SimpleParentExpandableItem
+import fr.atraore.edl.data.models.adaptermodel.SimpleSubItem
 import fr.atraore.edl.databinding.FragmentEndConstatBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
@@ -271,11 +269,11 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 }
 
                 if (roomsIsDifferent) {
-                    val parentListItems = mutableListOf<SimpleSubExpandableItem>()
+                    val parentListItems = mutableListOf<SimpleParentExpandableItem>()
                     this@EndConstatFragment.roomsWithDetails = roomsWithDetails
                     roomsWithDetails.filter { rse -> rse.value.isNotEmpty() }.forEach { it ->
                         //Parent
-                        val parentIt = SimpleSubExpandableItem().withHeader(it.key)
+                        val parentIt = SimpleParentExpandableItem().withHeader(it.key)
                         parentIt.identifier = identifier.getAndIncrement()
                         it.value.sortedBy { value -> value.intitule }
 

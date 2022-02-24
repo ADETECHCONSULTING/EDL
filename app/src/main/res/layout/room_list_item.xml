@@ -23,6 +23,6 @@
         android:layout_height="32dp"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/margin_medium"
-        android:src="@android:drawable/arrow_down_float"/>
+        android:src="@drawable/ic_arrow_down_white" />
 
 </LinearLayout>

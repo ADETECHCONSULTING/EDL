@@ -2,10 +2,9 @@ package fr.atraore.edl.repository
 
 import androidx.annotation.WorkerThread
 import fr.atraore.edl.data.dao.CompteurDao
-import fr.atraore.edl.data.models.Compteur
+import fr.atraore.edl.data.models.entity.Compteur
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-import java.util.*
 
 class CompteurRepository @Inject constructor(
     private val dao: CompteurDao

@@ -2,7 +2,7 @@ package fr.atraore.edl.data.models.data
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import fr.atraore.edl.data.models.*
+import fr.atraore.edl.data.models.entity.*
 
 data class DetailWithEntities(
     @Embedded val detail: Detail,

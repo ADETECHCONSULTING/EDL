@@ -4,8 +4,8 @@ import androidx.room.Embedded
 import androidx.room.Ignore
 import androidx.room.Junction
 import androidx.room.Relation
-import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.crossRef.*
+import fr.atraore.edl.data.models.entity.*
 import java.io.Serializable
 
 data class ConstatWithDetails(

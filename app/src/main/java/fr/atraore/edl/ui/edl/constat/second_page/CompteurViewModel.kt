@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import fr.atraore.edl.data.models.Compteur
+import fr.atraore.edl.data.models.entity.Compteur
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.repository.CompteurRepository
 import fr.atraore.edl.repository.ConstatRepository

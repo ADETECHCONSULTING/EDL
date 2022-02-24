@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.atraore.edl.data.models.Constat
-import fr.atraore.edl.data.models.Users
+import fr.atraore.edl.data.models.entity.Constat
+import fr.atraore.edl.data.models.entity.Users
 import fr.atraore.edl.repository.ConstatRepository
 import fr.atraore.edl.repository.UserRepository
 import javax.inject.Inject

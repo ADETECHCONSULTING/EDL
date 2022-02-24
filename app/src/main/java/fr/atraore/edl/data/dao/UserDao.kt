@@ -2,7 +2,7 @@ package fr.atraore.edl.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import fr.atraore.edl.data.models.Users
+import fr.atraore.edl.data.models.entity.Users
 import fr.atraore.edl.utils.USERS_TABLE
 import kotlinx.coroutines.flow.Flow
 

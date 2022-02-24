@@ -7,7 +7,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.*
+import fr.atraore.edl.data.models.entity.Contractor
+import fr.atraore.edl.data.models.entity.Owner
+import fr.atraore.edl.data.models.entity.Property
+import fr.atraore.edl.data.models.entity.Tenant
 import fr.atraore.edl.ui.MainViewModel
 
 @AndroidEntryPoint

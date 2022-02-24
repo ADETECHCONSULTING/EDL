@@ -1,7 +1,7 @@
 package fr.atraore.edl.repository
 
 import fr.atraore.edl.data.dao.DetailDao
-import fr.atraore.edl.data.models.Detail
+import fr.atraore.edl.data.models.entity.Detail
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

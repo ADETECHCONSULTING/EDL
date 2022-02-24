@@ -5,5 +5,4 @@ import androidx.room.Entity
 @Entity(primaryKeys = ["roomReferenceId", "idDetail"])
 data class RoomDetailCrossRef(
     val roomReferenceId: String,
-    val idDetail: String
-    )
+    val idDetail: String)

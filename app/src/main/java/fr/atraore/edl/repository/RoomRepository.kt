@@ -1,9 +1,8 @@
 package fr.atraore.edl.repository
 
 import fr.atraore.edl.data.dao.RoomReferenceDao
-import fr.atraore.edl.data.models.Detail
-import fr.atraore.edl.data.models.RoomReference
-import fr.atraore.edl.data.models.data.RoomWithDetails
+import fr.atraore.edl.data.models.entity.Detail
+import fr.atraore.edl.data.models.entity.RoomReference
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

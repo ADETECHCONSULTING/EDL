@@ -2,7 +2,7 @@ package fr.atraore.edl.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import fr.atraore.edl.data.models.Etat
+import fr.atraore.edl.data.models.entity.Etat
 import kotlinx.coroutines.flow.Flow
 
 @Dao

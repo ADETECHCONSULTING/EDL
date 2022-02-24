@@ -11,7 +11,7 @@
 
         <variable
             name="ownerItem"
-            type="fr.atraore.edl.data.models.Owner" />
+            type="fr.atraore.edl.data.models.entity.Owner" />
 
         <variable
             name="state"

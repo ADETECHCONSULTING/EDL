@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.atraore.edl.data.models.*
+import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.repository.*
 import fr.atraore.edl.utils.QuadrupleCombinedLiveData
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel

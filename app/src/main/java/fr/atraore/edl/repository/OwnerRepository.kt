@@ -1,8 +1,7 @@
 package fr.atraore.edl.repository
 
 import fr.atraore.edl.data.dao.OwnerDao
-import fr.atraore.edl.data.models.Contractor
-import fr.atraore.edl.data.models.Owner
+import fr.atraore.edl.data.models.entity.Owner
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

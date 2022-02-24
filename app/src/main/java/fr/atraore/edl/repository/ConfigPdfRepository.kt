@@ -1,7 +1,7 @@
 package fr.atraore.edl.repository
 
 import fr.atraore.edl.data.dao.ConfigPdfDao
-import fr.atraore.edl.data.models.ConfigPdf
+import fr.atraore.edl.data.models.entity.ConfigPdf
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

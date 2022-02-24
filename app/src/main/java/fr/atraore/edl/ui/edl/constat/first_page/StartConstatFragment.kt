@@ -17,8 +17,8 @@ import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Detail
-import fr.atraore.edl.data.models.LotReference
+import fr.atraore.edl.data.models.entity.Detail
+import fr.atraore.edl.data.models.entity.LotReference
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.databinding.FragmentStartConstatBinding
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.fragment_start_constat.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 

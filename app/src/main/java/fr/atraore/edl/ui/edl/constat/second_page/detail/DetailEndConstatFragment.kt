@@ -17,7 +17,7 @@ import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.*
+import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.databinding.FragmentDetailEndConstatBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.utils.IdDetailStatesEnum
@@ -28,7 +28,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import java.util.stream.Collectors
 import kotlin.coroutines.CoroutineContext
 
 

@@ -2,7 +2,7 @@ package fr.atraore.edl.repository
 
 import androidx.annotation.WorkerThread
 import fr.atraore.edl.data.dao.ConstatDao
-import fr.atraore.edl.data.models.Constat
+import fr.atraore.edl.data.models.entity.Constat
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.crossRef.*
 import kotlinx.coroutines.flow.Flow

@@ -4,14 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.atraore.edl.data.models.Contractor
-import fr.atraore.edl.data.models.Owner
-import fr.atraore.edl.data.models.Property
-import fr.atraore.edl.data.models.Tenant
+import fr.atraore.edl.data.models.entity.Contractor
+import fr.atraore.edl.data.models.entity.Owner
+import fr.atraore.edl.data.models.entity.Property
+import fr.atraore.edl.data.models.entity.Tenant
 import fr.atraore.edl.repository.*
 import javax.inject.Inject
 

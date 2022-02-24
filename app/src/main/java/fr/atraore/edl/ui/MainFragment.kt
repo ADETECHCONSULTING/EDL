@@ -1,10 +1,8 @@
 package fr.atraore.edl.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -12,10 +10,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Constat
+import fr.atraore.edl.data.models.entity.Constat
 import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.adapter.ConstatAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.ui.settings.RoomConfigurationActivity
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import kotlinx.android.synthetic.main.fragment_main.*
 import java.sql.Date
@@ -45,8 +44,17 @@ class MainFragment : BaseFragment("MainFrag") {
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_next)?.isVisible = false
         menu.findItem(R.id.action_previous)?.isVisible = false
-        menu.findItem(R.id.action_add_room)?.isVisible = false
         menu.findItem(R.id.action_compteur)?.isVisible = false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.action_add_room -> {
+                val intent = Intent(requireContext(), RoomConfigurationActivity::class.java);
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

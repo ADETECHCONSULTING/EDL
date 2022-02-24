@@ -10,7 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.*
+import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 
 class PrimaryInfoNoDataBindAdapter(private val dataSet: List<PrimaryInfo>, private val constatViewModel: ConstatViewModel) : RecyclerView.Adapter<PrimaryInfoNoDataBindAdapter.ViewHolder>() {

@@ -4,9 +4,8 @@ import androidx.lifecycle.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import fr.atraore.edl.data.models.*
 import fr.atraore.edl.data.models.data.ConstatWithDetails
-import fr.atraore.edl.data.models.data.RoomWithDetails
+import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.repository.*
 import fr.atraore.edl.utils.CombinedLiveData
 import fr.atraore.edl.utils.TripleCombinedLiveData

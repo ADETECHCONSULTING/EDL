@@ -23,6 +23,8 @@ val TENANT_LABEL = "Locataires"
 val AGENCY_LABEL = "Agences"
 val USER_LABEL = "Utilisateurs"
 val SUITE_CONSTAT_LABEL = "Suite du constat"
+val ELEMENT_CONFIG_LABEL = "Ecran de configuration des elements"
+val GRID_CONFIG_LABEL = "Ecran de configuration des elements"
 
 val EN_SERVICE_LABEL = "En Service"
 val COUPE_LABEL = "Coupé"

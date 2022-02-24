@@ -2,8 +2,7 @@ package fr.atraore.edl.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.Transaction
-import fr.atraore.edl.data.models.ElementReference
+import fr.atraore.edl.data.models.entity.ElementReference
 import fr.atraore.edl.utils.ELEMENT_REFERENCE_TABLE
 import kotlinx.coroutines.flow.Flow
 

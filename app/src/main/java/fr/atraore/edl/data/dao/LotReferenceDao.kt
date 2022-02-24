@@ -2,7 +2,7 @@ package fr.atraore.edl.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import fr.atraore.edl.data.models.LotReference
+import fr.atraore.edl.data.models.entity.LotReference
 import fr.atraore.edl.utils.LOT_REFERENCE_TABLE
 import kotlinx.coroutines.flow.Flow
 

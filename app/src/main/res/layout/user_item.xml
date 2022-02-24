@@ -10,7 +10,7 @@
 
         <variable
             name="userItem"
-            type="fr.atraore.edl.data.models.Users" />
+            type="fr.atraore.edl.data.models.entity.Users" />
 
     </data>
 

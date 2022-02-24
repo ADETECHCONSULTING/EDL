@@ -15,10 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EDL">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.settings.RoomConfigurationActivity"
             android:screenOrientation="userLandscape"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="userLandscape"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +36,6 @@
             android:authorities="fr.atraore.edl.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />

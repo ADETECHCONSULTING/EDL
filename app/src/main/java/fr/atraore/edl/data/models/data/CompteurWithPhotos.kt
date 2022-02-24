@@ -2,8 +2,8 @@ package fr.atraore.edl.data.models.data
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import fr.atraore.edl.data.models.Compteur
-import fr.atraore.edl.data.models.PhotoCompteur
+import fr.atraore.edl.data.models.entity.Compteur
+import fr.atraore.edl.data.models.entity.PhotoCompteur
 
 data class CompteurWithPhotos (
     @Embedded
