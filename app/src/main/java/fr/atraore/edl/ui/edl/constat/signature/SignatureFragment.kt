@@ -12,17 +12,19 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
+import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.entity.ConfigPdf
 import fr.atraore.edl.databinding.FragmentSignatureBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
-import fr.atraore.edl.utils.ARGS_CONSTAT_ID
-import fr.atraore.edl.utils.assistedViewModel
+import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.fragment_signature.*
 import java.io.File
 import java.io.File.separator
@@ -39,6 +41,7 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
 
     private lateinit var binding: FragmentSignatureBinding
     private lateinit var configPdf: ConfigPdf
+    private lateinit var constat: ConstatWithDetails
 
     companion object {
         fun newInstance() = SignatureFragment()
@@ -82,7 +85,9 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
         super.onViewCreated(view, savedInstanceState)
 
         //récupération du détail du constat
-        viewModel.constatDetail.observe(viewLifecycleOwner, { constatWithDetails ->
+        viewModel.constatDetail.observeOnce(viewLifecycleOwner) { constatWithDetails ->
+            this.constat = constatWithDetails
+
             constatWithDetails?.let {
                 viewModel.constatHeaderInfo.value =
                     "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
@@ -101,12 +106,19 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
                         message(text = "${configPdf.textPdfSignature} \n ${configPdf.textPdfSignature2} \n ${configPdf.textPdfSignature3}")
                     }
                 }
-            }
-        })
 
-        viewModel.configPdf.observe(viewLifecycleOwner, { confPdf ->
+                imv_pdf_export.setOnClickListener { imvView ->
+                    val bundle = bundleOf(
+                        ARGS_CONSTAT to this.constat
+                    )
+                    findNavController().navigate(R.id.go_to_generate_pdf, bundle)
+                }
+            }
+        }
+
+        viewModel.configPdf.observe(viewLifecycleOwner) { confPdf ->
             configPdf = confPdf
-        })
+        }
     }
 
     private fun saveImage(bitmap: Bitmap, context: Context) {

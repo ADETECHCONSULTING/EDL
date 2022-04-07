@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.mikepenz.fastadapter.ClickListener
 import com.mikepenz.fastadapter.IAdapter
@@ -12,12 +11,13 @@ import com.mikepenz.fastadapter.IClickable
 import com.mikepenz.fastadapter.ISubItem
 import com.mikepenz.fastadapter.expandable.items.AbstractExpandableItem
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.entity.KeyReference
 
-class SimpleParentExpandableItem : AbstractExpandableItem<SimpleParentExpandableItem.ViewHolder>(), IClickable<SimpleParentExpandableItem>, ISubItem<SimpleParentExpandableItem.ViewHolder> {
+class KeyParentItem : AbstractExpandableItem<KeyParentItem.ViewHolder>(), IClickable<KeyParentItem>, ISubItem<KeyParentItem.ViewHolder> {
 
-    var header: String? = null
+    var header: KeyReference? = null
 
-    private var mOnClickListener: ClickListener<SimpleParentExpandableItem>? = null
+    private var mOnClickListener: ClickListener<KeyParentItem>? = null
 
     //we define a clickListener in here so we can directly animate
     /**
@@ -26,23 +26,14 @@ class SimpleParentExpandableItem : AbstractExpandableItem<SimpleParentExpandable
      * @return
      */
     @Suppress("SetterBackingFieldAssignment")
-    override var onItemClickListener: ClickListener<SimpleParentExpandableItem>? = { v: View?, adapter: IAdapter<SimpleParentExpandableItem>, item: SimpleParentExpandableItem, position: Int ->
-        if (item.subItems.isNotEmpty()) {
-            v?.findViewById<View>(R.id.material_drawer_icon)?.let {
-                if (!item.isExpanded) {
-                    ViewCompat.animate(it).rotation(180f).start()
-                } else {
-                    ViewCompat.animate(it).rotation(0f).start()
-                }
-            }
-        }
+    override var onItemClickListener: ClickListener<KeyParentItem>? = { v: View?, adapter: IAdapter<KeyParentItem>, item: KeyParentItem, position: Int ->
         mOnClickListener?.invoke(v, adapter, item, position) ?: true
     }
         set(onClickListener) {
             this.mOnClickListener = onClickListener // on purpose
         }
 
-    override var onPreItemClickListener: ClickListener<SimpleParentExpandableItem>?
+    override var onPreItemClickListener: ClickListener<KeyParentItem>?
         get() = null
         set(_) {}
 
@@ -62,7 +53,7 @@ class SimpleParentExpandableItem : AbstractExpandableItem<SimpleParentExpandable
     override val layoutRes: Int
         get() = R.layout.room_list_item
 
-    fun withHeader(header: String): SimpleParentExpandableItem {
+    fun withHeader(header: KeyReference): KeyParentItem {
         this.header = header
         return this
     }
@@ -82,19 +73,7 @@ class SimpleParentExpandableItem : AbstractExpandableItem<SimpleParentExpandable
         holder.view.clearAnimation()
         holder.view.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorAccent))
         //set the text for the name
-        holder.header.text = header
-
-        if (subItems.isEmpty()) {
-            holder.icon.visibility = View.GONE
-        } else {
-            holder.icon.visibility = View.VISIBLE
-        }
-
-        if (isExpanded) {
-            holder.icon.rotation = 0f
-        } else {
-            holder.icon.rotation = 180f
-        }
+        holder.header.text = header?.name
     }
 
     override fun unbindView(holder: ViewHolder) {

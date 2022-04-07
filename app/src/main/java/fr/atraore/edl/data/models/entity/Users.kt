@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fr.atraore.edl.utils.USERS_TABLE
+import java.io.Serializable
 
 @Entity(tableName = USERS_TABLE)
 data class Users(
@@ -19,5 +20,5 @@ data class Users(
     val mail: String?,
     val notes: String?,
     val actif: Int
-) {
+) : Serializable {
 }

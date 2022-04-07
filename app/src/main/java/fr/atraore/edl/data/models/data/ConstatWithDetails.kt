@@ -8,7 +8,7 @@ import fr.atraore.edl.data.models.crossRef.*
 import fr.atraore.edl.data.models.entity.*
 import java.io.Serializable
 
-data class ConstatWithDetails(
+data class ConstatWithDetails (
     @Embedded val constat: Constat,
     @Relation(
         parentColumn = "constatId",

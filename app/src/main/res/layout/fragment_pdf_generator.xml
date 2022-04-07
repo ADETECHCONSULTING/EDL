@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:contentDescription="@string/contentdes_page_generation_pdf"
+    tools:context=".ui.pdf.PdfGeneratorFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/txv_agence_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Dom'Services"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/margin_medium" />
+
+        <TextView
+            android:id="@+id/txv_agence_adresse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/txv_agence_name"
+            app:layout_constraintEnd_toEndOf="@id/txv_agence_name"
+            tools:text="3 rue favernay" />
+
+        <TextView
+            android:id="@+id/txv_agence_cp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/txv_agence_adresse"
+            app:layout_constraintEnd_toEndOf="@id/txv_agence_name"
+            tools:text="29400 Landivisiau" />
+
+        <TextView
+            android:id="@+id/txv_title_pdf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/txv_agence_cp"
+            android:text="@string/label_pdf_title"
+            android:textSize="@dimen/textSizeLarge"
+            android:gravity="center"
+            android:padding="@dimen/padding_medium"
+            android:background="@color/colorPrimaryLight"
+            android:layout_marginTop="@dimen/margin_small"/>
+
+        <LinearLayout
+            android:id="@+id/ctn_owner_tenant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/txv_title_pdf">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:padding="@dimen/padding_small">
+
+                <TextView
+                    android:id="@+id/txv_owner_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Propriétaire : M. Franken Loic" />
+
+                <TextView
+                    android:id="@+id/txv_agent_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Effectué par : M. Franken Loic" />
+
+                <TextView
+                    android:id="@+id/txv_mandataire_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Mandataire : Franken Loic" />
+
+                <TextView
+                    android:id="@+id/txv_adresse_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Adresse : 20 place des aviat" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:padding="@dimen/padding_small">
+
+                <TextView
+                    android:id="@+id/txv_tenant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Locataire : M. Franken Loic" />
+
+                <TextView
+                    android:id="@+id/txv_new_adress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Nouvelle(s) adresse(s) : 20 place des aviateurs 74580 viry" />
+
+                <TextView
+                    android:id="@+id/txv_date_entree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Date d'entrée : mercredi 31 mars 2021" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ctn_bien_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/ctn_owner_tenant"
+            android:layout_marginTop="@dimen/margin_small"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:padding="@dimen/padding_small">
+
+                <TextView
+                    android:id="@+id/txv_type_bien"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Type : App T2 sur 1 niveau" />
+
+                <TextView
+                    android:id="@+id/txv_adresse_bien"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Adresse : 20 place des aviateurs 74580 viry" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.5"
+                android:padding="@dimen/padding_small">
+
+                <TextView
+                    android:id="@+id/txv_etage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Etage : 3" />
+
+                <TextView
+                    android:id="@+id/txv_escalier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Etage : 3" />
+
+                <TextView
+                    android:id="@+id/txv_porte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Etage : 3" />
+
+                <TextView
+                    android:id="@+id/txv_cave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Etage : 3" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.5"
+                android:padding="@dimen/padding_small">
+
+                <TextView
+                    android:id="@+id/txv_grenier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Etage : 3" />
+
+                <TextView
+                    android:id="@+id/txv_parking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Etage : 3" />
+
+                <TextView
+                    android:id="@+id/txv_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Etage : 3" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

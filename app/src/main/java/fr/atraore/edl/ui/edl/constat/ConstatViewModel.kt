@@ -23,6 +23,8 @@ class ConstatViewModel @AssistedInject constructor(
     val elementRepository: ElementRepository,
     val detailRepository: DetailRepository,
     val lotRepository: LotRepository,
+    val constatKeyRepository: ConstatKeyRepository,
+    val keyRepository: KeyRepository,
     @Assisted val constatId: String
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
@@ -36,6 +38,8 @@ class ConstatViewModel @AssistedInject constructor(
     val initFirstRoomReference = CombinedLiveData(firstRoomReference, allElementReference)
     fun roomCombinedLiveData(idLot: Int) = TripleCombinedLiveData(getRoomWithDetails(idLot), allRoomReference, allElementReference)
     val getAllLotReference : LiveData<List<LotReference>> = lotRepository.getAll().asLiveData()
+    fun allKeysFromConstat(constatId: String) : LiveData<List<ConstatKey>> = constatKeyRepository.getAllFromConstat(constatId).asLiveData()
+    fun allActifKeysRef() : LiveData<List<KeyReference>> = keyRepository.getAllActifKeysRef().asLiveData()
 
     val coroutineContext: CoroutineContext
     get() = Dispatchers.IO

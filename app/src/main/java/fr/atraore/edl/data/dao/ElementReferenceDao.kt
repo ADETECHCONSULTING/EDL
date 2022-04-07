@@ -12,4 +12,7 @@ interface ElementReferenceDao : BaseDao<ElementReference> {
     //Select all RoomReference
     @Query("SELECT * FROM $ELEMENT_REFERENCE_TABLE")
     fun getAllElementReference(): Flow<List<ElementReference>>
+
+    @Query("SELECT * FROM $ELEMENT_REFERENCE_TABLE WHERE name LIKE :searchQuery")
+    fun searchElementQuery(searchQuery: String) : Flow<List<ElementReference>>
 }

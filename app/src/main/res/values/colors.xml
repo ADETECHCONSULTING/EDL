@@ -9,6 +9,7 @@
     <color name="blackLight">#C3222121</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#0288D1</color>
+    <color name="colorPrimaryLight">#6B0288D1</color>
     <color name="colorPrimaryDark">#016195</color>
     <color name="colorAccent">#CDDC39</color>
     <color name="colorAccentLighter">#80CDDC39</color>

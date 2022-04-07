@@ -107,6 +107,14 @@
     <string name="poussiere_label">poussière</string>
     <string name="gras_label">gras</string>
     <string name="non_nettoye_label">non nettoyé</string>
+    <string name="ajout">ajout</string>
+    <string name="search_label">Recherche</string>
+    <string name="contentdes_page_generation_pdf">Page de génération du PDF</string>
+    <string name="label_pdf_title">Constat d\'état des lieux</string>
+    <string name="cles_label">Consigner les clés</string>
+    <string name="explication_keys_config">Sélectionnez les clés que vous voulez voir s\'afficher lors de l\'établissement d\'un constat</string>
+    <string name="title_config_keys">Configuration des clés</string>
+    <string name="title_room_config">Configuration des pièces</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

@@ -26,6 +26,7 @@ import com.mikepenz.fastadapter.select.getSelectExtension
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.adaptermodel.KeyParentItem
 import fr.atraore.edl.data.models.entity.Detail
 import fr.atraore.edl.data.models.entity.ElementReference
 import fr.atraore.edl.data.models.entity.RoomReference
@@ -74,6 +75,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private var clickedLot: Int = 1
 
     private lateinit var theme: Resources.Theme
+    private var keysSelected = false
 
     companion object {
         fun newInstance() = EndConstatFragment()
@@ -116,7 +118,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-
+        menu.findItem(R.id.action_keys)?.isVisible = true
     }
 
     @SuppressLint("CheckResult")
@@ -194,6 +196,14 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 }
                 dialog.checkItems(indexes.toIntArray())
             }
+            R.id.action_keys -> {
+                if (keysSelected) {
+                    initExpendableList()
+                } else {
+                    initKeysList()
+                }
+                keysSelected = !keysSelected
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -258,58 +268,58 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             Log.d(TAG, "onViewCreated: CLICKED LOT $clickedLot")
             val identifier = AtomicLong(1)
             pairInfoRoom.first?.let { roomsWithDetails ->
-                var roomsIsDifferent = true
-                if (this@EndConstatFragment::roomsWithDetails.isInitialized) {
-                    val numberOfRoomsPreviouslyAdded =
-                        this.roomsWithDetails.filter { rse -> rse.value.isNotEmpty() }.size
-                    val numberOfRoomsCurrentlyAdded =
-                        roomsWithDetails.filter { rse -> rse.value.isNotEmpty() }.size
-                    roomsIsDifferent =
-                        numberOfRoomsPreviouslyAdded != numberOfRoomsCurrentlyAdded
+                val parentListItems = mutableListOf<SimpleParentExpandableItem>()
+                this@EndConstatFragment.roomsWithDetails = roomsWithDetails
+
+                roomsWithDetails.filter { rse -> rse.value.isNotEmpty() }.forEach { it ->
+                    //Parent
+                    val parentIt = SimpleParentExpandableItem().withHeader(it.key.name)
+                    parentIt.identifier = identifier.getAndIncrement()
+                    it.value.sortedBy { value -> value.intitule }
+
+                    //Enfant
+                    val subItems = it.value.map { detail ->
+                        SimpleSubItem(this).withHeader(detail)
+                    }
+
+                    subItems.forEach { subItem ->
+                        run {
+                            subItem.identifier = identifier.getAndIncrement()
+                        }
+                    }
+                    parentIt.subItems.addAll(subItems)
+
+                    parentListItems.add(parentIt)
                 }
 
-                if (roomsIsDifferent) {
-                    val parentListItems = mutableListOf<SimpleParentExpandableItem>()
-                    this@EndConstatFragment.roomsWithDetails = roomsWithDetails
-                    roomsWithDetails.filter { rse -> rse.value.isNotEmpty() }.forEach { it ->
-                        //Parent
-                        val parentIt = SimpleParentExpandableItem().withHeader(it.key)
-                        parentIt.identifier = identifier.getAndIncrement()
-                        it.value.sortedBy { value -> value.intitule }
+                fastItemAdapter.setNewList(parentListItems)
 
-                        //Enfant
-                        val subItems = it.value.map { detail ->
-                            SimpleSubItem(this).withHeader(detail)
-                        }
+                pairInfoRoom.second?.let { listRoomReference ->
+                    this.roomRefList = listRoomReference
+                }
 
-                        subItems.forEach { subItem ->
-                            run {
-                                subItem.identifier = identifier.getAndIncrement()
-                            }
-                        }
-                        parentIt.subItems.addAll(subItems)
-
-                        /*
-                        if (parentIt.roomParent.roomReferenceId !in parentListItems.map { re -> re.roomParent }
-                                .map { roomReference -> roomReference.roomReferenceId }) {
-                            parentListItems.add(parentIt)
-                        }
-                         */
-
-                        parentListItems.add(parentIt)
-                    }
-
-                    fastItemAdapter.setNewList(parentListItems)
-
-                    pairInfoRoom.second?.let { listRoomReference ->
-                        this.roomRefList = listRoomReference
-                    }
-
-                    pairInfoRoom.third?.let { listElementReference ->
-                        this.elementRefList = listElementReference
-                    }
+                pairInfoRoom.third?.let { listElementReference ->
+                    this.elementRefList = listElementReference
                 }
             }
+        }
+    }
+
+    private fun initKeysList() {
+        viewModel.allActifKeysRef().observeOnce(viewLifecycleOwner) { keyRefs ->
+            val identifier = AtomicLong(1)
+            val parentListItems = mutableListOf<SimpleParentExpandableItem>()
+
+            keyRefs.forEach { it ->
+                //Parent
+                val parentIt = SimpleParentExpandableItem().withHeader(it.name)
+                parentIt.identifier = identifier.getAndIncrement()
+
+                parentListItems.add(parentIt)
+            }
+
+            fastItemAdapter.setNewList(parentListItems)
+
         }
     }
 

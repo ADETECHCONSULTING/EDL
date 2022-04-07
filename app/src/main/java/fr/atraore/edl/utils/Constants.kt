@@ -25,6 +25,7 @@ val USER_LABEL = "Utilisateurs"
 val SUITE_CONSTAT_LABEL = "Suite du constat"
 val ELEMENT_CONFIG_LABEL = "Ecran de configuration des elements"
 val GRID_CONFIG_LABEL = "Ecran de configuration des elements"
+val PDF_GENERATOR = "Ecran de génération du PDF"
 
 val EN_SERVICE_LABEL = "En Service"
 val COUPE_LABEL = "Coupé"
@@ -105,3 +106,32 @@ enum class IdDetailStatesEnum(val value: Int) {
     DESCRIPTIF(3),
     ALTERATION(4),
 }
+
+val KEYS_LABELS = listOf(
+    "Carte magnétique",
+    "Badge magnétique",
+    "Clé multifonction",
+    "Clé non identifiée",
+    "Clé porte palière",
+    "Clé verrou palière haut",
+    "Clé verrou palière bas",
+    "Clé immeuble",
+    "Clé boite aux lettres",
+    "Clé accès aux communs",
+    "Clé cave",
+    "Clé garage",
+    "Clé local poubelle",
+    "Clé local vélo",
+    "Clé arceau",
+    "Clé ascenseur",
+    "Clé portillon",
+    "Clé portail",
+    "Clé piscine",
+    "Clé volet",
+    "Clé rideau(x) métallique(s)",
+    "Clé alarme",
+    "Clé coffre-fort",
+    "Clé abri jardin",
+    "Carte de reproduction",
+    "Bracelet"
+)

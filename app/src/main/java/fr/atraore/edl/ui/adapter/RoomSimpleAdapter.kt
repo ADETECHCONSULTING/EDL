@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.RoomReference
-import kotlinx.android.synthetic.main.room_list_item.view.*
-import java.util.*
+import kotlinx.android.synthetic.main.room_simple_list_item.view.*
 
 class RoomSimpleAdapter : RecyclerView.Adapter<RoomSimpleAdapter.RoomSimpleViewHolder>() {
 
     private var data: List<RoomReference> = ArrayList()
+    private lateinit var mOnItemClickListener: View.OnClickListener
+    var currentItemSelected: RoomReference? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomSimpleViewHolder {
         return RoomSimpleViewHolder(
@@ -29,14 +30,15 @@ class RoomSimpleAdapter : RecyclerView.Adapter<RoomSimpleAdapter.RoomSimpleViewH
         notifyDataSetChanged()
     }
 
-    class RoomSimpleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun setOnItemClickListener(itemClickListener: View.OnClickListener) {
+        this.mOnItemClickListener = itemClickListener
+    }
+
+    inner class RoomSimpleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: RoomReference) = with(itemView) {
-
-            itemView.txv_room_parent.text = item.name
-
-            setOnClickListener {
-                // TODO: Handle on click
-            }
+            itemView.rb_room_parent.text = item.name
+            itemView.setTag(this@RoomSimpleViewHolder)
+            itemView.setOnClickListener(mOnItemClickListener)
         }
     }
 }

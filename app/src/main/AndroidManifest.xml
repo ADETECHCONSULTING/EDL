@@ -15,9 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EDL">
         <activity
-            android:name=".ui.settings.RoomConfigurationActivity"
+            android:name=".ui.settings.KeysConfigurationActivity"
             android:screenOrientation="userLandscape"
             android:exported="false" />
+        <activity
+            android:name=".ui.settings.RoomConfigurationActivity"
+            android:exported="false"
+            android:screenOrientation="userLandscape" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

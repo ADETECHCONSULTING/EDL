@@ -14,6 +14,7 @@ import java.util.*
 class ElementGridAdapter : RecyclerView.Adapter<ElementGridAdapter.ElementGridViewHolder>() {
 
     private var data: List<ElementReference> = ArrayList()
+    private lateinit var mOnItemClickListener: View.OnClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ElementGridViewHolder {
         return ElementGridViewHolder(
@@ -31,17 +32,16 @@ class ElementGridAdapter : RecyclerView.Adapter<ElementGridAdapter.ElementGridVi
         notifyDataSetChanged()
     }
 
-    class ElementGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun setOnItemClickListener(itemClickListener: View.OnClickListener) {
+        this.mOnItemClickListener = itemClickListener
+    }
 
-        private lateinit var txvElement: TextView
-
+    inner class ElementGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: ElementReference) = with(itemView) {
 
             itemView.checkbox_element.text = item.name
-
-            setOnClickListener {
-                // TODO: Handle on click
-            }
+            itemView.checkbox_element.setTag(this@ElementGridViewHolder)
+            itemView.checkbox_element.setOnClickListener(mOnItemClickListener)
         }
     }
 }

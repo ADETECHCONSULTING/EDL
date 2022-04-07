@@ -14,10 +14,7 @@ import fr.atraore.edl.data.DATABASE_NAME
 import fr.atraore.edl.data.dao.*
 import fr.atraore.edl.data.models.crossRef.*
 import fr.atraore.edl.data.models.entity.*
-import fr.atraore.edl.utils.COMPTEUR_LABELS
-import fr.atraore.edl.utils.ELEMENTS_LABELS
-import fr.atraore.edl.utils.LOTS_LABELS
-import fr.atraore.edl.utils.ROOMS_LABELS
+import fr.atraore.edl.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -110,7 +107,6 @@ class DatabaseModule {
         return appDatabase.getCompteurDao()
     }
 
-
     @Provides
     fun provideCompteurReferenceDao(appDatabase: AppDatabase): CompteurReferenceDao {
         return appDatabase.getCompteurReferenceDao()
@@ -124,6 +120,16 @@ class DatabaseModule {
     @Provides
     fun provideConfigPdfDao(appDatabase: AppDatabase): ConfigPdfDao {
         return appDatabase.getConfigPdfDao()
+    }
+
+    @Provides
+    fun provideKeyDao(appDatabase: AppDatabase): KeyDao {
+        return appDatabase.getKeyDao()
+    }
+
+    @Provides
+    fun provideConstatKeyDao(appDatabase: AppDatabase): ConstatKeyDao {
+        return appDatabase.getConstatKeyDao()
     }
 
 
@@ -142,7 +148,9 @@ class DatabaseModule {
         elementReferenceDao: Provider<ElementReferenceDao>,
         lotReferenceDao: Provider<LotReferenceDao>,
         compteurReferenceDao: Provider<CompteurReferenceDao>,
-        configPdfDao: Provider<ConfigPdfDao>
+        configPdfDao: Provider<ConfigPdfDao>,
+        keyDao: Provider<KeyDao>,
+        constatKeyDao: Provider<ConstatKeyDao>
     ): AppDatabase {
         return Room.databaseBuilder(
             applicationContext,
@@ -165,7 +173,8 @@ class DatabaseModule {
                             elementReferenceDao.get(),
                             lotReferenceDao.get(),
                             compteurReferenceDao.get(),
-                            configPdfDao.get()
+                            configPdfDao.get(),
+                            keyDao.get()
                         )
                     }
                 }
@@ -188,7 +197,8 @@ class DatabaseModule {
         elementReferenceDao: ElementReferenceDao,
         lotReferenceDao: LotReferenceDao,
         compteurReferenceDao: CompteurReferenceDao,
-        configPdfDao: ConfigPdfDao
+        configPdfDao: ConfigPdfDao,
+        keyDao: KeyDao
     ) {
         // Delete all content
         constatDao.deleteAll()
@@ -208,6 +218,7 @@ class DatabaseModule {
         createLotReferences(lotReferenceDao)
         createCompteurReferences(compteurReferenceDao)
         createConfigPdfReference(configPdfDao)
+        createKeyReferences(keyDao)
     }
 
     private suspend fun createRoomsReference(roomReferenceDao: RoomReferenceDao) {
@@ -257,6 +268,13 @@ class DatabaseModule {
             "Le présent état des lieux, a été établi contradictoirement entre les parties qui le reconnaissent exact."
         )
         )
+    }
+
+    private suspend fun createKeyReferences(keyDao: KeyDao) {
+        for (value in KEYS_LABELS) {
+            val keyReference = KeyReference(value, true)
+            keyDao.save(keyReference)
+        }
     }
 
     private suspend fun toDeleteForProd(

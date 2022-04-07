@@ -7,6 +7,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import fr.atraore.edl.utils.COMPTEUR_TABLE
+import java.io.Serializable
 
 @Entity(tableName = COMPTEUR_TABLE, primaryKeys = ["constat_id", "compteur_ref_id"])
 data class Compteur (
@@ -19,7 +20,7 @@ data class Compteur (
     @ColumnInfo(name = "motif_non_releve") var motifNonReleve: String? = null,
     @ColumnInfo(name = "image_path") val imagePath: String? = null,
     @ColumnInfo(name = "image_path_second") val imagePathSecond: String? = null
-) : BaseObservable() {
+) : Serializable, BaseObservable()  {
 
     @get:Bindable
     @Ignore

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fr.atraore.edl.utils.AGENCY_TABLE
+import java.io.Serializable
 
 //Agences
 @Entity(tableName = AGENCY_TABLE)
@@ -19,6 +20,6 @@ data class Agency (
     @ColumnInfo(name = "name_alias") val nameAlias: String?,
     val courante: Int?,
     @ColumnInfo(name = "logo_name") val logoName: String?
-) {
+) : Serializable {
 
 }

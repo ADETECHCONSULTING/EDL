@@ -115,7 +115,7 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.constatDetail.observe(viewLifecycleOwner, {
+        viewModel.constatDetail.observe(viewLifecycleOwner) {
 
             it?.let { constatWithDetails ->
                 this.constat = constatWithDetails
@@ -130,9 +130,9 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                     constatViewModel = viewModel
                 )
             }
-        })
+        }
 
-        viewModel.initFirstRoomReference.observe(viewLifecycleOwner, {
+        viewModel.initFirstRoomReference.observe(viewLifecycleOwner) {
             it.first?.let { roomRef ->
                 launch {
                     viewModel.saveConstatRoomCrossRef(
@@ -148,36 +148,37 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                         viewModel.getDetailsByIdRoomAndIdConstat(
                             roomRef.roomReferenceId,
                             arguments?.getString(ARGS_CONSTAT_ID)!!
-                        ).observe(viewLifecycleOwner, {
+                        ).observe(viewLifecycleOwner) {
                             if (it.isNullOrEmpty() && !this@StartConstatFragment::listLotReference.isInitialized) {
                                 viewModel.getAllLotReference.observe(
-                                    viewLifecycleOwner, { listLotRef ->
-                                        this@StartConstatFragment.listLotReference = listLotRef
-                                        listLotRef.forEach {
-                                            val detail = Detail(
-                                                roomRef.roomReferenceId + elementRef.elementReferenceId + it.lotReferenceId,
-                                                elementRef.elementReferenceId,
-                                                roomRef.roomReferenceId,
-                                                arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                                it.lotReferenceId,
-                                                elementRef.name
-                                            )
-                                            Log.d(
-                                                TAG,
-                                                "onViewCreated: sauvegarde de l'item $detail"
-                                            )
-                                            launch {
-                                                viewModel.saveDetail(detail)
-                                            }
+                                    viewLifecycleOwner
+                                ) { listLotRef ->
+                                    this@StartConstatFragment.listLotReference = listLotRef
+                                    listLotRef.forEach {
+                                        val detail = Detail(
+                                            roomRef.roomReferenceId + elementRef.elementReferenceId + it.lotReferenceId,
+                                            elementRef.elementReferenceId,
+                                            roomRef.roomReferenceId,
+                                            arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                            it.lotReferenceId,
+                                            elementRef.name
+                                        )
+                                        Log.d(
+                                            TAG,
+                                            "onViewCreated: sauvegarde de l'item $detail"
+                                        )
+                                        launch {
+                                            viewModel.saveDetail(detail)
                                         }
-                                    })
+                                    }
+                                }
 
                             }
-                        })
+                        }
                     }
                 }
             }
-        })
+        }
 
         initListener()
     }
@@ -311,19 +312,15 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
             //click false sauvegarde le contenu
             R.id.imv_edit_owner -> {
                 whoToEdit(this.constat.owners.map { it.name }, OWNER_LABEL)
-                //editOrSave(rcv_owner.adapter as PrimaryInfoNoDataBindAdapter, v as ImageView)
             }
             R.id.imv_edit_locataire -> {
                 whoToEdit(this.constat.tenants.map { it.name }, TENANT_LABEL)
-                //editOrSave(rcv_tenant.adapter as PrimaryInfoNoDataBindAdapter, v as ImageView)
             }
             R.id.imv_edit_mandataire -> {
                 whoToEdit(this.constat.contractors.map { it.denomination }, CONTRACTOR_LABEL)
-                //editOrSave(rcv_contractor.adapter as PrimaryInfoNoDataBindAdapter, v as ImageView)
             }
             R.id.imv_edit_bien -> {
                 whoToEdit(this.constat.properties.map { it.address }, PROPERTY_LABEL)
-                //editOrSave(rcv_biens.adapter as PrimaryInfoNoDataBindAdapter, v as ImageView)
             }
 
             //Click on Add
@@ -379,20 +376,6 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                 ).show()
             }
         }
-    }
-
-    private fun editOrSave(primaryInfoAdapter: PrimaryInfoNoDataBindAdapter, view: ImageView) {
-        if (primaryInfoAdapter.edit) {
-            view.setImageResource(R.drawable.ic_edit)
-            if (viewModel.constatDetail.value != null) {
-                primaryInfoAdapter.saveContent()
-                hideKeyboard() //utilisation de l'extension pour fermer le clavier
-            }
-        } else {
-            view.setImageResource(R.drawable.ic_edit_checked)
-        }
-
-        primaryInfoAdapter.editUpdate()
     }
 
     @SuppressLint("CheckResult")
