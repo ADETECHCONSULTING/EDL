@@ -2,12 +2,15 @@ package fr.atraore.edl.ui.settings
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexDirection.ROW
+import com.google.android.flexbox.FlexboxLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.KeyReference
@@ -45,13 +48,12 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        rcv_elements.layoutManager = GridLayoutManager(this, 4)
+        rcv_elements.layoutManager = FlexboxLayoutManager(this, ROW)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_item, menu)
         menu?.findItem(R.id.action_next)?.isVisible = false
-        menu?.findItem(R.id.action_previous)?.isVisible = false
         menu?.findItem(R.id.action_compteur)?.isVisible = false
         menu?.findItem(R.id.action_add_room)?.isVisible = false
 
@@ -61,6 +63,15 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         searchView?.isSubmitButtonEnabled = true
         searchView?.setOnQueryTextListener(this)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_previous -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onStart() {

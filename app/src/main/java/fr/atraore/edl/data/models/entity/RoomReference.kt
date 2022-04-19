@@ -11,6 +11,7 @@ import java.io.Serializable
 data class RoomReference (
     @PrimaryKey(autoGenerate = false) val roomReferenceId: String,
     val name: String,
-    var mandatory: Boolean? = false,
+    val idLotReference: Int? = null,
+    var mandatory: Boolean? = false
 ) : Serializable {
 }

@@ -132,54 +132,6 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
             }
         }
 
-        viewModel.initFirstRoomReference.observe(viewLifecycleOwner) {
-            it.first?.let { roomRef ->
-                launch {
-                    viewModel.saveConstatRoomCrossRef(
-                        arguments?.getString(
-                            ARGS_CONSTAT_ID
-                        )!!, roomRef.roomReferenceId
-                    )
-                }
-
-                //set liste des elements d'une piece pour un constat
-                it.second?.let { listElementReferences ->
-                    listElementReferences.forEach { elementRef ->
-                        viewModel.getDetailsByIdRoomAndIdConstat(
-                            roomRef.roomReferenceId,
-                            arguments?.getString(ARGS_CONSTAT_ID)!!
-                        ).observe(viewLifecycleOwner) {
-                            if (it.isNullOrEmpty() && !this@StartConstatFragment::listLotReference.isInitialized) {
-                                viewModel.getAllLotReference.observe(
-                                    viewLifecycleOwner
-                                ) { listLotRef ->
-                                    this@StartConstatFragment.listLotReference = listLotRef
-                                    listLotRef.forEach {
-                                        val detail = Detail(
-                                            roomRef.roomReferenceId + elementRef.elementReferenceId + it.lotReferenceId,
-                                            elementRef.elementReferenceId,
-                                            roomRef.roomReferenceId,
-                                            arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                            it.lotReferenceId,
-                                            elementRef.name
-                                        )
-                                        Log.d(
-                                            TAG,
-                                            "onViewCreated: sauvegarde de l'item $detail"
-                                        )
-                                        launch {
-                                            viewModel.saveDetail(detail)
-                                        }
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         initListener()
     }
 

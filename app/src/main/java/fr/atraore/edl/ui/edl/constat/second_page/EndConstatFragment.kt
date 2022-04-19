@@ -32,6 +32,7 @@ import fr.atraore.edl.data.models.entity.ElementReference
 import fr.atraore.edl.data.models.entity.RoomReference
 import fr.atraore.edl.data.models.adaptermodel.SimpleParentExpandableItem
 import fr.atraore.edl.data.models.adaptermodel.SimpleSubItem
+import fr.atraore.edl.data.models.data.RoomWithElements
 import fr.atraore.edl.databinding.FragmentEndConstatBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
@@ -65,7 +66,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
     var roomRefList: List<RoomReference>? = null
     var elementRefList: List<ElementReference>? = null
-    private lateinit var roomsWithDetails: Map<RoomReference, List<Detail>>
+    private lateinit var roomsWithElements: List<RoomWithElements>
 
     private lateinit var binding: FragmentEndConstatBinding
 
@@ -134,9 +135,9 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             }
             R.id.action_add_room -> {
                 val indexes = mutableListOf<Int>()
-                roomsWithDetails.forEach { roomWithDetails ->
-                    if (roomWithDetails.value.isNotEmpty()) {
-                        roomRefList?.indexOf(roomWithDetails.key)?.let { index ->
+                roomsWithElements.forEach { roomWithDetails ->
+                    if (roomWithDetails.elements.isNotEmpty()) {
+                        roomRefList?.indexOf(roomWithDetails.room)?.let { index ->
                             indexes.add(index)
                         }
                     }
@@ -146,8 +147,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                     listItemsMultiChoice(items = roomRefList?.map { roomReference -> roomReference.name }) { _, _, items ->
                         val roomsToAdd: List<RoomReference>? =
                             roomRefList?.filter { roomRef -> roomRef.name in items }
-                        val roomsToCompare = roomsWithDetails.filter { rm -> rm.value.isNotEmpty() }
-                            .map { rm2 -> rm2.key }//récupérer que les pièces qui ont des éléments
+                        val roomsToCompare = roomsWithElements.filter { rm -> rm.elements.isNotEmpty() }
+                            .map { rm2 -> rm2.room }//récupérer que les pièces qui ont des éléments
 
                         //check des rooms à supprimer
                         roomsToCompare.forEach { roomToCompare ->
@@ -157,7 +158,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                                     launch {
                                         viewModel.deleteConstatRoomCrossRef(
                                             arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                            roomToCompare.roomReferenceId
+                                            roomToCompare.roomReferenceId,
+                                            clickedLot
                                         )
 
                                         viewModel.deleteAllDetailsFromRoom(roomToCompare.roomReferenceId)
@@ -171,22 +173,9 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                                 launch {
                                     viewModel.saveConstatRoomCrossRef(
                                         arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                        roomToAdd.roomReferenceId
+                                        roomToAdd.roomReferenceId,
+                                        clickedLot
                                     )
-
-                                    elementRefList?.forEach { elementRef ->
-                                        val detail = Detail(
-                                            roomToAdd.roomReferenceId + elementRef.elementReferenceId + clickedLot,
-                                            elementRef.elementReferenceId,
-                                            roomToAdd.roomReferenceId,
-                                            arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                            clickedLot,
-                                            elementRef.name
-                                        )
-                                        launch {
-                                            viewModel.saveDetail(detail)
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -267,18 +256,26 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         viewModel.roomCombinedLiveData(clickedLot).observe(viewLifecycleOwner) { pairInfoRoom ->
             Log.d(TAG, "onViewCreated: CLICKED LOT $clickedLot")
             val identifier = AtomicLong(1)
-            pairInfoRoom.first?.let { roomsWithDetails ->
+            pairInfoRoom.first?.let { roomsWithElements ->
                 val parentListItems = mutableListOf<SimpleParentExpandableItem>()
-                this@EndConstatFragment.roomsWithDetails = roomsWithDetails
+                this@EndConstatFragment.roomsWithElements = roomsWithElements
 
-                roomsWithDetails.filter { rse -> rse.value.isNotEmpty() }.forEach { it ->
+                roomsWithElements.forEach { roomWithEl ->
                     //Parent
-                    val parentIt = SimpleParentExpandableItem().withHeader(it.key.name)
+                    val parentIt = SimpleParentExpandableItem().withHeader(roomWithEl.room.name)
                     parentIt.identifier = identifier.getAndIncrement()
-                    it.value.sortedBy { value -> value.intitule }
+                    roomWithEl.elements.sortedBy { value -> value.name }
 
                     //Enfant
-                    val subItems = it.value.map { detail ->
+                    val subItems = roomWithEl.elements.map { element ->
+                        val detail = Detail(
+                            roomWithEl.room.roomReferenceId + element.elementReferenceId + clickedLot,
+                            element.elementReferenceId,
+                            roomWithEl.room.roomReferenceId,
+                            arguments?.getString(ARGS_CONSTAT_ID)!!,
+                            clickedLot,
+                            element.name
+                        )
                         SimpleSubItem(this).withHeader(detail)
                     }
 
@@ -314,7 +311,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 //Parent
                 val parentIt = SimpleParentExpandableItem().withHeader(it.name)
                 parentIt.identifier = identifier.getAndIncrement()
-
                 parentListItems.add(parentIt)
             }
 
@@ -479,7 +475,14 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     }
 
     override fun onSimpleClick(detail: Detail) {
-        openDetails(detail.idDetail)
+        viewModel.getDetailById(detail.idDetail).observeOnce(viewLifecycleOwner) { detailSaved ->
+            if (detailSaved == null) {
+                launch {
+                    viewModel.saveDetail(detail)
+                }
+            }
+            openDetails(detail.idDetail)
+        }
     }
 
     override fun onLongClick(anchorView: View, detail: Detail) {

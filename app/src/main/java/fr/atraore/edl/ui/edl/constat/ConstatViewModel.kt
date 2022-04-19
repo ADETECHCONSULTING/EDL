@@ -5,6 +5,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.data.models.data.RoomWithElements
 import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.repository.*
 import fr.atraore.edl.utils.CombinedLiveData
@@ -22,8 +23,6 @@ class ConstatViewModel @AssistedInject constructor(
     val roomRepository: RoomRepository,
     val elementRepository: ElementRepository,
     val detailRepository: DetailRepository,
-    val lotRepository: LotRepository,
-    val constatKeyRepository: ConstatKeyRepository,
     val keyRepository: KeyRepository,
     @Assisted val constatId: String
 ) : ViewModel() {
@@ -32,13 +31,12 @@ class ConstatViewModel @AssistedInject constructor(
     val allRoomReference: LiveData<List<RoomReference>> = roomRepository.allRoomReferences().asLiveData()
     val allElementReference: LiveData<List<ElementReference>> = elementRepository.allElementReference().asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
-    fun getRoomWithDetails(idLot: Int) : LiveData<Map<RoomReference, List<Detail>>> = roomRepository.getRoomDetails(idLot).asLiveData()
-    fun getDetailsByIdRoomAndIdConstat(idRoom: String, idConstat: String) : LiveData<List<Detail>> = detailRepository.detailsByIdRoomAndIdConstat(idRoom, idConstat).asLiveData()
+    fun getDetailById(id: String): LiveData<Detail> = detailRepository.getDetailById(id).asLiveData()
+    fun getRoomsAndElementsWithIdLot(idLot: Int) : LiveData<List<RoomWithElements>> = roomRepository.getRoomsAndElementsWithIdLot(idLot).asLiveData()
+
     //combined live data
     val initFirstRoomReference = CombinedLiveData(firstRoomReference, allElementReference)
-    fun roomCombinedLiveData(idLot: Int) = TripleCombinedLiveData(getRoomWithDetails(idLot), allRoomReference, allElementReference)
-    val getAllLotReference : LiveData<List<LotReference>> = lotRepository.getAll().asLiveData()
-    fun allKeysFromConstat(constatId: String) : LiveData<List<ConstatKey>> = constatKeyRepository.getAllFromConstat(constatId).asLiveData()
+    fun roomCombinedLiveData(idLot: Int) = TripleCombinedLiveData(getRoomsAndElementsWithIdLot(idLot), allRoomReference, allElementReference)
     fun allActifKeysRef() : LiveData<List<KeyReference>> = keyRepository.getAllActifKeysRef().asLiveData()
 
     val coroutineContext: CoroutineContext
@@ -49,8 +47,8 @@ class ConstatViewModel @AssistedInject constructor(
         fun create(itemId: String): ConstatViewModel
     }
 
-    suspend fun saveConstatRoomCrossRef(constatId: String, roomId: String) {
-        repository.saveConstatRoomCrossRef(constatId, roomId)
+    suspend fun saveConstatRoomCrossRef(constatId: String, roomId: String, idLot: Int) {
+        repository.saveConstatRoomCrossRef(constatId, roomId, idLot)
     }
 
     suspend fun saveDetail(detail: Detail) {
@@ -91,8 +89,8 @@ class ConstatViewModel @AssistedInject constructor(
         repository.deleteRoomDetailCrossRef(roomId, detailId)
     }
 
-    suspend fun deleteConstatRoomCrossRef(constatId: String, roomId: String) {
-        repository.deleteConstatRoomCrossRef(constatId, roomId)
+    suspend fun deleteConstatRoomCrossRef(constatId: String, roomId: String, idLot: Int) {
+        repository.deleteConstatRoomCrossRef(constatId, roomId, idLot)
     }
 
     suspend fun deleteAllDetailsFromRoom(roomId: String) {

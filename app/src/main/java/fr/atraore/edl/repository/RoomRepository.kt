@@ -20,11 +20,19 @@ class RoomRepository @Inject constructor(
 
     fun getRoomDetails(idLot: Int) : Flow<Map<RoomReference, List<Detail>>> = roomReferenceDao.getRoomDetails(idLot)
 
-    fun getRoomWithElements(idRoom: String) : Flow<RoomWithElements> = roomReferenceDao.getRoomWithElements(idRoom)
+    fun getRoomWithElements(name: String, idLot: Int) : Flow<RoomWithElements> = roomReferenceDao.getRoomWithElements(name, idLot)
+    fun getRoomWithNameAndIdLot(name: String, idLot: Int) : Flow<RoomReference> = roomReferenceDao.getRoomWithNameAndIdLot(name, idLot)
+    fun getRoomsAndElementsWithIdLot(idLot: Int) : Flow<List<RoomWithElements>> = roomReferenceDao.getRoomsAndElementsWithIdLot(idLot)
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun saveRoomElementCrossRef(idRoom: String, idElement: String) {
         roomReferenceDao.saveRoomElementCrossRef(RoomElementCrossRef(idRoom, idElement))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteRoomElementCrossRef(idRoom: String, idElement: String) {
+        roomReferenceDao.deleteRoomElementCrossRef(RoomElementCrossRef(idRoom, idElement))
     }
 }

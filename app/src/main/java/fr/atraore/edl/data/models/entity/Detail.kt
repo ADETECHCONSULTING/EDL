@@ -8,11 +8,12 @@ import androidx.room.PrimaryKey
 @Entity
 data class Detail (
     @PrimaryKey(autoGenerate = false) val idDetail: String,
-    val idElement: String,
+    val idElement: String?,
     val idRoom: String,
     val idConstat: String,
     val idLot: Int,
     var intitule: String,
+    val idKey: String? = null,
     var etat: String? = "",
     var descriptif: String? = "",
     var alteration: String? = "",

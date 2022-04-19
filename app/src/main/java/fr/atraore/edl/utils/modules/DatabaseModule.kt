@@ -225,7 +225,7 @@ class DatabaseModule {
         ROOMS_LABELS.forEach {
             val roomReference = RoomReference(UUID.randomUUID().toString(), it)
             if (it == "ACCES / ENTREE") {
-                roomReference.mandatory = true;
+                roomReference.mandatory = true
             }
             roomReferenceDao.save(roomReference)
         }

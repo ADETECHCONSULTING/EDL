@@ -2,6 +2,7 @@ package fr.atraore.edl.data.dao
 
 import androidx.room.*
 import fr.atraore.edl.data.models.crossRef.ConstatTenantCrossRef
+import fr.atraore.edl.data.models.crossRef.ConstatUsersCrossRef
 import fr.atraore.edl.data.models.crossRef.RoomElementCrossRef
 import fr.atraore.edl.data.models.data.RoomWithElements
 import fr.atraore.edl.data.models.entity.Detail
@@ -24,9 +25,20 @@ interface RoomReferenceDao : BaseDao<RoomReference> {
     fun getRoomDetails(idLot: Int) : Flow<Map<RoomReference, List<Detail>>>
 
     @Transaction
-    @Query("SELECT * FROM RoomReference WHERE roomReferenceId = :idRoom")
-    fun getRoomWithElements(idRoom: String) : Flow<RoomWithElements>
+    @Query("SELECT * FROM RoomReference WHERE name = :name AND idLotReference = :idLot")
+    fun getRoomWithElements(name: String, idLot: Int) : Flow<RoomWithElements>
+
+    @Transaction
+    @Query("SELECT * FROM RoomReference WHERE name = :name AND idLotReference = :idLot")
+    fun getRoomWithNameAndIdLot(name: String, idLot: Int) : Flow<RoomReference>
+
+    @Transaction
+    @Query("SELECT * FROM RoomReference WHERE idLotReference = :idLot")
+    fun getRoomsAndElementsWithIdLot(idLot: Int) : Flow<List<RoomWithElements>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveRoomElementCrossRef(crossRef: RoomElementCrossRef)
+
+    @Delete
+    suspend fun deleteRoomElementCrossRef(crossRef: RoomElementCrossRef)
 }
