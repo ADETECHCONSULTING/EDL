@@ -1,5 +1,6 @@
 package fr.atraore.edl.data.models.adaptermodel
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,12 +13,20 @@ import com.mikepenz.fastadapter.IClickable
 import com.mikepenz.fastadapter.ISubItem
 import com.mikepenz.fastadapter.expandable.items.AbstractExpandableItem
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.entity.Detail
 
 class SimpleParentExpandableItem : AbstractExpandableItem<SimpleParentExpandableItem.ViewHolder>(), IClickable<SimpleParentExpandableItem>, ISubItem<SimpleParentExpandableItem.ViewHolder> {
 
     var header: String? = null
+    var detail: Detail? = null
+    private var selectedPos = RecyclerView.NO_POSITION
+    lateinit var actionHandler: IActionHandler
 
     private var mOnClickListener: ClickListener<SimpleParentExpandableItem>? = null
+
+    interface IActionHandler {
+        fun onSimpleKeyClick(detail: Detail)
+    }
 
     //we define a clickListener in here so we can directly animate
     /**
@@ -67,6 +76,11 @@ class SimpleParentExpandableItem : AbstractExpandableItem<SimpleParentExpandable
         return this
     }
 
+    fun withDetail(detail: Detail): SimpleParentExpandableItem {
+        this.detail = detail
+        return this
+    }
+
     /**
      * binds the data of this item onto the viewHolder
      *
@@ -95,6 +109,16 @@ class SimpleParentExpandableItem : AbstractExpandableItem<SimpleParentExpandable
         } else {
             holder.icon.rotation = 180f
         }
+
+        detail?.let { detail ->
+            holder.itemView.setOnClickListener {
+                detail.let {
+                    selectedPos = holder.absoluteAdapterPosition
+                    actionHandler.onSimpleKeyClick(it)
+                }
+            }
+        }
+
     }
 
     override fun unbindView(holder: ViewHolder) {

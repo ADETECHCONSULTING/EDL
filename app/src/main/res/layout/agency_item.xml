@@ -13,6 +13,10 @@
             name="agencyItem"
             type="fr.atraore.edl.data.models.entity.Agency" />
 
+        <variable
+            name="state"
+            type="java.lang.Boolean" />
+
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -72,8 +76,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
+                    android:textColor="@{state ? @color/colorAccent : @color/red}"
                     android:onClick="@{addClickListener}"
-                    android:text="@string/add_label"
+                    android:text="@{state ? @string/add_label : @string/selectionne_label}"
                     style="?attr/borderlessButtonStyle" />
             </LinearLayout>
 

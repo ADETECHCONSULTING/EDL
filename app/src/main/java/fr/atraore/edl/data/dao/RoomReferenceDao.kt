@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 interface RoomReferenceDao : BaseDao<RoomReference> {
     //** GET **
     //Select all RoomReference
-    @Query("SELECT * FROM $ROOM_REFERENCE_TABLE")
+    @Query("SELECT * FROM $ROOM_REFERENCE_TABLE WHERE idLotReference is null")
     fun getAllRoomReferences(): Flow<List<RoomReference>>
 
     @Query("SELECT * FROM $ROOM_REFERENCE_TABLE LIMIT 1")

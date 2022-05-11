@@ -109,4 +109,10 @@ interface ConstatDao : BaseDao<Constat> {
 
     @Query("DELETE FROM CONSTATTENANTCROSSREF WHERE constatId = :constatId and tenantId in (:ids)")
     fun deleteConstatTenantRefByIds(constatId: String, ids: List<String>)
+
+    @Delete
+    fun deleteConstatAgency(constatAgencyCrossRef: ConstatAgencyCrossRef)
+
+    @Delete
+    fun deleteConstatUser(constatUsersCrossRef: ConstatUsersCrossRef)
 }

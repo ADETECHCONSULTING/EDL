@@ -255,6 +255,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     dialog.setContentView(R.layout.dialog_color_picker)
 
                     val btnDone = dialog.findViewById(R.id.btn_save) as Button
+                    val btnCancel = dialog.findViewById(R.id.btn_cancel) as Button
                     val rdgLevel = dialog.findViewById(R.id.rdg_level_alteration) as RadioGroup
                     val rdgVerif = dialog.findViewById(R.id.rdg_verif_alteration) as RadioGroup
 
@@ -307,6 +308,9 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                 }
                             }
                         }
+                        dialog.dismiss()
+                    }
+                    btnCancel.setOnClickListener {
                         dialog.dismiss()
                     }
                     dialog.show()

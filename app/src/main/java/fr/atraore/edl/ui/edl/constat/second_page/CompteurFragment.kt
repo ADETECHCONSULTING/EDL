@@ -103,12 +103,12 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setCompteurs()
-        viewModel.constatDetail.observe(viewLifecycleOwner, { constatWithDetails ->
+        viewModel.constatDetail.observe(viewLifecycleOwner) { constatWithDetails ->
             constatWithDetails?.let {
                 viewModel.constatHeaderInfo.value =
                     "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
             }
-        })
+        }
     }
 
     override fun onClick(view: View?) {

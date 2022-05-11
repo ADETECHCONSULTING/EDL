@@ -34,9 +34,16 @@ class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, pr
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val agency = getItem(position)
-        holder.apply {
-            bind(createClickListener(agency), agency)
-            itemView.tag = agency
+        if (constatDetails.agency?.agencyId == agency.agencyId) {
+            holder.apply {
+                bind(createClickListener(agency), agency, false)
+                itemView.tag = agency
+            }
+        } else {
+            holder.apply {
+                bind(createClickListener(agency), agency, true)
+                itemView.tag = agency
+            }
         }
     }
 
@@ -60,11 +67,13 @@ class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, pr
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             listenerProperty: View.OnClickListener,
-            item: Agency
+            item: Agency,
+            itemState: Boolean
         ) {
             binding.apply {
                 agencyItem = item
                 addClickListener = listenerProperty
+                state = itemState
             }
         }
     }

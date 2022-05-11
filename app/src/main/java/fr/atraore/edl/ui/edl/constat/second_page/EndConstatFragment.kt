@@ -21,6 +21,7 @@ import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.checkItems
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.mikepenz.fastadapter.expandable.getExpandableExtension
 import com.mikepenz.fastadapter.select.getSelectExtension
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,13 +45,14 @@ import kotlinx.android.synthetic.main.fragment_end_constat.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
-    MainActivity.OnNavigationFragment, CoroutineScope, SimpleSubItem.IActionHandler {
+    MainActivity.OnNavigationFragment, CoroutineScope, SimpleSubItem.IActionHandler, SimpleParentExpandableItem.IActionHandler {
     private val TAG = EndConstatFragment::class.simpleName
 
     private lateinit var fastItemAdapter: GenericFastItemAdapter
@@ -120,6 +122,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_keys)?.isVisible = true
+        menu.findItem(R.id.action_compteur)?.isVisible = true
     }
 
     @SuppressLint("CheckResult")
@@ -137,7 +140,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 val indexes = mutableListOf<Int>()
                 roomsWithElements.forEach { roomWithDetails ->
                     if (roomWithDetails.elements.isNotEmpty()) {
-                        roomRefList?.indexOf(roomWithDetails.room)?.let { index ->
+                        roomRefList?.map { ref -> ref.name }?.indexOf(roomWithDetails.room.name)?.let { index ->
                             indexes.add(index)
                         }
                     }
@@ -170,12 +173,26 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
                         roomsToAdd?.forEach { roomToAdd ->
                             if (roomToAdd !in roomsToCompare) {
-                                launch {
-                                    viewModel.saveConstatRoomCrossRef(
-                                        arguments?.getString(ARGS_CONSTAT_ID)!!,
-                                        roomToAdd.roomReferenceId,
-                                        clickedLot
-                                    )
+                                var roomToAddTemp = roomToAdd
+                                viewModel.getRoomWithNameAndIdLot(roomToAdd.name, clickedLot).observeOnce(viewLifecycleOwner) { roomRefIfExist ->
+                                    launch {
+                                        if (roomRefIfExist == null) {
+                                            val roomReference = RoomReference(UUID.randomUUID().toString(), roomToAdd.name, clickedLot)
+                                            if (roomReference.name == "ACCES / ENTREE") {
+                                                roomReference.mandatory = true
+                                            }
+                                            viewModel.saveRoom(roomReference)
+                                            roomToAddTemp = roomReference
+                                        } else {
+                                            roomToAddTemp = roomRefIfExist
+                                        }
+
+                                        viewModel.saveConstatRoomCrossRef(
+                                            arguments?.getString(ARGS_CONSTAT_ID)!!,
+                                            roomToAddTemp.roomReferenceId,
+                                            clickedLot
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -268,14 +285,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
                     //Enfant
                     val subItems = roomWithEl.elements.map { element ->
-                        val detail = Detail(
-                            roomWithEl.room.roomReferenceId + element.elementReferenceId + clickedLot,
-                            element.elementReferenceId,
-                            roomWithEl.room.roomReferenceId,
-                            arguments?.getString(ARGS_CONSTAT_ID)!!,
-                            clickedLot,
-                            element.name
-                        )
+                        val detail = createDetail(roomWithEl.room, element)
                         SimpleSubItem(this).withHeader(detail)
                     }
 
@@ -309,8 +319,21 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
             keyRefs.forEach { it ->
                 //Parent
-                val parentIt = SimpleParentExpandableItem().withHeader(it.name)
+                val detail = Detail(
+                    it.id.toString() + arguments?.getString(ARGS_CONSTAT_ID)!!, //pas les mêmes infos que le detail room
+                    null,
+                    null,
+                    arguments?.getString(ARGS_CONSTAT_ID)!!,
+                    clickedLot,
+                    it.name,
+                    it.id //id key
+                )
+                val parentIt = SimpleParentExpandableItem()
+                    .withHeader(it.name)
+                    .withDetail(detail)
+
                 parentIt.identifier = identifier.getAndIncrement()
+                parentIt.actionHandler = this
                 parentListItems.add(parentIt)
             }
 
@@ -491,5 +514,19 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         listPopupWindow.show()
     }
 
+    override fun onSimpleKeyClick(detail: Detail) {
+        onSimpleClick(detail)
+    }
+
+    private fun createDetail(roomReference: RoomReference, elementReference: ElementReference): Detail {
+        return Detail(
+            roomReference.roomReferenceId + elementReference.elementReferenceId + clickedLot,
+            elementReference.elementReferenceId,
+            roomReference.roomReferenceId,
+            arguments?.getString(ARGS_CONSTAT_ID)!!,
+            clickedLot,
+            elementReference.name
+        )
+    }
 
 }

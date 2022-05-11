@@ -9,11 +9,11 @@ import androidx.room.PrimaryKey
 data class Detail (
     @PrimaryKey(autoGenerate = false) val idDetail: String,
     val idElement: String?,
-    val idRoom: String,
+    val idRoom: String? = null,
     val idConstat: String,
     val idLot: Int,
     var intitule: String,
-    val idKey: String? = null,
+    val idKey: Int? = null,
     var etat: String? = "",
     var descriptif: String? = "",
     var alteration: String? = "",

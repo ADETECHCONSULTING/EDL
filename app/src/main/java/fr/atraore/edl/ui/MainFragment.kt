@@ -47,6 +47,12 @@ class MainFragment : BaseFragment("MainFrag") {
         menu.findItem(R.id.action_previous)?.isVisible = false
         menu.findItem(R.id.action_compteur)?.isVisible = false
         menu.findItem(R.id.action_keys)?.isVisible = true
+
+        menu.findItem(R.id.action_keys)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+        menu.findItem(R.id.action_add_room)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+
+        menu.findItem(R.id.action_add_room)?.title = "Configuration des pièces"
+        menu.findItem(R.id.action_keys)?.title = "Configuration des clés"
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

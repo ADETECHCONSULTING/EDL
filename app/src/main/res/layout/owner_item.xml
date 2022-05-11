@@ -19,67 +19,75 @@
 
     </data>
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
         <LinearLayout
-            android:layout_width="300dp"
+            android:id="@+id/ctn_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="@color/white">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/ctn_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?colorPrimary"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/txv_type_appart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="@{ownerItem.civi + ` ` + ownerItem.name}"
+                    android:textColor="@color/colorPrimaryDark"
+                    tools:text="Mme Traore" />
+
+
+                <TextView
+                    android:id="@+id/txv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:text="@{ownerItem.address + ` ` + ownerItem.postalCode + `, ` + ownerItem.city}"
+                    tools:text="43 rue de bellevue 69400, Landiris" />
+
+                <TextView
+                    android:id="@+id/txv_address_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:text="@{ownerItem.tel}"
+                    android:layout_marginBottom="10dp"
+                    tools:text="0627562283" />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/txv_type_appart"
+            <!-- Buttons -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="@{ownerItem.civi + ` ` + ownerItem.name}"
-                android:textColor="@color/colorPrimaryDark"
-                tools:text="Mme Traore" />
-
-
-            <TextView
-                android:id="@+id/txv_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:lines="2"
-                android:text="@{ownerItem.address + ` ` + ownerItem.postalCode + `, ` + ownerItem.city}"
-                tools:text="43 rue de bellevue 69400, Landiris" />
-
-            <TextView
-                android:id="@+id/txv_address_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:lines="2"
-                android:text="@{ownerItem.tel}"
-                android:layout_marginBottom="10dp"
-                tools:text="0627562283" />
-
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_add_white"
-                android:backgroundTint="@{state ? @color/colorAccent : @color/red}"
-                android:onClick="@{addClickListener}"
-                app:borderWidth="0dp"
-                app:tint="@color/white"
-                android:layout_margin="12dp" />
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@{state ? @color/colorAccent : @color/red}"
+                    android:onClick="@{addClickListener}"
+                    android:text="@{state ? @string/add_label : @string/delete_label}"
+                    style="?attr/borderlessButtonStyle" />
+            </LinearLayout>
 
         </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 </layout>
