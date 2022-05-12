@@ -76,9 +76,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:textColor="@{state ? @color/colorAccent : @color/red}"
+                    android:textColor="@color/colorAccent"
                     android:onClick="@{addClickListener}"
-                    android:text="@{state ? @string/add_label : @string/selectionne_label}"
+                    android:text="@string/add_label"
                     style="?attr/borderlessButtonStyle" />
             </LinearLayout>
 

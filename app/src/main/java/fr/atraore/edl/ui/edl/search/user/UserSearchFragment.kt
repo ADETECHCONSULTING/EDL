@@ -2,6 +2,7 @@ package fr.atraore.edl.ui.edl.search.user
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -47,6 +48,11 @@ class UserSearchFragment(private val constat: ConstatWithDetails) : BaseFragment
         userSearchViewModel.allUsers.observe(viewLifecycleOwner) { users ->
             users?.let { adapter.submitList(it) }
         }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_next)?.isVisible = false
+        menu.findItem(R.id.action_previous)?.isVisible = true
     }
 
 }

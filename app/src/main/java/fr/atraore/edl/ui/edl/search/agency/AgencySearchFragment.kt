@@ -2,6 +2,7 @@ package fr.atraore.edl.ui.edl.search.agency
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -49,6 +50,11 @@ class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragme
         agencyViewModel.allAgencies.observe(viewLifecycleOwner, Observer {agencies ->
             agencies?.let { adapter.submitList(it) }
         })
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_next)?.isVisible = false
+        menu.findItem(R.id.action_previous)?.isVisible = true
     }
 
 }

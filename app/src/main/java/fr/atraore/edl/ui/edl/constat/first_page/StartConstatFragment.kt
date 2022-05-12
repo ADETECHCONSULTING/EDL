@@ -101,6 +101,9 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_add_room)?.isVisible = false
+        menu.findItem(R.id.action_previous)?.isVisible = true
+        menu.findItem(R.id.action_compteur)?.isVisible = true
+        menu.findItem(R.id.action_next)?.isVisible = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

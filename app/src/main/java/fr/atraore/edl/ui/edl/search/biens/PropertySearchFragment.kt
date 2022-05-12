@@ -2,6 +2,7 @@ package fr.atraore.edl.ui.edl.search.biens
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -50,4 +51,8 @@ class PropertySearchFragment(private val constat: ConstatWithDetails) : BaseFrag
         })
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_next)?.isVisible = false
+        menu.findItem(R.id.action_previous)?.isVisible = true
+    }
 }

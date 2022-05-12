@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -57,6 +58,8 @@ class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, pr
                     agencySearchViewModel.save(constatDetails.constat, agency)
                     Log.d(TAG, "Ajout agence ${agency} in ${constatDetails.constat.constatId}")
                 }
+
+                Toast.makeText(it.context, "Agence ${agency} selectionnée", Toast.LENGTH_SHORT).show()
             }
         }
     }

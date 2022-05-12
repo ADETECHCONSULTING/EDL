@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -50,6 +51,8 @@ class UserAdapter(private val userSearchViewModel: UserSearchViewModel, private 
                     userSearchViewModel.save(constatDetails.constat, user)
                     Log.d(TAG, "Ajout user ${user} in ${constatDetails.constat.constatId}")
                 }
+
+                Toast.makeText(it.context, "Utilisateur ${user} selectionné", Toast.LENGTH_SHORT).show()
             }
         }
     }

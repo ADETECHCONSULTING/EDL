@@ -2,6 +2,7 @@ package fr.atraore.edl.ui.edl.search.owner
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -48,6 +49,11 @@ class OwnerSearchFragment(private val constat: ConstatWithDetails) : BaseFragmen
         ownerSearchViewModel.allOwners.observe(viewLifecycleOwner, Observer {owners ->
             owners?.let { adapter.submitList(it) }
         })
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_next)?.isVisible = false
+        menu.findItem(R.id.action_previous)?.isVisible = true
     }
 
 }
