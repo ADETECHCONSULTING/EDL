@@ -117,6 +117,11 @@
     <string name="explication_keys_config">Sélectionnez les clés que vous voulez voir s\'afficher lors de l\'établissement d\'un constat</string>
     <string name="title_config_keys">Configuration des clés</string>
     <string name="title_room_config">Configuration des pièces</string>
+    <string name="toggle_user">Activer l\'utilisateur</string>
+    <string name="manage_users">Configurer les utilisateurs</string>
+    <string name="manage_agency">Configurer les agences</string>
+    <string name="manage_rooms">Configuration des pièces</string>
+    <string name="manage_keys">Configuration des clés</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

@@ -46,4 +46,19 @@
         android:visible="false"
         android:title="@string/cles_label" />
 
+    <item
+        android:id="@+id/action_add_user"
+        android:icon="@drawable/ic_user"
+        app:showAsAction="never"
+        android:visible="false"
+        android:title="@string/manage_users" />
+
+    <item
+        android:id="@+id/action_add_agency"
+        android:icon="@drawable/ic_add_agency"
+        app:showAsAction="never"
+        android:visible="false"
+        android:title="@string/manage_agency" />
+
+
 </menu>

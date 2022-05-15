@@ -1,6 +1,7 @@
 package fr.atraore.edl.ui.edl.constat.second_page
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -21,13 +22,11 @@ import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.checkItems
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
-import com.google.android.material.checkbox.MaterialCheckBox
 import com.mikepenz.fastadapter.expandable.getExpandableExtension
 import com.mikepenz.fastadapter.select.getSelectExtension
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.adaptermodel.KeyParentItem
 import fr.atraore.edl.data.models.entity.Detail
 import fr.atraore.edl.data.models.entity.ElementReference
 import fr.atraore.edl.data.models.entity.RoomReference
@@ -39,6 +38,7 @@ import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
+import fr.atraore.edl.ui.pdf.PdfConstatCreatorActivity
 import fr.atraore.edl.utils.*
 import fr.atraore.edl.utils.itemanimators.SlideDownAlphaAnimator
 import kotlinx.android.synthetic.main.fragment_end_constat.*
@@ -129,8 +129,11 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_next -> {
-                val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
-                findNavController().navigate(R.id.go_to_signature, bundle)
+//                val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
+//                findNavController().navigate(R.id.go_to_signature, bundle)
+                val intent = Intent(activity, PdfConstatCreatorActivity::class.java)
+                intent.putExtra("constatId", arguments?.getString(ARGS_CONSTAT_ID)!!)
+                startActivity(intent)
             }
             R.id.action_compteur -> {
                 val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)

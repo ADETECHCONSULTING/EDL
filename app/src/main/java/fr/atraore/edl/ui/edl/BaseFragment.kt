@@ -28,6 +28,8 @@ abstract class BaseFragment(val classType: String) : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_next)?.isVisible = true
         menu.findItem(R.id.action_previous)?.isVisible = true
+        menu.findItem(R.id.action_add_agency)?.isVisible = false
+        menu.findItem(R.id.action_add_user)?.isVisible = false
     }
 
     /**

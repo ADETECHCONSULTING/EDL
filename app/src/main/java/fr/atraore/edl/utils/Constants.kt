@@ -13,6 +13,8 @@ val ARGS_TENANT_ID = "tenantItemId"
 val ARGS_OWNER_ID = "ownerItemId"
 val ARGS_PROPERTY_ID = "propertyItemId"
 val ARGS_CONTRACTOR_ID = "contractorItemId"
+val ARGS_USER_ID = "userItemId"
+val ARGS_AGENCY_ID = "agencyItemId"
 val ARGS_CONSTAT = "constat"
 val ARGS_ALREADY_ADDED = "alreadyAdded"
 

@@ -59,7 +59,7 @@ class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, pr
                     Log.d(TAG, "Ajout agence ${agency} in ${constatDetails.constat.constatId}")
                 }
 
-                Toast.makeText(it.context, "Agence ${agency} selectionnée", Toast.LENGTH_SHORT).show()
+                Toast.makeText(it.context, "Agence ${agency.name} selectionnée", Toast.LENGTH_SHORT).show()
             }
         }
     }

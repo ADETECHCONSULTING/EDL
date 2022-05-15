@@ -13,4 +13,6 @@ interface AgencyDao : BaseDao<Agency> {
     @Query("SELECT * FROM $AGENCY_TABLE")
     fun getAllAgencies(): Flow<List<Agency>>
 
+    @Query("SELECT * FROM $AGENCY_TABLE WHERE agencyId = :id")
+    fun getById(id: String): Flow<Agency>
 }

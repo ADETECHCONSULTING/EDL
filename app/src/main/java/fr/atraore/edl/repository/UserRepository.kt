@@ -9,4 +9,5 @@ class UserRepository @Inject constructor(
     private val userDao: UserDao
 ) : BaseRepository<Users>(userDao) {
     val allUsers: Flow<List<Users>> = userDao.getAllUsers()
+    fun getById(id: String): Flow<Users> = userDao.getById(id)
 }

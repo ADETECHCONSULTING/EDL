@@ -1,4 +1,4 @@
-package fr.atraore.edl.ui.edl.add.property
+package fr.atraore.edl.ui.edl.add.user
 
 import android.os.Bundle
 import android.util.Log
@@ -10,32 +10,36 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.entity.Property
-import fr.atraore.edl.databinding.FragmentAddPropertyBinding
+import fr.atraore.edl.data.models.entity.Users
+import fr.atraore.edl.databinding.FragmentAddUserBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.add.AddViewModel
-import fr.atraore.edl.utils.PROPERTY_LABEL
-import kotlinx.android.synthetic.main.fragment_add_property.*
+import fr.atraore.edl.utils.USER_LABEL
+import kotlinx.android.synthetic.main.fragment_add_user.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), View.OnClickListener, CoroutineScope {
-    private val TAG = AddPropertyFragment::class.simpleName
+class AddUserFragment() : BaseFragment(USER_LABEL), View.OnClickListener, CoroutineScope {
+    private val TAG = AddUserFragment::class.simpleName
     private val addViewModel: AddViewModel by viewModels()
-    private lateinit var binding: FragmentAddPropertyBinding
+    private lateinit var binding: FragmentAddUserBinding
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
     override val title: String
-        get() = PROPERTY_LABEL
+        get() = USER_LABEL
+
+    var idArgs: String = ""
 
     companion object {
-        fun newInstance(idArgs: String?) = AddPropertyFragment(idArgs)
+        fun newInstance(idArgs: String?) = AddUserFragment()
     }
+
+
 
     override fun goNext() {
         TODO("Not yet implemented")
@@ -46,7 +50,7 @@ class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), V
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_add_property, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_user, container, false)
         binding.viewModel = addViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
@@ -54,11 +58,10 @@ class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), V
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         idArgs?.let { itemId ->
-            addViewModel.getPropertyById(itemId).observe(viewLifecycleOwner) {
+            addViewModel.getUserById(itemId).observe(viewLifecycleOwner) {
                 it?.let {
-                    addViewModel.property.value = it
+                    addViewModel.user.value = it
                 }
                 initListeners()
             }
@@ -70,10 +73,10 @@ class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), V
         btn_cancel.setOnClickListener(this)
     }
 
-    private fun createClicked() {
+    override fun onClick(v: View?) {
         if (
-            edt_nature.text.toString().trim().isEmpty()
-            || edt_type.text.toString().trim().isEmpty()
+            edt_name.text.toString().trim().isEmpty()
+            || edt_tel.text.toString().trim().isEmpty()
             || edt_address.text.toString().trim().isEmpty()
             || edt_postal_code.text.toString().trim().isEmpty()
             || edt_city.text.toString().trim().isEmpty()
@@ -82,60 +85,43 @@ class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), V
             return
         }
 
-        val nature = edt_nature.text.toString()
-        val type = edt_type.text.toString()
+        var id = UUID.randomUUID().toString()
+        addViewModel.user.value?.let {
+            id = it.userId
+        }
+
+        val name = edt_name.text.toString()
+        val civi = spn_civilite.selectedItem.toString()
+        val tel = edt_tel.text.toString()
+        val tel2 = edt_tel2.text.toString()
         val address = edt_address.text.toString()
         val address2 = edt_address2.text.toString()
         val postalCode = edt_postal_code.text.toString()
         val city = edt_city.text.toString()
-        val floor = edt_floor.text.toString()
-        val nbLevel = edt_nb_level.text.toString()
-        val appartmentDoor = edt_appartment_door.text.toString()
-        val comment = edt_note.text.toString()
+        val mail = edt_mail.text.toString()
+        val note = edt_note.text.toString()
+        val checkActif = swc_toggle_user.isChecked
 
-        var id = UUID.randomUUID().toString()
-        addViewModel.property.value?.let {
-            id = it.propertyId
-        }
-
-        val property = Property(
+        val user = Users(
             id,
+            civi,
+            name,
             address,
             address2,
             postalCode,
             city,
-            comment,
-            nature,
-            type,
-            nbLevel.toInt(),
-            "", //deuxieme commentaire
-            floor.toInt(),
-            0, //escalier
-            appartmentDoor.toInt(),
-            0, //num cave
-            0, //grenier ?
-            0, //parking
-            0, //box
+            tel,
+            tel2,
+            mail,
+            note,
+            if (checkActif) 1 else 0
         )
 
         launch {
-            save(property)
-            Log.d(TAG, "création d'un bien ${property}")
+            save(user)
+            Log.d(TAG, "création d'un utilisateur ${user}")
         }
 
         findNavController().popBackStack()
     }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btn_create -> {
-                createClicked()
-            }
-            R.id.btn_cancel -> {
-                //retourne dans la stack précédente
-                findNavController().popBackStack()
-            }
-        }
-    }
-
 }

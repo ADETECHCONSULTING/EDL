@@ -102,6 +102,8 @@ dependencies {
     implementation "com.mikepenz:fastadapter-extensions-expandable:$fastadapter_version"
     implementation "com.mikepenz:fastadapter-extensions-ui:$fastadapter_version" // pre-defined ui components
 
+    //pdf generator
+    implementation 'com.github.tejpratap46:PDFCreatorAndroid:3.0.2'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
