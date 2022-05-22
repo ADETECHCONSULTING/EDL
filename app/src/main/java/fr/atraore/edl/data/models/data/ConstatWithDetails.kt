@@ -62,7 +62,13 @@ data class ConstatWithDetails (
         parentColumn = "constatId",
         entityColumn = "constat_id"
     )
-    val compteurs: MutableList<Compteur>
+    val compteurs: MutableList<Compteur>,
+    @Relation(
+        parentColumn = "constatId",
+        entityColumn = "idConstat"
+    )
+    val keys: MutableList<Detail>
+
 ) : Serializable {
     @Ignore
     fun getOwnersConcatenate(withPrefix: Boolean): String {

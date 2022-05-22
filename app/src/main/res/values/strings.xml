@@ -122,6 +122,8 @@
     <string name="manage_agency">Configurer les agences</string>
     <string name="manage_rooms">Configuration des pièces</string>
     <string name="manage_keys">Configuration des clés</string>
+    <string name="signature_label">Veuillez tracer votre signature dans le champ ci-dessous</string>
+    <string name="parah_label">Veuillez parapher le champ ci-dessous</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

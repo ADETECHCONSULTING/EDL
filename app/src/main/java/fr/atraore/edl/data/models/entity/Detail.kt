@@ -18,7 +18,10 @@ data class Detail (
     var descriptif: String? = "",
     var alteration: String? = "",
     var proprete: String? = "",
-    var notes: String? = ""
+    var notes: String? = "",
+    var fonctionmt: String? = null,
+    var imagePath: String? = null,
+    var imagePathSecond: String? = null
 ) {
     @Ignore
     fun razDetail() {

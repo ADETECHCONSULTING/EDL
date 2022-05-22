@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.ListPopupWindow
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.fragment.findNavController
@@ -26,19 +27,25 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.databinding.FragmentCompteurBinding
 import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.first_page.StartConstatFragment
+import fr.atraore.edl.ui.formatToServerDateDefaults
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import fr.atraore.edl.utils.COMPTEUR_LABELS_LIGHT
+import fr.atraore.edl.utils.InsertMedia
 import fr.atraore.edl.utils.assistedViewModel
+import kotlinx.android.synthetic.main.fragment_compteur.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.OutputStream
+import java.sql.Date
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -63,11 +70,83 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
 
     companion object {
         fun newInstance() = CompteurFragment()
+
+        @JvmStatic
+        @BindingAdapter("imageUrl")
+        fun setImageOnCompteur(view: ImageView, constat: ConstatWithDetails?) {
+            var uri = Uri.EMPTY
+
+            constat?.let { constatWithDetails ->
+                when (view.resources.getResourceEntryName(view.id)) {
+                    "imb_photo_eau_froide_1" -> {
+                        constatWithDetails.compteurs.find { compteur -> compteur.compteurRefId == 1 }?.imagePath?.let { path ->
+                            uri = Uri.parse(path)
+                        }
+                    }
+                    "imb_photo_eau_froide_2" -> {
+                        constatWithDetails.compteurs.find { compteur -> compteur.compteurRefId == 1 }?.imagePathSecond?.let { path ->
+                            uri = Uri.parse(path)
+                        }
+                    }
+                    "imb_photo_elec_1" -> {
+                        constatWithDetails.compteurs.find { compteur -> compteur.compteurRefId == 2 }?.imagePath?.let { path ->
+                            uri = Uri.parse(path)
+                        }
+                    }
+                    "imb_photo_elec_2" -> {
+                        constatWithDetails.compteurs.find { compteur -> compteur.compteurRefId == 2 }?.imagePathSecond?.let { path ->
+                            uri = Uri.parse(path)
+                        }
+                    }
+                    "imb_photo_eau_chaude_1" -> {
+                        constatWithDetails.compteurs.find { compteur -> compteur.compteurRefId == 4 }?.imagePath?.let { path ->
+                            uri = Uri.parse(path)
+                        }
+                    }
+                    "imb_photo_eau_chaude_2" -> {
+                        constatWithDetails.compteurs.find { compteur -> compteur.compteurRefId == 4 }?.imagePathSecond?.let { path ->
+                            uri = Uri.parse(path)
+                        }
+                    }
+                    "imb_photo_gaz_1" -> {
+                        constatWithDetails.compteurs.find { compteur -> compteur.compteurRefId == 5 }?.imagePath?.let { path ->
+                            uri = Uri.parse(path)
+                        }
+                    }
+                    "imb_photo_gaz_2" -> {
+                        constatWithDetails.compteurs.find { compteur -> compteur.compteurRefId == 5 }?.imagePathSecond?.let { path ->
+                            uri = Uri.parse(path)
+                        }
+                    }
+                    "imb_photo_cuve_1" -> {
+                        constatWithDetails.compteurs.find { compteur -> compteur.compteurRefId == 6 }?.imagePath?.let { path ->
+                            uri = Uri.parse(path)
+                        }
+                    }
+                    "imb_photo_cuve_2" -> {
+                        constatWithDetails.compteurs.find { compteur -> compteur.compteurRefId == 6 }?.imagePathSecond?.let { path ->
+                            uri = Uri.parse(path)
+                        }
+                    }
+                    else -> {}
+                }
+            }
+
+            useGlide(view, uri)
+        }
+
+        private fun useGlide(imageView: ImageView, uri: Uri) {
+            Glide.with(imageView.context)
+                .load(uri)
+                .into(imageView)
+        }
+
     }
 
     private lateinit var binding: FragmentCompteurBinding
     private lateinit var listPopupWindow: ListPopupWindow
     private lateinit var currentImageView: ImageView
+    private lateinit var constatWithDetail: ConstatWithDetails
 
     @Inject
     lateinit var compteurViewModelFactory: CompteurViewModel.AssistedStartFactory
@@ -119,6 +198,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
         viewModel.setCompteurs()
         viewModel.constatDetail.observe(viewLifecycleOwner) { constatWithDetails ->
             constatWithDetails?.let {
+                this.constatWithDetail = constatWithDetails
                 viewModel.constatHeaderInfo.value =
                     "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
             }
@@ -182,14 +262,12 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
 
     override fun onImagesPicked(photos: ArrayList<Uri>) {
         if (photos.isNotEmpty()) {
-            var imagePath = photos[0]
+            val imagePath = photos[0]
 
-            Glide.with(requireContext())
-                .load(imagePath)
-                .into(currentImageView)
+            useGlide(currentImageView, imagePath)
 
             activity?.let {
-                val absolutePathImage = insertImage(it.contentResolver, getBitmapFromUri(imagePath), "TEST", "TEST")
+                val absolutePathImage = InsertMedia.insertImage(it.contentResolver, getBitmapFromUri(imagePath), "${constatWithDetail.constat.constatId}_${currentImageView.resources.getResourceEntryName(currentImageView.id)}", "Compteur Image")
 
                 absolutePathImage?.let { path ->
                     when (currentImageView.resources.getResourceEntryName(currentImageView.id)) {
@@ -231,101 +309,26 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
         }
     }
 
+    private fun checkIfCompteurHasImage() {
+        this.constatWithDetail.compteurs.filter { compteur -> compteur.getPrimaryQuantity !== null || compteur.getSecondaryQuantity !== null }.forEach { compteur ->
+            when (compteur.compteurRefId) {
+                1 -> {
+                    if (compteur.getPrimaryQuantity !== null) {
+
+                    }
+                    if (compteur.getSecondaryQuantity !== null) {
+
+                    }
+                }
+            }
+        }
+    }
+
     private fun getBitmapFromUri(imageUri: Uri): Bitmap {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, imageUri))
         } else {
             Media.getBitmap(requireContext().contentResolver, imageUri)
-        }
-    }
-
-    fun insertImage(
-        cr: ContentResolver,
-        source: Bitmap?,
-        title: String?,
-        description: String?
-    ): String? {
-        val values = ContentValues()
-        values.put(Media.TITLE, title)
-        values.put(Media.DISPLAY_NAME, title)
-        values.put(Media.DESCRIPTION, description)
-        values.put(Media.MIME_TYPE, "image/jpeg")
-        // Add the date meta data to ensure the image is added at the front of the gallery
-        values.put(Media.DATE_ADDED, System.currentTimeMillis())
-        values.put(Media.DATE_TAKEN, System.currentTimeMillis())
-        var url: Uri? = null
-        var stringUrl: String? = null /* value to be returned */
-        try {
-            url = cr.insert(Media.EXTERNAL_CONTENT_URI, values)
-            if (source != null) {
-                val imageOut: OutputStream? = cr.openOutputStream(url!!)
-                try {
-                    source.compress(Bitmap.CompressFormat.JPEG, 50, imageOut)
-                } finally {
-                    imageOut?.close()
-                }
-                val id = ContentUris.parseId(url)
-                // Wait until MINI_KIND thumbnail is generated.
-                val miniThumb: Bitmap = Thumbnails.getThumbnail(cr, id, Thumbnails.MINI_KIND, null)
-                // This is for backward compatibility.
-                storeThumbnail(cr, miniThumb, id, 50f, 50f, Thumbnails.MICRO_KIND)
-            } else {
-                cr.delete(url!!, null, null)
-                url = null
-            }
-        } catch (e: Exception) {
-            if (url != null) {
-                cr.delete(url, null, null)
-                url = null
-            }
-        }
-        if (url != null) {
-            stringUrl = url.toString()
-        }
-        return stringUrl
-    }
-
-    /**
-     * A copy of the Android internals StoreThumbnail method, it used with the insertImage to
-     * populate the android.provider.MediaStore.Images.Media#insertImage with all the correct
-     * meta data. The StoreThumbnail method is private so it must be duplicated here.
-     * @see android.provider.MediaStore.Images.Media
-     */
-    private fun storeThumbnail(
-        cr: ContentResolver,
-        source: Bitmap,
-        id: Long,
-        width: Float,
-        height: Float,
-        kind: Int
-    ): Bitmap? {
-
-        // create the matrix to scale it
-        val matrix = Matrix()
-        val scaleX = width / source.width
-        val scaleY = height / source.height
-        matrix.setScale(scaleX, scaleY)
-        val thumb = Bitmap.createBitmap(
-            source, 0, 0,
-            source.width,
-            source.height, matrix,
-            true
-        )
-        val values = ContentValues(4)
-        values.put(Thumbnails.KIND, kind)
-        values.put(Thumbnails.IMAGE_ID, id.toInt())
-        values.put(Thumbnails.HEIGHT, thumb.height)
-        values.put(Thumbnails.WIDTH, thumb.width)
-        val url = cr.insert(Thumbnails.EXTERNAL_CONTENT_URI, values)
-        return try {
-            val thumbOut: OutputStream? = cr.openOutputStream(url!!)
-            thumb.compress(Bitmap.CompressFormat.JPEG, 100, thumbOut)
-            thumbOut?.close()
-            thumb
-        } catch (ex: FileNotFoundException) {
-            null
-        } catch (ex: IOException) {
-            null
         }
     }
 

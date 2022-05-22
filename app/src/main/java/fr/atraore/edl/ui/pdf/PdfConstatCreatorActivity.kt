@@ -14,7 +14,10 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.compose.runtime.key
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginLeft
+import androidx.core.view.setMargins
 import com.tejpratapsingh.pdfcreator.activity.PDFCreatorActivity
 import com.tejpratapsingh.pdfcreator.utils.PDFUtil.PDFUtilListener
 import com.tejpratapsingh.pdfcreator.views.PDFBody
@@ -52,7 +55,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         }
 
         //intent.getStringExtra("constatId")?.let {
-            viewModel.constatDetail("51bf6775-aa30-4d30-9fa1-6ee34230c541").observe(this) {
+            viewModel.constatDetail("ecdf52d1-e1cc-4a36-9d3d-e1ed0cabdf11").observe(this) {
                 it?.let { constatWithDetails ->
                     this.constat = constatWithDetails
 
@@ -101,7 +104,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         identityArea(pdfBody)
         compteurArea(pdfBody)
-
+        keysArea(pdfBody)
 
         return pdfBody
     }
@@ -381,18 +384,87 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         constat.compteurs.forEach { compteur ->
             compteur.imagePath?.let {
                 val bitmap = getBitmapFromUri(Uri.parse(compteur.imagePath))
-                addImageInView(bitmap, horizontalView, pdfBody, COMPTEUR_LABELS[compteur.compteurRefId-1])
+                addImageInView(bitmap, horizontalView, COMPTEUR_LABELS[compteur.compteurRefId-1])
             }
             compteur.imagePathSecond?.let {
                 val bitmap = getBitmapFromUri(Uri.parse(compteur.imagePathSecond))
-                addImageInView(bitmap, horizontalView, pdfBody, COMPTEUR_LABELS[compteur.compteurRefId-1])
+                addImageInView(bitmap, horizontalView, COMPTEUR_LABELS[compteur.compteurRefId-1])
             }
         }
 
         pdfBody.addView(horizontalView)
     }
 
-    private fun addImageInView(bitmap: Bitmap?, horizontalView: PDFHorizontalView, pdfBody: PDFBody, text: String) {
+    private fun keysArea(pdfBody: PDFBody) {
+
+        //tableau compteur 1
+        val widthPercent = intArrayOf(20, 20, 10, 10, 10, 30) // Sum should be equal to 100%
+        val headersCompteur1 = arrayOf("Equipement","Nature", "Etat", "Fonct.", "Propreté", "Commentaire")
+        val pdfTableTitleView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.H3)
+        pdfTableTitleView.setText("Liste des clefs")
+        pdfTableTitleView.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        pdfBody.addView(pdfTableTitleView)
+
+        val tableHeader = PDFTableRowView(applicationContext)
+        for (s in headersCompteur1) {
+            val pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+            pdfTextView.setText(s)
+            tableHeader.addToRow(pdfTextView)
+        }
+        val tableRowView1 = PDFTableRowView(applicationContext)
+        val tableView = PDFTableView(applicationContext, tableHeader, tableRowView1)
+
+        constat.keys.forEach { key ->
+            val tableRowView = PDFTableRowView(applicationContext)
+            var pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+            pdfTextView.setText(key.intitule)
+            tableRowView.addToRow(pdfTextView)
+            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+            pdfTextView.setText(if (key.etat == null) "" else key.etat)
+            tableRowView.addToRow(pdfTextView)
+            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+            pdfTextView.setText(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString())
+            tableRowView.addToRow(pdfTextView)
+            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+            pdfTextView.setText(if (key.proprete == null) "" else key.proprete)
+            tableRowView.addToRow(pdfTextView)
+            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+            pdfTextView.setText(if (key.notes == null) "" else key.notes)
+            tableRowView.addToRow(pdfTextView)
+            tableView.addRow(tableRowView)
+        }
+
+        tableView.setColumnWidth(*widthPercent)
+        pdfBody.addView(tableView)
+
+        emptySpace = PDFLineSeparatorView(applicationContext).setBackgroundColor(Color.WHITE)
+        emptySpace.setLayout(
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                30, 0F
+            )
+        )
+        pdfBody.addView(emptySpace)
+
+        //images
+        val horizontalView = PDFHorizontalView(applicationContext)
+
+        constat.keys.forEach { key ->
+            key.imagePath?.let {
+                val bitmap = getBitmapFromUri(Uri.parse(key.imagePath))
+                addImageInView(bitmap, horizontalView, key.intitule)
+            }
+            key.imagePathSecond?.let {
+                val bitmap = getBitmapFromUri(Uri.parse(key.imagePathSecond))
+                addImageInView(bitmap, horizontalView, key.intitule)
+            }
+        }
+
+        pdfBody.addView(horizontalView)
+    }
+
+
+    private fun addImageInView(bitmap: Bitmap?, horizontalView: PDFHorizontalView, text: String) {
         val verticalView = PDFVerticalView(applicationContext)
 
         if (bitmap !== null) {
@@ -406,6 +478,9 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                 pdfTextViewProperty.setText(text)
                 verticalView.addView(pdfTextViewProperty)
 
+                val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                params.setMargins(10)
+                verticalView.view.layoutParams = params
                 horizontalView.addView(verticalView)
             }
         }

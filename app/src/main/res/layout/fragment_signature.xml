@@ -43,16 +43,51 @@
 
         </LinearLayout>
 
-        <com.github.gcacace.signaturepad.views.SignaturePad
-            android:id="@+id/signature_pad"
+        <LinearLayout
+            android:id="@+id/ctn_signature_paraphe"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/margin_medium"
-            android:background="@color/white"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ctn_header" />
+            app:layout_constraintTop_toBottomOf="@id/ctn_header" >
+
+            <TextView
+                android:id="@+id/txv_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/signature_label"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:textColor="@color/white"/>
+
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/signature_pad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/margin_medium"
+                android:background="@color/white"/>
+
+            <TextView
+                android:id="@+id/txv_paraph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/parah_label"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:textColor="@color/white"/>
+
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/paraph_pad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/margin_medium"
+                android:background="@color/white" />
+
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_save_signature"
@@ -61,8 +96,8 @@
             android:layout_marginStart="8dp"
             android:minWidth="@dimen/buttons_large_width"
             android:text="@string/sauvegarder"
-            app:layout_constraintStart_toEndOf="@+id/signature_pad"
-            app:layout_constraintTop_toTopOf="@+id/signature_pad" />
+            app:layout_constraintStart_toEndOf="@+id/ctn_signature_paraphe"
+            app:layout_constraintTop_toTopOf="@+id/ctn_signature_paraphe" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_clear_signature"
@@ -72,7 +107,7 @@
             android:backgroundTint="@color/red"
             android:minWidth="@dimen/buttons_large_width"
             android:text="@string/effacer_label"
-            app:layout_constraintStart_toEndOf="@+id/signature_pad"
+            app:layout_constraintStart_toEndOf="@+id/ctn_signature_paraphe"
             app:layout_constraintTop_toBottomOf="@+id/btn_save_signature" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -89,7 +124,7 @@
             android:src="@drawable/ic_pdf_svgrepo_com"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/signature_pad"
+            app:layout_constraintStart_toEndOf="@+id/ctn_signature_paraphe"
             app:layout_constraintTop_toBottomOf="@+id/btn_clear_signature" />
 
         <TextView
