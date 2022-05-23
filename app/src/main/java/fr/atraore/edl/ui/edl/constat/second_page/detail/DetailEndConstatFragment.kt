@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
+import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.databinding.DataBindingUtil
@@ -152,6 +153,26 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                         cg_alterations,
                                         IdDetailStatesEnum.ALTERATION.value
                                     )
+                                }
+                            }
+                        }
+
+                        edt_intitule.setOnFocusChangeListener { view, focus ->
+                            if (!focus) {
+                                launch {
+                                    Log.d(TAG, "onViewCreated: sauvegarde du détail $detail")
+                                    detail.intitule = (view as EditText).text.toString()
+                                    viewModel.saveDetail(detail)
+                                }
+                            }
+                        }
+
+                        edt_note.setOnFocusChangeListener { view, focus ->
+                            if (!focus) {
+                                launch {
+                                    Log.d(TAG, "onViewCreated: sauvegarde du détail $detail")
+                                    detail.notes = (view as EditText).text.toString()
+                                    viewModel.saveDetail(detail)
                                 }
                             }
                         }

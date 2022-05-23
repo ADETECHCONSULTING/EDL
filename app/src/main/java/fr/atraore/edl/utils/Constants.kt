@@ -137,3 +137,10 @@ val KEYS_LABELS = listOf(
     "Carte de reproduction",
     "Bracelet"
 )
+
+val OUTDOORS_EQUIPMNT_LABELS = listOf(
+    "Boite aux lettres",
+    "Serrure boite aux lettres",
+    "Porte garage / box",
+    "Serrure garage / box"
+)

@@ -7,16 +7,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.entity.KeyReference
+import fr.atraore.edl.data.models.entity.OutdoorEquipementReference
 import kotlinx.android.synthetic.main.element_grid_item.view.*
 
-class KeysGridAdapter : RecyclerView.Adapter<KeysGridAdapter.KeyGridViewHolder>() {
+class OutdoorGridAdapter : RecyclerView.Adapter<OutdoorGridAdapter.OutdoorGridViewHolder>() {
 
-    private var data: List<KeyReference> = ArrayList()
+    private var data: List<OutdoorEquipementReference> = ArrayList()
     private lateinit var mOnItemClickListener: View.OnClickListener
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeyGridViewHolder {
-        return KeyGridViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OutdoorGridViewHolder {
+        return OutdoorGridViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.element_grid_item, parent, false)
         )
@@ -24,9 +24,9 @@ class KeysGridAdapter : RecyclerView.Adapter<KeysGridAdapter.KeyGridViewHolder>(
 
     override fun getItemCount() = data.size
 
-    override fun onBindViewHolder(holder: KeyGridViewHolder, position: Int) = holder.bind(data[position])
+    override fun onBindViewHolder(holder: OutdoorGridViewHolder, position: Int) = holder.bind(data[position])
 
-    fun swapData(data: List<KeyReference>) {
+    fun swapData(data: List<OutdoorEquipementReference>) {
         this.data = data
         notifyDataSetChanged()
     }
@@ -35,10 +35,10 @@ class KeysGridAdapter : RecyclerView.Adapter<KeysGridAdapter.KeyGridViewHolder>(
         this.mOnItemClickListener = itemClickListener
     }
 
-    inner class KeyGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: KeyReference) = with(itemView) {
+    inner class OutdoorGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(item: OutdoorEquipementReference) = with(itemView) {
             itemView.checkbox_element.text = item.name
-            itemView.checkbox_element.setTag(this@KeyGridViewHolder)
+            itemView.checkbox_element.setTag(this@OutdoorGridViewHolder)
             itemView.checkbox_element.setOnClickListener(mOnItemClickListener)
 
             if (item.actif) {

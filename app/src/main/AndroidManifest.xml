@@ -42,6 +42,8 @@
 
         </activity>
         <activity android:name=".ui.pdf.PdfViewerExampleActivity" />
+        <activity android:name=".ui.settings.OutDoorConfigurationActivity"
+            android:screenOrientation="userLandscape" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

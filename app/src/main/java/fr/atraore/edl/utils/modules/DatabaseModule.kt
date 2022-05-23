@@ -132,6 +132,11 @@ class DatabaseModule {
         return appDatabase.getConstatKeyDao()
     }
 
+    @Provides
+    fun provideOutDoorEquipementDao(appDatabase: AppDatabase): OutDoorEquipementDao {
+        return appDatabase.getOutDoorEquipementDao()
+    }
+
 
     @Provides
     @Singleton
@@ -150,7 +155,7 @@ class DatabaseModule {
         compteurReferenceDao: Provider<CompteurReferenceDao>,
         configPdfDao: Provider<ConfigPdfDao>,
         keyDao: Provider<KeyDao>,
-        constatKeyDao: Provider<ConstatKeyDao>
+        outDoorEquipementDao: Provider<OutDoorEquipementDao>
     ): AppDatabase {
         return Room.databaseBuilder(
             applicationContext,
@@ -174,7 +179,8 @@ class DatabaseModule {
                             lotReferenceDao.get(),
                             compteurReferenceDao.get(),
                             configPdfDao.get(),
-                            keyDao.get()
+                            keyDao.get(),
+                            outDoorEquipementDao.get(),
                         )
                     }
                 }
@@ -198,7 +204,8 @@ class DatabaseModule {
         lotReferenceDao: LotReferenceDao,
         compteurReferenceDao: CompteurReferenceDao,
         configPdfDao: ConfigPdfDao,
-        keyDao: KeyDao
+        keyDao: KeyDao,
+        outDoorEquipementDao: OutDoorEquipementDao
     ) {
         // Delete all content
         constatDao.deleteAll()
@@ -219,6 +226,7 @@ class DatabaseModule {
         createCompteurReferences(compteurReferenceDao)
         createConfigPdfReference(configPdfDao)
         createKeyReferences(keyDao)
+        createOutDoorEquipementReferences(outDoorEquipementDao)
     }
 
     private suspend fun createRoomsReference(roomReferenceDao: RoomReferenceDao) {
@@ -274,6 +282,14 @@ class DatabaseModule {
         for (value in KEYS_LABELS) {
             val keyReference = KeyReference(value, true)
             keyDao.save(keyReference)
+        }
+    }
+
+
+    private suspend fun createOutDoorEquipementReferences(outDoorEquipementDao: OutDoorEquipementDao) {
+        for (value in OUTDOORS_EQUIPMNT_LABELS) {
+            val outdoorRef = OutdoorEquipementReference(value, true)
+            outDoorEquipementDao.save(outdoorRef)
         }
     }
 

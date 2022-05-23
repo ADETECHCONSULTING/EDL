@@ -403,6 +403,7 @@
                     android:lines="4"
                     android:paddingStart="@dimen/padding_small"
                     android:paddingEnd="@dimen/padding_small"
+                    android:text="@{detail.notes}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/guideline2"
                     app:layout_constraintTop_toTopOf="@id/txv_note"

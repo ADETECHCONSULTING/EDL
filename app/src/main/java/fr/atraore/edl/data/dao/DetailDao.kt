@@ -2,7 +2,9 @@ package fr.atraore.edl.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import fr.atraore.edl.data.models.entity.Detail
+import fr.atraore.edl.data.models.entity.RoomReference
 import fr.atraore.edl.utils.DETAIL_TABLE
 import kotlinx.coroutines.flow.Flow
 
@@ -27,4 +29,8 @@ interface DetailDao : BaseDao<Detail> {
 
     @Query("DELETE FROM Detail WHERE idRoom =:idRoom")
     suspend fun deleteAllDetailsFromRoom(idRoom: String)
+
+    @Transaction
+    @Query("SELECT * FROM RoomReference r JOIN DETAIL dt ON dt.idRoom = roomReferenceId WHERE dt.idConstat = :id ORDER BY r.name asc")
+    fun getRoomDetails(id: String) : Flow<Map<RoomReference, List<Detail>>>
 }

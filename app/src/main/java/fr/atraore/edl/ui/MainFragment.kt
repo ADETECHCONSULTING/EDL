@@ -15,6 +15,7 @@ import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.adapter.ConstatAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.settings.KeysConfigurationActivity
+import fr.atraore.edl.ui.settings.OutDoorConfigurationActivity
 import fr.atraore.edl.ui.settings.RoomConfigurationActivity
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import fr.atraore.edl.utils.ARGS_OWNER_ID
@@ -51,9 +52,11 @@ class MainFragment : BaseFragment("MainFrag") {
         menu.findItem(R.id.action_keys)?.isVisible = true
         menu.findItem(R.id.action_add_user)?.isVisible = true
         menu.findItem(R.id.action_add_agency)?.isVisible = true
+        menu.findItem(R.id.action_outdoor)?.isVisible = true
 
         menu.findItem(R.id.action_keys)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
         menu.findItem(R.id.action_add_room)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+        menu.findItem(R.id.action_outdoor)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
 
         menu.findItem(R.id.action_add_room)?.title = getString(R.string.manage_rooms)
         menu.findItem(R.id.action_keys)?.title = getString(R.string.manage_keys)
@@ -71,6 +74,10 @@ class MainFragment : BaseFragment("MainFrag") {
             }
             R.id.action_add_user -> {
                 goToAddUser()
+            }
+            R.id.action_outdoor -> {
+                val intent = Intent(requireContext(), OutDoorConfigurationActivity::class.java)
+                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)

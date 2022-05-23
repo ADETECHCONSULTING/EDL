@@ -5,12 +5,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.data.models.entity.Detail
+import fr.atraore.edl.data.models.entity.RoomReference
 import fr.atraore.edl.repository.ConstatRepository
+import fr.atraore.edl.repository.DetailRepository
+import fr.atraore.edl.utils.CombinedLiveData
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
 class PdfConstatCreatorViewModel @Inject constructor(
-    private val repository: ConstatRepository
+    private val repository: ConstatRepository,
+    private val detailRepository: DetailRepository
 ) : ViewModel() {
-    fun constatDetail(constatId: String): LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
+    fun constatAndRoomDetailsCombined(constatId: String) = CombinedLiveData(
+        repository.getConstatDetail(constatId).asLiveData(),
+        detailRepository.getRoomDetails(constatId).asLiveData()
+    )
 }

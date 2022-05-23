@@ -8,7 +8,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
@@ -16,33 +15,35 @@ import com.google.android.flexbox.FlexDirection.ROW
 import com.google.android.flexbox.FlexboxLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.entity.KeyReference
 import fr.atraore.edl.data.models.entity.OutdoorEquipementReference
 import fr.atraore.edl.ui.ReferenceViewModel
-import fr.atraore.edl.ui.adapter.KeysGridAdapter
+import fr.atraore.edl.ui.adapter.OutdoorGridAdapter
+import kotlinx.android.synthetic.main.activity_keys_configuration.*
 import kotlinx.android.synthetic.main.activity_room_configuration.*
+import kotlinx.android.synthetic.main.activity_room_configuration.rcv_elements
+import kotlinx.android.synthetic.main.activity_room_configuration.toolbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
-class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchView.OnQueryTextListener {
+class OutDoorConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchView.OnQueryTextListener {
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
     private val viewModel: ReferenceViewModel by viewModels()
-    private val keysGridAdapter = KeysGridAdapter()
-    private var keysList = emptyList<KeyReference>()
+    private val outdoorGridAdapter = OutdoorGridAdapter()
+    private var outdoorEqpList = emptyList<OutdoorEquipementReference>()
 
-    private val onKeyItemClickListener = View.OnClickListener { view ->
+    private val onOutdoorEqptsItemClickListener = View.OnClickListener { view ->
         val viewHolder: RecyclerView.ViewHolder = view.tag as RecyclerView.ViewHolder
         val position = viewHolder.absoluteAdapterPosition
-        val element = keysList[position]
+        val element = outdoorEqpList[position]
         launch {
             element.actif = !element.actif
-            viewModel.saveKey(element)
+            viewModel.saveOutdoorEquipementRepository(element)
         }
     }
 
@@ -53,13 +54,14 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         rcv_elements.layoutManager = FlexboxLayoutManager(this, ROW)
+        txv_explication.text = getString(R.string.explication_eqpts_config)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_item, menu)
         menu?.findItem(R.id.action_next)?.isVisible = false
         menu?.findItem(R.id.action_compteur)?.isVisible = false
-        menu?.findItem(R.id.action_add_room)?.isVisible = false
+        menu?.findItem(R.id.action_add_room)?.isVisible = true
 
         val search = menu?.findItem(R.id.action_search)
         search?.isVisible = true
@@ -80,7 +82,7 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
                     title(R.string.add_element)
                     input(allowEmpty = false) { _, text ->
                         launch {
-                            viewModel.saveKey(KeyReference(text.toString(), true))
+                            viewModel.saveOutdoorEquipementRepository(OutdoorEquipementReference(text.toString(), true))
                         }
                     }
                     positiveButton(R.string.rename)
@@ -93,11 +95,11 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
     override fun onStart() {
         super.onStart()
 
-        viewModel.getKeys.observe(this) { res ->
-            keysList = res
-            keysGridAdapter.swapData(res)
-            rcv_elements.adapter = keysGridAdapter
-            keysGridAdapter.setOnItemClickListener(onKeyItemClickListener)
+        viewModel.getOutdoorEqpts.observe(this) { res ->
+            outdoorEqpList = res
+            outdoorGridAdapter.swapData(res)
+            rcv_elements.adapter = outdoorGridAdapter
+            outdoorGridAdapter.setOnItemClickListener(onOutdoorEqptsItemClickListener)
         }
     }
 
@@ -114,9 +116,9 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
 
     private fun searchDatabase(query: String) {
         val searchQuery = "%$query%"
-        viewModel.searchKeysQuery(searchQuery).observe(this) { list ->
+        viewModel.searchOutdoorEqptsQuery(searchQuery).observe(this) { list ->
             list.let {
-                keysGridAdapter.swapData(it)
+                outdoorGridAdapter.swapData(it)
             }
         }
     }
