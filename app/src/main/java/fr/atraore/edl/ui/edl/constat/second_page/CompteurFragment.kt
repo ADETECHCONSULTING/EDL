@@ -34,10 +34,7 @@ import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.first_page.StartConstatFragment
 import fr.atraore.edl.ui.formatToServerDateDefaults
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
-import fr.atraore.edl.utils.ARGS_CONSTAT_ID
-import fr.atraore.edl.utils.COMPTEUR_LABELS_LIGHT
-import fr.atraore.edl.utils.InsertMedia
-import fr.atraore.edl.utils.assistedViewModel
+import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.fragment_compteur.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -196,7 +193,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setCompteurs()
-        viewModel.constatDetail.observe(viewLifecycleOwner) { constatWithDetails ->
+        viewModel.constatDetail.observeOnce(viewLifecycleOwner) { constatWithDetails ->
             constatWithDetails?.let {
                 this.constatWithDetail = constatWithDetails
                 viewModel.constatHeaderInfo.value =
