@@ -67,6 +67,15 @@ interface ConstatDao : BaseDao<Constat> {
     @Query("UPDATE Constat SET procuration =:procuration WHERE constatId =:constatId")
     suspend fun updateProcuration(constatId: String, procuration: String)
 
+    @Query("UPDATE Constat SET onwerSignaturePath =:path WHERE constatId =:constatId")
+    suspend fun saveOwnerSignaturePath(path: String, constatId: String)
+
+    @Query("UPDATE Constat SET tenantSignaturePath =:path WHERE constatId =:constatId")
+    suspend fun saveTenantSignaturePath(path: String, constatId: String)
+
+    @Query("UPDATE Constat SET paraphPath =:path WHERE constatId =:constatId")
+    suspend fun saveParaphPath(path: String, constatId: String)
+
     //** DELETE **
     @Delete
     fun delete(constat: Constat)

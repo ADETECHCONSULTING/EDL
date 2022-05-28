@@ -8,18 +8,31 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.data.models.entity.Detail
 import fr.atraore.edl.repository.ConfigPdfRepository
 import fr.atraore.edl.repository.ConstatRepository
 
 class SignatureViewModel @AssistedInject constructor(
     val repository: ConstatRepository,
-    val configPdfRepository: ConfigPdfRepository,
+    configPdfRepository: ConfigPdfRepository,
     @Assisted val constatId: String,
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> =
         repository.getConstatDetail(constatId).asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
     val configPdf = configPdfRepository.getFirst().asLiveData()
+
+    suspend fun saveOwnerSignaturePath(path: String, constatId: String) {
+        repository.saveOwnerSignaturePath(path, constatId)
+    }
+
+    suspend fun saveTenantSignaturePath(path: String, constatId: String) {
+        repository.saveTenantSignaturePath(path, constatId)
+    }
+
+    suspend fun saveParaphPath(path: String, constatId: String) {
+        repository.saveParaphPath(path, constatId)
+    }
 
     @AssistedFactory
     interface AssistedStartFactory {

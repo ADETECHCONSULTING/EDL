@@ -37,6 +37,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.sql.Timestamp
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
@@ -71,7 +74,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                         this.roomWithDetails = pair.second
 
                         launch {
-                            createPDF("test", object : PDFUtilListener {
+                            createPDF(Timestamp.from(Instant.now()).toString(), object : PDFUtilListener {
                                 override fun pdfGenerationSuccess(savedPDFFile: File) {
                                     Toast.makeText(this@PdfConstatCreatorActivity, "PDF Created", Toast.LENGTH_SHORT).show()
                                 }

@@ -138,4 +138,21 @@ class ConstatRepository @Inject constructor(
         constatDao.deleteConstatUser(ConstatUsersCrossRef(constatId, userId))
     }
 
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveOwnerSignaturePath(path: String, constatId: String) {
+        constatDao.saveOwnerSignaturePath(path, constatId)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveTenantSignaturePath(path: String, constatId: String) {
+        constatDao.saveOwnerSignaturePath(path, constatId)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveParaphPath(path: String, constatId: String) {
+        constatDao.saveParaphPath(path, constatId)
+    }
 }

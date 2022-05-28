@@ -27,13 +27,21 @@ import fr.atraore.edl.utils.InsertMedia
 import fr.atraore.edl.utils.assistedViewModel
 import fr.atraore.edl.utils.observeOnce
 import kotlinx.android.synthetic.main.fragment_signature.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
-class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
+class SignatureFragment : BaseFragment("Signature"), LifecycleObserver, CoroutineScope {
     private val TAG = SignatureFragment::class.simpleName
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
 
     override val title: String
         get() = "Signature du constat"
@@ -88,7 +96,6 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
             this.constat = constatWithDetails
 
             constatWithDetails?.let {
-                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE)
                 viewModel.constatHeaderInfo.value =
                     "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
             }
@@ -96,18 +103,13 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
         }
 
 
-        btn_save_signature.setOnClickListener { btnView ->
+        imv_pdf_export.setOnClickListener { btnView ->
             MaterialDialog(requireContext()).show {
                 positiveButton(text = "Accepter") { _ ->
-                    val bitmapSignature = this@SignatureFragment.signature_pad.signatureBitmap
-                    val bitmapParaph = this@SignatureFragment.paraph_pad.signatureBitmap
-                    if (bitmapSignature != null) {
-                        InsertMedia.insertImage(requireContext().contentResolver, bitmapSignature, "${constat.constat.constatId}_Signature", "Signature image")
-                    }
-                    if (bitmapParaph != null) {
-                        InsertMedia.insertImage(requireContext().contentResolver, bitmapParaph, "${constat.constat.constatId}_Paraphe", "Paraphe image")
-                    }
-                    Toast.makeText(requireContext(), "La signature a bien été enregistrée", Toast.LENGTH_SHORT).show()
+                    saveCanvas()
+                    val intent = Intent(activity, PdfConstatCreatorActivity::class.java)
+                    intent.putExtra("constatId", arguments?.getString(ARGS_CONSTAT_ID)!!)
+                    startActivity(intent)
                 }
                 negativeButton(text = "Refuser")
                 title(text = "Conditions avant validation")
@@ -115,14 +117,29 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
             }
         }
 
-        imv_pdf_export.setOnClickListener { imvView ->
-            val intent = Intent(activity, PdfConstatCreatorActivity::class.java)
-            intent.putExtra("constatId", arguments?.getString(ARGS_CONSTAT_ID)!!)
-            startActivity(intent)
-        }
-
         viewModel.configPdf.observe(viewLifecycleOwner) { confPdf ->
             configPdf = confPdf
+        }
+    }
+
+    private fun saveCanvas() {
+        launch {
+            val bitmapSignatureOwner = this@SignatureFragment.signature_pad.signatureBitmap
+            val bitmapSignatureTenant = this@SignatureFragment.signature_pad_tenant.signatureBitmap
+            val bitmapParaph = this@SignatureFragment.paraph_pad.signatureBitmap
+            if (bitmapSignatureOwner != null) {
+                val absolutePathImage = InsertMedia.insertImage(requireContext().contentResolver, bitmapSignatureOwner, "${constat.constat.constatId}_Signature", "Signature image")
+                absolutePathImage?.let { viewModel.saveOwnerSignaturePath(absolutePathImage, constat.constat.constatId) }
+            }
+            if (bitmapSignatureTenant != null) {
+                val absolutePathImage = InsertMedia.insertImage(requireContext().contentResolver, bitmapSignatureTenant, "${constat.constat.constatId}_Signature", "Signature image")
+                absolutePathImage?.let { viewModel.saveTenantSignaturePath(absolutePathImage, constat.constat.constatId) }
+            }
+            if (bitmapParaph != null) {
+                val absolutePathImage = InsertMedia.insertImage(requireContext().contentResolver, bitmapParaph, "${constat.constat.constatId}_Paraphe", "Paraphe image")
+                absolutePathImage?.let { viewModel.saveParaphPath(absolutePathImage, constat.constat.constatId) }
+            }
+            Toast.makeText(requireContext(), "La signature a bien été enregistrée", Toast.LENGTH_SHORT).show()
         }
     }
 

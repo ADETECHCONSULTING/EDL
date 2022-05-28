@@ -11,15 +11,18 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
         android:theme="@style/Theme.EDL">
         <activity
-            android:name=".ui.settings.KeysConfigurationActivity"
-            android:screenOrientation="userLandscape"
+            android:name=".ui.signature_pad.ComposeActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.settings.KeysConfigurationActivity"
+            android:exported="false"
+            android:screenOrientation="userLandscape" />
         <activity
             android:name=".ui.settings.RoomConfigurationActivity"
             android:exported="false"
@@ -34,15 +37,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".CameraActivity" />
-        <activity android:name=".ui.pdf.PdfConstatCreatorActivity"
-            android:exported="true">
-
-        </activity>
+        <activity
+            android:name=".ui.pdf.PdfConstatCreatorActivity"
+            android:exported="true"></activity>
         <activity android:name=".ui.pdf.PdfViewerExampleActivity" />
-        <activity android:name=".ui.settings.OutDoorConfigurationActivity"
+        <activity
+            android:name=".ui.settings.OutDoorConfigurationActivity"
             android:screenOrientation="userLandscape" />
 
         <provider
