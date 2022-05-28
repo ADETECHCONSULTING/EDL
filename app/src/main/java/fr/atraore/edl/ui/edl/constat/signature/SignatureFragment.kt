@@ -2,6 +2,7 @@ package fr.atraore.edl.ui.edl.constat.signature
 
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -24,8 +25,10 @@ import fr.atraore.edl.data.models.entity.ConfigPdf
 import fr.atraore.edl.databinding.FragmentSignatureBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
+import fr.atraore.edl.ui.pdf.PdfConstatCreatorActivity
 import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.fragment_signature.*
+import kotlinx.android.synthetic.main.fragment_signature.view.*
 import java.io.File
 import java.io.File.separator
 import java.io.FileOutputStream
@@ -99,7 +102,7 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
                     MaterialDialog(requireContext()).show {
                         positiveButton(text = "Accepter") { _ ->
                             val bitmapSignature = this@SignatureFragment.signature_pad.signatureBitmap
-                            val bitmapParaph = this@SignatureFragment.signature_pad.signatureBitmap
+                            val bitmapParaph = this@SignatureFragment.signature_pad.paraph_pad
                             if (bitmapSignature != null) {
                                 InsertMedia.insertImage(requireContext().contentResolver, bitmapSignature, "${constat.constat.constatId}_Signature", "Signature image")
                             }
@@ -112,10 +115,9 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
                 }
 
                 imv_pdf_export.setOnClickListener { imvView ->
-                    val bundle = bundleOf(
-                        ARGS_CONSTAT to this.constat
-                    )
-                    findNavController().navigate(R.id.go_to_generate_pdf, bundle)
+                    val intent = Intent(activity, PdfConstatCreatorActivity::class.java)
+                    intent.putExtra("constatId", arguments?.getString(ARGS_CONSTAT_ID)!!)
+                    startActivity(intent)
                 }
             }
         }

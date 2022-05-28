@@ -31,6 +31,7 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.entity.Detail
 import fr.atraore.edl.data.models.entity.RoomReference
+import fr.atraore.edl.ui.settings.RoomConfigurationActivity
 import fr.atraore.edl.utils.COMPTEUR_LABELS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +43,7 @@ import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
+    private val TAG = PdfConstatCreatorActivity::class.simpleName
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
@@ -50,7 +52,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
     private lateinit var constat: ConstatWithDetails
     private var roomWithDetails: Map<RoomReference, List<Detail>>? = null
     private lateinit var emptySpace: PDFLineSeparatorView
-    val constatId = "26e9b666-b208-4fe4-81fd-874452268583"
+    private lateinit var constatId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,30 +60,32 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
             supportActionBar!!.hide()
         }
 
-        //intent.getStringExtra("constatId")?.let {        viewModel.getRoomDetails(constatId).observe(this) { roomWithDetails ->
-        viewModel.constatAndRoomDetailsCombined(constatId).observe(this) {
-            it.let { pair ->
+        constatId = intent.getStringExtra("constatId").orEmpty()
 
-                pair.first?.let { constatWithDetails ->
-                    this.constat = constatWithDetails
-                    this.roomWithDetails = pair.second
+        if (constatId.isNotEmpty()) {
+            viewModel.constatAndRoomDetailsCombined(constatId).observe(this) {
+                it.let { pair ->
 
-                    launch {
-                        createPDF("test", object : PDFUtilListener {
-                            override fun pdfGenerationSuccess(savedPDFFile: File) {
-                                Toast.makeText(this@PdfConstatCreatorActivity, "PDF Created", Toast.LENGTH_SHORT).show()
-                            }
+                    pair.first?.let { constatWithDetails ->
+                        this.constat = constatWithDetails
+                        this.roomWithDetails = pair.second
 
-                            override fun pdfGenerationFailure(exception: Exception) {
-                                Log.e("PDFConstatCreator", "pdfGenerationFailure: ${exception.message}")
-                                Toast.makeText(this@PdfConstatCreatorActivity, "PDF NOT Created", Toast.LENGTH_SHORT).show()
-                            }
-                        })
+                        launch {
+                            createPDF("test", object : PDFUtilListener {
+                                override fun pdfGenerationSuccess(savedPDFFile: File) {
+                                    Toast.makeText(this@PdfConstatCreatorActivity, "PDF Created", Toast.LENGTH_SHORT).show()
+                                }
+
+                                override fun pdfGenerationFailure(exception: Exception) {
+                                    Log.e("PDFConstatCreator", "pdfGenerationFailure: ${exception.message}")
+                                    Toast.makeText(this@PdfConstatCreatorActivity, "PDF NOT Created", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                        }
                     }
                 }
             }
         }
-        //}
 
     }
 
@@ -114,6 +118,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         compteurArea(pdfBody)
         keysArea(pdfBody)
         detailsArea(pdfBody)
+        signatureArea(pdfBody)
 
         return pdfBody
     }
@@ -212,9 +217,6 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
             )
         )
         pdfBody.addView(emptySpace)
-    }
-
-    private fun compteurArea(pdfBody: PDFBody) {
 
         //tableau info bien
         val widthPercentProperty = intArrayOf(50, 50) // Sum should be equal to 100%
@@ -283,6 +285,19 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         tableViewProperty.addRow(tableRowViewProperty)
         tableViewProperty.setColumnWidth(*widthPercentProperty)
         pdfBody.addView(tableViewProperty)
+    }
+
+    private fun compteurArea(pdfBody: PDFBody) {
+
+
+        emptySpace = PDFLineSeparatorView(applicationContext).setBackgroundColor(Color.WHITE)
+        emptySpace.setLayout(
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                30, 0F
+            )
+        )
+        pdfBody.addView(emptySpace)
 
         //tableau compteur 1
         var widthPercent = intArrayOf(20, 10, 10, 20, 40) // Sum should be equal to 100%
@@ -549,6 +564,96 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         }
     }
 
+    private fun signatureArea(pdfBody: PDFBody) {
+
+        val pdfSignatureTitle = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.H3)
+        pdfSignatureTitle.setText("Signatures")
+        pdfSignatureTitle.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        pdfBody.addView(pdfSignatureTitle)
+
+        emptySpace = PDFLineSeparatorView(applicationContext).setBackgroundColor(Color.WHITE)
+        emptySpace.setLayout(
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                10, 0F
+            )
+        )
+        pdfBody.addView(emptySpace)
+
+        var pdfSignatureContent = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+        pdfSignatureContent.setText(
+            "Les soussignés reconnaissent exactes les constatations sur l'état du logement, " +
+                    "et reconnaissent avoir reçu chacun l'ensemble des élements leur permettant de récupérer un exemplaire" +
+                    " du présent état des lieux et s'accordent pour y faire référence."
+        )
+        pdfSignatureContent.setTextColor(ContextCompat.getColor(this, R.color.black))
+        pdfBody.addView(pdfSignatureContent)
+
+        emptySpace = PDFLineSeparatorView(applicationContext).setBackgroundColor(Color.WHITE)
+        emptySpace.setLayout(
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                10, 0F
+            )
+        )
+        pdfBody.addView(emptySpace)
+
+        pdfSignatureContent = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+        pdfSignatureContent.setText("Le présent état des lieux, a été établi contradictoirement entre les parties qui le reconnaissent exact.")
+        pdfSignatureContent.setTextColor(ContextCompat.getColor(this, R.color.black))
+        pdfBody.addView(pdfSignatureContent)
+
+        if (constat.constat.onwerSignaturePath !== null && constat.constat.tenantSignaturePath !== null) {
+
+            val horizontalView = PDFHorizontalView(applicationContext)
+            val verticalView = PDFVerticalView(applicationContext)
+
+            val bitmapOwner = getBitmapFromUri(Uri.parse(constat.constat.onwerSignaturePath))
+            val bitmapTenant = getBitmapFromUri(Uri.parse(constat.constat.onwerSignaturePath))
+            val targetBmpOwner = bitmapResizer(bitmapOwner.copy(Bitmap.Config.ARGB_8888, false), 120, 120)
+            val targetBmpTenant = bitmapResizer(bitmapTenant.copy(Bitmap.Config.ARGB_8888, false), 120, 120)
+
+            if (targetBmpOwner !== null) {
+                val pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+                pdfTextViewProperty.setText("Présent document transmis et accepté par le(s) locataire(s) sortant : ${constat.tenants}")
+                verticalView.addView(pdfTextViewProperty)
+
+                val pdfImageView = PDFImageView(applicationContext).setImageBitmap(targetBmpOwner)
+                verticalView.addView(pdfImageView)
+
+                //FIX quand il y a plusieurs éléments dans le layout lineaire
+                val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                params.setMargins(10)
+                verticalView.view.layoutParams = params
+
+                horizontalView.addView(verticalView)
+            } else {
+                Log.d(TAG, "signatureArea: Le resize de la signature du propriétaire n'a pas fonctionné")
+            }
+
+            if (targetBmpTenant !== null) {
+                val pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+                pdfTextViewProperty.setText("Présent document transmis et accepté par le(s) locataire(s) sortant : ${constat.tenants}")
+                verticalView.addView(pdfTextViewProperty)
+
+                val pdfImageView = PDFImageView(applicationContext).setImageBitmap(targetBmpTenant)
+                verticalView.addView(pdfImageView)
+
+                val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                params.setMargins(10)
+                verticalView.view.layoutParams = params
+
+                horizontalView.addView(verticalView)
+            } else {
+                Log.d(TAG, "signatureArea: Le resize de la signature du locataire n'a pas fonctionné")
+            }
+
+            pdfBody.addView(horizontalView)
+        } else {
+            Log.d(TAG, "signatureArea: la signature du propriétaire ou du locataire n'a pas été renseignée")
+        }
+
+    }
 
     private fun addImageInView(bitmap: Bitmap?, horizontalView: PDFHorizontalView, text: String) {
         val verticalView = PDFVerticalView(applicationContext)
@@ -580,7 +685,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         }
     }
 
-    fun bitmapResizer(bitmap: Bitmap, newWidth: Int, newHeight: Int): Bitmap? {
+    private fun bitmapResizer(bitmap: Bitmap, newWidth: Int, newHeight: Int): Bitmap? {
         val scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888)
         val ratioX = newWidth / bitmap.width.toFloat()
         val ratioY = newHeight / bitmap.height.toFloat()

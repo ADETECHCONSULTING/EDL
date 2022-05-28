@@ -129,11 +129,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_next -> {
-//                val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
-//                findNavController().navigate(R.id.go_to_signature, bundle)
-                val intent = Intent(activity, PdfConstatCreatorActivity::class.java)
-                intent.putExtra("constatId", arguments?.getString(ARGS_CONSTAT_ID)!!)
-                startActivity(intent)
+                val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
+                findNavController().navigate(R.id.go_to_signature, bundle)
             }
             R.id.action_compteur -> {
                 val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
