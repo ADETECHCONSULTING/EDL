@@ -1,22 +1,18 @@
 package fr.atraore.edl.ui.edl.constat.signature
 
-import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
+import android.graphics.Canvas
+import android.graphics.Matrix
+import android.graphics.Paint
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleObserver
-import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
@@ -26,13 +22,11 @@ import fr.atraore.edl.databinding.FragmentSignatureBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.ui.pdf.PdfConstatCreatorActivity
-import fr.atraore.edl.utils.*
+import fr.atraore.edl.utils.ARGS_CONSTAT_ID
+import fr.atraore.edl.utils.InsertMedia
+import fr.atraore.edl.utils.assistedViewModel
+import fr.atraore.edl.utils.observeOnce
 import kotlinx.android.synthetic.main.fragment_signature.*
-import kotlinx.android.synthetic.main.fragment_signature.view.*
-import java.io.File
-import java.io.File.separator
-import java.io.FileOutputStream
-import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -97,29 +91,34 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver {
                 val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE)
                 viewModel.constatHeaderInfo.value =
                     "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
-
-                btn_save_signature.setOnClickListener { btnView ->
-                    MaterialDialog(requireContext()).show {
-                        positiveButton(text = "Accepter") { _ ->
-                            val bitmapSignature = this@SignatureFragment.signature_pad.signatureBitmap
-                            val bitmapParaph = this@SignatureFragment.signature_pad.paraph_pad
-                            if (bitmapSignature != null) {
-                                InsertMedia.insertImage(requireContext().contentResolver, bitmapSignature, "${constat.constat.constatId}_Signature", "Signature image")
-                            }
-                            Toast.makeText(requireContext(), "La signature a bien été enregistrée", Toast.LENGTH_SHORT).show()
-                        }
-                        negativeButton(text = "Refuser")
-                        title(text = "Conditions avant validation")
-                        message(text = "${configPdf.textPdfSignature} \n ${configPdf.textPdfSignature2} \n ${configPdf.textPdfSignature3}")
-                    }
-                }
-
-                imv_pdf_export.setOnClickListener { imvView ->
-                    val intent = Intent(activity, PdfConstatCreatorActivity::class.java)
-                    intent.putExtra("constatId", arguments?.getString(ARGS_CONSTAT_ID)!!)
-                    startActivity(intent)
-                }
             }
+
+        }
+
+
+        btn_save_signature.setOnClickListener { btnView ->
+            MaterialDialog(requireContext()).show {
+                positiveButton(text = "Accepter") { _ ->
+                    val bitmapSignature = this@SignatureFragment.signature_pad.signatureBitmap
+                    val bitmapParaph = this@SignatureFragment.paraph_pad.signatureBitmap
+                    if (bitmapSignature != null) {
+                        InsertMedia.insertImage(requireContext().contentResolver, bitmapSignature, "${constat.constat.constatId}_Signature", "Signature image")
+                    }
+                    if (bitmapParaph != null) {
+                        InsertMedia.insertImage(requireContext().contentResolver, bitmapParaph, "${constat.constat.constatId}_Paraphe", "Paraphe image")
+                    }
+                    Toast.makeText(requireContext(), "La signature a bien été enregistrée", Toast.LENGTH_SHORT).show()
+                }
+                negativeButton(text = "Refuser")
+                title(text = "Conditions avant validation")
+                message(text = "${configPdf.textPdfSignature} \n ${configPdf.textPdfSignature2} \n ${configPdf.textPdfSignature3}")
+            }
+        }
+
+        imv_pdf_export.setOnClickListener { imvView ->
+            val intent = Intent(activity, PdfConstatCreatorActivity::class.java)
+            intent.putExtra("constatId", arguments?.getString(ARGS_CONSTAT_ID)!!)
+            startActivity(intent)
         }
 
         viewModel.configPdf.observe(viewLifecycleOwner) { confPdf ->
