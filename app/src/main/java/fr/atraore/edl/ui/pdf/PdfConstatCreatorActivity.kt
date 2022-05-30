@@ -14,9 +14,7 @@ import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.compose.runtime.key
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginLeft
 import androidx.core.view.setMargins
 import com.tejpratapsingh.pdfcreator.activity.PDFCreatorActivity
 import com.tejpratapsingh.pdfcreator.utils.PDFUtil.PDFUtilListener
@@ -31,7 +29,6 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.entity.Detail
 import fr.atraore.edl.data.models.entity.RoomReference
-import fr.atraore.edl.ui.settings.RoomConfigurationActivity
 import fr.atraore.edl.utils.COMPTEUR_LABELS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,10 +36,8 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.sql.Timestamp
 import java.time.Instant
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.coroutines.CoroutineContext
-
 
 @AndroidEntryPoint
 class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
@@ -74,7 +69,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                         this.roomWithDetails = pair.second
 
                         launch {
-                            createPDF(Timestamp.from(Instant.now()).toString(), object : PDFUtilListener {
+                             createPDF(constatId, object : PDFUtilListener {
                                 override fun pdfGenerationSuccess(savedPDFFile: File) {
                                     Toast.makeText(this@PdfConstatCreatorActivity, "PDF Created", Toast.LENGTH_SHORT).show()
                                 }

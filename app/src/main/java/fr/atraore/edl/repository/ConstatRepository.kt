@@ -147,7 +147,7 @@ class ConstatRepository @Inject constructor(
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
     suspend fun saveTenantSignaturePath(path: String, constatId: String) {
-        constatDao.saveOwnerSignaturePath(path, constatId)
+        constatDao.saveTenantSignaturePath(path, constatId)
     }
 
     @Suppress("RedundantSuspendModifier")

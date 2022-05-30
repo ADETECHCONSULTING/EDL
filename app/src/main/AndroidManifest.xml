@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        android:minSdkVersion="30" />
 
     <application
         android:name=".EdlApplication"
@@ -16,9 +19,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EDL">
-        <activity
-            android:name=".ui.signature_pad.ComposeActivity"
-            android:exported="false" />
         <activity
             android:name=".ui.settings.KeysConfigurationActivity"
             android:exported="false"
@@ -41,7 +41,7 @@
         <activity android:name=".CameraActivity" />
         <activity
             android:name=".ui.pdf.PdfConstatCreatorActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity android:name=".ui.pdf.PdfViewerExampleActivity" />
         <activity
             android:name=".ui.settings.OutDoorConfigurationActivity"

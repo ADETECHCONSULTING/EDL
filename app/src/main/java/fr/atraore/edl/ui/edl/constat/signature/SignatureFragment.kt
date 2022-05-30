@@ -127,12 +127,13 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver, Coroutin
             val bitmapSignatureOwner = this@SignatureFragment.signature_pad.signatureBitmap
             val bitmapSignatureTenant = this@SignatureFragment.signature_pad_tenant.signatureBitmap
             val bitmapParaph = this@SignatureFragment.paraph_pad.signatureBitmap
+
             if (bitmapSignatureOwner != null) {
-                val absolutePathImage = InsertMedia.insertImage(requireContext().contentResolver, bitmapSignatureOwner, "${constat.constat.constatId}_Signature", "Signature image")
+                val absolutePathImage = InsertMedia.insertImage(requireContext().contentResolver, bitmapSignatureOwner, "${constat.constat.constatId}_SignatureProprietaire", "Signature image")
                 absolutePathImage?.let { viewModel.saveOwnerSignaturePath(absolutePathImage, constat.constat.constatId) }
             }
             if (bitmapSignatureTenant != null) {
-                val absolutePathImage = InsertMedia.insertImage(requireContext().contentResolver, bitmapSignatureTenant, "${constat.constat.constatId}_Signature", "Signature image")
+                val absolutePathImage = InsertMedia.insertImage(requireContext().contentResolver, bitmapSignatureTenant, "${constat.constat.constatId}_SignatureLocataire", "Signature image")
                 absolutePathImage?.let { viewModel.saveTenantSignaturePath(absolutePathImage, constat.constat.constatId) }
             }
             if (bitmapParaph != null) {
