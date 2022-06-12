@@ -79,6 +79,9 @@ class MainFragment : BaseFragment("MainFrag") {
                 val intent = Intent(requireContext(), OutDoorConfigurationActivity::class.java)
                 startActivity(intent)
             }
+            R.id.action_add_agency -> {
+                goToAddAgency()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -124,6 +127,10 @@ class MainFragment : BaseFragment("MainFrag") {
 
     fun goToAddUser() {
         findNavController().navigate(R.id.go_to_add_user)
+    }
+
+    fun goToAddAgency() {
+        findNavController().navigate(R.id.go_to_add_agency)
     }
 
 }

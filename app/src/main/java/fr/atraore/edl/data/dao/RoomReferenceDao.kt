@@ -41,4 +41,7 @@ interface RoomReferenceDao : BaseDao<RoomReference> {
 
     @Delete
     suspend fun deleteRoomElementCrossRef(crossRef: RoomElementCrossRef)
+
+    @Query("SELECT EXISTS(SELECT * FROM RoomReference WHERE name = :name AND idLotReference = :idLot)")
+    fun hasItem(name: String, idLot: Int): Boolean
 }

@@ -138,7 +138,7 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
 
         onLotTechniqueClick(imv_lot_batis, 1)
 
-        viewModel.getRooms.observe(this) { roomRes ->
+        viewModel.getRooms.observeOnce(this) { roomRes ->
             roomsList = roomRes
             currentRoomSelected = roomRes[0]
             getElementsSavedForRoom(currentRoomSelected.name)
@@ -147,7 +147,7 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
             roomSimpleAdapter.setOnItemClickListener(onRoomItemClickListener)
         }
 
-        viewModel.getElements.observe(this) { elementRes ->
+        viewModel.getElements.observeOnce(this) { elementRes ->
             elementList = elementRes
             elementGridAdapter.swapData(elementRes)
             rcv_elements.adapter = elementGridAdapter

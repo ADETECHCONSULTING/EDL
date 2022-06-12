@@ -34,6 +34,8 @@ val COUPE_LABEL = "Coupé"
 val EQUIPE_LABEL = "Equipé"
 val NON_EQUIPE_LABEL = "Non équipé"
 
+val IMAGES_FOLDER_NAME = "Constat-images"
+
 val ROOMS_LABELS = arrayOf(
     "ACCES / ENTREE",
     "DEGAGEMENT",

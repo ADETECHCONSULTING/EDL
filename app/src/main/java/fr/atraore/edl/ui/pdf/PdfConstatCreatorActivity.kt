@@ -16,6 +16,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.setMargins
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.tejpratapsingh.pdfcreator.activity.PDFCreatorActivity
 import com.tejpratapsingh.pdfcreator.utils.PDFUtil.PDFUtilListener
 import com.tejpratapsingh.pdfcreator.views.PDFBody
@@ -34,10 +36,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
-import java.sql.Timestamp
-import java.time.Instant
 import java.util.*
 import kotlin.coroutines.CoroutineContext
+
 
 @AndroidEntryPoint
 class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
@@ -123,16 +124,51 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
     override fun getFooterView(pageIndex: Int): PDFFooterView {
         val footerView = PDFFooterView(applicationContext)
+        val params = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+
+        val horizontalView = PDFHorizontalView(applicationContext)
+        horizontalView.view.layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT, 0f
+        )
+
         val pdfTextViewPage = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.SMALL)
         pdfTextViewPage.setText(String.format(Locale.getDefault(), "Page: %d", pageIndex + 1))
-        pdfTextViewPage.setLayout(
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT, 0F
-            )
-        )
-        pdfTextViewPage.view.gravity = Gravity.CENTER_HORIZONTAL
-        footerView.addView(pdfTextViewPage)
+
+        if (constat.constat.paraphPath !== null) {
+            val bitmapParaph = getBitmapFromUri(Uri.parse(constat.constat.paraphPath))
+            val targetBmpParaph = getResizedBitmap(bitmapParaph, 60, 60)
+
+            if (targetBmpParaph !== null) {
+
+                val pdfImageView = PDFImageView(applicationContext).setImageBitmap(targetBmpParaph)
+
+                Glide.with((applicationContext))
+                    .load(bitmapParaph)
+                    .apply(RequestOptions().override(600, 200))
+                    .into(pdfImageView.view)
+
+                pdfImageView.view.layoutParams = params
+                //FIX quand il y a plusieurs éléments dans le layout lineaire
+                horizontalView.addView(pdfImageView)
+
+                pdfTextViewPage.view.layoutParams = params
+
+            } else {
+                Log.d(TAG, "footerArea: Le resize du paraph n'a pas fonctionné")
+            }
+        } else {
+            pdfTextViewPage.view.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT, 0f
+                )
+        }
+
+        pdfTextViewPage.view.gravity = Gravity.CENTER
+        horizontalView.addView(pdfTextViewPage)
+        horizontalView.view.gravity = Gravity.CENTER_VERTICAL
+
+        footerView.addView(horizontalView)
         return footerView
     }
 
@@ -604,24 +640,26 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         if (constat.constat.onwerSignaturePath !== null && constat.constat.tenantSignaturePath !== null) {
 
             val horizontalView = PDFHorizontalView(applicationContext)
-            val verticalView = PDFVerticalView(applicationContext)
 
             val bitmapOwner = getBitmapFromUri(Uri.parse(constat.constat.onwerSignaturePath))
-            val bitmapTenant = getBitmapFromUri(Uri.parse(constat.constat.onwerSignaturePath))
+            val bitmapTenant = getBitmapFromUri(Uri.parse(constat.constat.tenantSignaturePath))
             val targetBmpOwner = bitmapResizer(bitmapOwner.copy(Bitmap.Config.ARGB_8888, false), 120, 120)
             val targetBmpTenant = bitmapResizer(bitmapTenant.copy(Bitmap.Config.ARGB_8888, false), 120, 120)
 
             if (targetBmpOwner !== null) {
+                val verticalView = PDFVerticalView(applicationContext)
+
                 val pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                pdfTextViewProperty.setText("Présent document transmis et accepté par le(s) locataire(s) sortant : ${constat.tenants}")
+                pdfTextViewProperty.setText("Présent document transmis et accepté par le(s) locataire(s) sortant : ${constat.getOwnersConcatenate(false)}")
                 verticalView.addView(pdfTextViewProperty)
 
                 val pdfImageView = PDFImageView(applicationContext).setImageBitmap(targetBmpOwner)
                 verticalView.addView(pdfImageView)
 
                 //FIX quand il y a plusieurs éléments dans le layout lineaire
-                val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                val params = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT)
                 params.setMargins(10)
+                params.weight = 1f
                 verticalView.view.layoutParams = params
 
                 horizontalView.addView(verticalView)
@@ -630,15 +668,18 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
             }
 
             if (targetBmpTenant !== null) {
+                val verticalView = PDFVerticalView(applicationContext)
+
                 val pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                pdfTextViewProperty.setText("Présent document transmis et accepté par le(s) locataire(s) sortant : ${constat.tenants}")
+                pdfTextViewProperty.setText("Présent document transmis et accepté par le(s) locataire(s) sortant : ${constat.getTenantConcatenate(false)}")
                 verticalView.addView(pdfTextViewProperty)
 
                 val pdfImageView = PDFImageView(applicationContext).setImageBitmap(targetBmpTenant)
                 verticalView.addView(pdfImageView)
 
-                val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                val params = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT)
                 params.setMargins(10)
+                params.weight = 1f
                 verticalView.view.layoutParams = params
 
                 horizontalView.addView(verticalView)
@@ -657,7 +698,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         val verticalView = PDFVerticalView(applicationContext)
 
         if (bitmap !== null) {
-            val targetBmp = bitmapResizer(bitmap.copy(Bitmap.Config.ARGB_8888, false), 120, 120)
+            val targetBmp = Bitmap.createScaledBitmap(bitmap, 120, 120, false)
 
             if (targetBmp !== null) {
                 val pdfImageView = PDFImageView(applicationContext)
@@ -695,6 +736,19 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         canvas.setMatrix(scaleMatrix)
         canvas.drawBitmap(bitmap, middleX - bitmap.width / 2, middleY - bitmap.height / 2, Paint(Paint.FILTER_BITMAP_FLAG))
         return scaledBitmap
+    }
+
+    fun getResizedBitmap(bm: Bitmap, newHeight: Int, newWidth: Int): Bitmap? {
+        val width = bm.width
+        val height = bm.height
+        val scaleWidth = newWidth.toFloat() / width
+        val scaleHeight = newHeight.toFloat() / height
+        // create a matrix for the manipulation
+        val matrix = Matrix()
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight)
+        // recreate the new Bitmap
+        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false)
     }
 
 }

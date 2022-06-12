@@ -21,6 +21,11 @@
             app:destination="@id/addUserFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/go_to_add_agency"
+            app:destination="@id/addAgencyFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/startConstatFragment"
@@ -108,4 +113,9 @@
         android:id="@+id/addUserFragment"
         android:name="fr.atraore.edl.ui.edl.add.user.AddUserFragment"
         android:label="AddUserFragment" />
+
+    <fragment
+        android:id="@+id/addAgencyFragment"
+        android:name="fr.atraore.edl.ui.edl.add.agency.AddAgencyFragment"
+        android:label="AddAgencyFragment" />
 </navigation>

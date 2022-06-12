@@ -135,6 +135,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
         private fun useGlide(imageView: ImageView, uri: Uri) {
             Glide.with(imageView.context)
                 .load(uri)
+                .placeholder(R.drawable.camera)
                 .into(imageView)
         }
 
