@@ -20,7 +20,7 @@ class OwnerAdapter(private val ownerSearchViewModel: OwnerSearchViewModel, priva
     private val TAG = OwnerAdapter::class.simpleName
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

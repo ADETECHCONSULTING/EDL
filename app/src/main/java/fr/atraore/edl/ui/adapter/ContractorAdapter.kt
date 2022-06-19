@@ -20,7 +20,7 @@ class ContractorAdapter(private val contractorSearchViewModel: ContractorSearchV
     private val TAG = ContractorAdapter::class.simpleName
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

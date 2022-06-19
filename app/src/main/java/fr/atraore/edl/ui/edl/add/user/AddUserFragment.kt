@@ -28,7 +28,7 @@ class AddUserFragment() : BaseFragment(USER_LABEL), View.OnClickListener, Corout
     private lateinit var binding: FragmentAddUserBinding
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
         get() = USER_LABEL

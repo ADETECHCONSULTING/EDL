@@ -42,7 +42,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
         get() = SUITE_CONSTAT_LABEL
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     private lateinit var binding: FragmentDetailEndConstatBinding
 

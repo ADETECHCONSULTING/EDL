@@ -32,7 +32,15 @@ class ViewPagerFragmentAdd : BaseFragment("ViewPager") {
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_add_room)?.isVisible = false
         menu.findItem(R.id.action_compteur)?.isVisible = false
-        menu.findItem(R.id.action_next)?.isVisible = false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_next -> {
+                findNavController().popBackStack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateView(

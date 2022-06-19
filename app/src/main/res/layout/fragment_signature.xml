@@ -68,6 +68,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="@dimen/margin_medium"
                 android:layout_weight="1"
+                app:clearOnDoubleClick="true"
                 android:background="@color/white"
                 android:saveEnabled="false" />
 
@@ -86,12 +87,14 @@
                 android:layout_height="0dp"
                 android:layout_margin="@dimen/margin_medium"
                 android:layout_weight="1"
+                app:clearOnDoubleClick="true"
                 android:background="@color/white"
                 android:saveEnabled="false" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ctn_signature_tenant"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="vertical"
@@ -114,22 +117,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/margin_medium"
+                app:clearOnDoubleClick="true"
                 android:background="@color/white"
                 android:saveEnabled="false" />
 
         </LinearLayout>
 
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_clear_signature"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/buttons_height"
-            android:layout_marginStart="8dp"
-            android:backgroundTint="@color/red"
-            android:minWidth="@dimen/buttons_large_width"
-            android:text="@string/effacer_label"
-            app:layout_constraintStart_toEndOf="@+id/ctn_signature_paraphe"
-            app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -146,7 +139,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ctn_signature_paraphe"
-            app:layout_constraintTop_toBottomOf="@+id/btn_clear_signature" />
+            app:layout_constraintTop_toBottomOf="@id/ctn_signature_tenant"/>
 
         <TextView
             android:id="@+id/txv_pdf_export"

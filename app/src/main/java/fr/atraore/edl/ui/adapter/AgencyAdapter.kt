@@ -21,7 +21,7 @@ class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, pr
     private val TAG = AgencyAdapter::class.simpleName
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

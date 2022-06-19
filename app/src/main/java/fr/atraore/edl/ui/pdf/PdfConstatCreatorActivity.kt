@@ -15,9 +15,8 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.setMargins
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.tejpratapsingh.pdfcreator.activity.PDFCreatorActivity
 import com.tejpratapsingh.pdfcreator.utils.PDFUtil.PDFUtilListener
 import com.tejpratapsingh.pdfcreator.views.PDFBody
@@ -31,11 +30,13 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.entity.Detail
 import fr.atraore.edl.data.models.entity.RoomReference
+import fr.atraore.edl.photo.PickerConfiguration
 import fr.atraore.edl.utils.COMPTEUR_LABELS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.net.URLConnection
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
@@ -52,6 +53,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
     private var roomWithDetails: Map<RoomReference, List<Detail>>? = null
     private lateinit var emptySpace: PDFLineSeparatorView
     private lateinit var constatId: String
+    private lateinit var file: File
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +72,9 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                         this.roomWithDetails = pair.second
 
                         launch {
-                             createPDF(constatId, object : PDFUtilListener {
+                            createPDF(constatId, object : PDFUtilListener {
                                 override fun pdfGenerationSuccess(savedPDFFile: File) {
+                                    file = savedPDFFile
                                     Toast.makeText(this@PdfConstatCreatorActivity, "PDF Created", Toast.LENGTH_SHORT).show()
                                 }
 
@@ -137,20 +140,11 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         if (constat.constat.paraphPath !== null) {
             val bitmapParaph = getBitmapFromUri(Uri.parse(constat.constat.paraphPath))
-            val targetBmpParaph = getResizedBitmap(bitmapParaph, 60, 60)
+            val targetBmpParaph = bitmapResizer(bitmapParaph.copy(Bitmap.Config.ARGB_8888, false), 120, 120)
 
             if (targetBmpParaph !== null) {
 
-                val pdfImageView = PDFImageView(applicationContext).setImageBitmap(targetBmpParaph)
-
-                Glide.with((applicationContext))
-                    .load(bitmapParaph)
-                    .apply(RequestOptions().override(600, 200))
-                    .into(pdfImageView.view)
-
-                pdfImageView.view.layoutParams = params
-                //FIX quand il y a plusieurs éléments dans le layout lineaire
-                horizontalView.addView(pdfImageView)
+                addImageInView(targetBmpParaph, horizontalView, "")
 
                 pdfTextViewPage.view.layoutParams = params
 
@@ -159,24 +153,29 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
             }
         } else {
             pdfTextViewPage.view.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT, 0f
-                )
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT, 0f
+            )
         }
 
-        pdfTextViewPage.view.gravity = Gravity.CENTER
+        pdfTextViewPage.view.gravity = Gravity.BOTTOM
         horizontalView.addView(pdfTextViewPage)
-        horizontalView.view.gravity = Gravity.CENTER_VERTICAL
+        horizontalView.view.gravity = Gravity.BOTTOM
+        horizontalView.view.layoutParams.height = 150
 
+        footerView.view.layoutParams.height = 150
         footerView.addView(horizontalView)
+
         return footerView
+
     }
 
     override fun onNextClicked(savedPDFFile: File) {
-        val pdfUri = Uri.fromFile(savedPDFFile)
-        val intentPdfViewer = Intent(this@PdfConstatCreatorActivity, PdfViewerExampleActivity::class.java)
-        intentPdfViewer.putExtra(PdfViewerExampleActivity.PDF_FILE_URI, pdfUri)
-        startActivity(intentPdfViewer)
+//        val pdfUri = Uri.fromFile(savedPDFFile)
+//        val intentPdfViewer = Intent(this@PdfConstatCreatorActivity, PdfViewerExampleActivity::class.java)
+//        intentPdfViewer.putExtra(PdfViewerExampleActivity.PDF_FILE_URI, pdfUri)
+//        startActivity(intentPdfViewer)
+        sharedPdf()
     }
 
 
@@ -750,5 +749,23 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         // recreate the new Bitmap
         return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false)
     }
+
+    fun sharedPdf() {
+        if (file == null || !file.exists()) {
+            Toast.makeText(this, "une erreur est survenue lors du partage du PDF", Toast.LENGTH_SHORT).show()
+        }
+        val intentShareFile = Intent(Intent.ACTION_SEND)
+        val apkURI: Uri = FileProvider.getUriForFile(
+            this, PickerConfiguration.getAuthority(), file
+        )
+        intentShareFile.setDataAndType(apkURI, URLConnection.guessContentTypeFromName(file.name))
+        intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intentShareFile.putExtra(
+            Intent.EXTRA_STREAM,
+            apkURI
+        )
+        startActivity(Intent.createChooser(intentShareFile, "Share File"))
+    }
+
 
 }

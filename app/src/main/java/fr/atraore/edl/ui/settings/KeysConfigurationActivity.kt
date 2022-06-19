@@ -30,7 +30,7 @@ import kotlin.coroutines.CoroutineContext
 class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchView.OnQueryTextListener {
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     private val viewModel: ReferenceViewModel by viewModels()
     private val keysGridAdapter = KeysGridAdapter()

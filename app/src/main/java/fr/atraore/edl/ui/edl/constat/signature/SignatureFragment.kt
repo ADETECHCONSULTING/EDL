@@ -45,7 +45,7 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver, Coroutin
     private val TAG = SignatureFragment::class.simpleName
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
 
     override val title: String
@@ -131,7 +131,7 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver, Coroutin
         launch {
             val bitmapSignatureOwner = this@SignatureFragment.signature_pad.signatureBitmap
             val bitmapSignatureTenant = this@SignatureFragment.signature_pad_tenant.signatureBitmap
-            val bitmapParaph = this@SignatureFragment.paraph_pad.signatureBitmap
+            val bitmapParaph = this@SignatureFragment.paraph_pad.transparentSignatureBitmap
 
             if (bitmapSignatureOwner != null) {
                 val absolutePathImage = MediaStore.Images.Media.insertImage(requireContext().contentResolver, bitmapSignatureOwner, "${constat.constat.constatId}_SignatureProprietaire", "Signature image")

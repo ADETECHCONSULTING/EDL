@@ -55,7 +55,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
     private val TAG = StartConstatFragment::class.simpleName
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
         get() = "Compteur"
@@ -172,7 +172,6 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_compteur)?.isVisible = false
-        menu.findItem(R.id.action_next)?.isVisible = false
     }
 
     @SuppressLint("CheckResult")
@@ -186,6 +185,9 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
                     }
                     positiveButton(R.string.done)
                 }
+            }
+            R.id.action_next -> {
+                findNavController().popBackStack()
             }
         }
         return super.onOptionsItemSelected(item)

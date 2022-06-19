@@ -28,7 +28,7 @@ class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), V
     private lateinit var binding: FragmentAddPropertyBinding
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
         get() = PROPERTY_LABEL

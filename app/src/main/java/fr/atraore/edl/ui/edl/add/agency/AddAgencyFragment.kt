@@ -28,7 +28,7 @@ class AddAgencyFragment() : BaseFragment(AGENCY_LABEL), View.OnClickListener, Co
     private lateinit var binding: FragmentAddAgencyBinding
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
         get() = AGENCY_LABEL

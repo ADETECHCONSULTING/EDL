@@ -20,7 +20,7 @@ class TenantAdapter(private val tenantSearchViewModel: TenantSearchViewModel, pr
     private val TAG = TenantAdapter::class.simpleName
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

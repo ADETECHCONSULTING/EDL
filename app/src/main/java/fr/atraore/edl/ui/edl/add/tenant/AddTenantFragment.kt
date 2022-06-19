@@ -29,7 +29,7 @@ class AddTenantFragment(val idArgs: String?) : BaseFragment(TENANT_LABEL), View.
     private val TAG = AddTenantFragment::class.simpleName
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
         get() = TENANT_LABEL

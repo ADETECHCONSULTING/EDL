@@ -64,7 +64,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     }
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     var roomRefList: List<RoomReference>? = null
     var elementRefList: List<ElementReference>? = null

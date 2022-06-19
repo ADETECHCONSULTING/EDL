@@ -40,7 +40,7 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
     private val TAG = StartConstatFragment::class.simpleName
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
         get() = "Début de la mission"

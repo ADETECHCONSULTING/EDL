@@ -28,7 +28,7 @@ class AddContractorFragment(val idArgs: String?) : BaseFragment(CONTRACTOR_LABEL
     private lateinit var binding: FragmentAddContractorBinding
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
         get() = CONTRACTOR_LABEL

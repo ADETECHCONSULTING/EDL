@@ -88,7 +88,7 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
     }
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

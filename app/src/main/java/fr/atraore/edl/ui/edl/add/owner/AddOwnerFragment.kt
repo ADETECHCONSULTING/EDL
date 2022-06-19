@@ -28,7 +28,7 @@ class AddOwnerFragment(val idArgs: String?) : BaseFragment(OWNER_LABEL), View.On
     private lateinit var binding: FragmentAddOwnerBinding
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
         get() = OWNER_LABEL
