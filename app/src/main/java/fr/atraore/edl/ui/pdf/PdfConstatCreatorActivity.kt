@@ -11,6 +11,8 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -32,6 +34,9 @@ import fr.atraore.edl.data.models.entity.Detail
 import fr.atraore.edl.data.models.entity.RoomReference
 import fr.atraore.edl.photo.PickerConfiguration
 import fr.atraore.edl.utils.COMPTEUR_LABELS
+import fr.atraore.edl.utils.InsertMedia
+import kotlinx.android.synthetic.main.footer_layout.*
+import kotlinx.android.synthetic.main.footer_layout.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -127,44 +132,15 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
     override fun getFooterView(pageIndex: Int): PDFFooterView {
         val footerView = PDFFooterView(applicationContext)
-        val params = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
 
-        val horizontalView = PDFHorizontalView(applicationContext)
-        horizontalView.view.layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT, 0f
-        )
-
-        val pdfTextViewPage = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.SMALL)
-        pdfTextViewPage.setText(String.format(Locale.getDefault(), "Page: %d", pageIndex + 1))
-
+        val footerViewLayout: View = LayoutInflater.from(this).inflate(R.layout.footer_layout, ctn_footer, false)
         if (constat.constat.paraphPath !== null) {
             val bitmapParaph = getBitmapFromUri(Uri.parse(constat.constat.paraphPath))
-            val targetBmpParaph = bitmapResizer(bitmapParaph.copy(Bitmap.Config.ARGB_8888, false), 120, 120)
 
-            if (targetBmpParaph !== null) {
-
-                addImageInView(targetBmpParaph, horizontalView, "")
-
-                pdfTextViewPage.view.layoutParams = params
-
-            } else {
-                Log.d(TAG, "footerArea: Le resize du paraph n'a pas fonctionné")
-            }
-        } else {
-            pdfTextViewPage.view.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT, 0f
-            )
+            footerViewLayout.imv_paraph.setImageBitmap(bitmapParaph)
         }
-
-        pdfTextViewPage.view.gravity = Gravity.BOTTOM
-        horizontalView.addView(pdfTextViewPage)
-        horizontalView.view.gravity = Gravity.BOTTOM
-        horizontalView.view.layoutParams.height = 150
-
-        footerView.view.layoutParams.height = 150
-        footerView.addView(horizontalView)
+        footerViewLayout.textView.text = String.format(Locale.getDefault(), "Page: %d", pageIndex + 1)
+        footerView.view.addView(footerViewLayout)
 
         return footerView
 
@@ -183,12 +159,12 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
     private fun identityArea(pdfBody: PDFBody) {
         //Adresse
         val pdfCompanyNameView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.H2)
-        pdfCompanyNameView.setText("Dom'Services")
+        pdfCompanyNameView.setText(this.constat.agency?.name ?: "")
         pdfBody.addView(pdfCompanyNameView)
         val lineSeparatorView1 = PDFLineSeparatorView(applicationContext).setBackgroundColor(Color.WHITE)
         pdfBody.addView(lineSeparatorView1)
         val pdfAddressView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfAddressView.setText("3 rue favernay\n74160 saint julien en genevois")
+        pdfAddressView.setText("${this.constat.agency?.address}")
         pdfBody.addView(pdfAddressView)
         emptySpace = PDFLineSeparatorView(applicationContext).setBackgroundColor(Color.WHITE)
         emptySpace.setLayout(
@@ -208,17 +184,17 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         //Premiere ligne doit être généré en amont
         val tableRowViewUpperInfo1 = PDFTableRowView(applicationContext)
         var pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Propriétaire : M. FRANKEN Loïc")
+        pdfTextViewUpperInfo.setText("Propriétaire(s) : ${constat.getOwnersConcatenate(false)}")
         tableRowViewUpperInfo1.addToRow(pdfTextViewUpperInfo)
         pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Locataire : M. FRANKEN Loïc")
+        pdfTextViewUpperInfo.setText("Locataire(s) : ${constat.getTenantConcatenate(false)}")
         tableRowViewUpperInfo1.addToRow(pdfTextViewUpperInfo)
 
         //configuration de la table
         val tableViewUpperInfo = PDFTableView(applicationContext, tableUpperInfo, tableRowViewUpperInfo1)
         var tableRowViewUpperInfo = PDFTableRowView(applicationContext)
         pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Effectué par : Mr Dom Germain")
+        pdfTextViewUpperInfo.setText("Effectué par : ${constat.user?.name}")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
         pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
         pdfTextViewUpperInfo.setText("")
@@ -226,10 +202,10 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         tableViewUpperInfo.addRow(tableRowViewUpperInfo)
         tableRowViewUpperInfo = PDFTableRowView(applicationContext)
         pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Mandataire : Franken Loic")
+        pdfTextViewUpperInfo.setText("Mandataire : ${constat.getContractorConcatenate(false)}")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
         pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Nouvelle(s) adresse(s) : 20 place de l'aviateur")
+        pdfTextViewUpperInfo.setText("Nouvelle(s) adresse(s) : ${constat.getPropertyAddressConcatenate()}")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
         tableViewUpperInfo.addRow(tableRowViewUpperInfo)
         tableRowViewUpperInfo = PDFTableRowView(applicationContext)
@@ -237,7 +213,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         pdfTextViewUpperInfo.setText("Adresse : ")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
         pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Date d'entrée : 15 mai 2022")
+        pdfTextViewUpperInfo.setText("Date d'entrée : ${constat.constat.dateCreationFormatted}")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
         tableViewUpperInfo.addRow(tableRowViewUpperInfo)
         tableViewUpperInfo.setColumnWidth(*widthPercentUpperInfo)
@@ -260,28 +236,20 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         //Premiere ligne doit être généré en amont
         val tableRowViewProperty1 = PDFTableRowView(applicationContext)
         var pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Type : Appart T2 sur 1 niveau")
+        pdfTextViewProperty.setText("Type(s) : ${constat.getPropertyTypeAndNatureConcatenate()}")
         tableRowViewProperty1.addToRow(pdfTextViewProperty)
         pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Etage : 3")
+        pdfTextViewProperty.setText("Etage(s) : ${constat.properties.map { property -> property.floor }.joinToString(", ")}")
         tableRowViewProperty1.addToRow(pdfTextViewProperty)
 
         //configuration de la table
         val tableViewProperty = PDFTableView(applicationContext, tableProperty, tableRowViewProperty1)
         var tableRowViewProperty = PDFTableRowView(applicationContext)
         pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Adresse : 3 rue de l'industrie\n74160 saint julien en genevois")
+        pdfTextViewProperty.setText("Adresse : ${constat.getPropertyAddressConcatenate()}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Escalier : ")
-        tableRowViewProperty.addToRow(pdfTextViewProperty)
-        tableViewProperty.addRow(tableRowViewProperty)
-        tableRowViewProperty = PDFTableRowView(applicationContext)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("")
-        tableRowViewProperty.addToRow(pdfTextViewProperty)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Porte : ")
+        pdfTextViewProperty.setText("Escalier(s) : ${constat.properties.map { property -> property.stairCase }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableRowViewProperty = PDFTableRowView(applicationContext)
@@ -289,7 +257,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         pdfTextViewProperty.setText("")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Cave : ")
+        pdfTextViewProperty.setText("Porte(s) : ${constat.properties.map { property -> property.appartmentDoor }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableRowViewProperty = PDFTableRowView(applicationContext)
@@ -297,7 +265,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         pdfTextViewProperty.setText("")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Grenier : ")
+        pdfTextViewProperty.setText("Cave(s) : ${constat.properties.map { property -> property.caveDoor }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableRowViewProperty = PDFTableRowView(applicationContext)
@@ -305,7 +273,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         pdfTextViewProperty.setText("")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Parking : ")
+        pdfTextViewProperty.setText("Grenier(s) : ${constat.properties.map { property -> property.atticDoor }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableRowViewProperty = PDFTableRowView(applicationContext)
@@ -313,7 +281,15 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         pdfTextViewProperty.setText("")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Box : ")
+        pdfTextViewProperty.setText("Parking(s) : ${constat.properties.map { property -> property.parkingDoor }.joinToString(", ")}")
+        tableRowViewProperty.addToRow(pdfTextViewProperty)
+        tableViewProperty.addRow(tableRowViewProperty)
+        tableRowViewProperty = PDFTableRowView(applicationContext)
+        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+        pdfTextViewProperty.setText("")
+        tableRowViewProperty.addToRow(pdfTextViewProperty)
+        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+        pdfTextViewProperty.setText("Box(s) : ${constat.properties.map { property -> property.boxDoor }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableViewProperty.setColumnWidth(*widthPercentProperty)
@@ -717,7 +693,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
     private fun getBitmapFromUri(imageUri: Uri): Bitmap {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, imageUri))
+            InsertMedia.loadPhotoFromInternalStorage(this, imageUri.toString())
         } else {
             MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
         }

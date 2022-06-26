@@ -2,8 +2,10 @@ package fr.atraore.edl.ui.edl.constat.signature
 
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -27,16 +29,19 @@ import fr.atraore.edl.databinding.FragmentSignatureBinding
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.ui.pdf.PdfConstatCreatorActivity
-import fr.atraore.edl.utils.*
+import fr.atraore.edl.utils.ARGS_CONSTAT_ID
+import fr.atraore.edl.utils.IMAGES_FOLDER_NAME
+import fr.atraore.edl.utils.assistedViewModel
+import fr.atraore.edl.utils.observeOnce
 import kotlinx.android.synthetic.main.fragment_signature.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -112,9 +117,6 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver, Coroutin
             MaterialDialog(requireContext()).show {
                 positiveButton(text = "Accepter") { _ ->
                     saveCanvas()
-                    val intent = Intent(activity, PdfConstatCreatorActivity::class.java)
-                    intent.putExtra("constatId", arguments?.getString(ARGS_CONSTAT_ID)!!)
-                    startActivity(intent)
                 }
                 negativeButton(text = "Refuser")
                 title(text = "Conditions avant validation")
@@ -134,57 +136,41 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver, Coroutin
             val bitmapParaph = this@SignatureFragment.paraph_pad.transparentSignatureBitmap
 
             if (bitmapSignatureOwner != null) {
-                val absolutePathImage = MediaStore.Images.Media.insertImage(requireContext().contentResolver, bitmapSignatureOwner, "${constat.constat.constatId}_SignatureProprietaire", "Signature image")
-                absolutePathImage?.let { viewModel.saveOwnerSignaturePath(absolutePathImage, constat.constat.constatId) }
+                //val absolutePathImage = MediaStore.Images.Media.insertImage(requireContext().contentResolver, bitmapSignatureOwner, "${constat.constat.constatId}_SignatureProprietaire", "Signature image")
+                savePhotoToInternalStorage("${constat.constat.constatId}_SignatureProprietaire", bitmapSignatureOwner)
+                viewModel.saveOwnerSignaturePath("${constat.constat.constatId}_SignatureProprietaire", constat.constat.constatId)
             }
             if (bitmapSignatureTenant != null) {
-                val absolutePathImage = MediaStore.Images.Media.insertImage(requireContext().contentResolver, bitmapSignatureTenant, "${constat.constat.constatId}_SignatureLocataire", "Signature image")
-                absolutePathImage?.let { viewModel.saveTenantSignaturePath(absolutePathImage, constat.constat.constatId) }
+                savePhotoToInternalStorage("${constat.constat.constatId}_SignatureLocataire", bitmapSignatureTenant)
+                viewModel.saveTenantSignaturePath("${constat.constat.constatId}_SignatureLocataire", constat.constat.constatId)
             }
             if (bitmapParaph != null) {
-                val absolutePathImage = MediaStore.Images.Media.insertImage(requireContext().contentResolver, bitmapParaph, "${constat.constat.constatId}_Paraphe", "Paraphe image")
-                absolutePathImage?.let { viewModel.saveParaphPath(absolutePathImage, constat.constat.constatId) }
+                savePhotoToInternalStorage("${constat.constat.constatId}_SignatureParaph", bitmapParaph)
+                viewModel.saveParaphPath("${constat.constat.constatId}_SignatureParaph", constat.constat.constatId)
             }
-            Toast.makeText(requireContext(), "La signature a bien été enregistrée", Toast.LENGTH_SHORT).show()
+
+            launch(Dispatchers.Main) {
+                Toast.makeText(requireContext(), "La signature a bien été enregistrée", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(activity, PdfConstatCreatorActivity::class.java)
+                intent.putExtra("constatId", arguments?.getString(ARGS_CONSTAT_ID)!!)
+                startActivity(intent)
+
+            }
         }
     }
 
-    //à peut être utiliser plus tard
-    @Throws(IOException::class)
-    private fun saveImage(bitmap: Bitmap, @NonNull name: String) {
-        val saved: Boolean
-        var fos: OutputStream? = null
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val resolver: ContentResolver = requireContext().getContentResolver()
-            val contentValues = ContentValues()
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/$IMAGES_FOLDER_NAME")
-            val imageUri: Uri? = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-            imageUri?.apply {
-                fos = resolver.openOutputStream(this)
+    private fun savePhotoToInternalStorage(filename: String, bmp: Bitmap): Boolean {
+        return try {
+            requireActivity().openFileOutput("$filename.png", MODE_PRIVATE).use { stream ->
+                if(!bmp.compress(Bitmap.CompressFormat.PNG, 95, stream)) {
+                    throw IOException("Couldn't save bitmap.")
+                }
             }
-        } else {
-            val imagesDir: String = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM
-            ).toString() + File.separator + IMAGES_FOLDER_NAME
-            val file = File(imagesDir)
-            if (!file.exists()) {
-                file.mkdir()
-            }
-            val image = File(imagesDir, "$name.png")
-            fos = FileOutputStream(image)
-        }
-        saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-        fos?.flush()
-        fos?.close()
-    }
-
-    private fun getBitmapFromUri(imageUri: Uri): Bitmap {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, imageUri))
-        } else {
-            MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
+            true
+        } catch(e: IOException) {
+            e.printStackTrace()
+            false
         }
     }
 

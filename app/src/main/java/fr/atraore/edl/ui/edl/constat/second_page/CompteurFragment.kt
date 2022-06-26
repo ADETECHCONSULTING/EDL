@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.graphics.Matrix
@@ -267,59 +268,43 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
             useGlide(currentImageView, imagePath)
 
             activity?.let {
-                val absolutePathImage = InsertMedia.insertImage(it.contentResolver, getBitmapFromUri(imagePath), "${constatWithDetail.constat.constatId}_${currentImageView.resources.getResourceEntryName(currentImageView.id)}", "Compteur Image")
+                savePhotoToInternalStorage("${constatWithDetail.constat.constatId}_${currentImageView.resources.getResourceEntryName(currentImageView.id)}", getBitmapFromUri(imagePath))
+                val path = "${constatWithDetail.constat.constatId}_${currentImageView.resources.getResourceEntryName(currentImageView.id)}"
 
-                absolutePathImage?.let { path ->
-                    when (currentImageView.resources.getResourceEntryName(currentImageView.id)) {
-                        "imb_photo_eau_froide_1" -> {
-                            viewModel.saveImagePathOnCompteur(1, path, false)
-                        }
-                        "imb_photo_eau_froide_2" -> {
-                            viewModel.saveImagePathOnCompteur(1, path, true)
-
-                        }
-                        "imb_photo_elec_1" -> {
-                            viewModel.saveImagePathOnCompteur(2, path, false)
-                        }
-                        "imb_photo_elec_2" -> {
-                            viewModel.saveImagePathOnCompteur(2, path, true)
-                        }
-                        "imb_photo_eau_chaude_1" -> {
-                            viewModel.saveImagePathOnCompteur(4, path, false)
-                        }
-                        "imb_photo_eau_chaude_2" -> {
-                            viewModel.saveImagePathOnCompteur(4, path, true)
-                        }
-                        "imb_photo_gaz_1" -> {
-                            viewModel.saveImagePathOnCompteur(5, path, false)
-                        }
-                        "imb_photo_gaz_2" -> {
-                            viewModel.saveImagePathOnCompteur(5, path, true)
-                        }
-                        "imb_photo_cuve_1" -> {
-                            viewModel.saveImagePathOnCompteur(6, path, false)
-                        }
-                        "imb_photo_cuve_2" -> {
-                            viewModel.saveImagePathOnCompteur(6, path, true)
-                        }
+                when (currentImageView.resources.getResourceEntryName(currentImageView.id)) {
+                    "imb_photo_eau_froide_1" -> {
+                        viewModel.saveImagePathOnCompteur(1, path, false)
                     }
-                    Log.d(TAG, "onImagesPicked: Image sauvegardée")
-                }
-            }
-        }
-    }
-
-    private fun checkIfCompteurHasImage() {
-        this.constatWithDetail.compteurs.filter { compteur -> compteur.getPrimaryQuantity !== null || compteur.getSecondaryQuantity !== null }.forEach { compteur ->
-            when (compteur.compteurRefId) {
-                1 -> {
-                    if (compteur.getPrimaryQuantity !== null) {
+                    "imb_photo_eau_froide_2" -> {
+                        viewModel.saveImagePathOnCompteur(1, path, true)
 
                     }
-                    if (compteur.getSecondaryQuantity !== null) {
-
+                    "imb_photo_elec_1" -> {
+                        viewModel.saveImagePathOnCompteur(2, path, false)
+                    }
+                    "imb_photo_elec_2" -> {
+                        viewModel.saveImagePathOnCompteur(2, path, true)
+                    }
+                    "imb_photo_eau_chaude_1" -> {
+                        viewModel.saveImagePathOnCompteur(4, path, false)
+                    }
+                    "imb_photo_eau_chaude_2" -> {
+                        viewModel.saveImagePathOnCompteur(4, path, true)
+                    }
+                    "imb_photo_gaz_1" -> {
+                        viewModel.saveImagePathOnCompteur(5, path, false)
+                    }
+                    "imb_photo_gaz_2" -> {
+                        viewModel.saveImagePathOnCompteur(5, path, true)
+                    }
+                    "imb_photo_cuve_1" -> {
+                        viewModel.saveImagePathOnCompteur(6, path, false)
+                    }
+                    "imb_photo_cuve_2" -> {
+                        viewModel.saveImagePathOnCompteur(6, path, true)
                     }
                 }
+                Log.d(TAG, "onImagesPicked: Image sauvegardée")
             }
         }
     }
@@ -329,6 +314,20 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
             ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, imageUri))
         } else {
             Media.getBitmap(requireContext().contentResolver, imageUri)
+        }
+    }
+
+    private fun savePhotoToInternalStorage(filename: String, bmp: Bitmap): Boolean {
+        return try {
+            requireActivity().openFileOutput("$filename.png", Context.MODE_PRIVATE).use { stream ->
+                if (!bmp.compress(Bitmap.CompressFormat.PNG, 95, stream)) {
+                    throw IOException("Couldn't save bitmap.")
+                }
+            }
+            true
+        } catch (e: IOException) {
+            e.printStackTrace()
+            false
         }
     }
 

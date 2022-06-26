@@ -136,4 +136,22 @@ data class ConstatWithDetails (
         return res
     }
 
+    @Ignore
+    fun getContractorConcatenate(withPrefix: Boolean): String {
+        var res = "";
+
+        if (contractors.isEmpty()) {
+            res = "Pas de mandataires"
+        } else {
+            if (withPrefix) {
+                res += "Mandataire\n"
+            }
+            contractors.forEach { contractor ->
+                res += contractor.denomination + "\n"
+            }
+        }
+
+        return res
+    }
+
 }

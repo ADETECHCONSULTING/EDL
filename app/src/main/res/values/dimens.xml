@@ -8,6 +8,7 @@
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="txt_size_small">16sp</dimen>
     <dimen name="textSizeSmall">14sp</dimen>
+    <dimen name="textSizeExtraSmall">12sp</dimen>
     <dimen name="textSizeMedium">16sp</dimen>
     <dimen name="textSizeLarge">21sp</dimen>
     <dimen name="textSizeExtraLarge">28sp</dimen>

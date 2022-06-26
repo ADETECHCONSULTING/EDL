@@ -1,12 +1,17 @@
 package fr.atraore.edl.utils
 
+import android.app.Activity
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
 import android.provider.MediaStore
+import fr.atraore.edl.ui.edl.constat.signature.InternalStoragePhoto
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.OutputStream
@@ -58,6 +63,17 @@ class InsertMedia {
                 stringUrl = url.toString()
             }
             return stringUrl
+        }
+
+
+        fun loadPhotoFromInternalStorage(activity: Activity, filename: String): Bitmap {
+            val files = activity.filesDir.listFiles()
+            val file = files.find { file -> file.name.contains(filename) }.let {
+                val bytes = it!!.readBytes()
+                val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                InternalStoragePhoto(it.name, bmp)
+            }
+            return file.bmp
         }
 
         /**
