@@ -129,6 +129,9 @@
     <string name="signature_label">Veuillez tracer votre signature dans le champ ci-dessous</string>
     <string name="parah_label">Veuillez parapher le champ ci-dessous</string>
     <string name="manage_outdoor_eqts">Configurer les équipements ext.</string>
+    <string name="fnctmnt_label">Fonctionnement</string>
+    <string name="fnctmnt_label_ok">Fonctionnement : OK</string>
+    <string name="fnctmnt_label_ko">Fonctionnement : KO</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>

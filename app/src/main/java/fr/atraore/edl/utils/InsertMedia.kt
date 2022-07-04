@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.content.ContentValues
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -12,6 +13,7 @@ import android.provider.MediaStore
 import fr.atraore.edl.ui.edl.constat.signature.InternalStoragePhoto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.OutputStream
@@ -19,61 +21,41 @@ import java.io.OutputStream
 class InsertMedia {
 
     companion object {
-        fun insertImage(
-            cr: ContentResolver,
-            source: Bitmap?,
-            title: String?,
-            description: String?
-        ): String? {
-            val values = ContentValues()
-            values.put(MediaStore.Images.Media.TITLE, title)
-            values.put(MediaStore.Images.Media.DISPLAY_NAME, title)
-            values.put(MediaStore.Images.Media.DESCRIPTION, description)
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            // Add the date meta data to ensure the image is added at the front of the gallery
-            values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis())
-            values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
-            var url: Uri? = null
-            var stringUrl: String? = null /* value to be returned */
-            try {
-                url = cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-                if (source != null) {
-                    val imageOut: OutputStream? = cr.openOutputStream(url!!)
-                    try {
-                        source.compress(Bitmap.CompressFormat.JPEG, 50, imageOut)
-                    } finally {
-                        imageOut?.close()
+
+        fun savePhotoToInternalStorage(activity: Activity, filename: String, bmp: Bitmap): Boolean {
+            return try {
+                activity.openFileOutput("$filename.png", Context.MODE_PRIVATE).use { stream ->
+                    if(!bmp.compress(Bitmap.CompressFormat.PNG, 95, stream)) {
+                        throw IOException("Couldn't save bitmap.")
                     }
-                    val id = ContentUris.parseId(url)
-                    // Wait until MINI_KIND thumbnail is generated.
-                    val miniThumb: Bitmap = MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MINI_KIND, null)
-                    // This is for backward compatibility.
-                    storeThumbnail(cr, miniThumb, id, 50f, 50f, MediaStore.Images.Thumbnails.MICRO_KIND)
-                } else {
-                    cr.delete(url!!, null, null)
-                    url = null
                 }
-            } catch (e: Exception) {
-                if (url != null) {
-                    cr.delete(url, null, null)
-                    url = null
-                }
+                true
+            } catch(e: IOException) {
+                e.printStackTrace()
+                false
             }
-            if (url != null) {
-                stringUrl = url.toString()
-            }
-            return stringUrl
         }
 
+        fun saveFileToInternalStorage(activity: Activity, filename: String, file: File, extension: String): Boolean {
+            return try {
+                activity.openFileOutput("$filename.$extension", Context.MODE_PRIVATE).use { stream ->
+                    stream.write(file.readBytes())
+                }
+                true
+            } catch(e: IOException) {
+                e.printStackTrace()
+                false
+            }
+        }
 
-        fun loadPhotoFromInternalStorage(activity: Activity, filename: String): Bitmap {
+        fun loadPhotoFromInternalStorage(activity: Activity, filename: String): Bitmap? {
             val files = activity.filesDir.listFiles()
-            val file = files.find { file -> file.name.contains(filename) }.let {
-                val bytes = it!!.readBytes()
+            val file = files.find { file -> file.name.contains(filename) }?.let {
+                val bytes = it.readBytes()
                 val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
                 InternalStoragePhoto(it.name, bmp)
             }
-            return file.bmp
+            return file?.bmp
         }
 
         /**

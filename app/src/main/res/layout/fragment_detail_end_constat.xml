@@ -136,6 +136,16 @@
 
                     </com.google.android.material.chip.ChipGroup>
 
+                    <ToggleButton
+                        android:id="@+id/tgb_fonctionnement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:text="@string/fnctmnt_label"
+                        android:textOn="@string/fnctmnt_label_ok"
+                        android:textOff="@string/fnctmnt_label_ko"
+                        android:onCheckedChanged="@{(view, check) -> fragment.toggleFonctionmentChange(view, check)}"
+                        />
                 </LinearLayout>
 
 

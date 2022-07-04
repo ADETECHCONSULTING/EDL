@@ -146,3 +146,10 @@ val OUTDOORS_EQUIPMNT_LABELS = listOf(
     "Porte garage / box",
     "Serrure garage / box"
 )
+
+val PROPRETE_LABELS = listOf(
+    "Propre",
+    "Poussière",
+    "Gras",
+    "Non nettoyé"
+)

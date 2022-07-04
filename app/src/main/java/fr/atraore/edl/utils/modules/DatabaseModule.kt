@@ -155,7 +155,8 @@ class DatabaseModule {
         compteurReferenceDao: Provider<CompteurReferenceDao>,
         configPdfDao: Provider<ConfigPdfDao>,
         keyDao: Provider<KeyDao>,
-        outDoorEquipementDao: Provider<OutDoorEquipementDao>
+        outDoorEquipementDao: Provider<OutDoorEquipementDao>,
+        propreteDao: Provider<PropreteDao>
     ): AppDatabase {
         return Room.databaseBuilder(
             applicationContext,
@@ -181,6 +182,7 @@ class DatabaseModule {
                             configPdfDao.get(),
                             keyDao.get(),
                             outDoorEquipementDao.get(),
+                            propreteDao.get()
                         )
                     }
                 }
@@ -205,7 +207,8 @@ class DatabaseModule {
         compteurReferenceDao: CompteurReferenceDao,
         configPdfDao: ConfigPdfDao,
         keyDao: KeyDao,
-        outDoorEquipementDao: OutDoorEquipementDao
+        outDoorEquipementDao: OutDoorEquipementDao,
+        propreteDao: PropreteDao
     ) {
         // Delete all content
         constatDao.deleteAll()
@@ -227,6 +230,7 @@ class DatabaseModule {
         createConfigPdfReference(configPdfDao)
         createKeyReferences(keyDao)
         createOutDoorEquipementReferences(outDoorEquipementDao)
+        createPropreteReferences(propreteDao)
     }
 
     private suspend fun createRoomsReference(roomReferenceDao: RoomReferenceDao) {
@@ -257,6 +261,13 @@ class DatabaseModule {
         for ((index, value) in COMPTEUR_LABELS.withIndex()) {
             val compteurReference = CompteurReference(index+1, value)
             compteurReferenceDao.save(compteurReference)
+        }
+    }
+
+    private suspend fun createPropreteReferences(propreteDao: PropreteDao) {
+        PROPRETE_LABELS.forEach {
+            val proprete = Proprete(UUID.randomUUID().toString(), it)
+            propreteDao.save(proprete)
         }
     }
 

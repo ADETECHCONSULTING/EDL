@@ -51,4 +51,8 @@ class DetailEndConstatViewModel @Inject constructor(
     suspend fun saveProprete(proprete: Proprete) {
         propreteRepository.save(proprete)
     }
+
+    suspend fun updateFonctionnement(fonctionnement: String, idDetail: String) {
+        detailRepository.updateFonctionnement(fonctionnement, idDetail)
+    }
 }

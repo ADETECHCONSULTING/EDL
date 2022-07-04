@@ -147,10 +147,6 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
     }
 
     override fun onNextClicked(savedPDFFile: File) {
-//        val pdfUri = Uri.fromFile(savedPDFFile)
-//        val intentPdfViewer = Intent(this@PdfConstatCreatorActivity, PdfViewerExampleActivity::class.java)
-//        intentPdfViewer.putExtra(PdfViewerExampleActivity.PDF_FILE_URI, pdfUri)
-//        startActivity(intentPdfViewer)
         sharedPdf()
     }
 
@@ -334,6 +330,13 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
             tableRowView.addToRow(pdfTextView)
             pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
             pdfTextView.setText(if (compteur.fonctionmt == null) "NON" else compteur.fonctionmt.toString())
+            if (pdfTextView.text.toString().equals("non", true)) {
+                pdfTextView.setBackgroundColor(Color.RED)
+                pdfTextView.setTextColor(Color.WHITE)
+            } else if (pdfTextView.text.toString().equals("oui", true)) {
+                pdfTextView.setBackgroundColor(Color.GREEN)
+                pdfTextView.setTextColor(Color.WHITE)
+            }
             tableRowView.addToRow(pdfTextView)
             pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
             pdfTextView.setText(if (compteur.proprete == null) "" else compteur.proprete)
@@ -459,6 +462,13 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
             tableRowView.addToRow(pdfTextView)
             pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
             pdfTextView.setText(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString())
+            if (pdfTextView.text.toString().equals("non", true)) {
+                pdfTextView.setBackgroundColor(Color.RED)
+                pdfTextView.setTextColor(Color.WHITE)
+            } else if (pdfTextView.text.toString().equals("oui", true)) {
+                pdfTextView.setBackgroundColor(Color.GREEN)
+                pdfTextView.setTextColor(Color.WHITE)
+            }
             tableRowView.addToRow(pdfTextView)
             pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
             pdfTextView.setText(if (key.proprete == null) "" else key.proprete)
@@ -532,6 +542,13 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                     tableRowView.addToRow(pdfTextView)
                     pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
                     pdfTextView.setText(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString())
+                    if (pdfTextView.text.toString().equals("non", true)) {
+                        pdfTextView.setBackgroundColor(Color.RED)
+                        pdfTextView.setTextColor(Color.WHITE)
+                    } else if (pdfTextView.text.toString().equals("oui", true)) {
+                        pdfTextView.setBackgroundColor(Color.GREEN)
+                        pdfTextView.setTextColor(Color.WHITE)
+                    }
                     tableRowView.addToRow(pdfTextView)
                     pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
                     pdfTextView.setText(if (key.proprete == null) "" else key.proprete)
@@ -618,8 +635,8 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
             val bitmapOwner = getBitmapFromUri(Uri.parse(constat.constat.onwerSignaturePath))
             val bitmapTenant = getBitmapFromUri(Uri.parse(constat.constat.tenantSignaturePath))
-            val targetBmpOwner = bitmapResizer(bitmapOwner.copy(Bitmap.Config.ARGB_8888, false), 120, 120)
-            val targetBmpTenant = bitmapResizer(bitmapTenant.copy(Bitmap.Config.ARGB_8888, false), 120, 120)
+            val targetBmpOwner = bitmapOwner?.let { bitmapResizer(it.copy(Bitmap.Config.ARGB_8888, false), 120, 120) }
+            val targetBmpTenant = bitmapTenant?.let { bitmapResizer(it.copy(Bitmap.Config.ARGB_8888, false), 120, 120) }
 
             if (targetBmpOwner !== null) {
                 val verticalView = PDFVerticalView(applicationContext)
@@ -691,7 +708,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         }
     }
 
-    private fun getBitmapFromUri(imageUri: Uri): Bitmap {
+    private fun getBitmapFromUri(imageUri: Uri): Bitmap? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             InsertMedia.loadPhotoFromInternalStorage(this, imageUri.toString())
         } else {

@@ -230,25 +230,25 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         //theme batis pré sélectionné
         onLotTechniqueClick(imv_lot_batis, 1)
 
-        //register dropdown
-        listPopupWindow = ListPopupWindow(requireContext(), null, R.attr.listPopupWindowStyle)
-        listPopupWindow.anchorView = rcv_rooms
-
-        val items = listOf("Renommer", "Supprimer")
-        val adapterDropD = ArrayAdapter(requireContext(), R.layout.list_popup_window_item, items)
-        listPopupWindow.setAdapter(adapterDropD)
-
-        listPopupWindow.setOnItemClickListener { parent: AdapterView<*>?, anchorView: View?, position: Int, id: Long ->
-            // Respond to list popup window item click.
-
-            when (position) {
-                0 -> rename()
-                1 -> delete()
-            }
-
-            // Dismiss popup.
-            listPopupWindow.dismiss()
-        }
+//        //register dropdown
+//        listPopupWindow = ListPopupWindow(requireContext(), null, R.attr.listPopupWindowStyle)
+//        listPopupWindow.anchorView = rcv_rooms
+//
+//        val items = listOf("Renommer", "Supprimer")
+//        val adapterDropD = ArrayAdapter(requireContext(), R.layout.list_popup_window_item, items)
+//        listPopupWindow.setAdapter(adapterDropD)
+//
+//        listPopupWindow.setOnItemClickListener { parent: AdapterView<*>?, anchorView: View?, position: Int, id: Long ->
+//            // Respond to list popup window item click.
+//
+//            when (position) {
+//                0 -> rename()
+//                1 -> delete()
+//            }
+//
+//            // Dismiss popup.
+//            listPopupWindow.dismiss()
+//        }
 
         rcv_rooms.apply {
             layoutManager = LinearLayoutManager(requireContext())

@@ -31,6 +31,7 @@ import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.ui.pdf.PdfConstatCreatorActivity
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import fr.atraore.edl.utils.IMAGES_FOLDER_NAME
+import fr.atraore.edl.utils.InsertMedia.Companion.savePhotoToInternalStorage
 import fr.atraore.edl.utils.assistedViewModel
 import fr.atraore.edl.utils.observeOnce
 import kotlinx.android.synthetic.main.fragment_signature.*
@@ -137,15 +138,15 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver, Coroutin
 
             if (bitmapSignatureOwner != null) {
                 //val absolutePathImage = MediaStore.Images.Media.insertImage(requireContext().contentResolver, bitmapSignatureOwner, "${constat.constat.constatId}_SignatureProprietaire", "Signature image")
-                savePhotoToInternalStorage("${constat.constat.constatId}_SignatureProprietaire", bitmapSignatureOwner)
+                savePhotoToInternalStorage(requireActivity(), "${constat.constat.constatId}_SignatureProprietaire", bitmapSignatureOwner)
                 viewModel.saveOwnerSignaturePath("${constat.constat.constatId}_SignatureProprietaire", constat.constat.constatId)
             }
             if (bitmapSignatureTenant != null) {
-                savePhotoToInternalStorage("${constat.constat.constatId}_SignatureLocataire", bitmapSignatureTenant)
+                savePhotoToInternalStorage(requireActivity(), "${constat.constat.constatId}_SignatureLocataire", bitmapSignatureTenant)
                 viewModel.saveTenantSignaturePath("${constat.constat.constatId}_SignatureLocataire", constat.constat.constatId)
             }
             if (bitmapParaph != null) {
-                savePhotoToInternalStorage("${constat.constat.constatId}_SignatureParaph", bitmapParaph)
+                savePhotoToInternalStorage(requireActivity(),"${constat.constat.constatId}_SignatureParaph", bitmapParaph)
                 viewModel.saveParaphPath("${constat.constat.constatId}_SignatureParaph", constat.constat.constatId)
             }
 
@@ -160,18 +161,6 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver, Coroutin
         }
     }
 
-    private fun savePhotoToInternalStorage(filename: String, bmp: Bitmap): Boolean {
-        return try {
-            requireActivity().openFileOutput("$filename.png", MODE_PRIVATE).use { stream ->
-                if(!bmp.compress(Bitmap.CompressFormat.PNG, 95, stream)) {
-                    throw IOException("Couldn't save bitmap.")
-                }
-            }
-            true
-        } catch(e: IOException) {
-            e.printStackTrace()
-            false
-        }
-    }
+
 
 }

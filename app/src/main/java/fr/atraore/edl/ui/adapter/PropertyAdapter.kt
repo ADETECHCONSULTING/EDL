@@ -20,7 +20,7 @@ class PropertyAdapter(private val propertySearchViewModel: PropertySearchViewMod
     private val TAG = PropertyAdapter::class.simpleName
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Default
+        get() = Dispatchers.Main
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

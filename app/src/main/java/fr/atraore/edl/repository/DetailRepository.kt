@@ -18,6 +18,7 @@ class DetailRepository @Inject constructor(
     suspend fun updateEtat(etat: String, idDetail: String) = detailDao.updateEtat(etat, idDetail)
     suspend fun updateProprete(propre: String, idDetail: String) = detailDao.updateProprete(propre, idDetail)
     suspend fun deleteAllDetailsFromRoom(idRoom: String) = detailDao.deleteAllDetailsFromRoom(idRoom)
+    suspend fun updateFonctionnement(fonctionnement: String, idDetail: String) = detailDao.updateFonctionnement(fonctionnement, idDetail)
 
     fun getRoomDetails(idConstat: String) : Flow<Map<RoomReference, List<Detail>>> = detailDao.getRoomDetails(idConstat)
 }

@@ -50,7 +50,6 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
     private lateinit var detail: Detail
     private lateinit var alterationRefs: List<Alteration>
     private lateinit var etatsRefs: List<Etat>
-    private lateinit var propreteRefs: List<Proprete>
     private lateinit var descriptifRefs: List<Descriptif>
     private lateinit var currentEtat: String
 
@@ -116,23 +115,6 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                         cg_descriptif,
                                         IdDetailStatesEnum.DESCRIPTIF.value
                                     )
-                                }
-                            }
-                        }
-
-                        if (!this::propreteRefs.isInitialized) {
-                            viewModel.getAllPropretes.observe(viewLifecycleOwner) { listRefs ->
-                                listRefs.let { list: List<Proprete> ->
-                                    propreteRefs = list
-                                    cg_proprete.removeAllViews()
-                                    list.forEach { item ->
-                                        createChipsInCG(
-                                            item.label,
-                                            cg_proprete,
-                                            IdDetailStatesEnum.PROPRETE.value
-                                        )
-                                    }
-                                    chipCheckedState(cg_proprete, IdDetailStatesEnum.PROPRETE.value)
                                 }
                             }
                         }
@@ -357,14 +339,6 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     input(allowEmpty = false) { _, text ->
                         launch {
                             when (id) {
-                                IdDetailStatesEnum.PROPRETE.value -> viewModel.saveProprete(
-                                    Proprete(
-                                        UUID.randomUUID().toString(),
-                                        text.toString(),
-                                        idLot,
-                                        detail.idDetail
-                                    )
-                                )
                                 IdDetailStatesEnum.DESCRIPTIF.value -> viewModel.saveDescriptif(
                                     Descriptif(
                                         UUID.randomUUID().toString(),
@@ -417,6 +391,16 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                         viewModel.saveDetail(detail)
                     }
                 }
+            }
+        }
+    }
+
+    fun toggleFonctionmentChange(view: View, checked: Boolean) {
+        launch {
+            if (checked) {
+                viewModel.updateFonctionnement("Oui", this@DetailEndConstatFragment.detail.idDetail)
+            } else {
+                viewModel.updateFonctionnement("Non", this@DetailEndConstatFragment.detail.idDetail)
             }
         }
     }

@@ -21,7 +21,7 @@ class UserAdapter(private val userSearchViewModel: UserSearchViewModel, private 
     private val TAG = UserAdapter::class.simpleName
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Default
+        get() = Dispatchers.Main
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
