@@ -159,8 +159,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         pdfBody.addView(pdfCompanyNameView)
         val lineSeparatorView1 = PDFLineSeparatorView(applicationContext).setBackgroundColor(Color.WHITE)
         pdfBody.addView(lineSeparatorView1)
-        val pdfAddressView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfAddressView.setText("${this.constat.agency?.address}")
+        val pdfAddressView = this.generateTextView("${this.constat.agency?.address}")
         pdfBody.addView(pdfAddressView)
         emptySpace = PDFLineSeparatorView(applicationContext).setBackgroundColor(Color.WHITE)
         emptySpace.setLayout(
@@ -179,37 +178,29 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         //Premiere ligne doit être généré en amont
         val tableRowViewUpperInfo1 = PDFTableRowView(applicationContext)
-        var pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Propriétaire(s) : ${constat.getOwnersConcatenate(false)}")
+        var pdfTextViewUpperInfo = this.generateTextView("Propriétaire(s) : ${constat.getOwnersConcatenate(false)}")
         tableRowViewUpperInfo1.addToRow(pdfTextViewUpperInfo)
-        pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Locataire(s) : ${constat.getTenantConcatenate(false)}")
+        pdfTextViewUpperInfo = this.generateTextView("Locataire(s) : ${constat.getTenantConcatenate(false)}")
         tableRowViewUpperInfo1.addToRow(pdfTextViewUpperInfo)
 
         //configuration de la table
         val tableViewUpperInfo = PDFTableView(applicationContext, tableUpperInfo, tableRowViewUpperInfo1)
         var tableRowViewUpperInfo = PDFTableRowView(applicationContext)
-        pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Effectué par : ${constat.user?.name}")
+        pdfTextViewUpperInfo = this.generateTextView("Effectué par : ${constat.user?.name}")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
-        pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("")
+        pdfTextViewUpperInfo = this.generateTextView("")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
         tableViewUpperInfo.addRow(tableRowViewUpperInfo)
         tableRowViewUpperInfo = PDFTableRowView(applicationContext)
-        pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Mandataire : ${constat.getContractorConcatenate(false)}")
+        pdfTextViewUpperInfo = this.generateTextView("Mandataire : ${constat.getContractorConcatenate(false)}")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
-        pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Nouvelle(s) adresse(s) : ${constat.getPropertyAddressConcatenate()}")
+        pdfTextViewUpperInfo = this.generateTextView("Nouvelle(s) adresse(s) : ${constat.getPropertyAddressConcatenate()}")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
         tableViewUpperInfo.addRow(tableRowViewUpperInfo)
         tableRowViewUpperInfo = PDFTableRowView(applicationContext)
-        pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Adresse : ")
+        pdfTextViewUpperInfo = this.generateTextView("Adresse : ")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
-        pdfTextViewUpperInfo = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewUpperInfo.setText("Date d'entrée : ${constat.constat.dateCreationFormatted}")
+        pdfTextViewUpperInfo = this.generateTextView("Date d'entrée : ${constat.constat.dateCreationFormatted}")
         tableRowViewUpperInfo.addToRow(pdfTextViewUpperInfo)
         tableViewUpperInfo.addRow(tableRowViewUpperInfo)
         tableViewUpperInfo.setColumnWidth(*widthPercentUpperInfo)
@@ -231,61 +222,47 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         //Premiere ligne doit être généré en amont
         val tableRowViewProperty1 = PDFTableRowView(applicationContext)
-        var pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Type(s) : ${constat.getPropertyTypeAndNatureConcatenate()}")
+        var pdfTextViewProperty = this.generateTextView("Type(s) : ${constat.getPropertyTypeAndNatureConcatenate()}")
         tableRowViewProperty1.addToRow(pdfTextViewProperty)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Etage(s) : ${constat.properties.map { property -> property.floor }.joinToString(", ")}")
+        pdfTextViewProperty = this.generateTextView("Etage(s) : ${constat.properties.map { property -> property.floor }.joinToString(", ")}")
         tableRowViewProperty1.addToRow(pdfTextViewProperty)
 
         //configuration de la table
         val tableViewProperty = PDFTableView(applicationContext, tableProperty, tableRowViewProperty1)
         var tableRowViewProperty = PDFTableRowView(applicationContext)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Adresse : ${constat.getPropertyAddressConcatenate()}")
+        pdfTextViewProperty = this.generateTextView("Adresse : ${constat.getPropertyAddressConcatenate()}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Escalier(s) : ${constat.properties.map { property -> property.stairCase }.joinToString(", ")}")
+        pdfTextViewProperty = this.generateTextView("Escalier(s) : ${constat.properties.map { property -> property.stairCase }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableRowViewProperty = PDFTableRowView(applicationContext)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("")
+        pdfTextViewProperty = this.generateTextView("")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Porte(s) : ${constat.properties.map { property -> property.appartmentDoor }.joinToString(", ")}")
+        pdfTextViewProperty = this.generateTextView("Porte(s) : ${constat.properties.map { property -> property.appartmentDoor }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableRowViewProperty = PDFTableRowView(applicationContext)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("")
+        pdfTextViewProperty = this.generateTextView("")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Cave(s) : ${constat.properties.map { property -> property.caveDoor }.joinToString(", ")}")
+        pdfTextViewProperty = this.generateTextView("Cave(s) : ${constat.properties.map { property -> property.caveDoor }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableRowViewProperty = PDFTableRowView(applicationContext)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("")
+        pdfTextViewProperty = this.generateTextView("")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Grenier(s) : ${constat.properties.map { property -> property.atticDoor }.joinToString(", ")}")
+        pdfTextViewProperty = this.generateTextView("Grenier(s) : ${constat.properties.map { property -> property.atticDoor }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableRowViewProperty = PDFTableRowView(applicationContext)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("")
+        pdfTextViewProperty = this.generateTextView("")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Parking(s) : ${constat.properties.map { property -> property.parkingDoor }.joinToString(", ")}")
+        pdfTextViewProperty = this.generateTextView("Parking(s) : ${constat.properties.map { property -> property.parkingDoor }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableRowViewProperty = PDFTableRowView(applicationContext)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("")
+        pdfTextViewProperty = this.generateTextView("")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
-        pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfTextViewProperty.setText("Box(s) : ${constat.properties.map { property -> property.boxDoor }.joinToString(", ")}")
+        pdfTextViewProperty = this.generateTextView("Box(s) : ${constat.properties.map { property -> property.boxDoor }.joinToString(", ")}")
         tableRowViewProperty.addToRow(pdfTextViewProperty)
         tableViewProperty.addRow(tableRowViewProperty)
         tableViewProperty.setColumnWidth(*widthPercentProperty)
@@ -322,14 +299,11 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         constat.compteurs.forEach { compteur ->
             val tableRowView = PDFTableRowView(applicationContext)
-            var pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(COMPTEUR_LABELS[compteur.compteurRefId - 1])
+            var pdfTextView = this.generateTextView(COMPTEUR_LABELS[compteur.compteurRefId - 1])
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (compteur.etat == null) "" else compteur.etat)
+            pdfTextView = this.generateTextView(if (compteur.etat == null) "" else compteur.etat.toString())
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (compteur.fonctionmt == null) "NON" else compteur.fonctionmt.toString())
+            pdfTextView = this.generateTextView(if (compteur.fonctionmt == null) "NON" else compteur.fonctionmt.toString())
             if (pdfTextView.text.toString().equals("non", true)) {
                 pdfTextView.setBackgroundColor(Color.RED)
                 pdfTextView.setTextColor(Color.WHITE)
@@ -338,11 +312,9 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                 pdfTextView.setTextColor(Color.WHITE)
             }
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (compteur.proprete == null) "" else compteur.proprete)
+            pdfTextView = this.generateTextView(if (compteur.proprete == null) "" else compteur.proprete.toString())
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (compteur.comment == null) "" else compteur.comment)
+            pdfTextView = this.generateTextView(if (compteur.comment == null) "" else compteur.comment.toString())
             tableRowView.addToRow(pdfTextView)
             tableView.addRow(tableRowView)
         }
@@ -368,8 +340,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         pdfBody.addView(pdfTableTitleView)
         tableHeader = PDFTableRowView(applicationContext)
         for (s in headersCompteur2) {
-            val pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(s)
+            val pdfTextView = this.generateTextView(s)
             tableHeader.addToRow(pdfTextView)
         }
         tableRowView1 = PDFTableRowView(applicationContext)
@@ -377,26 +348,19 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         constat.compteurs.forEach { compteur ->
             val tableRowView = PDFTableRowView(applicationContext)
-            var pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(COMPTEUR_LABELS[compteur.compteurRefId - 1])
+            var pdfTextView = this.generateTextView(COMPTEUR_LABELS[compteur.compteurRefId - 1])
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (compteur.getPrimaryQuantity == null) "" else compteur.getPrimaryQuantity)
+            pdfTextView = this.generateTextView(if (compteur.getPrimaryQuantity == null) "" else compteur.getPrimaryQuantity.toString())
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (compteur.getSecondaryQuantity == null) "" else compteur.secondaryQuantity)
+            pdfTextView = this.generateTextView(if (compteur.getSecondaryQuantity == null) "" else compteur.secondaryQuantity.toString())
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (compteur.num == null) "" else compteur.num)
+            pdfTextView = this.generateTextView(if (compteur.num == null) "" else compteur.num.toString())
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (compteur.fourni == null) "" else compteur.fourni)
+            pdfTextView = this.generateTextView(if (compteur.fourni == null) "" else compteur.fourni.toString())
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (compteur.contrat == null) "" else compteur.contrat)
+            pdfTextView = this.generateTextView(if (compteur.contrat == null) "" else compteur.contrat.toString())
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (compteur.divers == null) "" else compteur.divers)
+            pdfTextView = this.generateTextView(if (compteur.divers == null) "" else compteur.divers.toString())
             tableRowView.addToRow(pdfTextView)
             tableView.addRow(tableRowView)
         }
@@ -442,8 +406,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         val tableHeader = PDFTableRowView(applicationContext)
         for (s in headersCompteur1) {
-            val pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(s)
+            val pdfTextView = this.generateTextView(s)
             tableHeader.addToRow(pdfTextView)
         }
         val tableRowView1 = PDFTableRowView(applicationContext)
@@ -451,17 +414,13 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         constat.keys.filter { detail -> detail.idKey != null }.forEach { key ->
             val tableRowView = PDFTableRowView(applicationContext)
-            var pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(key.intitule)
+            var pdfTextView = this.generateTextView(key.intitule)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (key.nature == null) "" else key.nature)
+            pdfTextView = this.generateTextView(if (key.nature == null) "" else key.nature.toString())
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (key.etat == null) "" else key.etat)
+            pdfTextView = this.generateTextView(if (key.etat == null) "" else key.etat.toString())
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString())
+            pdfTextView = this.generateTextView(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString())
             if (pdfTextView.text.toString().equals("non", true)) {
                 pdfTextView.setBackgroundColor(Color.RED)
                 pdfTextView.setTextColor(Color.WHITE)
@@ -470,11 +429,9 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                 pdfTextView.setTextColor(Color.WHITE)
             }
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (key.proprete == null) "" else key.proprete)
+            pdfTextView = this.generateTextView(if (key.proprete == null) "" else key.proprete.toString())
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-            pdfTextView.setText(if (key.notes == null) "" else key.notes)
+            pdfTextView = this.generateTextView(if (key.notes == null) "" else key.notes.toString())
             tableRowView.addToRow(pdfTextView)
             tableView.addRow(tableRowView)
         }
@@ -522,8 +479,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
                 val tableHeader = PDFTableRowView(applicationContext)
                 for (s in headersCompteur1) {
-                    val pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                    pdfTextView.setText(s)
+                    val pdfTextView = this.generateTextView(s)
                     tableHeader.addToRow(pdfTextView)
                 }
                 val tableRowView1 = PDFTableRowView(applicationContext)
@@ -531,17 +487,13 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
                 values.forEach { key ->
                     val tableRowView = PDFTableRowView(applicationContext)
-                    var pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                    pdfTextView.setText(key.intitule)
+                    var pdfTextView = this.generateTextView(key.intitule)
                     tableRowView.addToRow(pdfTextView)
-                    pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                    pdfTextView.setText(if (key.nature == null) "" else key.nature)
+                    pdfTextView = this.generateTextView(if (key.nature == null) "" else key.nature.toString())
                     tableRowView.addToRow(pdfTextView)
-                    pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                    pdfTextView.setText(if (key.etat == null) "" else key.etat)
+                    pdfTextView = this.generateTextView(if (key.etat == null) "" else key.etat.toString())
                     tableRowView.addToRow(pdfTextView)
-                    pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                    pdfTextView.setText(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString())
+                    pdfTextView = this.generateTextView(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString())
                     if (pdfTextView.text.toString().equals("non", true)) {
                         pdfTextView.setBackgroundColor(Color.RED)
                         pdfTextView.setTextColor(Color.WHITE)
@@ -550,11 +502,9 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                         pdfTextView.setTextColor(Color.WHITE)
                     }
                     tableRowView.addToRow(pdfTextView)
-                    pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                    pdfTextView.setText(if (key.proprete == null) "" else key.proprete)
+                    pdfTextView = this.generateTextView(if (key.proprete == null) "" else key.proprete.toString())
                     tableRowView.addToRow(pdfTextView)
-                    pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                    pdfTextView.setText(if (key.notes == null) "" else key.notes)
+                    pdfTextView = this.generateTextView(if (key.notes == null) "" else key.notes.toString())
                     tableRowView.addToRow(pdfTextView)
                     tableView.addRow(tableRowView)
                 }
@@ -606,8 +556,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         )
         pdfBody.addView(emptySpace)
 
-        var pdfSignatureContent = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfSignatureContent.setText(
+        var pdfSignatureContent = this.generateTextView(
             "Les soussignés reconnaissent exactes les constatations sur l'état du logement, " +
                     "et reconnaissent avoir reçu chacun l'ensemble des élements leur permettant de récupérer un exemplaire" +
                     " du présent état des lieux et s'accordent pour y faire référence."
@@ -624,8 +573,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         )
         pdfBody.addView(emptySpace)
 
-        pdfSignatureContent = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        pdfSignatureContent.setText("Le présent état des lieux, a été établi contradictoirement entre les parties qui le reconnaissent exact.")
+        pdfSignatureContent = this.generateTextView("Le présent état des lieux, a été établi contradictoirement entre les parties qui le reconnaissent exact.")
         pdfSignatureContent.setTextColor(ContextCompat.getColor(this, R.color.black))
         pdfBody.addView(pdfSignatureContent)
 
@@ -641,8 +589,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
             if (targetBmpOwner !== null) {
                 val verticalView = PDFVerticalView(applicationContext)
 
-                val pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                pdfTextViewProperty.setText("Présent document transmis et accepté par le(s) locataire(s) sortant : ${constat.getOwnersConcatenate(false)}")
+                val pdfTextViewProperty = this.generateTextView("Présent document transmis et accepté par le(s) locataire(s) sortant : ${constat.getOwnersConcatenate(false)}")
                 verticalView.addView(pdfTextViewProperty)
 
                 val pdfImageView = PDFImageView(applicationContext).setImageBitmap(targetBmpOwner)
@@ -662,8 +609,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
             if (targetBmpTenant !== null) {
                 val verticalView = PDFVerticalView(applicationContext)
 
-                val pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                pdfTextViewProperty.setText("Présent document transmis et accepté par le(s) locataire(s) sortant : ${constat.getTenantConcatenate(false)}")
+                val pdfTextViewProperty = this.generateTextView("Présent document transmis et accepté par le(s) locataire(s) sortant : ${constat.getTenantConcatenate(false)}")
                 verticalView.addView(pdfTextViewProperty)
 
                 val pdfImageView = PDFImageView(applicationContext).setImageBitmap(targetBmpTenant)
@@ -696,8 +642,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                 val pdfImageView = PDFImageView(applicationContext)
                     .setImageBitmap(targetBmp)
                 verticalView.addView(pdfImageView)
-                val pdfTextViewProperty = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-                pdfTextViewProperty.setText(text)
+                val pdfTextViewProperty = this.generateTextView(text)
                 verticalView.addView(pdfTextViewProperty)
 
                 val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -709,11 +654,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
     }
 
     private fun getBitmapFromUri(imageUri: Uri): Bitmap? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            InsertMedia.loadPhotoFromInternalStorage(this, imageUri.toString())
-        } else {
-            MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-        }
+        return InsertMedia.loadPhotoFromInternalStorage(this, imageUri.toString())
     }
 
     private fun bitmapResizer(bitmap: Bitmap, newWidth: Int, newHeight: Int): Bitmap? {
@@ -730,21 +671,8 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         return scaledBitmap
     }
 
-    fun getResizedBitmap(bm: Bitmap, newHeight: Int, newWidth: Int): Bitmap? {
-        val width = bm.width
-        val height = bm.height
-        val scaleWidth = newWidth.toFloat() / width
-        val scaleHeight = newHeight.toFloat() / height
-        // create a matrix for the manipulation
-        val matrix = Matrix()
-        // resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight)
-        // recreate the new Bitmap
-        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false)
-    }
-
-    fun sharedPdf() {
-        if (file == null || !file.exists()) {
+    private fun sharedPdf() {
+        if (!file.exists()) {
             Toast.makeText(this, "une erreur est survenue lors du partage du PDF", Toast.LENGTH_SHORT).show()
         }
         val intentShareFile = Intent(Intent.ACTION_SEND)
@@ -760,5 +688,10 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         startActivity(Intent.createChooser(intentShareFile, "Share File"))
     }
 
+    private fun generateTextView(text: String): PDFTextView {
+        val pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+        pdfTextView.setText(text)
+        return pdfTextView
+    }
 
 }
