@@ -58,6 +58,10 @@ class InsertMedia {
             return file?.bmp
         }
 
+        fun deletePhotoFromInternalStorage(activity: Activity, filename: String) {
+            activity.deleteFile(filename)
+        }
+
         /**
          * A copy of the Android internals StoreThumbnail method, it used with the insertImage to
          * populate the android.provider.MediaStore.Images.Media#insertImage with all the correct

@@ -2,17 +2,26 @@ package fr.atraore.edl.ui.edl.constat.second_page.detail
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
+import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,21 +29,25 @@ import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.databinding.FragmentDetailEndConstatBinding
+import fr.atraore.edl.generated.callback.OnClickListener
+import fr.atraore.edl.photo.PhotoPickerFragment
+import fr.atraore.edl.ui.adapter.PhotoGridAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
-import fr.atraore.edl.utils.IdDetailStatesEnum
-import fr.atraore.edl.utils.SUITE_CONSTAT_LABEL
-import fr.atraore.edl.utils.whenAllNotNull
+import fr.atraore.edl.ui.edl.constat.second_page.CompteurFragment
+import fr.atraore.edl.utils.*
+import fr.atraore.edl.utils.InsertMedia.Companion.savePhotoToInternalStorage
 import kotlinx.android.synthetic.main.fragment_detail_end_constat.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.IOException
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 
 @AndroidEntryPoint
 class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
-    MainActivity.OnNavigationFragment, CoroutineScope {
+    MainActivity.OnNavigationFragment, CoroutineScope, View.OnClickListener, PhotoPickerFragment.Callback {
 
     private val TAG = DetailEndConstatFragment::class.simpleName
 
@@ -52,6 +65,8 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
     private lateinit var etatsRefs: List<Etat>
     private lateinit var descriptifRefs: List<Descriptif>
     private lateinit var currentEtat: String
+    private lateinit var currentImageView: ImageView
+    private lateinit var photoGridAdapter: PhotoGridAdapter
 
     companion object {
         fun newInstance() = DetailEndConstatFragment()
@@ -79,11 +94,15 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
             )
         binding.lifecycleOwner = viewLifecycleOwner
         binding.fragment = this
+        binding.photoClickListener = this
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        photoGridAdapter = PhotoGridAdapter(requireActivity(), viewModel)
+        rcv_photos.layoutManager = FlexboxLayoutManager(requireContext(), FlexDirection.ROW)
 
         arguments?.getString("detailId").let { detailId ->
             if (!detailId.isNullOrEmpty()) {
@@ -91,6 +110,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     it?.let {
                         binding.detail = it
                         detail = it
+                        viewModel.currentDetail = it
 
                         if (!this::currentEtat.isInitialized) {
                             chipCheckedState(
@@ -157,6 +177,12 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                     viewModel.saveDetail(detail)
                                 }
                             }
+                        }
+
+                        //photos
+                        detail.imagesPaths?.let { paths ->
+                            photoGridAdapter.swapData(paths.split(","))
+                            rcv_photos.adapter = photoGridAdapter
                         }
                     }
                 }
@@ -404,4 +430,44 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
             }
         }
     }
+
+    //photo
+    private fun openPicker() {
+        PhotoPickerFragment.newInstance(
+            multiple = true,
+            allowCamera = true,
+            maxSelection = 5,
+            theme = R.style.ChiliPhotoPicker_Light
+        ).show(childFragmentManager, "picker")
+    }
+
+    override fun onImagesPicked(photos: ArrayList<Uri>) {
+        var paths = mutableListOf<String>()
+        if (photos.isNotEmpty()) {
+            for (imagePath in photos) {
+                activity?.let {
+                    val path = "PHO_DETAIL_${detail.idConstat}_${detail.idDetail}"
+                    savePhotoToInternalStorage(requireActivity(), path, getBitmapFromUri(imagePath))
+                    Log.d(TAG, "onImagesPicked: Image sauvegardée")
+                    paths.add(path)
+                }
+            }
+            launch {
+                viewModel.updateImagesPaths(paths.joinToString(","), detail.idDetail)
+            }
+        }
+    }
+
+    private fun getBitmapFromUri(imageUri: Uri): Bitmap {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, imageUri))
+        } else {
+            MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
+        }
+    }
+
+    override fun onClick(p0: View?) {
+        openPicker()
+    }
+
 }

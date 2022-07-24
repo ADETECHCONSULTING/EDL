@@ -12,6 +12,10 @@
             name="fragment"
             type="fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatFragment" />
 
+        <variable
+            name="photoClickListener"
+            type="android.view.View.OnClickListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -418,6 +422,33 @@
                     app:layout_constraintStart_toEndOf="@id/guideline2"
                     app:layout_constraintTop_toTopOf="@id/txv_note"
                     tools:text="@string/label_intitule" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_add_photos"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:backgroundTint="@color/colorAccent"
+                    android:textColor="@color/black"
+                    android:onClick="@{photoClickListener}"
+                    app:layout_constraintTop_toBottomOf="@id/edt_note"
+                    app:layout_constraintEnd_toStartOf="@id/guideline2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/add_photos_label" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_photos"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/btn_add_photos"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

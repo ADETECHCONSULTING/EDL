@@ -20,8 +20,7 @@ data class Detail (
     var proprete: String? = "",
     var notes: String? = "",
     var fonctionmt: String? = null,
-    var imagePath: String? = null,
-    var imagePathSecond: String? = null,
+    var imagesPaths: String? = null,
     var nature: String? = null
 ) {
     @Ignore

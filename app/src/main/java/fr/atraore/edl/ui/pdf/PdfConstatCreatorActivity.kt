@@ -452,13 +452,11 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         val horizontalView = PDFHorizontalView(applicationContext)
 
         constat.keys.forEach { key ->
-            key.imagePath?.let {
-                val bitmap = getBitmapFromUri(Uri.parse(key.imagePath))
-                addImageInView(bitmap, horizontalView, key.intitule)
-            }
-            key.imagePathSecond?.let {
-                val bitmap = getBitmapFromUri(Uri.parse(key.imagePathSecond))
-                addImageInView(bitmap, horizontalView, key.intitule)
+            key.imagesPaths?.let {
+                it.split(",").forEach { imagePath ->
+                    val bitmap = getBitmapFromUri(Uri.parse(imagePath))
+                    addImageInView(bitmap, horizontalView, key.intitule)
+                }
             }
         }
 
@@ -525,13 +523,11 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                 val horizontalView = PDFHorizontalView(applicationContext)
 
                 values.forEach { key ->
-                    key.imagePath?.let {
-                        val bitmap = getBitmapFromUri(Uri.parse(key.imagePath))
-                        addImageInView(bitmap, horizontalView, key.intitule)
-                    }
-                    key.imagePathSecond?.let {
-                        val bitmap = getBitmapFromUri(Uri.parse(key.imagePathSecond))
-                        addImageInView(bitmap, horizontalView, key.intitule)
+                    key.imagesPaths?.let {
+                        it.split(",").forEach { imagePath ->
+                            val bitmap = getBitmapFromUri(Uri.parse(imagePath))
+                            addImageInView(bitmap, horizontalView, key.intitule)
+                        }
                     }
                 }
 

@@ -30,6 +30,9 @@ interface DetailDao : BaseDao<Detail> {
     @Query("UPDATE Detail SET fonctionmt =:fonctionnement WHERE idDetail =:idDetail")
     suspend fun updateFonctionnement(fonctionnement: String, idDetail: String)
 
+    @Query("UPDATE Detail SET imagesPaths =:imagesPaths WHERE idDetail =:idDetail")
+    suspend fun updateImagesPaths(imagesPaths: String, idDetail: String)
+
     @Query("DELETE FROM Detail WHERE idRoom =:idRoom")
     suspend fun deleteAllDetailsFromRoom(idRoom: String)
 

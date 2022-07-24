@@ -137,17 +137,19 @@ class SignatureFragment : BaseFragment("Signature"), LifecycleObserver, Coroutin
             val bitmapParaph = this@SignatureFragment.paraph_pad.transparentSignatureBitmap
 
             if (bitmapSignatureOwner != null) {
-                //val absolutePathImage = MediaStore.Images.Media.insertImage(requireContext().contentResolver, bitmapSignatureOwner, "${constat.constat.constatId}_SignatureProprietaire", "Signature image")
-                savePhotoToInternalStorage(requireActivity(), "${constat.constat.constatId}_SignatureProprietaire", bitmapSignatureOwner)
-                viewModel.saveOwnerSignaturePath("${constat.constat.constatId}_SignatureProprietaire", constat.constat.constatId)
+                val path = "${constat.constat.constatId}_SignatureProprietaire"
+                savePhotoToInternalStorage(requireActivity(), path, bitmapSignatureOwner)
+                viewModel.saveOwnerSignaturePath(path, constat.constat.constatId)
             }
             if (bitmapSignatureTenant != null) {
-                savePhotoToInternalStorage(requireActivity(), "${constat.constat.constatId}_SignatureLocataire", bitmapSignatureTenant)
-                viewModel.saveTenantSignaturePath("${constat.constat.constatId}_SignatureLocataire", constat.constat.constatId)
+                val path = "${constat.constat.constatId}_SignatureLocataire"
+                savePhotoToInternalStorage(requireActivity(), path, bitmapSignatureTenant)
+                viewModel.saveTenantSignaturePath(path, constat.constat.constatId)
             }
             if (bitmapParaph != null) {
-                savePhotoToInternalStorage(requireActivity(),"${constat.constat.constatId}_SignatureParaph", bitmapParaph)
-                viewModel.saveParaphPath("${constat.constat.constatId}_SignatureParaph", constat.constat.constatId)
+                val path = "${constat.constat.constatId}_SignatureParaph"
+                savePhotoToInternalStorage(requireActivity(),path, bitmapParaph)
+                viewModel.saveParaphPath(path, constat.constat.constatId)
             }
 
             launch(Dispatchers.Main) {

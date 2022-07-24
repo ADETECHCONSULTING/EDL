@@ -140,4 +140,6 @@
         <item quantity="one">You can pick only %d image</item>
         <item quantity="other">You can pick only %d images</item>
     </plurals>
+    <string name="add_photos_label">Ajouter des photos</string>
+    <string name="imv_photo_content_desc">photo detail constat</string>
 </resources>
