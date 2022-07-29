@@ -39,4 +39,7 @@ interface DetailDao : BaseDao<Detail> {
     @Transaction
     @Query("SELECT * FROM RoomReference r JOIN DETAIL dt ON dt.idRoom = roomReferenceId WHERE dt.idConstat = :id ORDER BY r.name asc")
     fun getRoomDetails(id: String) : Flow<Map<RoomReference, List<Detail>>>
+
+    @Query("SELECT * FROM Detail dt WHERE dt.idRoom = :roomId AND dt.idElement = :elementId AND dt.idLot = :idLot ORDER BY dt.intitule asc")
+    fun getDetailsByRoomRefElementIdIdLot(roomId: String, elementId: String, idLot: Int) : Flow<List<Detail>>
 }

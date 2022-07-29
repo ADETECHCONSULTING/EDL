@@ -23,6 +23,7 @@ class RoomRepository @Inject constructor(
     fun getRoomWithElements(name: String, idLot: Int) : Flow<RoomWithElements> = roomReferenceDao.getRoomWithElements(name, idLot)
     fun getRoomWithNameAndIdLot(name: String, idLot: Int) : Flow<RoomReference> = roomReferenceDao.getRoomWithNameAndIdLot(name, idLot)
     fun getRoomsAndElementsWithIdLot(idLot: Int) : Flow<List<RoomWithElements>> = roomReferenceDao.getRoomsAndElementsWithIdLot(idLot)
+    fun getRoomsWithIdLotAndWithElementsExist(idLot: Int) : Flow<List<RoomReference>> = roomReferenceDao.getRoomsWithIdLotAndWithElementsExist(idLot)
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread

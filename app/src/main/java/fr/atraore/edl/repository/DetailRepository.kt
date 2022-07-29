@@ -22,4 +22,5 @@ class DetailRepository @Inject constructor(
     suspend fun updateImagesPaths(imagesPaths: String, idDetail: String) = detailDao.updateImagesPaths(imagesPaths, idDetail)
 
     fun getRoomDetails(idConstat: String) : Flow<Map<RoomReference, List<Detail>>> = detailDao.getRoomDetails(idConstat)
+    fun getDetailsByRoomRefElementIdIdLot(roomId: String, elementId: String, idLot: Int) : Flow<List<Detail>> = detailDao.getDetailsByRoomRefElementIdIdLot(roomId, elementId, idLot)
 }

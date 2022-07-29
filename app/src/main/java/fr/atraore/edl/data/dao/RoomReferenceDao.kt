@@ -44,4 +44,8 @@ interface RoomReferenceDao : BaseDao<RoomReference> {
 
     @Query("SELECT EXISTS(SELECT * FROM RoomReference WHERE name = :name AND idLotReference = :idLot)")
     fun hasItem(name: String, idLot: Int): Boolean
+
+    @Transaction
+    @Query("SELECT * FROM RoomReference r JOIN RoomElementCrossRef rel ON rel.roomReferenceId = r.roomReferenceId WHERE idLotReference = :idLot GROUP BY name")
+    fun getRoomsWithIdLotAndWithElementsExist(idLot: Int) : Flow<List<RoomReference>>
 }
