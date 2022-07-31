@@ -111,6 +111,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         val room = roomsList[position]
         currentRoomSelected = room
 
+        detailSimpleAdapter.swapData(emptyList())
+
         viewModel.getElementsRefWhereRoomId(room.roomReferenceId).observeOnce(viewLifecycleOwner, { elementsRes ->
             elementList = elementsRes
             currentElementSelected = elementsRes[0]

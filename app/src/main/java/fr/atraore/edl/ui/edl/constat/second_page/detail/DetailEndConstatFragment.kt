@@ -2,8 +2,6 @@ package fr.atraore.edl.ui.edl.constat.second_page.detail
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Context
-import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -15,9 +13,6 @@ import android.view.*
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.google.android.flexbox.FlexDirection
@@ -29,18 +24,15 @@ import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.databinding.FragmentDetailEndConstatBinding
-import fr.atraore.edl.generated.callback.OnClickListener
 import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.adapter.PhotoGridAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
-import fr.atraore.edl.ui.edl.constat.second_page.CompteurFragment
 import fr.atraore.edl.utils.*
 import fr.atraore.edl.utils.InsertMedia.Companion.savePhotoToInternalStorage
 import kotlinx.android.synthetic.main.fragment_detail_end_constat.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
@@ -190,10 +182,12 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                         }
 
                         //photos
-                        detail.imagesPaths?.let { paths ->
-                            photoGridAdapter.swapData(paths.split(","))
-                            rcv_photos.adapter = photoGridAdapter
+                        if (!detail.imagesPaths.isNullOrEmpty()) {
+                            photoGridAdapter.swapData(detail.imagesPaths!!.split(","))
+                        } else {
+                            photoGridAdapter.swapData(emptyList())
                         }
+                        rcv_photos.adapter = photoGridAdapter
                     }
                 }
             }
@@ -460,16 +454,16 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
     override fun onImagesPicked(photos: ArrayList<Uri>) {
         var paths = mutableListOf<String>()
         if (photos.isNotEmpty()) {
-            for (imagePath in photos) {
+            for ((index, imagePath) in photos.withIndex()) {
                 activity?.let {
-                    val path = "PHO_DETAIL_${detail.idConstat}_${detail.idDetail}"
+                    val path = "PHO_DETAIL_${detail.idConstat}_${detail.idDetail}_${index}"
                     savePhotoToInternalStorage(requireActivity(), path, getBitmapFromUri(imagePath))
                     Log.d(TAG, "onImagesPicked: Image sauvegardée")
                     paths.add(path)
                 }
             }
             launch {
-                viewModel.updateImagesPaths(paths.joinToString(","), detail.idDetail)
+                viewModel.updateImagesPaths(if (!detail.imagesPaths.isNullOrEmpty()) detail.imagesPaths + "," + paths.joinToString(",") else paths.joinToString(","), detail.idDetail)
             }
         }
     }

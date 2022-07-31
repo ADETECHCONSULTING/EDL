@@ -30,5 +30,6 @@ data class Detail (
         this.alteration = ""
         this.proprete = ""
         this.notes = ""
+        this.nature = ""
     }
 }
