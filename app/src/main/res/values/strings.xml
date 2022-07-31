@@ -69,6 +69,7 @@
     <string name="label_descriptif">Descriptif :</string>
     <string name="label_alterations">Altérations :</string>
     <string name="label_note">Notes :</string>
+    <string name="label_nature">Nature :</string>
     <string name="add_label">Ajouter</string>
     <string name="selectionne_label">Sélectionné</string>
     <string name="delete_label">Supprimer</string>

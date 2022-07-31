@@ -395,6 +395,34 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/txv_nature"
+                    style="@style/MyTextViewStyleLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/label_nature"
+                    android:textAllCaps="true"
+                    app:layout_constraintEnd_toStartOf="@id/guideline2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ctn_alterations" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_nature"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_background"
+                    android:gravity="start"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    android:padding="@dimen/padding_small"
+                    android:text="@{detail.nature}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/txv_nature" />
+
+                <TextView
                     android:id="@+id/txv_note"
                     style="@style/MyTextViewStyleLabel"
                     android:layout_width="0dp"
@@ -405,7 +433,7 @@
                     app:layout_constraintEnd_toStartOf="@id/guideline2"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ctn_alterations" />
+                    app:layout_constraintTop_toBottomOf="@id/edt_nature" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edt_note"
