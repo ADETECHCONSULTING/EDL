@@ -42,4 +42,7 @@ interface DetailDao : BaseDao<Detail> {
 
     @Query("SELECT * FROM Detail dt WHERE dt.idRoom = :roomId AND dt.idElement = :elementId AND dt.idLot = :idLot ORDER BY dt.intitule asc")
     fun getDetailsByRoomRefElementIdIdLot(roomId: String, elementId: String, idLot: Int) : Flow<List<Detail>>
+
+    @Query("SELECT * FROM Detail dt WHERE dt.idKey = :idKey AND dt.idConstat = :constatId ORDER BY dt.idDetail desc LIMIT 1")
+    fun getDetailByIdKeyAndConstat(idKey: Int, constatId: String): Flow<Detail>
 }

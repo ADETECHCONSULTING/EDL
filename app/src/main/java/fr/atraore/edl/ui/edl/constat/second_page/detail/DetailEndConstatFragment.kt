@@ -65,6 +65,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
     private lateinit var etatsRefs: List<Etat>
     private lateinit var descriptifRefs: List<Descriptif>
     private lateinit var currentEtat: String
+    private lateinit var currentProprete: String
     private lateinit var currentImageView: ImageView
     private lateinit var photoGridAdapter: PhotoGridAdapter
 
@@ -112,10 +113,19 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                         detail = it
                         viewModel.currentDetail = it
 
+                        tgb_fonctionnement.isChecked = it.fonctionmt == "Oui"
+
                         if (!this::currentEtat.isInitialized) {
                             chipCheckedState(
                                 cg_etat,
                                 IdDetailStatesEnum.ETAT.value
+                            )
+                        }
+
+                        if (!this::currentProprete.isInitialized) {
+                            chipCheckedState(
+                                cg_proprete,
+                                IdDetailStatesEnum.PROPRETE.value
                             )
                         }
 
@@ -250,6 +260,12 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                             if (view.text == detail.etat) {
                                 view.isChecked = true
                                 currentEtat = detail.etat.toString()
+                            }
+                        }
+                        IdDetailStatesEnum.PROPRETE.value -> {
+                            if (view.text == detail.proprete) {
+                                view.isChecked = true
+                                currentProprete = detail.proprete.toString()
                             }
                         }
                     }

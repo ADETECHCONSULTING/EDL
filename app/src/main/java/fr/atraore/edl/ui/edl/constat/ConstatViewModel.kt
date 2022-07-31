@@ -37,6 +37,8 @@ class ConstatViewModel @AssistedInject constructor(
     fun getRoomsWithIdLotAndWithElementsExist(idLot: Int) = roomRepository.getRoomsWithIdLotAndWithElementsExist(idLot).asLiveData()
     fun getElementsRefWhereRoomId(roomId: String) = elementRepository.getElementsRefWhereRoomId(roomId).asLiveData()
     fun getDetailsByRoomRefElementIdIdLot(roomId: String, elementId: String, idLot: Int) = detailRepository.getDetailsByRoomRefElementIdIdLot(roomId, elementId, idLot).asLiveData()
+    fun getDetailByIdKeyAndConstat(idKey: Int, constatId: String) = detailRepository.getDetailByIdKeyAndConstat(idKey, constatId).asLiveData()
+
 
     //combined live data
     val initFirstRoomReference = CombinedLiveData(firstRoomReference, allElementReference)

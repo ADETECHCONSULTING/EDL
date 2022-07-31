@@ -12,8 +12,9 @@
     <color name="colorPrimaryLight">#6B0288D1</color>
     <color name="colorPrimaryDark">#016195</color>
     <color name="colorAccent">#CBDA35</color>
-    <color name="colorAccentLighter">#D1DD52</color>
-    <color name="colorAccentLighterMax">#E0EA84</color>
+    <color name="colorAccentLight">#DDEA5D</color>
+    <color name="colorAccentLighter">#DCE487</color>
+    <color name="colorAccentLighterMax">#E2E6BF</color>
     <color name="lightBlue">#03A9F4</color>
     <color name="darkBlue">#02557A</color>
     <color name="red">#ce1212</color>

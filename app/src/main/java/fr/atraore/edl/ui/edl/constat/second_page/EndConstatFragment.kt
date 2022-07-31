@@ -30,9 +30,11 @@ import fr.atraore.edl.data.models.entity.Detail
 import fr.atraore.edl.data.models.entity.ElementReference
 import fr.atraore.edl.data.models.entity.RoomReference
 import fr.atraore.edl.data.models.data.RoomWithElements
+import fr.atraore.edl.data.models.entity.KeyReference
 import fr.atraore.edl.databinding.FragmentEndConstatBinding
 import fr.atraore.edl.ui.adapter.DetailSimpleAdapter
 import fr.atraore.edl.ui.adapter.ElementSimpleAdapter
+import fr.atraore.edl.ui.adapter.KeySimpleAdapter
 import fr.atraore.edl.ui.adapter.RoomSimpleAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
@@ -90,12 +92,15 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private var keysSelected = false
 
     private val roomSimpleAdapter = RoomSimpleAdapter()
+    private val keySimpleAdapter = KeySimpleAdapter()
     private val elementSimpleAdapter = ElementSimpleAdapter()
     private val detailSimpleAdapter = DetailSimpleAdapter()
     private var roomsList = emptyList<RoomReference>()
+    private var keysList = emptyList<KeyReference>()
     private var elementList = emptyList<ElementReference>()
     private var detailList = emptyList<Detail>()
     private lateinit var currentRoomSelected: RoomReference
+    private lateinit var currentKeySelected: KeyReference
     private lateinit var currentElementSelected: ElementReference
     private lateinit var currentDetail: Detail
     private lateinit var constat: ConstatWithDetails
@@ -113,6 +118,27 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             rcv_elements.adapter = elementSimpleAdapter
             elementSimpleAdapter.setOnItemClickListener(onElementItemClickListener)
         })
+    }
+
+    private val onKeyItemClickListener = View.OnClickListener { view ->
+        val keySimpleViewHolder: RecyclerView.ViewHolder = view.tag as RecyclerView.ViewHolder
+        val position = keySimpleViewHolder.absoluteAdapterPosition
+        val key = keysList[position]
+        currentKeySelected = key
+
+        viewModel.getDetailByIdKeyAndConstat(key.id, constat.constat.constatId).observeOnce(viewLifecycleOwner, { res ->
+            val detail = if (res != null) {
+                res
+            } else {
+                Detail(UUID.randomUUID().toString(), null, null, constat.constat.constatId, clickedLot, key.name, key.id)
+            }
+
+            launch {
+                viewModel.saveDetail(detail)
+                openDetails(detail.idDetail)
+            }
+        })
+
     }
 
     private val onElementItemClickListener = View.OnClickListener { view ->
@@ -136,7 +162,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         val detail = detailList[position]
         currentDetail = detail
 
-        Toast.makeText(requireContext(), "YEAAAH", Toast.LENGTH_SHORT).show()
+        openDetails(detail.idDetail)
     }
 
     companion object {
@@ -196,24 +222,19 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 findNavController().navigate(R.id.go_to_compteur, bundle)
             }
             R.id.action_add_room -> {
+                if (!this::currentElementSelected.isInitialized) {
+                    Toast.makeText(requireContext(), "Veuillez sélectionner un élément", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+
+                if (!this::currentRoomSelected.isInitialized) {
+                    Toast.makeText(requireContext(), "Veuillez sélectionner une pièce", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+
                 MaterialDialog(requireContext()).show {
                     title(R.string.add_element)
                     input(allowEmpty = false) { _, text ->
-
-                        if (currentElementSelected == null) {
-                            Toast.makeText(requireContext(), "Veuillez sélectionner un élément", Toast.LENGTH_SHORT).show()
-                            return@input
-                        }
-
-                        if (currentRoomSelected == null) {
-                            Toast.makeText(requireContext(), "Veuillez sélectionner une pièce", Toast.LENGTH_SHORT).show()
-                            return@input
-                        }
-
-                        if (clickedLot == null) {
-                            Toast.makeText(requireContext(), "Veuillez sélectionner un lot", Toast.LENGTH_SHORT).show()
-                            return@input
-                        }
 
                         val detail = Detail(UUID.randomUUID().toString(), currentElementSelected.elementReferenceId, currentRoomSelected.roomReferenceId,
                             constat.constat.constatId, clickedLot, text.toString())
@@ -227,11 +248,12 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
                 }
             }
             R.id.action_keys -> {
-//                if (keysSelected) {
-//                    initExpendableList()
-//                } else {
-//                    initKeysList()
-//                }
+                resetSelections()
+                if (keysSelected) {
+                    initRooms()
+                } else {
+                    initKeys()
+                }
                 keysSelected = !keysSelected
             }
         }
@@ -290,88 +312,24 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private fun initRooms() {
         viewModel.getRoomsWithIdLotAndWithElementsExist(clickedLot).observeOnce(this) { roomRes ->
             roomsList = roomRes
-            currentRoomSelected = roomRes[0]
+            roomRes.getOrNull(0)?.let { currentRoomSelected = it }
             roomSimpleAdapter.swapData(roomRes)
             rcv_rooms.adapter = roomSimpleAdapter
             roomSimpleAdapter.setOnItemClickListener(onRoomItemClickListener)
         }
     }
 
-    /*
-    private fun initExpendableList() {
-        viewModel.roomCombinedLiveData(clickedLot).observe(viewLifecycleOwner) { pairInfoRoom ->
-            Log.d(TAG, "onViewCreated: CLICKED LOT $clickedLot")
-            val identifier = AtomicLong(1)
-            pairInfoRoom.first?.let { roomsWithElements ->
-                val parentListItems = mutableListOf<SimpleParentExpandableItem>()
-                this@EndConstatFragment.roomsWithElements = roomsWithElements
-
-                roomsWithElements.forEach { roomWithEl ->
-                    //Parent
-                    val parentIt = SimpleParentExpandableItem().withHeader(roomWithEl.room.name)
-                    parentIt.identifier = identifier.getAndIncrement()
-                    roomWithEl.elements.sortedBy { value -> value.name }
-
-                    //Enfant
-                    val subItems = roomWithEl.elements.map { element ->
-                        val detail = createDetail(roomWithEl.room, element)
-                    }
-
-                    subItems.forEach { subItem ->
-                        run {
-                            subItem.identifier = identifier.getAndIncrement()
-                        }
-                    }
-                    parentIt.subItems.addAll(subItems)
-
-                    parentListItems.add(parentIt)
-                }
-
-                fastItemAdapter.setNewList(parentListItems)
-
-                pairInfoRoom.second?.let { listRoomReference ->
-                    this.roomRefList = listRoomReference
-                }
-
-                pairInfoRoom.third?.let { listElementReference ->
-                    this.elementRefList = listElementReference
-                }
-            }
-        }
-    }
-
-    private fun initKeysList() {
+    private fun initKeys() {
         viewModel.allActifKeysRef().observeOnce(viewLifecycleOwner) { keyRefs ->
-            val identifier = AtomicLong(1)
-            val parentListItems = mutableListOf<SimpleParentExpandableItem>()
-
-            keyRefs.forEach { it ->
-                //Parent
-                val detail = Detail(
-                    it.id.toString() + arguments?.getString(ARGS_CONSTAT_ID)!!, //pas les mêmes infos que le detail room
-                    null,
-                    null,
-                    arguments?.getString(ARGS_CONSTAT_ID)!!,
-                    clickedLot,
-                    it.name,
-                    it.id //id key
-                )
-                val parentIt = SimpleParentExpandableItem()
-                    .withHeader(it.name)
-                    .withDetail(detail)
-
-                parentIt.identifier = identifier.getAndIncrement()
-                parentListItems.add(parentIt)
-            }
-
-            fastItemAdapter.setNewList(parentListItems)
-
+            keysList = keyRefs
+            keyRefs.getOrNull(0)?.let { currentKeySelected = it }
+            keySimpleAdapter.swapData(keyRefs)
+            rcv_rooms.adapter = keySimpleAdapter
+            keySimpleAdapter.setOnItemClickListener(onKeyItemClickListener)
         }
     }
 
-     */
-
-    fun openDetails(itemId: String) {
+    fun openDetails(itemId: String?) {
         childFragmentManager.commit {
             setReorderingAllowed(true)
             val fragment = DetailEndConstatFragment.newInstance()
@@ -434,8 +392,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         if (clickedLot != idLot) {
             clickedLot = idLot
             initRooms()
-            elementSimpleAdapter.swapData(emptyList())
-            detailSimpleAdapter.swapData(emptyList())
+            resetSelections()
         }
     }
 
@@ -540,6 +497,12 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             clickedLot,
             elementReference.name
         )
+    }
+
+    private fun resetSelections() {
+        elementSimpleAdapter.swapData(emptyList())
+        detailSimpleAdapter.swapData(emptyList())
+        openDetails(null)
     }
 
 }
