@@ -9,7 +9,7 @@ class OutdoorEquipementRepository @Inject constructor(
     private val dao: OutDoorEquipementDao
 ) : BaseRepository<OutdoorEquipementReference>(dao) {
     fun getAll(): Flow<List<OutdoorEquipementReference>> = dao.getAll()
-    fun getAllActifKeysRef(): Flow<List<OutdoorEquipementReference>> = dao.getAllActifKeysRef()
+    fun getAllActifRef(): Flow<List<OutdoorEquipementReference>> = dao.getAllActifRef()
     fun getById(id: String): Flow<OutdoorEquipementReference> = dao.getById(id)
     fun searchOutdoorQuery(query: String): Flow<List<OutdoorEquipementReference>> = dao.searchKeysQuery(query)
 }

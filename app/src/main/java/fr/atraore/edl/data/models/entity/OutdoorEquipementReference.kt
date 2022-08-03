@@ -7,8 +7,8 @@ import java.io.Serializable
 
 @Entity(tableName = OUTDOOR_EQUIPMNT)
 data class OutdoorEquipementReference (
-    val name: String,
+    override var name: String,
     var actif: Boolean
-) : Serializable {
+) : Serializable, BaseReference(name) {
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

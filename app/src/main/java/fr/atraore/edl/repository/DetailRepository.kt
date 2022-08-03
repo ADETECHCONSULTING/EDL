@@ -24,4 +24,5 @@ class DetailRepository @Inject constructor(
     fun getRoomDetails(idConstat: String) : Flow<Map<RoomReference, List<Detail>>> = detailDao.getRoomDetails(idConstat)
     fun getDetailsByRoomRefElementIdIdLot(roomId: String, elementId: String, idLot: Int) : Flow<List<Detail>> = detailDao.getDetailsByRoomRefElementIdIdLot(roomId, elementId, idLot)
     fun getDetailByIdKeyAndConstat(idKey: Int, constatId: String): Flow<Detail> = detailDao.getDetailByIdKeyAndConstat(idKey, constatId)
+    fun getDetailByIdOutdoorAndConstat(idOutdoorEquipement: Int, constatId: String): Flow<Detail> = detailDao.getDetailByIdOutdoorAndConstat(idOutdoorEquipement, constatId)
 }

@@ -14,7 +14,7 @@ interface OutDoorEquipementDao : BaseDao<OutdoorEquipementReference> {
     fun getAll(): Flow<List<OutdoorEquipementReference>>
 
     @Query("SELECT * FROM $OUTDOOR_EQUIPMNT WHERE actif = 1")
-    fun getAllActifKeysRef(): Flow<List<OutdoorEquipementReference>>
+    fun getAllActifRef(): Flow<List<OutdoorEquipementReference>>
 
     @Query("SELECT * FROM $OUTDOOR_EQUIPMNT WHERE id =:id")
     fun getById(id: String): Flow<OutdoorEquipementReference>

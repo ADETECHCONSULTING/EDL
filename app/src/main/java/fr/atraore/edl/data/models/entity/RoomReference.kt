@@ -10,8 +10,8 @@ import java.io.Serializable
 @Entity(tableName = ROOM_REFERENCE_TABLE)
 data class RoomReference (
     @PrimaryKey(autoGenerate = false) val roomReferenceId: String,
-    val name: String,
+    override var name: String,
     val idLotReference: Int? = null,
     var mandatory: Boolean? = false
-) : Serializable {
+) : Serializable, BaseReference(name) {
 }

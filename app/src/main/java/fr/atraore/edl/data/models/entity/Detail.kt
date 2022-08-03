@@ -14,6 +14,7 @@ data class Detail (
     val idLot: Int,
     var intitule: String,
     val idKey: Int? = null,
+    val idOutDoorEqpt: Int? = null,
     var etat: String? = "",
     var descriptif: String? = "",
     var alteration: String? = "",

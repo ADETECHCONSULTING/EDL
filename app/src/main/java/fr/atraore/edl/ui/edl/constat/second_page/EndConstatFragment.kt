@@ -13,36 +13,24 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
-import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
-import com.afollestad.materialdialogs.list.checkItems
-import com.afollestad.materialdialogs.list.listItemsMultiChoice
-import com.mikepenz.fastadapter.expandable.getExpandableExtension
-import com.mikepenz.fastadapter.select.getSelectExtension
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.data.ConstatWithDetails
-import fr.atraore.edl.data.models.entity.Detail
-import fr.atraore.edl.data.models.entity.ElementReference
-import fr.atraore.edl.data.models.entity.RoomReference
-import fr.atraore.edl.data.models.data.RoomWithElements
-import fr.atraore.edl.data.models.entity.KeyReference
+import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.databinding.FragmentEndConstatBinding
-import fr.atraore.edl.ui.adapter.DetailSimpleAdapter
-import fr.atraore.edl.ui.adapter.ElementSimpleAdapter
-import fr.atraore.edl.ui.adapter.KeySimpleAdapter
-import fr.atraore.edl.ui.adapter.RoomSimpleAdapter
+import fr.atraore.edl.ui.adapter.*
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.*
 import fr.atraore.edl.utils.itemanimators.SlideDownAlphaAnimator
-import kotlinx.android.synthetic.main.activity_room_configuration.*
 import kotlinx.android.synthetic.main.fragment_end_constat.*
 import kotlinx.android.synthetic.main.fragment_end_constat.imv_chauffage
 import kotlinx.android.synthetic.main.fragment_end_constat.imv_elec
@@ -61,6 +49,10 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
+enum class ShowList {
+    ROOM, KEYS, OUTDOOR
+}
+
 @AndroidEntryPoint
 class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     MainActivity.OnNavigationFragment, CoroutineScope {
@@ -77,30 +69,30 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default
 
-    var roomRefList: List<RoomReference>? = null
     var elementRefList: List<ElementReference>? = null
-    private lateinit var roomsWithElements: List<RoomWithElements>
 
     private lateinit var binding: FragmentEndConstatBinding
 
-    private lateinit var listPopupWindow: ListPopupWindow
     private lateinit var clickedChildItem: Detail
     private lateinit var clickedParentItem: RoomReference
     private var clickedLot: Int = 1
 
     private lateinit var theme: Resources.Theme
-    private var keysSelected = false
+    private var showList = ShowList.ROOM
 
     private val roomSimpleAdapter = RoomSimpleAdapter()
-    private val keySimpleAdapter = KeySimpleAdapter()
-    private val elementSimpleAdapter = ElementSimpleAdapter()
+    private val keySimpleAdapter = RoomSimpleAdapter()
+    private val outdoorSimpleAdapter = RoomSimpleAdapter()
+    private val elementSimpleAdapter = BaseRefSimpleAdapter()
     private val detailSimpleAdapter = DetailSimpleAdapter()
     private var roomsList = emptyList<RoomReference>()
     private var keysList = emptyList<KeyReference>()
+    private var outdoorEqptList = emptyList<OutdoorEquipementReference>()
     private var elementList = emptyList<ElementReference>()
     private var detailList = emptyList<Detail>()
     private lateinit var currentRoomSelected: RoomReference
     private lateinit var currentKeySelected: KeyReference
+    private lateinit var currentOutdoorEqptSelected: OutdoorEquipementReference
     private lateinit var currentElementSelected: ElementReference
     private lateinit var currentDetail: Detail
     private lateinit var constat: ConstatWithDetails
@@ -111,7 +103,12 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         val room = roomsList[position]
         currentRoomSelected = room
 
-        detailSimpleAdapter.swapData(emptyList())
+        resetSelections()
+
+        if (roomSimpleAdapter.checkedPosition != position) {
+            roomSimpleAdapter.notifyDataSetChanged()
+            roomSimpleAdapter.checkedPosition = position
+        }
 
         viewModel.getElementsRefWhereRoomId(room.roomReferenceId).observeOnce(viewLifecycleOwner, { elementsRes ->
             elementList = elementsRes
@@ -128,12 +125,38 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         val key = keysList[position]
         currentKeySelected = key
 
+        resetSelections()
+
+        if (keySimpleAdapter.checkedPosition != position) {
+            keySimpleAdapter.notifyDataSetChanged()
+            keySimpleAdapter.checkedPosition = position
+        }
+
         viewModel.getDetailByIdKeyAndConstat(key.id, constat.constat.constatId).observeOnce(viewLifecycleOwner, { res ->
-            val detail = if (res != null) {
-                res
-            } else {
-                Detail(UUID.randomUUID().toString(), null, null, constat.constat.constatId, clickedLot, key.name, key.id)
+            val detail = res ?: Detail(UUID.randomUUID().toString(), null, null, constat.constat.constatId, clickedLot, key.name, key.id)
+
+            launch {
+                viewModel.saveDetail(detail)
+                openDetails(detail.idDetail)
             }
+        })
+    }
+
+    private val onOutdoorItemClickListener = View.OnClickListener { view ->
+        val outdoorSimpleViewHolder: RecyclerView.ViewHolder = view.tag as RecyclerView.ViewHolder
+        val position = outdoorSimpleViewHolder.absoluteAdapterPosition
+        val outdoorEqpt = outdoorEqptList[position]
+        currentOutdoorEqptSelected = outdoorEqpt
+
+        resetSelections()
+
+        if (outdoorSimpleAdapter.checkedPosition != position) {
+            outdoorSimpleAdapter.notifyDataSetChanged()
+            outdoorSimpleAdapter.checkedPosition = position
+        }
+
+        viewModel.getDetailByIdOutdoorAndConstat(outdoorEqpt.id, constat.constat.constatId).observeOnce(viewLifecycleOwner, { res ->
+            val detail = res ?: Detail(UUID.randomUUID().toString(), null, null, constat.constat.constatId, clickedLot, outdoorEqpt.name, null, outdoorEqpt.id)
 
             launch {
                 viewModel.saveDetail(detail)
@@ -149,6 +172,11 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         val element = elementList[position]
         currentElementSelected = element
 
+        if (elementSimpleAdapter.checkedPosition != position) {
+            elementSimpleAdapter.notifyDataSetChanged()
+            elementSimpleAdapter.checkedPosition = position
+        }
+
         viewModel.getDetailsByRoomRefElementIdIdLot(currentRoomSelected.roomReferenceId, currentElementSelected.elementReferenceId, clickedLot).observe(viewLifecycleOwner, { detailsRes ->
             detailList = detailsRes
             detailsRes.getOrNull(0)?.let { currentDetail = it }
@@ -163,6 +191,12 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         val position = childSimpleViewHolder.absoluteAdapterPosition
         val detail = detailList[position]
         currentDetail = detail
+
+        if (detailSimpleAdapter.checkedPosition != position) {
+            detailSimpleAdapter.notifyDataSetChanged()
+            detailSimpleAdapter.checkedPosition = position
+        }
+
 
         openDetails(detail.idDetail)
     }
@@ -191,14 +225,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         binding.constatViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.fragment = this
-
-        //init fastAdapter
-        fastItemAdapter = FastItemAdapter()
-        fastItemAdapter.getExpandableExtension()
-        val selectExtension = fastItemAdapter.getSelectExtension()
-        selectExtension.isSelectable = true
-        selectExtension.selectOnLongClick = true
-
         return binding.root
     }
 
@@ -209,6 +235,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_keys)?.isVisible = true
+        menu.findItem(R.id.action_outdoor)?.isVisible = true
         menu.findItem(R.id.action_compteur)?.isVisible = true
     }
 
@@ -251,12 +278,24 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             }
             R.id.action_keys -> {
                 resetSelections()
-                if (keysSelected) {
+                //si je reclique
+                if (showList.equals(ShowList.KEYS)) {
+                    showList = ShowList.ROOM
                     initRooms()
                 } else {
+                    showList = ShowList.KEYS
                     initKeys()
                 }
-                keysSelected = !keysSelected
+            }
+            R.id.action_outdoor -> {
+                resetSelections()
+                if (showList.equals(ShowList.OUTDOOR)) {
+                    showList = ShowList.ROOM
+                    initRooms()
+                } else {
+                    showList = ShowList.OUTDOOR
+                    initOutdoor()
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -272,30 +311,18 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         //theme batis pré sélectionné
         onLotTechniqueClick(imv_lot_batis, 1)
 
-//        //register dropdown
-//        listPopupWindow = ListPopupWindow(requireContext(), null, R.attr.listPopupWindowStyle)
-//        listPopupWindow.anchorView = rcv_rooms
-//
-//        val items = listOf("Renommer", "Supprimer")
-//        val adapterDropD = ArrayAdapter(requireContext(), R.layout.list_popup_window_item, items)
-//        listPopupWindow.setAdapter(adapterDropD)
-//
-//        listPopupWindow.setOnItemClickListener { parent: AdapterView<*>?, anchorView: View?, position: Int, id: Long ->
-//            // Respond to list popup window item click.
-//
-//            when (position) {
-//                0 -> rename()
-//                1 -> delete()
-//            }
-//
-//            // Dismiss popup.
-//            listPopupWindow.dismiss()
-//        }
-
         rcv_rooms.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = fastItemAdapter
             itemAnimator = SlideDownAlphaAnimator()
+            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        }
+
+        rcv_elements.apply {
+            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
+        }
+
+        rcv_child.apply {
+            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
         }
 
         //récupération du détail du constat
@@ -328,6 +355,16 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             keySimpleAdapter.swapData(keyRefs)
             rcv_rooms.adapter = keySimpleAdapter
             keySimpleAdapter.setOnItemClickListener(onKeyItemClickListener)
+        }
+    }
+
+    private fun initOutdoor() {
+        viewModel.allActifOutdoorRef().observeOnce(viewLifecycleOwner) { outdoorRefs ->
+            outdoorEqptList = outdoorRefs
+            outdoorRefs.getOrNull(0)?.let { currentOutdoorEqptSelected = it }
+            outdoorSimpleAdapter.swapData(outdoorRefs)
+            rcv_rooms.adapter = outdoorSimpleAdapter
+            outdoorSimpleAdapter.setOnItemClickListener(onOutdoorItemClickListener)
         }
     }
 

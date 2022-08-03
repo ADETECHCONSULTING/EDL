@@ -1,8 +1,10 @@
 package fr.atraore.edl.ui.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.Detail
@@ -17,6 +19,9 @@ class DetailSimpleAdapter : RecyclerView.Adapter<DetailSimpleAdapter.DetailSimpl
     private var data: List<Detail> = ArrayList()
     private lateinit var mOnItemClickListener: View.OnClickListener
     var currentItemSelected: ElementReference? = null
+    // if checkedPosition = -1, there is no default selection
+    // if checkedPosition = 0, 1st item is selected by default
+    var checkedPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailSimpleViewHolder {
         return DetailSimpleViewHolder(
@@ -40,6 +45,18 @@ class DetailSimpleAdapter : RecyclerView.Adapter<DetailSimpleAdapter.DetailSimpl
 
     inner class DetailSimpleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: Detail) = with(itemView) {
+            if (checkedPosition == -1) {
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAccentLighterMax))
+                itemView.txv_child.setTextColor(Color.BLACK)
+            } else {
+                if (checkedPosition == absoluteAdapterPosition) {
+                    itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorPrimary))
+                    itemView.txv_child.setTextColor(Color.WHITE)
+                } else {
+                    itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAccentLighterMax))
+                    itemView.txv_child.setTextColor(Color.BLACK)
+                }
+            }
             itemView.txv_child.text = item.intitule
             itemView.setTag(this@DetailSimpleViewHolder)
             itemView.setOnClickListener(mOnItemClickListener)

@@ -24,6 +24,7 @@ class ConstatViewModel @AssistedInject constructor(
     val elementRepository: ElementRepository,
     val detailRepository: DetailRepository,
     val keyRepository: KeyRepository,
+    val outdoorRepository: OutdoorEquipementRepository,
     @Assisted val constatId: String
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
@@ -38,12 +39,14 @@ class ConstatViewModel @AssistedInject constructor(
     fun getElementsRefWhereRoomId(roomId: String) = elementRepository.getElementsRefWhereRoomId(roomId).asLiveData()
     fun getDetailsByRoomRefElementIdIdLot(roomId: String, elementId: String, idLot: Int) = detailRepository.getDetailsByRoomRefElementIdIdLot(roomId, elementId, idLot).asLiveData()
     fun getDetailByIdKeyAndConstat(idKey: Int, constatId: String) = detailRepository.getDetailByIdKeyAndConstat(idKey, constatId).asLiveData()
+    fun getDetailByIdOutdoorAndConstat(idOutdoorEquipement: Int, constatId: String) = detailRepository.getDetailByIdOutdoorAndConstat(idOutdoorEquipement, constatId).asLiveData()
 
 
     //combined live data
     val initFirstRoomReference = CombinedLiveData(firstRoomReference, allElementReference)
     fun roomCombinedLiveData(idLot: Int) = TripleCombinedLiveData(getRoomsAndElementsWithIdLot(idLot), allRoomReference, allElementReference)
     fun allActifKeysRef() : LiveData<List<KeyReference>> = keyRepository.getAllActifKeysRef().asLiveData()
+    fun allActifOutdoorRef() : LiveData<List<OutdoorEquipementReference>> = outdoorRepository.getAllActifRef().asLiveData()
 
     val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
