@@ -85,7 +85,7 @@ class OutDoorConfigurationActivity : AppCompatActivity(), CoroutineScope, Search
                             viewModel.saveOutdoorEquipementRepository(OutdoorEquipementReference(text.toString(), true))
                         }
                     }
-                    positiveButton(R.string.rename)
+                    positiveButton(R.string.done)
                 }
             }
         }

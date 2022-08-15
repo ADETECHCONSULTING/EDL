@@ -62,12 +62,12 @@ class AddTenantFragment(val idArgs: String?) : BaseFragment(TENANT_LABEL), View.
         super.onViewCreated(view, savedInstanceState)
 
         idArgs?.let { itemId ->
-            addViewModel.getTenantById(itemId).observe(viewLifecycleOwner, {
+            addViewModel.getTenantById(itemId).observe(viewLifecycleOwner) {
                 it?.let {
                     addViewModel.tenant.value = it
                 }
                 initListeners()
-            })
+            }
         }
     }
 
@@ -123,7 +123,7 @@ class AddTenantFragment(val idArgs: String?) : BaseFragment(TENANT_LABEL), View.
             Date(System.currentTimeMillis())
         )
 
-        launch {
+        launch(Dispatchers.Main) {
             save(tenant)
             Log.d(TAG, "création d'un locataire ${tenant}")
         }

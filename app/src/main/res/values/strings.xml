@@ -56,6 +56,7 @@
     <string name="rename">Renommer</string>
     <string name="rename_dialog_title">Renommer l\'élément</string>
     <string name="add_element">Voulez-vous ajouter un nouvel élement ? </string>
+    <string name="add_key">Voulez-vous ajouter une nouvelle référence de clé ? </string>
     <string name="delete_dialog_title">Suppression de l\'élément</string>
     <string name="show_pdf_title">Génération du PDF</string>
     <string name="delete_dialog_content">Êtes-vous certain de vouloir supprimer cet élément. Cette action est irréversible.</string>

@@ -15,6 +15,9 @@ interface ElementReferenceDao : BaseDao<ElementReference> {
     @Query("SELECT * FROM $ELEMENT_REFERENCE_TABLE")
     fun getAllElementReference(): Flow<List<ElementReference>>
 
+    @Query("SELECT * FROM $ELEMENT_REFERENCE_TABLE WHERE roomId IS NULL OR roomId = :roomId")
+    fun getElementsForRoom(roomId: String): Flow<List<ElementReference>>
+
     @Query("SELECT * FROM $ELEMENT_REFERENCE_TABLE WHERE name LIKE :searchQuery")
     fun searchElementQuery(searchQuery: String) : Flow<List<ElementReference>>
 

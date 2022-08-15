@@ -117,7 +117,7 @@ class AddAgencyFragment() : BaseFragment(AGENCY_LABEL), View.OnClickListener, Co
             alias
         )
 
-        launch {
+        launch(Dispatchers.Main) {
             save(agency)
             Log.d(TAG, "création d'une agence ${agency}")
         }

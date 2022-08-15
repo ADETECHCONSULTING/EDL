@@ -11,6 +11,7 @@ data class ElementReference (
     @PrimaryKey(autoGenerate = false) val elementReferenceId: String,
     override var name: String,
     var mandatory: Boolean? = false,
+    var roomId: String? = ""
 ) : BaseReference(name) {
 
 }

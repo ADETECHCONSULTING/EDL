@@ -12,4 +12,5 @@ class ElementRepository @Inject constructor(
     fun allElementReference() : Flow<List<ElementReference>> = elementReferenceDao.getAllElementReference()
     fun searchElementQuery(query: String): Flow<List<ElementReference>> = elementReferenceDao.searchElementQuery(query)
     fun getElementsRefWhereRoomId(roomId: String): Flow<List<ElementReference>> = elementReferenceDao.getElementsRefWhereRoomId(roomId)
+    fun getElementsForRoom(roomId: String): Flow<List<ElementReference>> = elementReferenceDao.getElementsForRoom(roomId)
 }

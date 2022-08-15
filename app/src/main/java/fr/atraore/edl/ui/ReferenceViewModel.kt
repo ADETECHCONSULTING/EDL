@@ -19,13 +19,13 @@ class ReferenceViewModel @Inject constructor(
     private val keyRepository: KeyRepository,
     private val outdoorEquipementRepository: OutdoorEquipementRepository
 ) : ViewModel() {
-    val getElements = elementRepository.allElementReference().asLiveData()
     val getRooms = roomRepository.allRoomReferences().asLiveData()
     val getKeys = keyRepository.getAll().asLiveData()
     val getOutdoorEqpts = outdoorEquipementRepository.getAll().asLiveData()
 
     fun searchElementQuery(query: String) = elementRepository.searchElementQuery(query).asLiveData()
     fun getRoomWithElements(name: String, idLot: Int) = roomRepository.getRoomWithElements(name, idLot).asLiveData()
+    fun getElementsForRoom(roomId: String) = elementRepository.getElementsForRoom(roomId).asLiveData()
     fun getRoomWithNameAndIdLot(name: String, idLot: Int) = roomRepository.getRoomWithNameAndIdLot(name, idLot).asLiveData()
     fun searchKeysQuery(query: String) = keyRepository.searchKeysQuery(query).asLiveData()
     fun searchOutdoorEqptsQuery(query: String) = outdoorEquipementRepository.searchOutdoorQuery(query).asLiveData()

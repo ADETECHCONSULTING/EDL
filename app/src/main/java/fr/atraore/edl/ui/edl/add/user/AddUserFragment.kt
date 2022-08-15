@@ -117,7 +117,7 @@ class AddUserFragment() : BaseFragment(USER_LABEL), View.OnClickListener, Corout
             if (checkActif) 1 else 0
         )
 
-        launch {
+        launch(Dispatchers.Main) {
             save(user)
             Log.d(TAG, "création d'un utilisateur ${user}")
         }

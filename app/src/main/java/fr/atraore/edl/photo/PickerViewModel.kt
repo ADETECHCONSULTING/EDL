@@ -4,14 +4,10 @@ package fr.atraore.edl.photo
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import fr.atraore.edl.photo.adapter.SelectableImage
 import fr.atraore.edl.photo.utils.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 internal class PickerViewModel : ViewModel() {
@@ -39,7 +35,7 @@ internal class PickerViewModel : ViewModel() {
     }
 
     fun clearSelected() {
-        GlobalScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val photos = requireNotNull(photosData.value).map { it.copy(selected = false) }
             val array = arrayListOf<SelectableImage>()
             array.addAll(photos)
@@ -66,7 +62,7 @@ internal class PickerViewModel : ViewModel() {
     }
 
     fun toggleSelected(photo: SelectableImage) {
-        GlobalScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val selected = requireNotNull(selectedData.value)
 
             when {

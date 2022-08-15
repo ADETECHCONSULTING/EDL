@@ -28,13 +28,8 @@ class ConstatViewModel @AssistedInject constructor(
     @Assisted val constatId: String
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
-    val firstRoomReference: LiveData<RoomReference> = roomRepository.firstRoomReference().asLiveData()
-    val allRoomReference: LiveData<List<RoomReference>> = roomRepository.allRoomReferences().asLiveData()
-    val allElementReference: LiveData<List<ElementReference>> = elementRepository.allElementReference().asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
     fun getDetailById(id: String): LiveData<Detail> = detailRepository.getDetailById(id).asLiveData()
-    fun getRoomsAndElementsWithIdLot(idLot: Int) : LiveData<List<RoomWithElements>> = roomRepository.getRoomsAndElementsWithIdLot(idLot).asLiveData()
-    fun getRoomWithNameAndIdLot(name: String, idLot: Int) = roomRepository.getRoomWithNameAndIdLot(name, idLot).asLiveData()
     fun getRoomsWithIdLotAndWithElementsExist(idLot: Int) = roomRepository.getRoomsWithIdLotAndWithElementsExist(idLot).asLiveData()
     fun getElementsRefWhereRoomId(roomId: String) = elementRepository.getElementsRefWhereRoomId(roomId).asLiveData()
     fun getDetailsByRoomRefElementIdIdLot(roomId: String, elementId: String, idLot: Int) = detailRepository.getDetailsByRoomRefElementIdIdLot(roomId, elementId, idLot).asLiveData()
@@ -42,9 +37,6 @@ class ConstatViewModel @AssistedInject constructor(
     fun getDetailByIdOutdoorAndConstat(idOutdoorEquipement: Int, constatId: String) = detailRepository.getDetailByIdOutdoorAndConstat(idOutdoorEquipement, constatId).asLiveData()
 
 
-    //combined live data
-    val initFirstRoomReference = CombinedLiveData(firstRoomReference, allElementReference)
-    fun roomCombinedLiveData(idLot: Int) = TripleCombinedLiveData(getRoomsAndElementsWithIdLot(idLot), allRoomReference, allElementReference)
     fun allActifKeysRef() : LiveData<List<KeyReference>> = keyRepository.getAllActifKeysRef().asLiveData()
     fun allActifOutdoorRef() : LiveData<List<OutdoorEquipementReference>> = outdoorRepository.getAllActifRef().asLiveData()
 

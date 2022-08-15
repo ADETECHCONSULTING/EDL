@@ -118,7 +118,7 @@ class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), V
             0, //box
         )
 
-        launch {
+        launch(Dispatchers.Main) {
             save(property)
             Log.d(TAG, "création d'un bien ${property}")
         }

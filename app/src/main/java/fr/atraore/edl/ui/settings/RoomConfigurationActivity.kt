@@ -1,5 +1,6 @@
 package fr.atraore.edl.ui.settings
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -15,6 +16,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
 import com.google.android.flexbox.FlexDirection.ROW
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.checkbox.MaterialCheckBox
@@ -22,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.ElementReference
+import fr.atraore.edl.data.models.entity.OutdoorEquipementReference
 import fr.atraore.edl.data.models.entity.RoomReference
 import fr.atraore.edl.databinding.ActivityRoomConfigurationBinding
 import fr.atraore.edl.ui.ReferenceViewModel
@@ -58,7 +62,14 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         val room = roomsList[position]
         currentRoomSelected = room
         resetElementStateCheckbox(position)
-        getElementsSavedForRoom(room.name)
+
+        viewModel.getElementsForRoom(room.roomReferenceId).observe(this) { elementRes ->
+            elementList = elementRes
+            elementGridAdapter.swapData(elementRes)
+            rcv_elements.adapter = elementGridAdapter
+
+            getElementsSavedForRoom(room.name)
+        }
     }
 
     private val onElementItemClickListener = View.OnClickListener { view ->
@@ -114,7 +125,7 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         menuInflater.inflate(R.menu.toolbar_item, menu)
         menu?.findItem(R.id.action_next)?.isVisible = false
         menu?.findItem(R.id.action_compteur)?.isVisible = false
-        menu?.findItem(R.id.action_add_room)?.isVisible = false
+        menu?.findItem(R.id.action_add_room)?.isVisible = true
 
         val search = menu?.findItem(R.id.action_search)
         search?.isVisible = true
@@ -124,10 +135,22 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         return true
     }
 
+    @SuppressLint("CheckResult")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_previous -> {
                 finish()
+            }
+            R.id.action_add_room -> {
+                MaterialDialog(this).show {
+                    title(R.string.add_room)
+                    input(allowEmpty = false) { _, text ->
+                        launch {
+                            viewModel.saveRoom(RoomReference(UUID.randomUUID().toString(), text.toString(), clickedLot, false))
+                        }
+                    }
+                    positiveButton(R.string.done)
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -147,12 +170,7 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
             roomSimpleAdapter.setOnItemClickListener(onRoomItemClickListener)
         }
 
-        viewModel.getElements.observeOnce(this) { elementRes ->
-            elementList = elementRes
-            elementGridAdapter.swapData(elementRes)
-            rcv_elements.adapter = elementGridAdapter
-            elementGridAdapter.setOnItemClickListener(onElementItemClickListener)
-        }
+        elementGridAdapter.setOnItemClickListener(onElementItemClickListener)
     }
 
     private fun getElementsSavedForRoom(roomName: String) {

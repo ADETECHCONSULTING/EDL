@@ -55,12 +55,12 @@ class AddOwnerFragment(val idArgs: String?) : BaseFragment(OWNER_LABEL), View.On
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         idArgs?.let { itemId ->
-            addViewModel.getOwnerById(itemId).observe(viewLifecycleOwner, {
+            addViewModel.getOwnerById(itemId).observe(viewLifecycleOwner) {
                 it?.let {
                     addViewModel.owner.value = it
                 }
                 initListeners()
-            })
+            }
         }
     }
 
@@ -111,7 +111,7 @@ class AddOwnerFragment(val idArgs: String?) : BaseFragment(OWNER_LABEL), View.On
             note
         )
 
-        launch {
+        launch(Dispatchers.Main) {
             save(owner)
             Log.d(TAG, "création d'un propriétaire ${owner}")
         }

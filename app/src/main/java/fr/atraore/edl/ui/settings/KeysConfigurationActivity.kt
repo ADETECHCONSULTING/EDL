@@ -59,7 +59,7 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         menuInflater.inflate(R.menu.toolbar_item, menu)
         menu?.findItem(R.id.action_next)?.isVisible = false
         menu?.findItem(R.id.action_compteur)?.isVisible = false
-        menu?.findItem(R.id.action_add_room)?.isVisible = false
+        menu?.findItem(R.id.action_add_room)?.isVisible = true
 
         val search = menu?.findItem(R.id.action_search)
         search?.isVisible = true
@@ -77,13 +77,13 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
             }
             R.id.action_add_room -> {
                 MaterialDialog(this).show {
-                    title(R.string.add_element)
+                    title(R.string.add_key)
                     input(allowEmpty = false) { _, text ->
                         launch {
                             viewModel.saveKey(KeyReference(text.toString(), true))
                         }
                     }
-                    positiveButton(R.string.rename)
+                    positiveButton(R.string.done)
                 }
             }
         }

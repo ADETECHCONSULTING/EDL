@@ -57,12 +57,12 @@ class AddContractorFragment(val idArgs: String?) : BaseFragment(CONTRACTOR_LABEL
         super.onViewCreated(view, savedInstanceState)
 
         idArgs?.let { itemId ->
-            addViewModel.getContractorById(itemId).observe(viewLifecycleOwner, {
+            addViewModel.getContractorById(itemId).observe(viewLifecycleOwner) {
                 it?.let {
                     addViewModel.contractor.value = it
                 }
                 initListeners()
-            })
+            }
         }
     }
 
@@ -117,7 +117,7 @@ class AddContractorFragment(val idArgs: String?) : BaseFragment(CONTRACTOR_LABEL
             note
         )
 
-        launch {
+        launch(Dispatchers.Main) {
             save(contractor)
             Log.d(TAG, "création d'un mandataire ${contractor}")
         }

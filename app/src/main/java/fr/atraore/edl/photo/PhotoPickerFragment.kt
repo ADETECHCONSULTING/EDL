@@ -33,19 +33,16 @@ import fr.atraore.edl.R
 import fr.atraore.edl.photo.PickerViewModel.Companion.SELECTION_UNDEFINED
 import fr.atraore.edl.photo.adapter.ImagePickerAdapter
 import fr.atraore.edl.photo.adapter.SelectableImage
-import fr.atraore.edl.photo.utils.Intents
-import fr.atraore.edl.photo.utils.NonDismissibleBehavior
-import fr.atraore.edl.photo.utils.SpacingItemDecoration
-import fr.atraore.edl.photo.utils.isPermissionGranted
-import fr.atraore.edl.photo.utils.parentAs
+import fr.atraore.edl.photo.utils.*
 import kotlinx.android.synthetic.main.fragment_photo_picker.*
 import kotlinx.android.synthetic.main.fragment_photo_picker.view.*
 import kotlinx.android.synthetic.main.view_grant_permission.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class PhotoPickerFragment : DialogFragment() {
+class PhotoPickerFragment : DialogFragment(), CoroutineScope {
 
     private lateinit var photoAdapter: ImagePickerAdapter
 
@@ -58,6 +55,9 @@ class PhotoPickerFragment : DialogFragment() {
     private val cornerRadiusOutValue = TypedValue()
 
     private lateinit var contextWrapper: ContextThemeWrapper
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Default
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -230,7 +230,7 @@ class PhotoPickerFragment : DialogFragment() {
 
     private fun loadPhotos() {
         vm.setInProgress(true)
-        GlobalScope.launch(Dispatchers.IO) {
+        launch {
             val projection = arrayOf(
                 MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
