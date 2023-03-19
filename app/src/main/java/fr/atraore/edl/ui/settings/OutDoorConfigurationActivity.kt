@@ -16,12 +16,9 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.OutdoorEquipementReference
+import fr.atraore.edl.databinding.ActivityKeysConfigurationBinding
 import fr.atraore.edl.ui.ReferenceViewModel
 import fr.atraore.edl.ui.adapter.OutdoorGridAdapter
-import kotlinx.android.synthetic.main.activity_keys_configuration.*
-import kotlinx.android.synthetic.main.activity_room_configuration.*
-import kotlinx.android.synthetic.main.activity_room_configuration.rcv_elements
-import kotlinx.android.synthetic.main.activity_room_configuration.toolbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,7 +26,7 @@ import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class OutDoorConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchView.OnQueryTextListener {
-
+    private lateinit var binding: ActivityKeysConfigurationBinding
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default
 
@@ -50,11 +47,11 @@ class OutDoorConfigurationActivity : AppCompatActivity(), CoroutineScope, Search
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_keys_configuration)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        rcv_elements.layoutManager = FlexboxLayoutManager(this, ROW)
-        txv_explication.text = getString(R.string.explication_eqpts_config)
+        binding.rcvElements.layoutManager = FlexboxLayoutManager(this, ROW)
+        binding.txvExplication.text = getString(R.string.explication_eqpts_config)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -98,7 +95,7 @@ class OutDoorConfigurationActivity : AppCompatActivity(), CoroutineScope, Search
         viewModel.getOutdoorEqpts.observe(this) { res ->
             outdoorEqpList = res
             outdoorGridAdapter.swapData(res)
-            rcv_elements.adapter = outdoorGridAdapter
+            binding.rcvElements.adapter = outdoorGridAdapter
             outdoorGridAdapter.setOnItemClickListener(onOutdoorEqptsItemClickListener)
         }
     }

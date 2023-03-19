@@ -8,9 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.BaseReference
-import fr.atraore.edl.data.models.entity.RoomReference
-import kotlinx.android.synthetic.main.element_list_item.view.*
-import kotlinx.android.synthetic.main.room_simple_list_item.view.*
+import fr.atraore.edl.databinding.RoomSimpleListItemBinding
 
 class RoomSimpleAdapter : RecyclerView.Adapter<RoomSimpleAdapter.RoomSimpleViewHolder>() {
 
@@ -43,20 +41,22 @@ class RoomSimpleAdapter : RecyclerView.Adapter<RoomSimpleAdapter.RoomSimpleViewH
     }
 
     inner class RoomSimpleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val binding = RoomSimpleListItemBinding.bind(itemView)
+
         fun bind(item: BaseReference) = with(itemView) {
             if (checkedPosition == -1) {
                 itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAccent))
-                itemView.rb_room_parent.setTextColor(Color.BLACK)
+                binding.rbRoomParent.setTextColor(Color.BLACK)
             } else {
                 if (checkedPosition == absoluteAdapterPosition) {
                     itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorPrimary))
-                    itemView.rb_room_parent.setTextColor(Color.WHITE)
+                    binding.rbRoomParent.setTextColor(Color.WHITE)
                 } else {
                     itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAccent))
-                    itemView.rb_room_parent.setTextColor(Color.BLACK)
+                    binding.rbRoomParent.setTextColor(Color.BLACK)
                 }
             }
-            itemView.rb_room_parent.text = item.name
+            binding.rbRoomParent.text = item.name
             itemView.setTag(this@RoomSimpleViewHolder)
             itemView.setOnClickListener(mOnItemClickListener)
         }

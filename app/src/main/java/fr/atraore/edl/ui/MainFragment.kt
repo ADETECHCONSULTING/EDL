@@ -11,21 +11,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.Constat
-import fr.atraore.edl.photo.PhotoPickerFragment
+import fr.atraore.edl.databinding.FragmentMainBinding
 import fr.atraore.edl.ui.adapter.ConstatAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.settings.KeysConfigurationActivity
 import fr.atraore.edl.ui.settings.OutDoorConfigurationActivity
 import fr.atraore.edl.ui.settings.RoomConfigurationActivity
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
-import fr.atraore.edl.utils.ARGS_OWNER_ID
-import fr.atraore.edl.utils.ARGS_USER_ID
-import kotlinx.android.synthetic.main.fragment_main.*
 import java.sql.Date
 import java.util.*
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment("MainFrag") {
+    private lateinit var binding: FragmentMainBinding
+
     override val title: String
         get() = "Main"
 
@@ -91,8 +90,8 @@ class MainFragment : BaseFragment("MainFrag") {
         setHasOptionsMenu(true)
 
         val adapter = ConstatAdapter()
-        rcv_constat.adapter = adapter
-        rcv_constat.layoutManager = LinearLayoutManager(context)
+        binding.rcvConstat.adapter = adapter
+        binding.rcvConstat.layoutManager = LinearLayoutManager(context)
 
         mainViewModel.allConstatWithDetails.observe(viewLifecycleOwner, Observer { constats ->
             constats?.let { adapter.submitList(it) }
@@ -102,13 +101,13 @@ class MainFragment : BaseFragment("MainFrag") {
     }
 
     fun initListeners() {
-        btn_entrant.setOnClickListener {
+        binding.btnEntrant.setOnClickListener {
             goToConstat("E")
         }
-        btn_pre_etat.setOnClickListener {
+        binding.btnPreEtat.setOnClickListener {
             goToConstat("P")
         }
-        btn_sortant.setOnClickListener {
+        binding.btnSortant.setOnClickListener {
             goToConstat("S")
         }
     }

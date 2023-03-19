@@ -8,7 +8,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
@@ -17,10 +16,9 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.KeyReference
-import fr.atraore.edl.data.models.entity.OutdoorEquipementReference
+import fr.atraore.edl.databinding.ActivityKeysConfigurationBinding
 import fr.atraore.edl.ui.ReferenceViewModel
 import fr.atraore.edl.ui.adapter.KeysGridAdapter
-import kotlinx.android.synthetic.main.activity_room_configuration.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +26,8 @@ import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchView.OnQueryTextListener {
+
+    private lateinit var binding: ActivityKeysConfigurationBinding
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default
@@ -49,10 +49,10 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_keys_configuration)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        rcv_elements.layoutManager = FlexboxLayoutManager(this, ROW)
+        binding.rcvElements.layoutManager = FlexboxLayoutManager(this, ROW)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -96,7 +96,7 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         viewModel.getKeys.observe(this) { res ->
             keysList = res
             keysGridAdapter.swapData(res)
-            rcv_elements.adapter = keysGridAdapter
+            binding.rcvElements.adapter = keysGridAdapter
             keysGridAdapter.setOnItemClickListener(onKeyItemClickListener)
         }
     }

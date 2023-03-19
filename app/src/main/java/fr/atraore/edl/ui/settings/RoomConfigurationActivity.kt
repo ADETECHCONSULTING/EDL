@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -25,17 +24,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.ElementReference
-import fr.atraore.edl.data.models.entity.OutdoorEquipementReference
 import fr.atraore.edl.data.models.entity.RoomReference
 import fr.atraore.edl.databinding.ActivityRoomConfigurationBinding
+import fr.atraore.edl.databinding.ElementGridItemBinding
+import fr.atraore.edl.databinding.ElementListItemBinding
 import fr.atraore.edl.ui.ReferenceViewModel
 import fr.atraore.edl.ui.adapter.ElementGridAdapter
 import fr.atraore.edl.ui.adapter.RoomSimpleAdapter
-import fr.atraore.edl.utils.itemdecoration.ItemOffsetDecoration
 import fr.atraore.edl.utils.observeOnce
-import kotlinx.android.synthetic.main.activity_room_configuration.*
-import kotlinx.android.synthetic.main.element_grid_item.view.*
-import kotlinx.android.synthetic.main.room_simple_list_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,6 +42,7 @@ import kotlin.coroutines.CoroutineContext
 class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchView.OnQueryTextListener {
     private val TAG = RoomConfigurationActivity::class.simpleName
     lateinit var mNavigationFragment: MainActivity.OnNavigationFragment
+    private lateinit var binding: ActivityRoomConfigurationBinding
 
     private val viewModel: ReferenceViewModel by viewModels()
     private val elementGridAdapter = ElementGridAdapter()
@@ -54,7 +51,6 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
     private var elementList = emptyList<ElementReference>()
     private lateinit var currentRoomSelected: RoomReference
     private var clickedLot: Int = 1
-    private lateinit var binding: ActivityRoomConfigurationBinding
 
     private val onRoomItemClickListener = View.OnClickListener { view ->
         val roomSimpleViewHolder: RecyclerView.ViewHolder = view.tag as RecyclerView.ViewHolder
@@ -66,7 +62,7 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         viewModel.getElementsForRoom(room.roomReferenceId).observe(this) { elementRes ->
             elementList = elementRes
             elementGridAdapter.swapData(elementRes)
-            rcv_elements.adapter = elementGridAdapter
+            binding.rcvElements.adapter = elementGridAdapter
 
             getElementsSavedForRoom(room.name)
         }
@@ -107,17 +103,17 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         binding.activity = this
         val view = binding.root
         setContentView(view)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        rcv_rooms.layoutManager = LinearLayoutManager(this)
+        binding.rcvRooms.layoutManager = LinearLayoutManager(this)
 
         val layoutManager = FlexboxLayoutManager(this, ROW)
-        rcv_elements.layoutManager = layoutManager
+        binding.rcvElements.layoutManager = layoutManager
         //rcv_elements.addItemDecoration(ItemOffsetDecoration(this, R.dimen.grid_offset))
 
-        rcv_rooms.postDelayed({
-            rcv_rooms.findViewHolderForAdapterPosition(0)?.itemView?.performClick()
+        binding.rcvRooms.postDelayed({
+            binding.rcvRooms.findViewHolderForAdapterPosition(0)?.itemView?.performClick()
         }, 400)
     }
 
@@ -159,14 +155,14 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
     override fun onStart() {
         super.onStart()
 
-        onLotTechniqueClick(imv_lot_batis, 1)
+        onLotTechniqueClick(binding.imvLotBatis, 1)
 
         viewModel.getRooms.observeOnce(this) { roomRes ->
             roomsList = roomRes
             currentRoomSelected = roomRes[0]
             getElementsSavedForRoom(currentRoomSelected.name)
             roomSimpleAdapter.swapData(roomRes)
-            rcv_rooms.adapter = roomSimpleAdapter
+            binding.rcvRooms.adapter = roomSimpleAdapter
             roomSimpleAdapter.setOnItemClickListener(onRoomItemClickListener)
         }
 
@@ -179,7 +175,7 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
                 roomWithElements?.apply {
                     elementList.forEachIndexed { index, adapterElementRef ->
                         if (adapterElementRef.elementReferenceId in this.elements.map { el -> el.elementReferenceId }) {
-                            val viewHolder = rcv_elements.findViewHolderForAdapterPosition(index)
+                            val viewHolder = binding.rcvElements.findViewHolderForAdapterPosition(index)
                             viewHolder?.let { holder ->
                                 holder.itemView.checkbox_element.isChecked = true
                             }
@@ -187,9 +183,9 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
                     }
                 } ?: run {
                     elementList.forEachIndexed { index, adapterElementRef ->
-                        val viewHolder = rcv_elements.findViewHolderForAdapterPosition(index)
+                        val viewHolder = binding.rcvElements.findViewHolderForAdapterPosition(index)
                         viewHolder?.let { holder ->
-                            holder.itemView.checkbox_element.isChecked = false
+                            ElementGridItemBinding.bind(holder.itemView).checkboxElement.isChecked = false
                         }
                     }
                 }
@@ -199,14 +195,14 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
 
     private fun resetElementStateCheckbox(position: Int) {
         elementList.forEachIndexed { index, adapterElementRef ->
-            val viewHolder = rcv_elements.findViewHolderForAdapterPosition(index)
+            val viewHolder = binding.rcvElements.findViewHolderForAdapterPosition(index)
             viewHolder?.let { holder ->
                 holder.itemView.checkbox_element.isChecked = false
             }
         }
 
         roomsList.forEachIndexed { index, adapterElementRef ->
-            val viewHolder = rcv_rooms.findViewHolderForAdapterPosition(index)
+            val viewHolder = binding.rcvRooms.findViewHolderForAdapterPosition(index)
             viewHolder?.let { holder ->
                 if (position != index) {
                     holder.itemView.rb_room_parent.isChecked = false
@@ -271,64 +267,64 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
 
     private fun unClickAllLotTechnique(theme: Resources.Theme) {
         theme.applyStyle(R.style.DefaultLot, false)
-        imv_lot_batis.setImageDrawable(
+        binding.imvLotBatis.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
                 R.drawable.ic_mur,
                 theme
             )
         )
-        imv_lot_batis.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-        imv_ouvrants.setImageDrawable(
+        binding.imvLotBatis.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        binding.imvOuvrants.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
                 R.drawable.ic_ouvrant,
                 theme
             )
         )
-        imv_ouvrants.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-        imv_elec.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_elec, theme))
-        imv_elec.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-        imv_plomberie.setImageDrawable(
+        binding.imvOuvrants.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        binding.imvElec.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_elec, theme))
+        binding.imvElec.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        binding.imvPlomberie.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
                 R.drawable.ic_plomberie,
                 theme
             )
         )
-        imv_plomberie.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-        imv_chauffage.setImageDrawable(
+        binding.imvPlomberie.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        binding.imvChauffage.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
                 R.drawable.ic_chauffage,
                 theme
             )
         )
-        imv_chauffage.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-        imv_electromenager.setImageDrawable(
+        binding.imvChauffage.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        binding.imvElectromenager.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
                 R.drawable.ic_electromenager,
                 theme
             )
         )
-        imv_electromenager.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-        imv_mobilier.setImageDrawable(
+        binding.imvElectromenager.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        binding.imvMobilier.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
                 R.drawable.ic_mobilier,
                 theme
             )
         )
-        imv_mobilier.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-        imv_meulbe.setImageDrawable(
+        binding.imvMobilier.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        binding.imvMeulbe.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
                 R.drawable.ic_meuble,
                 theme
             )
         )
-        imv_meulbe.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        binding.imvMeulbe.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
     }
 
 }
