@@ -2,10 +2,10 @@ package fr.atraore.edl.ui.pdf
 
 import android.content.Intent
 import android.graphics.*
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -14,6 +14,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -485,13 +486,13 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
                 values.forEach { key ->
                     val tableRowView = PDFTableRowView(applicationContext)
-                    var pdfTextView = this.generateTextView(key.intitule)
+                    var pdfTextView = this.generateTextView(key.intitule, true)
                     tableRowView.addToRow(pdfTextView)
-                    pdfTextView = this.generateTextView(if (key.nature == null) "" else key.nature.toString())
+                    pdfTextView = this.generateTextView(if (key.nature == null) "" else key.nature.toString(), true)
                     tableRowView.addToRow(pdfTextView)
-                    pdfTextView = this.generateTextView(if (key.etat == null) "" else key.etat.toString())
+                    pdfTextView = this.generateTextView(if (key.etat == null) "" else key.etat.toString(), true)
                     tableRowView.addToRow(pdfTextView)
-                    pdfTextView = this.generateTextView(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString())
+                    pdfTextView = this.generateTextView(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString(), true)
                     if (pdfTextView.text.toString().equals("non", true)) {
                         pdfTextView.setBackgroundColor(Color.RED)
                         pdfTextView.setTextColor(Color.WHITE)
@@ -500,9 +501,9 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                         pdfTextView.setTextColor(Color.WHITE)
                     }
                     tableRowView.addToRow(pdfTextView)
-                    pdfTextView = this.generateTextView(if (key.proprete == null) "" else key.proprete.toString())
+                    pdfTextView = this.generateTextView(if (key.proprete == null) "" else key.proprete.toString(), true)
                     tableRowView.addToRow(pdfTextView)
-                    pdfTextView = this.generateTextView(if (key.notes == null) "" else key.notes.toString())
+                    pdfTextView = this.generateTextView(if (key.notes == null) "" else key.notes.toString(), true)
                     tableRowView.addToRow(pdfTextView)
                     tableView.addRow(tableRowView)
                 }
@@ -684,8 +685,16 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         startActivity(Intent.createChooser(intentShareFile, "Share File"))
     }
 
-    private fun generateTextView(text: String): PDFTextView {
+    private fun generateTextView(text: String, borderEnabled: Boolean = false): PDFTextView {
         val pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
+        if (borderEnabled) {
+            val gd = GradientDrawable()
+            gd.setStroke(1, -0x1000000)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                gd.setPadding(2, 2, 2, 2)
+            }
+            pdfTextView.view.background = gd
+        }
         pdfTextView.setText(text)
         return pdfTextView
     }
