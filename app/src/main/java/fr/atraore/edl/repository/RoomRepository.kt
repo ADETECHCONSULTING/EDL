@@ -2,7 +2,7 @@ package fr.atraore.edl.repository
 
 import androidx.annotation.WorkerThread
 import fr.atraore.edl.data.dao.RoomReferenceDao
-import fr.atraore.edl.data.models.crossRef.ConstatTenantCrossRef
+import fr.atraore.edl.data.models.crossRef.RoomConstatCrossRef
 import fr.atraore.edl.data.models.crossRef.RoomElementCrossRef
 import fr.atraore.edl.data.models.data.RoomWithElements
 import fr.atraore.edl.data.models.entity.Detail
@@ -14,16 +14,15 @@ class RoomRepository @Inject constructor(
     private val roomReferenceDao: RoomReferenceDao
 ) : BaseRepository<RoomReference>(roomReferenceDao) {
 
-    fun allRoomReferences(): Flow<List<RoomReference>> = roomReferenceDao.getAllRoomReferences()
-
-    fun firstRoomReference() : Flow<RoomReference> = roomReferenceDao.getFirstRoomReferences()
-
-    fun getRoomDetails(idLot: Int) : Flow<Map<RoomReference, List<Detail>>> = roomReferenceDao.getRoomDetails(idLot)
+    fun getAllRoomReferences(): Flow<List<RoomReference>> = roomReferenceDao.getAllRoomReferences()
 
     fun getRoomWithElements(name: String, idLot: Int) : Flow<RoomWithElements> = roomReferenceDao.getRoomWithElements(name, idLot)
     fun getRoomWithNameAndIdLot(name: String, idLot: Int) : Flow<RoomReference> = roomReferenceDao.getRoomWithNameAndIdLot(name, idLot)
-    fun getRoomsAndElementsWithIdLot(idLot: Int) : Flow<List<RoomWithElements>> = roomReferenceDao.getRoomsAndElementsWithIdLot(idLot)
-    fun getRoomsWithIdLotAndWithElementsExist(idLot: Int) : Flow<List<RoomReference>> = roomReferenceDao.getRoomsWithIdLotAndWithElementsExist(idLot)
+    fun getRoomsForConstat(constatId: String) : Flow<List<RoomReference>> = roomReferenceDao.getRoomsForConstat(constatId)
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveRoomConstatCrossRef(crossRefs: List<RoomConstatCrossRef>) = roomReferenceDao.saveRoomConstatCrossRef(crossRefs)
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread

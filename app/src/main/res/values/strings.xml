@@ -7,7 +7,6 @@
     <string name="mandataire_label">Mandataire</string>
     <string name="user_label">Utilisateur</string>
     <string name="agence_label">Agence</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hint_name">Nom Prénom</string>
     <string name="adress_label">Adresse</string>

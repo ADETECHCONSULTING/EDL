@@ -1,5 +1,6 @@
 package fr.atraore.edl.data.dao
 
+import android.telecom.Call.Details
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -21,6 +22,9 @@ interface DetailDao : BaseDao<Detail> {
     @Query("SELECT * FROM $DETAIL_TABLE WHERE idRoom =:idRoom and idConstat = :idConstat")
     fun getDetailsByIdRoomAndIdConstat(idRoom: String, idConstat: String): Flow<List<Detail>>
 
+    @Query("SELECT * FROM $DETAIL_TABLE WHERE idLot = :clickedLot AND idConstat = :constatId AND idElement in (:elementReferenceId)")
+    fun getDetailsByElementRefIdAndIdLotIdAndConstatId(elementReferenceId: List<String>, clickedLot: Int, constatId: String): Flow<List<Detail>>
+
     @Query("UPDATE Detail SET etat =:etat WHERE idDetail =:idDetail")
     suspend fun updateEtat(etat: String, idDetail: String)
 
@@ -32,9 +36,6 @@ interface DetailDao : BaseDao<Detail> {
 
     @Query("UPDATE Detail SET imagesPaths =:imagesPaths WHERE idDetail =:idDetail")
     suspend fun updateImagesPaths(imagesPaths: String, idDetail: String)
-
-    @Query("DELETE FROM Detail WHERE idRoom =:idRoom")
-    suspend fun deleteAllDetailsFromRoom(idRoom: String)
 
     @Transaction
     @Query("SELECT * FROM RoomReference r JOIN DETAIL dt ON dt.idRoom = roomReferenceId WHERE dt.idConstat = :id ORDER BY r.name asc")

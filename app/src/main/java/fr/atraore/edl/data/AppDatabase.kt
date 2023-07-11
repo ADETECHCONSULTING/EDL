@@ -43,7 +43,8 @@ const val DATABASE_NAME = "edlDb"
         RoomElementCrossRef::class,
         KeyReference::class,
         ConstatKey::class,
-        OutdoorEquipementReference::class
+        OutdoorEquipementReference::class,
+        RoomConstatCrossRef::class
     ], version = 1, exportSchema = false
 )
 @TypeConverters(DateTypeConverter::class)

@@ -63,13 +63,13 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         currentRoomSelected = room
         resetElementStateCheckbox(position)
 
-        viewModel.getElementsForRoom(room.roomReferenceId).observe(this) { elementRes ->
-            elementList = elementRes
-            elementGridAdapter.swapData(elementRes)
-            rcv_elements.adapter = elementGridAdapter
-
-            getElementsSavedForRoom(room.name)
-        }
+//        viewModel.getElementsForRoom(room.roomReferenceId).observe(this) { elementRes ->
+//            elementList = elementRes
+//            elementGridAdapter.swapData(elementRes)
+//            rcv_elements.adapter = elementGridAdapter
+//
+//            getElementsSavedForRoom(room.name)
+//        }
     }
 
     private val onElementItemClickListener = View.OnClickListener { view ->
@@ -159,7 +159,7 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
     override fun onStart() {
         super.onStart()
 
-        onLotTechniqueClick(imv_lot_batis, 1)
+        onLotTechniqueClick(imv_lot_revetement, 1)
 
         viewModel.getRooms.observeOnce(this) { roomRes ->
             roomsList = roomRes
@@ -271,14 +271,14 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
 
     private fun unClickAllLotTechnique(theme: Resources.Theme) {
         theme.applyStyle(R.style.DefaultLot, false)
-        imv_lot_batis.setImageDrawable(
+        imv_lot_revetement.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
                 R.drawable.ic_mur,
                 theme
             )
         )
-        imv_lot_batis.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        imv_lot_revetement.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
         imv_ouvrants.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,

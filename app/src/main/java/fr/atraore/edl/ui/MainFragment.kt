@@ -11,15 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.Constat
-import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.adapter.ConstatAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.settings.KeysConfigurationActivity
 import fr.atraore.edl.ui.settings.OutDoorConfigurationActivity
 import fr.atraore.edl.ui.settings.RoomConfigurationActivity
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
-import fr.atraore.edl.utils.ARGS_OWNER_ID
-import fr.atraore.edl.utils.ARGS_USER_ID
 import kotlinx.android.synthetic.main.fragment_main.*
 import java.sql.Date
 import java.util.*

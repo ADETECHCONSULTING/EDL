@@ -4,12 +4,10 @@ import androidx.lifecycle.*
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import fr.atraore.edl.data.models.crossRef.RoomConstatCrossRef
 import fr.atraore.edl.data.models.data.ConstatWithDetails
-import fr.atraore.edl.data.models.data.RoomWithElements
 import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.repository.*
-import fr.atraore.edl.utils.CombinedLiveData
-import fr.atraore.edl.utils.TripleCombinedLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -30,13 +28,13 @@ class ConstatViewModel @AssistedInject constructor(
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
     fun getDetailById(id: String): LiveData<Detail> = detailRepository.getDetailById(id).asLiveData()
-    fun getRoomsWithIdLotAndWithElementsExist(idLot: Int) = roomRepository.getRoomsWithIdLotAndWithElementsExist(idLot).asLiveData()
-    fun getElementsRefWhereRoomId(roomId: String) = elementRepository.getElementsRefWhereRoomId(roomId).asLiveData()
-    fun getDetailsByRoomRefElementIdIdLot(roomId: String, elementId: String, idLot: Int) = detailRepository.getDetailsByRoomRefElementIdIdLot(roomId, elementId, idLot).asLiveData()
+    fun getRoomsForConstat(constatId: String) = roomRepository.getRoomsForConstat(constatId).asLiveData()
+    fun getElementsRefWhereLotId(idLot: Int) = elementRepository.getElementsRefWhereLotId(idLot).asLiveData()
+    fun getElementsRefChild(elementReferenceId: String) = elementRepository.getElementsRefChild(elementReferenceId).asLiveData()
+    fun getOrCreateDetails(elementsRefs: List<ElementReference>, clickedLot: Int, constatId: String, roomId: String) = detailRepository.getOrCreateDetails(elementsRefs, clickedLot, constatId, roomId).asLiveData()
     fun getDetailByIdKeyAndConstat(idKey: Int, constatId: String) = detailRepository.getDetailByIdKeyAndConstat(idKey, constatId).asLiveData()
     fun getDetailByIdOutdoorAndConstat(idOutdoorEquipement: Int, constatId: String) = detailRepository.getDetailByIdOutdoorAndConstat(idOutdoorEquipement, constatId).asLiveData()
-
-
+    fun getAllRoomReferences() = roomRepository.getAllRoomReferences().asLiveData()
     fun allActifKeysRef() : LiveData<List<KeyReference>> = keyRepository.getAllActifKeysRef().asLiveData()
     fun allActifOutdoorRef() : LiveData<List<OutdoorEquipementReference>> = outdoorRepository.getAllActifRef().asLiveData()
 
@@ -47,21 +45,8 @@ class ConstatViewModel @AssistedInject constructor(
     interface AssistedStartFactory {
         fun create(itemId: String): ConstatViewModel
     }
-
-    suspend fun saveConstatRoomCrossRef(constatId: String, roomId: String, idLot: Int) {
-        repository.saveConstatRoomCrossRef(constatId, roomId, idLot)
-    }
-
     suspend fun saveDetail(detail: Detail) {
         detailRepository.save(detail)
-    }
-
-    suspend fun saveRoomDetailCrossRef(roomId: String, detailId: String) {
-        repository.saveRoomDetailCrossRef(roomId, detailId)
-    }
-
-    fun saveConstat(constat: Constat) = viewModelScope.launch {
-        repository.save(constat)
     }
 
     fun saveProcuration(constatId: String, procuration: String) = viewModelScope.launch {
@@ -86,20 +71,8 @@ class ConstatViewModel @AssistedInject constructor(
         contractorRepository.saveList(contractors)
     }
 
-    fun saveRoom(room: RoomReference) = viewModelScope.launch {
-        roomRepository.save(room)
-    }
-
     suspend fun deleteRoomDetailCrossRef(roomId: String, detailId: String) {
         repository.deleteRoomDetailCrossRef(roomId, detailId)
-    }
-
-    suspend fun deleteConstatRoomCrossRef(constatId: String, roomId: String, idLot: Int) {
-        repository.deleteConstatRoomCrossRef(constatId, roomId, idLot)
-    }
-
-    suspend fun deleteAllDetailsFromRoom(roomId: String) {
-        detailRepository.deleteAllDetailsFromRoom(roomId)
     }
 
     suspend fun deleteConstatPropertyCrossRefByIds() {
@@ -139,6 +112,12 @@ class ConstatViewModel @AssistedInject constructor(
                     repository.deleteConstatContractorCrossRef(constatWithDetails.constat.constatId, it)
                 }
             }
+        }
+    }
+
+    suspend fun saveRoomConstatCrossRef(crossRefs: List<RoomConstatCrossRef>) {
+        viewModelScope.launch {
+            roomRepository.saveRoomConstatCrossRef(crossRefs)
         }
     }
 }

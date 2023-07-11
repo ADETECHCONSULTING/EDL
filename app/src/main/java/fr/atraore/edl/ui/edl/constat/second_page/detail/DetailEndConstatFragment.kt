@@ -42,7 +42,6 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
     MainActivity.OnNavigationFragment, CoroutineScope, View.OnClickListener, PhotoPickerFragment.Callback {
 
     private val TAG = DetailEndConstatFragment::class.simpleName
-
     override val title: String
         get() = SUITE_CONSTAT_LABEL
 

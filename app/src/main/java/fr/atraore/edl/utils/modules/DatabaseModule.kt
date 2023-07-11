@@ -1,6 +1,7 @@
 package fr.atraore.edl.utils.modules
 
 import android.content.Context
+import android.sax.Element
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -224,8 +225,7 @@ class DatabaseModule {
         )
 
         createRoomsReference(roomReferenceDao)
-        createElementReferences(elementReferenceDao)
-        createLotReferences(lotReferenceDao)
+        createLotReferences(lotReferenceDao, elementReferenceDao)
         createCompteurReferences(compteurReferenceDao)
         createConfigPdfReference(configPdfDao)
         createKeyReferences(keyDao)
@@ -243,17 +243,34 @@ class DatabaseModule {
         }
     }
 
-    private suspend fun createElementReferences(elementReferenceDao: ElementReferenceDao) {
-        ELEMENTS_LABELS.forEach {
-            val elementReference = ElementReference(UUID.randomUUID().toString(), it)
-            elementReferenceDao.save(elementReference)
-        }
-    }
-
-    private suspend fun createLotReferences(lotReferenceDao: LotReferenceDao) {
+    private suspend fun createLotReferences(lotReferenceDao: LotReferenceDao, elementReferenceDao: ElementReferenceDao) {
         for ((index, value) in LOTS_LABELS.withIndex()) {
             val lotReference = LotReference(index+1, value)
             lotReferenceDao.save(lotReference)
+
+            when (lotReference.lotReferenceId) {
+                1 -> { //revetement
+                    saveElementRefs(ELEMENTS_REVETEMENTS_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                2 -> { //ouvrants
+                    saveElementRefs(ELEMENTS_OUVRANTS_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                3 -> { //electricité
+                    saveElementRefs(ELEMENTS_ELEC_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                4 -> { //plomberie
+                    saveElementRefs(ELEMENTS_PLOMBERIE_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                5 -> { //chauffage
+                    saveElementRefs(ELEMENTS_CHAUFFAGE_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                6 -> { //electroménager
+                    saveElementRefs(ELEMENTS_ELECTRONIQUE_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                7 -> { //Rangement
+                    saveElementRefs(ELEMENTS_RANGEMENT_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+            }
         }
     }
 
@@ -553,4 +570,32 @@ class DatabaseModule {
         constatDao.saveConstatAgencyCrossRef(constatWithAgency)
         constatDao.saveConstatUsersCrossRef(constatWithUser)
     }
+
+    suspend fun saveElementRefs(liste: Array<*>, idLot: Int, dao: ElementReferenceDao) {
+        val listToSave = mutableListOf<ElementReference>()
+        for (element in liste) {
+            if (element is List<*>) {
+                val firstItem = element.firstOrNull()
+                firstItem?.let {
+                    val firstItemRef = ElementReference(UUID.randomUUID().toString(), firstItem as String, false, idLot)
+                    listToSave.add(firstItemRef)
+                    for (j in 1 until element.size) {
+                        val sousElement = element[j]
+                        if (sousElement is String) {
+                            val itemRef = ElementReference(UUID.randomUUID().toString(), sousElement, false, idLot, firstItemRef.elementReferenceId)
+                            listToSave.add(itemRef)
+                        }
+                    }
+                }
+            } else {
+                listToSave.add(ElementReference(UUID.randomUUID().toString(), element as String, false, idLot))
+            }
+        }
+        if (listToSave.isNotEmpty()) {
+            listToSave.forEach {
+                dao.save(it)
+            }
+        }
+    }
+
 }

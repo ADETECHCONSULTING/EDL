@@ -13,7 +13,7 @@ interface BaseDao<T> {
     @Update
     fun update(obj: T)
 
-    @Update
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveList(objs: List<T>)
 
 }

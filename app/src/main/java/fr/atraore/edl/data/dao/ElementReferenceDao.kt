@@ -15,13 +15,16 @@ interface ElementReferenceDao : BaseDao<ElementReference> {
     @Query("SELECT * FROM $ELEMENT_REFERENCE_TABLE")
     fun getAllElementReference(): Flow<List<ElementReference>>
 
-    @Query("SELECT * FROM $ELEMENT_REFERENCE_TABLE WHERE roomId IS NULL OR roomId = :roomId")
-    fun getElementsForRoom(roomId: String): Flow<List<ElementReference>>
+    @Query("SELECT * FROM $ELEMENT_REFERENCE_TABLE WHERE idLot IS NULL OR idLot = :idLot")
+    fun getElementsForRoom(idLot: Int): Flow<List<ElementReference>>
 
     @Query("SELECT * FROM $ELEMENT_REFERENCE_TABLE WHERE name LIKE :searchQuery")
     fun searchElementQuery(searchQuery: String) : Flow<List<ElementReference>>
 
     @Transaction
-    @Query("SELECT * FROM ElementReference e JOIN RoomElementCrossRef rel ON rel.elementReferenceId = e.elementReferenceId AND rel.roomReferenceId = :roomId")
-    fun getElementsRefWhereRoomId(roomId: String) : Flow<List<ElementReference>>
+    @Query("SELECT * FROM ElementReference WHERE idLot = :idLot AND parentId IS NULL")
+    fun getElementsRefWhereLotId(idLot: Int) : Flow<List<ElementReference>>
+    @Transaction
+    @Query("SELECT * FROM ElementReference WHERE parentId = :elementReferenceId")
+    fun getElementsRefChild(elementReferenceId: String): Flow<List<ElementReference>>
 }

@@ -9,8 +9,9 @@ class ElementRepository @Inject constructor(
     private val elementReferenceDao: ElementReferenceDao
 ) : BaseRepository<ElementReference>(elementReferenceDao) {
 
-    fun allElementReference() : Flow<List<ElementReference>> = elementReferenceDao.getAllElementReference()
     fun searchElementQuery(query: String): Flow<List<ElementReference>> = elementReferenceDao.searchElementQuery(query)
-    fun getElementsRefWhereRoomId(roomId: String): Flow<List<ElementReference>> = elementReferenceDao.getElementsRefWhereRoomId(roomId)
-    fun getElementsForRoom(roomId: String): Flow<List<ElementReference>> = elementReferenceDao.getElementsForRoom(roomId)
+    fun getElementsRefWhereLotId(idLot: Int): Flow<List<ElementReference>> = elementReferenceDao.getElementsRefWhereLotId(idLot)
+    fun getElementsForRoom(idLot: Int): Flow<List<ElementReference>> = elementReferenceDao.getElementsForRoom(idLot)
+    fun getElementsRefChild(elementReferenceId: String): Flow<List<ElementReference>> = elementReferenceDao.getElementsRefChild(elementReferenceId)
+    
 }
