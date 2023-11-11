@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -17,15 +16,14 @@ import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.entity.Detail
-import fr.atraore.edl.data.models.entity.LotReference
 import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.data.models.entity.LotReference
+import fr.atraore.edl.data.models.entity.PrimaryInfo
 import fr.atraore.edl.databinding.FragmentStartConstatBinding
 import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
-import fr.atraore.edl.ui.hideKeyboard
 import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.fragment_start_constat.*
 import kotlinx.coroutines.CoroutineScope
@@ -124,14 +122,15 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                 this.constat = constatWithDetails
                 viewModel.constatHeaderInfo.value =
                     "Constat d'état des lieux ${getConstatEtat(constatWithDetails.constat.typeConstat)} - ${constatWithDetails.constat.dateCreation.formatToServerDateTimeDefaults()}"
-                configRecyclerViewsLinear(
-                    rcv_tenant,
-                    rcv_biens,
-                    rcv_contractor,
-                    rcv_owner,
-                    constatWithDetails = constatWithDetails,
-                    constatViewModel = viewModel
+
+                // Usage:
+                val dataMap = mapOf(
+                    R.id.rcv_tenant to constatWithDetails.tenants,
+                    R.id.rcv_owner to constatWithDetails.owners,
+                    R.id.rcv_biens to constatWithDetails.properties,
+                    R.id.rcv_contractor to constatWithDetails.contractors
                 )
+                configRecyclerViewsLinear(rcv_tenant, rcv_biens, rcv_contractor, rcv_owner, dataMap = dataMap)
             }
         }
 
@@ -172,45 +171,14 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
      */
     private fun configRecyclerViewsLinear(
         vararg recyclerViews: RecyclerView,
-        constatWithDetails: ConstatWithDetails,
-        constatViewModel: ConstatViewModel
+        dataMap: Map<Int, List<PrimaryInfo>>
     ) {
-        recyclerViews.forEach {
-            when (it.id) {
-                R.id.rcv_tenant -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(
-                        constatWithDetails.tenants,
-                        constatViewModel
-                    )
-                }
-                R.id.rcv_owner -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(
-                        constatWithDetails.owners,
-                        constatViewModel
-                    )
-                }
-                R.id.rcv_biens -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(
-                        constatWithDetails.properties,
-                        constatViewModel
-                    )
-                }
-                R.id.rcv_contractor -> {
-                    it.adapter = PrimaryInfoNoDataBindAdapter(
-                        constatWithDetails.contractors,
-                        constatViewModel
-                    )
-                }
+        recyclerViews.forEach { recyclerView ->
+            recyclerView.layoutManager = LinearLayoutManager(context)
+            recyclerView.adapter = dataMap[recyclerView.id]?.let {
+                PrimaryInfoNoDataBindAdapter(it, viewModel)
             }
-            it.layoutManager = LinearLayoutManager(context)
         }
-    }
-
-    /**
-     * configure l'agence et l'user
-     */
-    private fun configAgencyUsers(constatWithDetails: ConstatWithDetails) {
-
     }
 
     /**
@@ -218,111 +186,27 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
      */
     override fun onClick(v: View?) {
         when (v?.id) {
-            //click on Item : search icon
-            R.id.imv_search_owner -> {
-                val bundle = bundleOf(
-                    ARGS_TAB_POSITION to POSITION_FRAGMENT_PROPRIETAIRE,
-                    ARGS_CONSTAT to this.constat
-                )
-                findNavController().navigate(R.id.go_to_search, bundle)
+            R.id.imv_search_owner, R.id.imv_search_bien, R.id.imv_search_locataire,
+            R.id.imv_search_mandataire, R.id.imv_search_agence, R.id.imv_search_user -> {
+                handleSearchClick(v.id)
             }
-            R.id.imv_search_bien -> {
-                val bundle = bundleOf(
-                    ARGS_TAB_POSITION to POSITION_FRAGMENT_BIENS,
-                    ARGS_CONSTAT to this.constat
-                )
-                findNavController().navigate(R.id.go_to_search, bundle)
-            }
-            R.id.imv_search_locataire -> {
-                val bundle = bundleOf(
-                    ARGS_TAB_POSITION to POSITION_FRAGMENT_LOCATAIRE,
-                    ARGS_CONSTAT to this.constat
-                )
-                findNavController().navigate(R.id.go_to_search, bundle)
-            }
-            R.id.imv_search_mandataire -> {
-                val bundle = bundleOf(
-                    ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE,
-                    ARGS_CONSTAT to this.constat
-                )
-                findNavController().navigate(R.id.go_to_search, bundle)
-            }
-            R.id.imv_search_agence -> {
-                val bundle = bundleOf(
-                    ARGS_TAB_POSITION to POSITION_FRAGMENT_AGENCES,
-                    ARGS_CONSTAT to this.constat
-                )
-                findNavController().navigate(R.id.go_to_search, bundle)
-            }
-            R.id.imv_search_user -> {
-                val bundle = bundleOf(
-                    ARGS_TAB_POSITION to POSITION_FRAGMENT_USER,
-                    ARGS_CONSTAT to this.constat
-                )
-                findNavController().navigate(R.id.go_to_search, bundle)
-            }
-
-            //click on Item : Edit icon
-            //click true active l'edition
-            //click false sauvegarde le contenu
-            R.id.imv_edit_owner -> {
-                whoToEdit(this.constat.owners.map { it.name }, OWNER_LABEL)
-            }
-            R.id.imv_edit_locataire -> {
-                whoToEdit(this.constat.tenants.map { it.name }, TENANT_LABEL)
-            }
-            R.id.imv_edit_mandataire -> {
-                whoToEdit(this.constat.contractors.map { it.denomination }, CONTRACTOR_LABEL)
-            }
+            R.id.imv_edit_owner, R.id.imv_edit_locataire, R.id.imv_edit_mandataire,
             R.id.imv_edit_bien -> {
-                whoToEdit(this.constat.properties.map { it.address }, PROPERTY_LABEL)
+                handleEditClick(v.id)
             }
-
-            //Click on Add
-            R.id.imv_add_bien -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_BIENS)
-                findNavController().navigate(R.id.go_to_add, bundle)
-            }
-            R.id.imv_add_locataire -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_LOCATAIRE)
-                findNavController().navigate(R.id.go_to_add, bundle)
-            }
-            R.id.imv_add_owner -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_PROPRIETAIRE)
-                findNavController().navigate(R.id.go_to_add, bundle)
-            }
+            R.id.imv_add_bien, R.id.imv_add_locataire, R.id.imv_add_owner,
             R.id.imv_add_contractor -> {
-                val bundle = bundleOf(ARGS_TAB_POSITION to POSITION_FRAGMENT_MANDATAIRE)
-                findNavController().navigate(R.id.go_to_add, bundle)
+                handleAddClick(v.id)
             }
-            R.id.imv_delete_bien -> {
-                launch {
-                    viewModel.deleteConstatPropertyCrossRefByIds()
-                }
-            }
-            R.id.imv_delete_owner -> {
-                launch {
-                    viewModel.deleteConstatOwnerCrossRefByIds()
-                }
-            }
-            R.id.imv_delete_locataire -> {
-                launch {
-                    viewModel.deleteConstatTenantCrossRefByIds()
-                }
-            }
+            R.id.imv_delete_bien, R.id.imv_delete_owner, R.id.imv_delete_locataire,
             R.id.imv_delete_mandataire -> {
-                launch {
-                    viewModel.deleteConstatContractorCrossRefByIds()
-                }
+                handleDeleteClick(v.id)
             }
-
-            //procuration
             R.id.imb_save_procuration -> {
                 launch {
                     viewModel.saveProcuration(this@StartConstatFragment.constat.constat.constatId, edt_procuration.text.toString())
                 }
             }
-
             else -> {
                 Toast.makeText(
                     context,
@@ -331,6 +215,59 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
                 ).show()
             }
         }
+    }
+
+    private fun handleSearchClick(id: Int) {
+        val position = when (id) {
+            R.id.imv_search_owner -> POSITION_FRAGMENT_PROPRIETAIRE
+            R.id.imv_search_bien -> POSITION_FRAGMENT_BIENS
+            R.id.imv_search_locataire -> POSITION_FRAGMENT_LOCATAIRE
+            R.id.imv_search_mandataire -> POSITION_FRAGMENT_MANDATAIRE
+            R.id.imv_search_agence -> POSITION_FRAGMENT_AGENCES
+            R.id.imv_search_user -> POSITION_FRAGMENT_USER
+            else -> return
+        }
+        navigateTo(R.id.go_to_search, position)
+    }
+
+    private fun handleEditClick(id: Int) {
+        val (rows, label) = when (id) {
+            R.id.imv_edit_owner -> Pair(this.constat.owners.map { it.name }, OWNER_LABEL)
+            R.id.imv_edit_locataire -> Pair(this.constat.tenants.map { it.name }, TENANT_LABEL)
+            R.id.imv_edit_mandataire -> Pair(this.constat.contractors.map { it.denomination }, CONTRACTOR_LABEL)
+            R.id.imv_edit_bien -> Pair(this.constat.properties.map { it.address }, PROPERTY_LABEL)
+            else -> return
+        }
+        whoToEdit(rows, label)
+    }
+
+    private fun handleAddClick(id: Int) {
+        val position = when (id) {
+            R.id.imv_add_bien -> POSITION_FRAGMENT_BIENS
+            R.id.imv_add_locataire -> POSITION_FRAGMENT_LOCATAIRE
+            R.id.imv_add_owner -> POSITION_FRAGMENT_PROPRIETAIRE
+            R.id.imv_add_contractor -> POSITION_FRAGMENT_MANDATAIRE
+            else -> return
+        }
+        navigateTo(R.id.go_to_add, position)
+    }
+
+    private fun handleDeleteClick(id: Int) {
+        when (id) {
+            R.id.imv_delete_bien -> launch { viewModel.deleteConstatPropertyCrossRefByIds() }
+            R.id.imv_delete_owner -> launch { viewModel.deleteConstatOwnerCrossRefByIds() }
+            R.id.imv_delete_locataire -> launch { viewModel.deleteConstatTenantCrossRefByIds() }
+            R.id.imv_delete_mandataire -> launch { viewModel.deleteConstatContractorCrossRefByIds() }
+            else -> return
+        }
+    }
+
+    private fun navigateTo(destination: Int, position: Int) {
+        val bundle = bundleOf(
+            ARGS_TAB_POSITION to position,
+            ARGS_CONSTAT to this.constat
+        )
+        findNavController().navigate(destination, bundle)
     }
 
     @SuppressLint("CheckResult")

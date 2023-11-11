@@ -24,6 +24,7 @@ import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.crossRef.RoomConstatCrossRef
 import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.data.models.data.TreeParser
 import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.databinding.FragmentEndConstatBinding
 import fr.atraore.edl.ui.adapter.*
@@ -368,13 +369,19 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     }
 
     private fun initRooms() {
-        viewModel.getRoomsForConstat(arguments?.getString(ARGS_CONSTAT_ID)!!).observe(viewLifecycleOwner) { roomRes ->
-            roomsList = roomRes
-            roomRes.getOrNull(0)?.let { currentRoomSelected = it }
-            roomSimpleAdapter.swapData(roomRes)
-            rcv_rooms.adapter = roomSimpleAdapter
-            roomSimpleAdapter.setOnItemClickListener(onRoomItemClickListener)
+        viewModel.getAllEquipments.observe(viewLifecycleOwner) { equipments ->
+            val treeEqps = TreeParser.buildHierarchy(equipments)
+            println(treeEqps)
         }
+
+//        viewModel.allEquipmentsData.observe(viewLifecycleOwner) { roomRes ->
+//            val adapter = MultiLevelAdapter(roomRes) { clickedItem ->
+//                // Handle click
+//                Toast.makeText(context, "equipmnent", Toast.LENGTH_SHORT).show()
+//            }
+//            rcv_rooms.adapter = adapter
+//
+//        }
     }
 
     private fun initKeys() {

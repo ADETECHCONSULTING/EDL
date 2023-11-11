@@ -6,7 +6,8 @@
     <data>
 
         <import type="fr.atraore.edl.utils.ConstantsKt" />
-        
+        <import type="android.view.View"/>
+
         <variable
             name="compteurViewModel"
             type="fr.atraore.edl.ui.edl.constat.second_page.CompteurViewModel" />
@@ -18,6 +19,10 @@
         <variable
             name="constat"
             type="fr.atraore.edl.data.models.data.ConstatWithDetails" />
+
+        <variable
+            name="photoPickerViewModel"
+            type="fr.atraore.edl.photo.PickerViewModel" />
 
     </data>
 
@@ -56,6 +61,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/photo_loader"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:indeterminateTintMode="src_atop"
+                    android:indeterminateTint="@color/light_blue_900"
+                    android:visibility="@{photoPickerViewModel.inProgress ? View.VISIBLE : View.GONE}" /> />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ctn_compteur_eau_froide"

@@ -19,6 +19,7 @@ import fr.atraore.edl.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.nio.charset.Charset
 import java.sql.Date
 import java.util.*
 import javax.inject.Provider
@@ -138,6 +139,10 @@ class DatabaseModule {
         return appDatabase.getOutDoorEquipementDao()
     }
 
+    @Provides
+    fun provideEquipmentDao(appDatabase: AppDatabase): EquipmentDao {
+        return appDatabase.getEquipmentDao()
+    }
 
     @Provides
     @Singleton
@@ -168,6 +173,7 @@ class DatabaseModule {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
                     CoroutineScope(Dispatchers.IO).launch {
+                        executeSQLFromFile(applicationContext, db, "Equipments_202310222323.sql")
                         populateDatabase(
                             constatDao.get(),
                             propertyDao.get(),
@@ -597,5 +603,26 @@ class DatabaseModule {
             }
         }
     }
+
+    fun readSQLFromAssets(context: Context, fileName: String): String {
+        val assetManager = context.assets
+        val inputStream = assetManager.open(fileName)
+        val size = inputStream.available()
+        val buffer = ByteArray(size)
+        inputStream.read(buffer)
+        inputStream.close()
+        return String(buffer, Charset.forName("UTF-8"))
+    }
+
+    fun executeSQLFromFile(context: Context, database: SupportSQLiteDatabase, fileName: String) {
+        val sqlStatements = readSQLFromAssets(context, fileName).split(";")
+        for (statement in sqlStatements) {
+            if (statement.trim().isNotEmpty()) {
+                database.execSQL(statement)
+            }
+        }
+    }
+
+
 
 }

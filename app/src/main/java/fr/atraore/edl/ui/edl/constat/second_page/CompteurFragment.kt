@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.ListPopupWindow
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
@@ -25,8 +26,10 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.databinding.FragmentCompteurBinding
 import fr.atraore.edl.photo.PhotoPickerFragment
+import fr.atraore.edl.photo.PickerViewModel
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.first_page.StartConstatFragment
+import fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatViewModel
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import fr.atraore.edl.utils.COMPTEUR_LABELS_LIGHT
@@ -134,9 +137,9 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
     }
 
     private lateinit var binding: FragmentCompteurBinding
-    private lateinit var listPopupWindow: ListPopupWindow
     private lateinit var currentImageView: ImageView
     private lateinit var constatWithDetail: ConstatWithDetails
+    private val pickerViewModel: PickerViewModel by viewModels()
 
     @Inject
     lateinit var compteurViewModelFactory: CompteurViewModel.AssistedStartFactory
@@ -151,6 +154,7 @@ class CompteurFragment : BaseFragment("Compteur"), View.OnClickListener, Lifecyc
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_compteur, container, false)
         binding.compteurViewModel = viewModel
+        binding.photoPickerViewModel = pickerViewModel
         binding.lifecycleOwner = viewLifecycleOwner
         binding.photoClickListener = this
         return binding.root

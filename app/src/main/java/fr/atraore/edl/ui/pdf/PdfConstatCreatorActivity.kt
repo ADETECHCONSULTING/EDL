@@ -300,11 +300,11 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         constat.compteurs.forEach { compteur ->
             val tableRowView = PDFTableRowView(applicationContext)
-            var pdfTextView = this.generateTextView(COMPTEUR_LABELS[compteur.compteurRefId - 1])
+            var pdfTextView = this.generateTextView(COMPTEUR_LABELS[compteur.compteurRefId - 1], true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (compteur.etat == null) "" else compteur.etat.toString())
+            pdfTextView = this.generateTextView(if (compteur.etat == null) "" else compteur.etat.toString(), true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (compteur.fonctionmt == null) "NON" else compteur.fonctionmt.toString())
+            pdfTextView = this.generateTextView(if (compteur.fonctionmt == null) "NON" else compteur.fonctionmt.toString(), true)
             if (pdfTextView.text.toString().equals("non", true)) {
                 pdfTextView.setBackgroundColor(Color.RED)
                 pdfTextView.setTextColor(Color.WHITE)
@@ -313,9 +313,9 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                 pdfTextView.setTextColor(Color.WHITE)
             }
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (compteur.proprete == null) "" else compteur.proprete.toString())
+            pdfTextView = this.generateTextView(if (compteur.proprete == null) "" else compteur.proprete.toString(), true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (compteur.comment == null) "" else compteur.comment.toString())
+            pdfTextView = this.generateTextView(if (compteur.comment == null) "" else compteur.comment.toString(), true)
             tableRowView.addToRow(pdfTextView)
             tableView.addRow(tableRowView)
         }
@@ -341,7 +341,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         pdfBody.addView(pdfTableTitleView)
         tableHeader = PDFTableRowView(applicationContext)
         for (s in headersCompteur2) {
-            val pdfTextView = this.generateTextView(s)
+            val pdfTextView = this.generateTextView(s, true)
             tableHeader.addToRow(pdfTextView)
         }
         tableRowView1 = PDFTableRowView(applicationContext)
@@ -349,19 +349,19 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         constat.compteurs.forEach { compteur ->
             val tableRowView = PDFTableRowView(applicationContext)
-            var pdfTextView = this.generateTextView(COMPTEUR_LABELS[compteur.compteurRefId - 1])
+            var pdfTextView = this.generateTextView(COMPTEUR_LABELS[compteur.compteurRefId - 1], true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (compteur.getPrimaryQuantity == null) "" else compteur.getPrimaryQuantity.toString())
+            pdfTextView = this.generateTextView(if (compteur.getPrimaryQuantity == null) "" else compteur.getPrimaryQuantity.toString(), true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (compteur.getSecondaryQuantity == null) "" else compteur.secondaryQuantity.toString())
+            pdfTextView = this.generateTextView(if (compteur.getSecondaryQuantity == null) "" else compteur.secondaryQuantity.toString(), true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (compteur.num == null) "" else compteur.num.toString())
+            pdfTextView = this.generateTextView(if (compteur.num == null) "" else compteur.num.toString(), true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (compteur.fourni == null) "" else compteur.fourni.toString())
+            pdfTextView = this.generateTextView(if (compteur.fourni == null) "" else compteur.fourni.toString(), true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (compteur.contrat == null) "" else compteur.contrat.toString())
+            pdfTextView = this.generateTextView(if (compteur.contrat == null) "" else compteur.contrat.toString(), true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (compteur.divers == null) "" else compteur.divers.toString())
+            pdfTextView = this.generateTextView(if (compteur.divers == null) "" else compteur.divers.toString(), true)
             tableRowView.addToRow(pdfTextView)
             tableView.addRow(tableRowView)
         }
@@ -407,7 +407,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         val tableHeader = PDFTableRowView(applicationContext)
         for (s in headersCompteur1) {
-            val pdfTextView = this.generateTextView(s)
+            val pdfTextView = this.generateTextView(s, true)
             tableHeader.addToRow(pdfTextView)
         }
         val tableRowView1 = PDFTableRowView(applicationContext)
@@ -415,13 +415,13 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
         constat.keys.filter { detail -> detail.idKey != null }.forEach { key ->
             val tableRowView = PDFTableRowView(applicationContext)
-            var pdfTextView = this.generateTextView(key.intitule)
+            var pdfTextView = this.generateTextView(key.intitule, true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (key.nature == null) "" else key.nature.toString())
+            pdfTextView = this.generateTextView(if (key.nature == null) "" else key.nature.toString(), true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (key.etat == null) "" else key.etat.toString())
+            pdfTextView = this.generateTextView(if (key.etat == null) "" else key.etat.toString(), true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString())
+            pdfTextView = this.generateTextView(if (key.fonctionmt == null) "NON" else key.fonctionmt.toString(), true)
             if (pdfTextView.text.toString().equals("non", true)) {
                 pdfTextView.setBackgroundColor(Color.RED)
                 pdfTextView.setTextColor(Color.WHITE)
@@ -430,9 +430,9 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                 pdfTextView.setTextColor(Color.WHITE)
             }
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (key.proprete == null) "" else key.proprete.toString())
+            pdfTextView = this.generateTextView(if (key.proprete == null) "" else key.proprete.toString(), true)
             tableRowView.addToRow(pdfTextView)
-            pdfTextView = this.generateTextView(if (key.notes == null) "" else key.notes.toString())
+            pdfTextView = this.generateTextView(if (key.notes == null) "" else key.notes.toString(), true)
             tableRowView.addToRow(pdfTextView)
             tableView.addRow(tableRowView)
         }
@@ -478,7 +478,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
 
                 val tableHeader = PDFTableRowView(applicationContext)
                 for (s in headersCompteur1) {
-                    val pdfTextView = this.generateTextView(s)
+                    val pdfTextView = this.generateTextView(s, true)
                     tableHeader.addToRow(pdfTextView)
                 }
                 val tableRowView1 = PDFTableRowView(applicationContext)
@@ -685,18 +685,24 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
         startActivity(Intent.createChooser(intentShareFile, "Share File"))
     }
 
-    private fun generateTextView(text: String, borderEnabled: Boolean = false): PDFTextView {
-        val pdfTextView = PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P)
-        if (borderEnabled) {
-            val gd = GradientDrawable()
-            gd.setStroke(1, -0x1000000)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                gd.setPadding(2, 2, 2, 2)
-            }
-            pdfTextView.view.background = gd
+    // Extension function for GradientDrawable
+    fun GradientDrawable.setPaddingCompat(left: Int, top: Int, right: Int, bottom: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            this.setPadding(left, top, right, bottom)
         }
-        pdfTextView.setText(text)
-        return pdfTextView
     }
+
+    private fun generateTextView(text: String, borderEnabled: Boolean = false): PDFTextView {
+        return PDFTextView(applicationContext, PDFTextView.PDF_TEXT_SIZE.P).apply {
+            if (borderEnabled) {
+                this.view.background = GradientDrawable().apply {
+                    setStroke(1, -0x1000000)
+                    setPaddingCompat(2, 2, 2, 2)
+                }
+            }
+            setText(text)
+        }
+    }
+
 
 }

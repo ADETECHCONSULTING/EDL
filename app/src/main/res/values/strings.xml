@@ -42,13 +42,13 @@
         <item>Monsieur/Madame</item>
     </string-array>
 
-    <string name="picker_gallery">Gallery</string>
+    <string name="picker_gallery">Gallerie</string>
     <string name="picker_camera">Camera</string>
-    <string name="picker_select">Select</string>
-    <string name="picker_media_permissions_hint">Grant media permission for easier\ngallery access</string>
-    <string name="picker_empty_media">Your media library is empty</string>
-    <string name="picker_allow">Allow</string>
-    <string name="picker_select_photo">Select photo</string>
+    <string name="picker_select">Sélectionne</string>
+    <string name="picker_media_permissions_hint">Donner la permission à l\'accès à la gallerie</string>
+    <string name="picker_empty_media">Affiche les photos sur 7 jours.\nSi besoin de photo plus anciennes alors cliquer sur "Gallerie"</string>
+    <string name="picker_allow">Accorder</string>
+    <string name="picker_select_photo">Sélectionne une photo</string>
     <string name="picker_no_camera">No camera app is installed</string>
     <string name="city">Ville</string>
     <string name="next">Suivant</string>

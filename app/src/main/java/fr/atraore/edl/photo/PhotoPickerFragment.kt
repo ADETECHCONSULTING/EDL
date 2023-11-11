@@ -22,6 +22,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -39,14 +40,13 @@ import kotlinx.android.synthetic.main.fragment_photo_picker.view.*
 import kotlinx.android.synthetic.main.view_grant_permission.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class PhotoPickerFragment : DialogFragment(), CoroutineScope {
 
     private lateinit var photoAdapter: ImagePickerAdapter
-
-    private lateinit var vm: PickerViewModel
 
     private var behavior: BottomSheetBehavior<FrameLayout>? = null
 
@@ -55,6 +55,7 @@ class PhotoPickerFragment : DialogFragment(), CoroutineScope {
     private val cornerRadiusOutValue = TypedValue()
 
     private lateinit var contextWrapper: ContextThemeWrapper
+    private val vm: PickerViewModel by viewModels()
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default
@@ -62,7 +63,6 @@ class PhotoPickerFragment : DialogFragment(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm = ViewModelProvider(this).get(PickerViewModel::class.java)
         vm.setMaxSelectionCount(getMaxSelection(requireArguments()))
 
         contextWrapper = ContextThemeWrapper(context, getTheme(requireArguments()))
@@ -240,17 +240,23 @@ class PhotoPickerFragment : DialogFragment(), CoroutineScope {
 
             val images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
 
-            requireContext()
-                .contentResolver
-                .query(
-                    images,
-                    projection,
-                    null,
-                    null,
-                    MediaStore.Images.Media.DATE_ADDED + " DESC"
-                ).let { vm.setPhotos(it)}
+            // Calculate the timestamp for 7 days ago
+            val sevenDaysAgo = (System.currentTimeMillis() / 1000) - (14 * 24 * 60 * 60)
+
+            // Add a selection clause to filter photos from the last 7 days
+            val selection = "${MediaStore.Images.Media.DATE_ADDED} >= ?"
+            val selectionArgs = arrayOf(sevenDaysAgo.toString())
+
+            requireContext().contentResolver.query(
+                images,
+                projection,
+                selection,
+                selectionArgs,
+                "${MediaStore.Images.Media.DATE_ADDED} DESC"
+            ).let { vm.setPhotos(it) }
         }
     }
+
 
     private fun grantPermissions() {
         if (!isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE))

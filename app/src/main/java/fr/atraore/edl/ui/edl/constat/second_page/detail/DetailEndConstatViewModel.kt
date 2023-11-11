@@ -14,15 +14,10 @@ class DetailEndConstatViewModel @Inject constructor(
     private val detailRepository: DetailRepository,
     private val alterationRepository: AlterationRepository,
     private val descriptifRepository: DescriptifRepository,
-    private val etatRepository: EtatRepository,
-    private val propreteRepository: PropreteRepository
 ): ViewModel() {
     fun getDetailById(id: String): LiveData<Detail> = detailRepository.getDetailById(id).asLiveData()
     val getAllAlterations = alterationRepository.getAll().asLiveData()
-    val getAllEtats = etatRepository.getAll().asLiveData()
     val getAllDescriptifs = descriptifRepository.getAll().asLiveData()
-    val getAllPropretes = propreteRepository.getAll().asLiveData()
-    fun getDetailReferentiel() = QuadrupleCombinedLiveData(getAllAlterations, getAllDescriptifs, getAllEtats, getAllPropretes)
     lateinit var currentDetail: Detail
 
     suspend fun saveDetail(detail: Detail) {
@@ -43,14 +38,6 @@ class DetailEndConstatViewModel @Inject constructor(
 
     suspend fun saveDescriptif(descriptif: Descriptif) {
         descriptifRepository.save(descriptif)
-    }
-
-    suspend fun saveEtat(etat: Etat) {
-        etatRepository.save(etat)
-    }
-
-    suspend fun saveProprete(proprete: Proprete) {
-        propreteRepository.save(proprete)
     }
 
     suspend fun updateFonctionnement(fonctionnement: String, idDetail: String) {

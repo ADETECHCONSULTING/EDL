@@ -45,7 +45,6 @@ import kotlin.coroutines.CoroutineContext
 @AndroidEntryPoint
 class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchView.OnQueryTextListener {
     private val TAG = RoomConfigurationActivity::class.simpleName
-    lateinit var mNavigationFragment: MainActivity.OnNavigationFragment
 
     private val viewModel: ReferenceViewModel by viewModels()
     private val elementGridAdapter = ElementGridAdapter()
@@ -62,14 +61,6 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         val room = roomsList[position]
         currentRoomSelected = room
         resetElementStateCheckbox(position)
-
-//        viewModel.getElementsForRoom(room.roomReferenceId).observe(this) { elementRes ->
-//            elementList = elementRes
-//            elementGridAdapter.swapData(elementRes)
-//            rcv_elements.adapter = elementGridAdapter
-//
-//            getElementsSavedForRoom(room.name)
-//        }
     }
 
     private val onElementItemClickListener = View.OnClickListener { view ->
