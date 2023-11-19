@@ -54,12 +54,7 @@ class ConstatViewModel @AssistedInject constructor(
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
-    fun getDetailById(id: String): LiveData<Detail> = detailRepository.getDetailById(id).asLiveData()
-    fun getRoomsForConstat(constatId: String) = roomRepository.getRoomsForConstat(constatId).asLiveData()
-    fun getElementsRefWhereLotId(idLot: Int) = elementRepository.getElementsRefWhereLotId(idLot).asLiveData()
-    fun getElementsRefChild(elementReferenceId: String) = elementRepository.getElementsRefChild(elementReferenceId).asLiveData()
-    fun getOrCreateDetails(elementsRefs: List<ElementReference>, clickedLot: Int, constatId: String, roomId: String) = detailRepository.getOrCreateDetails(elementsRefs, clickedLot, constatId, roomId).asLiveData()
-    fun getDetailByIdKeyAndConstat(idKey: Int, constatId: String) = detailRepository.getDetailByIdKeyAndConstat(idKey, constatId).asLiveData()
+fun getDetailByIdKeyAndConstat(idKey: Int, constatId: String) = detailRepository.getDetailByIdKeyAndConstat(idKey, constatId).asLiveData()
     fun getDetailByIdOutdoorAndConstat(idOutdoorEquipement: Int, constatId: String) = detailRepository.getDetailByIdOutdoorAndConstat(idOutdoorEquipement, constatId).asLiveData()
     fun getAllRoomReferences() = roomRepository.getAllRoomReferences().asLiveData()
     fun allActifKeysRef() : LiveData<List<KeyReference>> = keyRepository.getAllActifKeysRef().asLiveData()

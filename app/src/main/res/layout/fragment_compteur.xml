@@ -71,7 +71,7 @@
                     style="?android:attr/progressBarStyleHorizontal"
                     android:indeterminateTintMode="src_atop"
                     android:indeterminateTint="@color/light_blue_900"
-                    android:visibility="@{photoPickerViewModel.inProgress ? View.VISIBLE : View.GONE}" /> />
+                    android:visibility="@{photoPickerViewModel.inProgress ? View.VISIBLE : View.GONE}" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ctn_compteur_eau_froide"

@@ -13,7 +13,7 @@ import javax.inject.Inject
 class DetailRepository @Inject constructor(
     private val detailDao: DetailDao
 ) : BaseRepository<Detail>(detailDao) {
-    fun getDetailById(id: String): Flow<Detail> = detailDao.getDetailById(id)
+    fun getDetailById(idEqp: String, idConstat: String, idLot: Int): Flow<Detail> = detailDao.getDetailById(idEqp, idConstat, idLot)
 
     suspend fun updateEtat(etat: String, idDetail: String) = detailDao.updateEtat(etat, idDetail)
     suspend fun updateProprete(propre: String, idDetail: String) = detailDao.updateProprete(propre, idDetail)

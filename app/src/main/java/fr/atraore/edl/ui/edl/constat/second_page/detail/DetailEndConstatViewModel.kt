@@ -3,10 +3,12 @@ package fr.atraore.edl.ui.edl.constat.second_page.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.repository.*
 import fr.atraore.edl.utils.QuadrupleCombinedLiveData
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,13 +17,15 @@ class DetailEndConstatViewModel @Inject constructor(
     private val alterationRepository: AlterationRepository,
     private val descriptifRepository: DescriptifRepository,
 ): ViewModel() {
-    fun getDetailById(id: String): LiveData<Detail> = detailRepository.getDetailById(id).asLiveData()
+    fun getDetailById(idEqp: String, idConstat: String, idLot: Int): LiveData<Detail> = detailRepository.getDetailById(idEqp, idConstat, idLot).asLiveData()
     val getAllAlterations = alterationRepository.getAll().asLiveData()
     val getAllDescriptifs = descriptifRepository.getAll().asLiveData()
     lateinit var currentDetail: Detail
 
-    suspend fun saveDetail(detail: Detail) {
-        detailRepository.save(detail)
+    fun saveDetail(detail: Detail) {
+        viewModelScope.launch {
+            detailRepository.save(detail)
+        }
     }
 
     suspend fun updateEtat(etat: String, idDetail: String) {

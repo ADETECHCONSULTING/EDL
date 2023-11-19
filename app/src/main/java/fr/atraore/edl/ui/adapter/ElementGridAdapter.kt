@@ -3,13 +3,10 @@ package fr.atraore.edl.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.ElementReference
-import kotlinx.android.synthetic.main.element_grid_item.view.*
-import kotlinx.android.synthetic.main.element_list_item.view.*
-import java.util.*
+import kotlinx.android.synthetic.main.element_grid_item.view.checkbox_element
 
 class ElementGridAdapter : RecyclerView.Adapter<ElementGridAdapter.ElementGridViewHolder>() {
 

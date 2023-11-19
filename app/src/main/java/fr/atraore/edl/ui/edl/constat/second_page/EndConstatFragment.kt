@@ -57,11 +57,9 @@ enum class ShowList {
 }
 
 @AndroidEntryPoint
-class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
+class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTreeNodeClickListener,
     MainActivity.OnNavigationFragment, CoroutineScope {
     private val TAG = EndConstatFragment::class.simpleName
-
-    private lateinit var fastItemAdapter: GenericFastItemAdapter
 
     override val title: String
         get() = "Deuxieme partie du constat"
@@ -72,8 +70,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default
 
-    var elementRefList: List<ElementReference>? = null
-
     private lateinit var binding: FragmentEndConstatBinding
 
     private lateinit var clickedChildItem: Detail
@@ -83,7 +79,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private lateinit var theme: Resources.Theme
     private var showList = ShowList.ROOM
 
-    private val roomSimpleAdapter = RoomSimpleAdapter()
     private val keySimpleAdapter = RoomSimpleAdapter()
     private val outdoorSimpleAdapter = RoomSimpleAdapter()
     private val elementSimpleAdapter = BaseRefSimpleAdapter()
@@ -91,37 +86,14 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private var roomsList = emptyList<RoomReference>()
     private var keysList = emptyList<KeyReference>()
     private var outdoorEqptList = emptyList<OutdoorEquipementReference>()
-    private var elementList = emptyList<ElementReference>()
-    private var detailList = emptyList<Detail>()
     private lateinit var currentRoomSelected: RoomReference
     private lateinit var currentKeySelected: KeyReference
     private lateinit var currentOutdoorEqptSelected: OutdoorEquipementReference
     private lateinit var currentElementSelected: ElementReference
-    private lateinit var currentDetail: Detail
     private lateinit var constat: ConstatWithDetails
 
-    private val onRoomItemClickListener = View.OnClickListener { view ->
-        val roomSimpleViewHolder: RecyclerView.ViewHolder = view.tag as RecyclerView.ViewHolder
-        val position = roomSimpleViewHolder.absoluteAdapterPosition
-        val room = roomsList[position]
-        currentRoomSelected = room
-
-        resetSelections()
-
-        if (roomSimpleAdapter.checkedPosition != position) {
-            roomSimpleAdapter.notifyDataSetChanged()
-            roomSimpleAdapter.checkedPosition = position
-        }
-
-        viewModel.getElementsRefWhereLotId(clickedLot).observeOnce(viewLifecycleOwner) { elementsRes ->
-            elementList = elementsRes
-            if (elementsRes.isNotEmpty()) {
-                currentElementSelected = elementsRes[0]
-                elementSimpleAdapter.swapData(elementsRes)
-                rcv_elements.adapter = elementSimpleAdapter
-                elementSimpleAdapter.setOnItemClickListener(onElementItemClickListener)
-            }
-        }
+    override fun onNodeClicked(itemId: String?, name: String) {
+        openDetails(itemId, name)
     }
 
     private val onKeyItemClickListener = View.OnClickListener { view ->
@@ -138,11 +110,11 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         }
 
         viewModel.getDetailByIdKeyAndConstat(key.id, constat.constat.constatId).observeOnce(viewLifecycleOwner) { res ->
-            val detail = res ?: Detail(UUID.randomUUID().toString(), null, currentRoomSelected.roomReferenceId, constat.constat.constatId, clickedLot, key.name, key.id)
+            val detail = res ?: Detail(UUID.randomUUID().toString(), null, null, constat.constat.constatId, clickedLot, key.name, key.id)
 
             launch {
                 viewModel.saveDetail(detail)
-                openDetails(detail.idDetail)
+                openDetails(detail.idDetail, key.name)
             }
         }
     }
@@ -165,54 +137,12 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
             launch {
                 viewModel.saveDetail(detail)
-                openDetails(detail.idDetail)
+                //openDetails(detail.idDetail) TODO REVIEW
             }
         }
 
     }
 
-    private val onElementItemClickListener = View.OnClickListener { view ->
-        val elementSimpleViewHolder: RecyclerView.ViewHolder = view.tag as RecyclerView.ViewHolder
-        val position = elementSimpleViewHolder.absoluteAdapterPosition
-        val element = elementList[position]
-        currentElementSelected = element
-
-        if (elementSimpleAdapter.checkedPosition != position) {
-            elementSimpleAdapter.notifyDataSetChanged()
-            elementSimpleAdapter.checkedPosition = position
-        }
-
-        viewModel.getElementsRefChild(currentElementSelected.elementReferenceId).observeOnce(viewLifecycleOwner) { elements ->
-            viewModel.getOrCreateDetails(elements.ifEmpty { listOf(currentElementSelected) }, clickedLot, arguments?.getString(ARGS_CONSTAT_ID)!!, currentRoomSelected.roomReferenceId).observeOnce(viewLifecycleOwner) { details ->
-                if (elements.isNotEmpty()) {
-                    detailList = details
-                    details.getOrNull(0)?.let { currentDetail = it }
-                    detailSimpleAdapter.swapData(details)
-                    rcv_child.adapter = detailSimpleAdapter
-                    detailSimpleAdapter.setOnItemClickListener(onChildItemClickListener)
-                } else {
-                    if (details.isNotEmpty()) {
-                        openDetails(details[0].idDetail)
-                    }
-                }
-            }
-        }
-    }
-
-    private val onChildItemClickListener = View.OnClickListener { view ->
-        val childSimpleViewHolder: RecyclerView.ViewHolder = view.tag as RecyclerView.ViewHolder
-        val position = childSimpleViewHolder.absoluteAdapterPosition
-        val detail = detailList[position]
-        currentDetail = detail
-
-        if (detailSimpleAdapter.checkedPosition != position) {
-            detailSimpleAdapter.notifyDataSetChanged()
-            detailSimpleAdapter.checkedPosition = position
-        }
-
-
-        openDetails(detail.idDetail)
-    }
 
     companion object {
         fun newInstance() = EndConstatFragment()
@@ -299,7 +229,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
 
                             launch {
                                 viewModel.saveDetail(detail)
-                                openDetails(detail.idDetail)
+                                //openDetails(detail.idDetail) TODO REVIEW
                             }
                         }
                         positiveButton(R.string.done)
@@ -371,17 +301,10 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
     private fun initRooms() {
         viewModel.getAllEquipments.observe(viewLifecycleOwner) { equipments ->
             val treeEqps = TreeParser.buildHierarchy(equipments)
-            println(treeEqps)
+            // Assume 'rootNode' is your TreeNode with all the data populated
+            val adapter = TreeNodeAdapter(treeEqps.children, 0, this)
+            rcv_rooms.adapter = adapter
         }
-
-//        viewModel.allEquipmentsData.observe(viewLifecycleOwner) { roomRes ->
-//            val adapter = MultiLevelAdapter(roomRes) { clickedItem ->
-//                // Handle click
-//                Toast.makeText(context, "equipmnent", Toast.LENGTH_SHORT).show()
-//            }
-//            rcv_rooms.adapter = adapter
-//
-//        }
     }
 
     private fun initKeys() {
@@ -404,13 +327,14 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
         }
     }
 
-    fun openDetails(itemId: String?) {
+    fun openDetails(itemId: String?, name: String? = null) {
         childFragmentManager.commit {
             setReorderingAllowed(true)
             val fragment = DetailEndConstatFragment.newInstance()
             fragment.arguments = bundleOf(
-                "detailId" to itemId,
+                "eqpId" to itemId,
                 "idLot" to clickedLot,
+                "intitule" to name,
                 ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!
             )
             replace(R.id.fragment_detail, fragment)
@@ -422,38 +346,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             goNext()
         } else {
             goBack()
-        }
-    }
-
-    @SuppressLint("CheckResult")
-    private fun rename() {
-        MaterialDialog(requireContext()).show {
-            title(R.string.rename_dialog_title)
-            input(prefill = clickedChildItem.intitule, allowEmpty = false) { _, text ->
-                launch {
-                    clickedChildItem.intitule = text.toString()
-                    viewModel.saveDetail(clickedChildItem)
-                }
-            }
-            positiveButton(R.string.rename)
-        }
-    }
-
-    private fun delete() {
-        MaterialDialog(requireContext()).show {
-            title(R.string.delete_dialog_title)
-            message(R.string.delete_dialog_content)
-            positiveButton(R.string.done) {
-                launch {
-                    viewModel.deleteRoomDetailCrossRef(
-                        clickedParentItem.roomReferenceId,
-                        clickedChildItem.idDetail
-                    )
-                }
-            }
-            negativeButton(R.string.cancel_label) {
-                dismiss()
-            }
         }
     }
 
@@ -550,28 +442,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver,
             )
         )
         imv_meulbe.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
-    }
-
-    private fun onChildClick(detail: Detail) {
-        viewModel.getDetailById(detail.idDetail).observeOnce(viewLifecycleOwner) { detailSaved ->
-            if (detailSaved == null) {
-                launch {
-                    viewModel.saveDetail(detail)
-                }
-            }
-            openDetails(detail.idDetail)
-        }
-    }
-
-    private fun createDetail(roomReference: RoomReference, elementReference: ElementReference): Detail {
-        return Detail(
-            roomReference.roomReferenceId + elementReference.elementReferenceId + clickedLot,
-            elementReference.elementReferenceId,
-            currentRoomSelected.roomReferenceId,
-            arguments?.getString(ARGS_CONSTAT_ID)!!,
-            clickedLot,
-            elementReference.name
-        )
     }
 
     private fun resetSelections() {

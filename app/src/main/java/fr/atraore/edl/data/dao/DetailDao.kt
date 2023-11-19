@@ -16,8 +16,8 @@ interface DetailDao : BaseDao<Detail> {
     @Query("SELECT * FROM $DETAIL_TABLE")
     fun getAllDetails(): Flow<List<Detail>>
 
-    @Query("SELECT * FROM $DETAIL_TABLE WHERE idDetail =:id")
-    fun getDetailById(id: String): Flow<Detail>
+    @Query("SELECT * FROM $DETAIL_TABLE WHERE idRoom =:id AND idConstat = :idConstat AND idLot = :idLot")
+    fun getDetailById(id: String, idConstat: String, idLot: Int): Flow<Detail>
 
     @Query("SELECT * FROM $DETAIL_TABLE WHERE idRoom =:idRoom and idConstat = :idConstat")
     fun getDetailsByIdRoomAndIdConstat(idRoom: String, idConstat: String): Flow<List<Detail>>
