@@ -143,4 +143,6 @@
     </plurals>
     <string name="add_photos_label">Ajouter des photos</string>
     <string name="imv_photo_content_desc">photo detail constat</string>
+    <string name="edit_element_title">Editer un élément</string>
+    <string name="edit_input_element_hint">Nom de l\'élément</string>
 </resources>

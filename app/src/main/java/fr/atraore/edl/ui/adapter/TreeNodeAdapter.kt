@@ -40,6 +40,17 @@ class TreeNodeAdapter(private val data: List<TreeNode>, private val level: Int =
                     }
                 }
             }
+
+            layoutView.setOnLongClickListener {
+                val position = absoluteAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val node = data[position]
+                    if (node.children.isEmpty()) {
+                        listener.onNodeLongClicked(node.id, node.name, node.idRoomRef)
+                    }
+                }
+                true
+            }
         }
 
         fun bind(node: TreeNode, isExpanded: Boolean) {

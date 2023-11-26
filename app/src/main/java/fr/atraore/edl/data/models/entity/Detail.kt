@@ -33,4 +33,9 @@ data class Detail (
         this.notes = ""
         this.nature = ""
     }
+
+    fun withIdRoomRef(idRoomRef: Int?): Detail {
+        this.idRoomRef = idRoomRef
+        return this@Detail
+    }
 }

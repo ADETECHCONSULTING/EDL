@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
@@ -16,13 +17,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.input.input
-import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.crossRef.RoomConstatCrossRef
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.data.TreeParser
 import fr.atraore.edl.data.models.entity.*
@@ -35,16 +32,6 @@ import fr.atraore.edl.ui.formatToServerDateTimeDefaults
 import fr.atraore.edl.utils.*
 import fr.atraore.edl.utils.itemanimators.SlideDownAlphaAnimator
 import kotlinx.android.synthetic.main.fragment_end_constat.*
-import kotlinx.android.synthetic.main.fragment_end_constat.imv_chauffage
-import kotlinx.android.synthetic.main.fragment_end_constat.imv_elec
-import kotlinx.android.synthetic.main.fragment_end_constat.imv_electromenager
-import kotlinx.android.synthetic.main.fragment_end_constat.imv_lot_revetement
-import kotlinx.android.synthetic.main.fragment_end_constat.imv_meulbe
-import kotlinx.android.synthetic.main.fragment_end_constat.imv_mobilier
-import kotlinx.android.synthetic.main.fragment_end_constat.imv_ouvrants
-import kotlinx.android.synthetic.main.fragment_end_constat.imv_plomberie
-import kotlinx.android.synthetic.main.fragment_end_constat.rcv_rooms
-import kotlinx.android.synthetic.main.fragment_end_constat.rcv_elements
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -72,8 +59,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
 
     private lateinit var binding: FragmentEndConstatBinding
 
-    private lateinit var clickedChildItem: Detail
-    private lateinit var clickedParentItem: RoomReference
     private var clickedLot: Int = 1
 
     private lateinit var theme: Resources.Theme
@@ -83,23 +68,80 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
     private val outdoorSimpleAdapter = RoomSimpleAdapter()
     private val elementSimpleAdapter = BaseRefSimpleAdapter()
     private val detailSimpleAdapter = DetailSimpleAdapter()
-    private var roomsList = emptyList<RoomReference>()
     private var keysList = emptyList<KeyReference>()
     private var outdoorEqptList = emptyList<OutdoorEquipementReference>()
-    private lateinit var currentRoomSelected: RoomReference
     private lateinit var currentKeySelected: KeyReference
     private lateinit var currentOutdoorEqptSelected: OutdoorEquipementReference
-    private lateinit var currentElementSelected: ElementReference
     private lateinit var constat: ConstatWithDetails
 
     override fun onNodeClicked(itemId: String?, name: String, idRoomRef: Int?) {
         viewModel.getDetailByIdEqp(itemId!!, constat.constat.constatId, clickedLot).observeOnce(viewLifecycleOwner) { res ->
-            val detail = res ?: Detail(UUID.randomUUID().toString(), constat.constat.constatId, clickedLot, name, itemId, idRoomRef = idRoomRef)
+            val detail = res ?: Detail(UUID.randomUUID().toString(), constat.constat.constatId, clickedLot, name, itemId)
+            detail.idRoomRef = idRoomRef
             launch {
                 viewModel.saveDetail(detail)
                 openDetails(detail.idDetail, name)
             }
         }
+    }
+
+    override fun onNodeLongClicked(itemId: String?, name: String, idRoomRef: Int?) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_edit_element, null)
+        val dialogBuilder = AlertDialog.Builder(requireContext()).setView(dialogView)
+
+        val spinner: Spinner = dialogView.findViewById(R.id.objectSpinner)
+        val inputField: EditText = dialogView.findViewById(R.id.inputField)
+        var selectedIndex = idRoomRef ?: 1
+
+        inputField.setText(name)
+        val roomsAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ROOMS_LABELS)
+        roomsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = roomsAdapter
+
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                selectedIndex = position + 1 // Sauvegarder l'index sélectionné
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Gérer le cas où aucun élément n'est sélectionné si nécessaire
+            }
+        }
+
+        val dialog = dialogBuilder.create()
+
+        // Gestion des boutons
+        dialogView.findViewById<Button>(R.id.cancelButton).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogView.findViewById<Button>(R.id.deleteButton).setOnClickListener {
+            launch {
+                viewModel.deleteEquipmentRef(itemId!!)
+                dialog.dismiss()
+            }
+        }
+
+        dialogView.findViewById<Button>(R.id.confirmButton).setOnClickListener {
+            if (inputField.text.toString().isEmpty()) {
+                inputField.error = "Veuillez saisir un nom"
+                return@setOnClickListener
+            }
+
+            if (selectedIndex == 0) {
+                Toast.makeText(requireContext(), "Veuillez choisir une pièce", Toast.LENGTH_SHORT).show()
+            }
+
+            launch {
+                viewModel.saveEquipmentRef(itemId!!, inputField.text.toString(), selectedIndex)
+            }
+            onNodeClicked(itemId, inputField.text.toString(), selectedIndex)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
     }
 
     private val onKeyItemClickListener = View.OnClickListener { view ->
@@ -196,10 +238,12 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
                 val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
                 findNavController().navigate(R.id.go_to_signature, bundle)
             }
+
             R.id.action_compteur -> {
                 val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
                 findNavController().navigate(R.id.go_to_compteur, bundle)
             }
+
             R.id.action_keys -> {
                 resetSelections()
                 //si je reclique
@@ -211,6 +255,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
                     initKeys()
                 }
             }
+
             R.id.action_outdoor -> {
                 resetSelections()
                 if (showList.equals(ShowList.OUTDOOR)) {

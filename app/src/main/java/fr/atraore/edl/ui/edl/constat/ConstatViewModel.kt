@@ -45,7 +45,6 @@ class ConstatViewModel @AssistedInject constructor(
     val propertyRepository: PropertyRepository,
     val contractorRepository: ContractorRepository,
     val roomRepository: RoomRepository,
-    val elementRepository: ElementRepository,
     val detailRepository: DetailRepository,
     val keyRepository: KeyRepository,
     val outdoorRepository: OutdoorEquipementRepository,
@@ -74,6 +73,10 @@ class ConstatViewModel @AssistedInject constructor(
         detailRepository.save(detail)
     }
 
+    suspend fun saveEquipmentRef(itemId: String, name: String, idRoomRef: Int) {
+        equipmentRepository.updateEquipmentReference(itemId, name, idRoomRef)
+    }
+
     fun saveProcuration(constatId: String, procuration: String) = viewModelScope.launch {
         if (procuration.isNotEmpty()) {
             repository.saveProcuration(constatId, procuration)
@@ -96,8 +99,8 @@ class ConstatViewModel @AssistedInject constructor(
         contractorRepository.saveList(contractors)
     }
 
-    suspend fun deleteRoomDetailCrossRef(roomId: String, detailId: String) {
-        repository.deleteRoomDetailCrossRef(roomId, detailId)
+    suspend fun deleteEquipmentRef(itemId: String) {
+        equipmentRepository.deleteEquipmentRef(itemId)
     }
 
     suspend fun deleteConstatPropertyCrossRefByIds() {
