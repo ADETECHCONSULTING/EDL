@@ -3,7 +3,7 @@ package fr.atraore.edl.data.models.data
 import fr.atraore.edl.data.models.entity.EquipmentReference
 import java.util.UUID
 
-data class TreeNode(val name: String, val id: String, val children: MutableList<TreeNode> = mutableListOf())
+data class TreeNode(val name: String, val id: String, val children: MutableList<TreeNode> = mutableListOf(), val idRoomRef: Int? = null)
 
 object TreeParser {
 
@@ -16,17 +16,17 @@ object TreeParser {
 
         results.forEach { eqpRef ->
             val firstLevelNode = levelOneMap.getOrPut(eqpRef.level1) {
-                TreeNode(eqpRef.level1, eqpRef.id).also { root.children.add(it) }
+                TreeNode(eqpRef.level1, eqpRef.id, idRoomRef = eqpRef.idRoomRef).also { root.children.add(it) }
             }
 
             val secondLevelKey = "${eqpRef.level1}->${eqpRef.level2}"
             val secondLevelNode = levelTwoMap.getOrPut(secondLevelKey) {
-                TreeNode(eqpRef.level2, eqpRef.id).also { firstLevelNode.children.add(it) }
+                TreeNode(eqpRef.level2, eqpRef.id, idRoomRef = eqpRef.idRoomRef).also { firstLevelNode.children.add(it) }
             }
 
             if (eqpRef.level3 != null) {
                 if (secondLevelNode.children.find { node -> node.name == eqpRef.level3 } == null) {
-                    secondLevelNode.children.add(TreeNode(eqpRef.level3, eqpRef.id))
+                    secondLevelNode.children.add(TreeNode(eqpRef.level3, eqpRef.id, idRoomRef = eqpRef.idRoomRef))
                 }
             }
         }

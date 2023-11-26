@@ -32,6 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.entity.Detail
+import fr.atraore.edl.data.models.entity.EquipmentReference
 import fr.atraore.edl.data.models.entity.RoomReference
 import fr.atraore.edl.photo.PickerConfiguration
 import fr.atraore.edl.utils.COMPTEUR_LABELS
@@ -310,7 +311,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                 pdfTextView.setTextColor(Color.WHITE)
             } else if (pdfTextView.text.toString().equals("oui", true)) {
                 pdfTextView.setBackgroundColor(Color.GREEN)
-                pdfTextView.setTextColor(Color.WHITE)
+                pdfTextView.setTextColor(Color.BLACK)
             }
             tableRowView.addToRow(pdfTextView)
             pdfTextView = this.generateTextView(if (compteur.proprete == null) "" else compteur.proprete.toString(), true)
@@ -427,7 +428,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                 pdfTextView.setTextColor(Color.WHITE)
             } else if (pdfTextView.text.toString().equals("oui", true)) {
                 pdfTextView.setBackgroundColor(Color.GREEN)
-                pdfTextView.setTextColor(Color.WHITE)
+                pdfTextView.setTextColor(Color.BLACK)
             }
             tableRowView.addToRow(pdfTextView)
             pdfTextView = this.generateTextView(if (key.proprete == null) "" else key.proprete.toString(), true)
@@ -498,7 +499,7 @@ class PdfConstatCreatorActivity : PDFCreatorActivity(), CoroutineScope {
                         pdfTextView.setTextColor(Color.WHITE)
                     } else if (pdfTextView.text.toString().equals("oui", true)) {
                         pdfTextView.setBackgroundColor(Color.GREEN)
-                        pdfTextView.setTextColor(Color.WHITE)
+                        pdfTextView.setTextColor(Color.BLACK)
                     }
                     tableRowView.addToRow(pdfTextView)
                     pdfTextView = this.generateTextView(if (key.proprete == null) "" else key.proprete.toString(), true)

@@ -17,7 +17,8 @@ class DetailEndConstatViewModel @Inject constructor(
     private val alterationRepository: AlterationRepository,
     private val descriptifRepository: DescriptifRepository,
 ): ViewModel() {
-    fun getDetailById(idEqp: String, idConstat: String, idLot: Int): LiveData<Detail> = detailRepository.getDetailById(idEqp, idConstat, idLot).asLiveData()
+    fun getDetailById(id: String): LiveData<Detail> = detailRepository.getDetailById(id).asLiveData()
+
     val getAllAlterations = alterationRepository.getAll().asLiveData()
     val getAllDescriptifs = descriptifRepository.getAll().asLiveData()
     lateinit var currentDetail: Detail

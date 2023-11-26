@@ -241,8 +241,8 @@ class DatabaseModule {
 
     private suspend fun createRoomsReference(roomReferenceDao: RoomReferenceDao) {
         ROOMS_LABELS.forEach {
-            val roomReference = RoomReference(UUID.randomUUID().toString(), it)
-            if (it == "ACCES / ENTREE") {
+            val roomReference = RoomReference(null, UUID.randomUUID().toString(), it)
+            if (it == "ACCES/ENTREE") {
                 roomReference.mandatory = true
             }
             roomReferenceDao.save(roomReference)

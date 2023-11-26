@@ -54,9 +54,10 @@ class ConstatViewModel @AssistedInject constructor(
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
-fun getDetailByIdKeyAndConstat(idKey: Int, constatId: String) = detailRepository.getDetailByIdKeyAndConstat(idKey, constatId).asLiveData()
+    fun getDetailByIdEqp(idEqp: String, idConstat: String, idLot: Int): LiveData<Detail> = detailRepository.getDetailByIdEqp(idEqp, idConstat, idLot).asLiveData()
+
+    fun getDetailByIdKeyAndConstat(idKey: Int, constatId: String) = detailRepository.getDetailByIdKeyAndConstat(idKey, constatId).asLiveData()
     fun getDetailByIdOutdoorAndConstat(idOutdoorEquipement: Int, constatId: String) = detailRepository.getDetailByIdOutdoorAndConstat(idOutdoorEquipement, constatId).asLiveData()
-    fun getAllRoomReferences() = roomRepository.getAllRoomReferences().asLiveData()
     fun allActifKeysRef() : LiveData<List<KeyReference>> = keyRepository.getAllActifKeysRef().asLiveData()
     fun allActifOutdoorRef() : LiveData<List<OutdoorEquipementReference>> = outdoorRepository.getAllActifRef().asLiveData()
 

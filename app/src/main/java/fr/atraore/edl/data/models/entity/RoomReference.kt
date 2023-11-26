@@ -9,7 +9,8 @@ import java.io.Serializable
 //Pieces
 @Entity(tableName = ROOM_REFERENCE_TABLE)
 data class RoomReference (
-    @PrimaryKey(autoGenerate = false) val roomReferenceId: String,
+    @PrimaryKey(autoGenerate = true) val id: Int? = 0,
+    val roomReferenceId: String,
     override var name: String,
     val idLotReference: Int? = null,
     var mandatory: Boolean? = false

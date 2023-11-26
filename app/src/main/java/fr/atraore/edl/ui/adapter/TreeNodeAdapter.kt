@@ -31,7 +31,7 @@ class TreeNodeAdapter(private val data: List<TreeNode>, private val level: Int =
                 if (position != RecyclerView.NO_POSITION) {
                     val node = data[position]
                     if (node.children.isEmpty()) {
-                        listener.onNodeClicked(node.id, node.name)
+                        listener.onNodeClicked(node.id, node.name, node.idRoomRef)
                     } else {
                         // If there are children, toggle the expanded state
                         val isExpanded = expandedStateMap[position] ?: false

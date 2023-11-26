@@ -99,27 +99,14 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
 
         photoGridAdapter = PhotoGridAdapter(requireActivity(), viewModel)
         rcv_photos.layoutManager = FlexboxLayoutManager(requireContext(), FlexDirection.ROW)
-
         arguments?.getString("eqpId").let { eqpId ->
             if (!eqpId.isNullOrEmpty()) {
-                viewModel.getDetailById(eqpId, arguments?.getString("constatId")!!, arguments?.getInt("idLot")!!).observe(viewLifecycleOwner) {
+                viewModel.getDetailById(eqpId).observe(viewLifecycleOwner) {
                     detail = it ?: Detail(
                         UUID.randomUUID().toString(),
-                        "", //TODO : idElement
-                        eqpId,
                         arguments?.getString("constatId")!!,
                         arguments?.getInt("idLot")!!,
-                        arguments?.getString("intitule") ?: "",
-                        null,
-                        null,
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""
+                        arguments?.getString("intitule") ?: ""
                     )
 
                     binding.detail = detail
@@ -209,6 +196,8 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
 
             }
         }
+
+
     }
 
     override fun navigateFragment(actionNext: Boolean) {
@@ -223,12 +212,10 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
         (view as Chip).let {
             launch {
                 Log.d(TAG, "chipEtatClicked: ${it.text}")
-                arguments?.getString("detailId")?.let { idDetail ->
-                    viewModel.updateEtat(
-                        it.text.toString(),
-                        idDetail
-                    )
-                }
+                viewModel.updateEtat(
+                    it.text.toString(),
+                    detail.idDetail
+                )
             }
         }
     }
@@ -237,12 +224,11 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
         (view as Chip).let {
             launch {
                 Log.d(TAG, "chipPropreteClicked: ${it.text}")
-                arguments?.getString("detailId")?.let { idDetail ->
-                    viewModel.updateProprete(
-                        it.text.toString(),
-                        idDetail
-                    )
-                }
+                viewModel.updateProprete(
+                    it.text.toString(),
+                    detail.idDetail
+                )
+
             }
         }
     }
@@ -263,7 +249,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
      */
     private fun chipCheckedState(viewGroup: ViewGroup, id: Int) {
         val views = getAllChildrenInsideViewGroup(viewGroup)
-        if (!views.isNullOrEmpty()) {
+        if (views.isNotEmpty()) {
             views.forEach { view ->
                 if (view is Chip) {
                     when (id) {
@@ -332,38 +318,34 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                             alterationRefs.find { stt -> stt.label == view.text }
                         //Si alteration trouvée dans la liste
                         foundAlteration?.let { alteration ->
-                            if (!this.detail.alteration!!.contains(alteration.label)) {
-                                var alterationLevelVerif = alteration.label
-                                var levelVerifPassed = false
-                                whenAllNotNull(rdbLevel, rdbVerif) {
-                                    levelVerifPassed = true
-                                    alterationLevelVerif += " (${rdbLevel?.text} - ${rdbVerif?.text})"
-                                }
+                            val alterationLabel = alteration.label
+                            val existingAlteration = detail.alteration?.split(",")?.map { it.trim() }?.find { it.startsWith(alterationLabel) }
 
-                                if (!levelVerifPassed) {
-                                    rdbLevel?.let {
-                                        alterationLevelVerif += " (${rdbLevel.text})"
-                                    }
-                                    rdbVerif?.let {
-                                        alterationLevelVerif += " (${rdbVerif.text})"
-                                    }
-                                }
+                            val selectedLevel = rdbLevel?.text?.let { " ($it)" } ?: ""
+                            val selectedVerif = rdbVerif?.text?.let { " ($it)" } ?: ""
+                            val newLevelVerif = if (selectedLevel.isNotEmpty() || selectedVerif.isNotEmpty()) {
+                                " - $selectedLevel$selectedVerif"
+                            } else ""
 
-                                //séparation par virgules
-                                if (detail.alteration.isNullOrEmpty()) {
-                                    detail.alteration = alterationLevelVerif
+                            if (existingAlteration != null) {
+                                // Mise à jour de l'altération existante
+                                val updatedAlteration = alterationLabel + newLevelVerif
+                                detail.alteration = detail.alteration?.replace(existingAlteration, updatedAlteration)
+                            } else {
+                                // Ajout d'une nouvelle altération avec gestion de la virgule
+                                detail.alteration = if (detail.alteration.isNullOrEmpty()) {
+                                    "$alterationLabel$newLevelVerif"
                                 } else {
-                                    detail.alteration += ", ${alterationLevelVerif}"
-                                }
-
-                                launch {
-                                    Log.d(
-                                        TAG,
-                                        "set de l'alteration dans le detail : ${alteration.id}"
-                                    )
-                                    viewModel.saveDetail(detail)
+                                    "${detail.alteration}, $alterationLabel$newLevelVerif"
                                 }
                             }
+
+                            launch {
+                                Log.d(TAG, "set de l'alteration dans le detail : ${alteration.id}")
+                                viewModel.saveDetail(detail)
+                            }
+
+
                         }
                         dialog.dismiss()
                     }

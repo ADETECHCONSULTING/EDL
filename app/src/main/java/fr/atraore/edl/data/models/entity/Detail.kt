@@ -8,11 +8,10 @@ import androidx.room.PrimaryKey
 @Entity
 data class Detail (
     @PrimaryKey(autoGenerate = false) val idDetail: String,
-    val idElement: String?,
-    val idRoom: String?,
     val idConstat: String,
     val idLot: Int,
     var intitule: String,
+    val idEqp: String? = null,
     val idKey: Int? = null,
     val idOutDoorEqpt: Int? = null,
     var etat: String? = "",
@@ -22,7 +21,8 @@ data class Detail (
     var notes: String? = "",
     var fonctionmt: String? = null,
     var imagesPaths: String? = null,
-    var nature: String? = null
+    var nature: String? = null,
+    var idRoomRef: Int? = null,
 ) {
     @Ignore
     fun razDetail() {

@@ -92,8 +92,14 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
     private lateinit var currentElementSelected: ElementReference
     private lateinit var constat: ConstatWithDetails
 
-    override fun onNodeClicked(itemId: String?, name: String) {
-        openDetails(itemId, name)
+    override fun onNodeClicked(itemId: String?, name: String, idRoomRef: Int?) {
+        viewModel.getDetailByIdEqp(itemId!!, constat.constat.constatId, clickedLot).observeOnce(viewLifecycleOwner) { res ->
+            val detail = res ?: Detail(UUID.randomUUID().toString(), constat.constat.constatId, clickedLot, name, itemId, idRoomRef = idRoomRef)
+            launch {
+                viewModel.saveDetail(detail)
+                openDetails(detail.idDetail, name)
+            }
+        }
     }
 
     private val onKeyItemClickListener = View.OnClickListener { view ->
@@ -110,7 +116,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
         }
 
         viewModel.getDetailByIdKeyAndConstat(key.id, constat.constat.constatId).observeOnce(viewLifecycleOwner) { res ->
-            val detail = res ?: Detail(UUID.randomUUID().toString(), null, null, constat.constat.constatId, clickedLot, key.name, key.id)
+            val detail = res ?: Detail(UUID.randomUUID().toString(), constat.constat.constatId, clickedLot, key.name, null, key.id)
 
             launch {
                 viewModel.saveDetail(detail)
@@ -133,11 +139,11 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
         }
 
         viewModel.getDetailByIdOutdoorAndConstat(outdoorEqpt.id, constat.constat.constatId).observeOnce(viewLifecycleOwner) { res ->
-            val detail = res ?: Detail(UUID.randomUUID().toString(), null, currentRoomSelected.roomReferenceId, constat.constat.constatId, clickedLot, outdoorEqpt.name, null, outdoorEqpt.id)
+            val detail = res ?: Detail(UUID.randomUUID().toString(), constat.constat.constatId, clickedLot, outdoorEqpt.name, null, null, outdoorEqpt.id)
 
             launch {
                 viewModel.saveDetail(detail)
-                //openDetails(detail.idDetail) TODO REVIEW
+                openDetails(detail.idDetail)
             }
         }
 
@@ -180,7 +186,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
         menu.findItem(R.id.action_keys)?.isVisible = true
         menu.findItem(R.id.action_outdoor)?.isVisible = true
         menu.findItem(R.id.action_compteur)?.isVisible = true
-        menu.findItem(R.id.action_add_room)?.isVisible = true
+        menu.findItem(R.id.action_add_room)?.isVisible = false
     }
 
     @SuppressLint("CheckResult")
@@ -193,48 +199,6 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
             R.id.action_compteur -> {
                 val bundle = bundleOf(ARGS_CONSTAT_ID to arguments?.getString(ARGS_CONSTAT_ID)!!)
                 findNavController().navigate(R.id.go_to_compteur, bundle)
-            }
-            R.id.action_add_room -> {
-                if (!this::currentElementSelected.isInitialized) {
-                    viewModel.getAllRoomReferences().observeOnce(viewLifecycleOwner) { roomReferences ->
-                        if (roomReferences.isNotEmpty()) {
-                            val existingIndex = roomReferences.indices.filter { indice ->
-                                roomsList.contains(roomReferences[indice])
-                            }.toIntArray()
-
-                            MaterialDialog(requireContext()).show {
-                                listItemsMultiChoice(items = roomReferences.map { roomReference -> roomReference.name }, initialSelection = existingIndex) { _, _, list ->
-                                    val selectedRooms = roomReferences.filter { roomRef ->
-                                        list.contains(roomRef.name)
-                                    }.map { roomFiltered ->
-                                        RoomConstatCrossRef(roomFiltered.roomReferenceId, arguments?.getString(ARGS_CONSTAT_ID)!!)
-                                    }
-
-                                    launch {
-                                        viewModel.saveRoomConstatCrossRef(selectedRooms)
-                                    }
-                                }
-                                positiveButton(R.string.done)
-                            }
-                        }
-                    }
-                } else {
-                    MaterialDialog(requireContext()).show {
-                        title(R.string.add_element)
-                        input(allowEmpty = false) { _, text ->
-
-                            val detail = Detail(
-                                UUID.randomUUID().toString(), currentElementSelected.elementReferenceId, currentRoomSelected.roomReferenceId, currentRoomSelected.roomReferenceId, clickedLot, text.toString()
-                            )
-
-                            launch {
-                                viewModel.saveDetail(detail)
-                                //openDetails(detail.idDetail) TODO REVIEW
-                            }
-                        }
-                        positiveButton(R.string.done)
-                    }
-                }
             }
             R.id.action_keys -> {
                 resetSelections()
@@ -300,7 +264,8 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
 
     private fun initRooms() {
         viewModel.getAllEquipments.observe(viewLifecycleOwner) { equipments ->
-            val treeEqps = TreeParser.buildHierarchy(equipments)
+            val noEqpsNull = equipments.filter { it.idRoomRef != null } //TODO for now
+            val treeEqps = TreeParser.buildHierarchy(noEqpsNull)
             // Assume 'rootNode' is your TreeNode with all the data populated
             val adapter = TreeNodeAdapter(treeEqps.children, 0, this)
             rcv_rooms.adapter = adapter
@@ -327,7 +292,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
         }
     }
 
-    fun openDetails(itemId: String?, name: String? = null) {
+    private fun openDetails(itemId: String?, name: String? = null) {
         childFragmentManager.commit {
             setReorderingAllowed(true)
             val fragment = DetailEndConstatFragment.newInstance()

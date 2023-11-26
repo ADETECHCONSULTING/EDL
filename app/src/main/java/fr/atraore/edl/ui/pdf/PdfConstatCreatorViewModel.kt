@@ -1,16 +1,11 @@
 package fr.atraore.edl.ui.pdf
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.atraore.edl.data.models.data.ConstatWithDetails
-import fr.atraore.edl.data.models.entity.Detail
-import fr.atraore.edl.data.models.entity.RoomReference
 import fr.atraore.edl.repository.ConstatRepository
 import fr.atraore.edl.repository.DetailRepository
 import fr.atraore.edl.utils.CombinedLiveData
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
