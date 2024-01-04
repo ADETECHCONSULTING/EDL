@@ -10,5 +10,5 @@ class AgencyRepository @Inject constructor(
 ) : BaseRepository<Agency>(agencyDao) {
 
     val allAgency: Flow<List<Agency>> = agencyDao.getAllAgencies()
-
+    fun getById(id: String): Flow<Agency> = agencyDao.getById(id)
 }

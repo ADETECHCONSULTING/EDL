@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="900dp"
     android:layout_height="match_parent"
     android:contentDescription="@string/contentdes_page_generation_pdf"
     tools:context=".ui.pdf.PdfGeneratorFragment">
@@ -209,6 +209,15 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_generate_pdf"
+            android:layout_width="100dp"
+            android:layout_height="100000dp"
+            android:text="générer"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ctn_bien_info"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

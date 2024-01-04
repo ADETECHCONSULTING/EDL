@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -12,14 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection.ROW
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.material.checkbox.MaterialCheckBox
 import dagger.hilt.android.AndroidEntryPoint
-import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.ElementReference
 import fr.atraore.edl.data.models.entity.RoomReference
@@ -27,21 +23,27 @@ import fr.atraore.edl.databinding.ActivityRoomConfigurationBinding
 import fr.atraore.edl.ui.ReferenceViewModel
 import fr.atraore.edl.ui.adapter.ElementGridAdapter
 import fr.atraore.edl.ui.adapter.RoomSimpleAdapter
-import fr.atraore.edl.utils.itemdecoration.ItemOffsetDecoration
 import fr.atraore.edl.utils.observeOnce
-import kotlinx.android.synthetic.main.activity_room_configuration.*
-import kotlinx.android.synthetic.main.element_grid_item.view.*
-import kotlinx.android.synthetic.main.room_simple_list_item.view.*
+import kotlinx.android.synthetic.main.activity_room_configuration.imv_chauffage
+import kotlinx.android.synthetic.main.activity_room_configuration.imv_elec
+import kotlinx.android.synthetic.main.activity_room_configuration.imv_electromenager
+import kotlinx.android.synthetic.main.activity_room_configuration.imv_lot_revetement
+import kotlinx.android.synthetic.main.activity_room_configuration.imv_meulbe
+import kotlinx.android.synthetic.main.activity_room_configuration.imv_mobilier
+import kotlinx.android.synthetic.main.activity_room_configuration.imv_ouvrants
+import kotlinx.android.synthetic.main.activity_room_configuration.imv_plomberie
+import kotlinx.android.synthetic.main.activity_room_configuration.rcv_elements
+import kotlinx.android.synthetic.main.activity_room_configuration.rcv_rooms
+import kotlinx.android.synthetic.main.activity_room_configuration.toolbar
+import kotlinx.android.synthetic.main.element_grid_item.view.checkbox_element
+import kotlinx.android.synthetic.main.room_simple_list_item.view.rb_room_parent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchView.OnQueryTextListener {
     private val TAG = RoomConfigurationActivity::class.simpleName
-    lateinit var mNavigationFragment: MainActivity.OnNavigationFragment
 
     private val viewModel: ReferenceViewModel by viewModels()
     private val elementGridAdapter = ElementGridAdapter()
@@ -58,37 +60,10 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         val room = roomsList[position]
         currentRoomSelected = room
         resetElementStateCheckbox(position)
-        getElementsSavedForRoom(room.name)
-    }
-
-    private val onElementItemClickListener = View.OnClickListener { view ->
-        val elementSimpleViewHolder: RecyclerView.ViewHolder = view.tag as RecyclerView.ViewHolder
-        val position = elementSimpleViewHolder.absoluteAdapterPosition
-        val element = elementList.get(position)
-        viewModel.getRoomWithNameAndIdLot(currentRoomSelected.name, clickedLot).observeOnce(this@RoomConfigurationActivity) { roomRefIfExist ->
-            launch {
-                if (roomRefIfExist == null) {
-                    val roomReference = RoomReference(UUID.randomUUID().toString(), currentRoomSelected.name, clickedLot)
-                    if (roomReference.name == "ACCES / ENTREE") {
-                        roomReference.mandatory = true
-                    }
-                    currentRoomSelected = roomReference
-                    viewModel.saveRoom(roomReference)
-                } else {
-                    currentRoomSelected = roomRefIfExist
-                }
-
-                if ((view as MaterialCheckBox).isChecked) {
-                    viewModel.saveRoomWithElements(currentRoomSelected.roomReferenceId, element.elementReferenceId)
-                } else {
-                    viewModel.deleteRoomWithElements(currentRoomSelected.roomReferenceId, element.elementReferenceId)
-                }
-            }
-        }
     }
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,7 +89,7 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         menuInflater.inflate(R.menu.toolbar_item, menu)
         menu?.findItem(R.id.action_next)?.isVisible = false
         menu?.findItem(R.id.action_compteur)?.isVisible = false
-        menu?.findItem(R.id.action_add_room)?.isVisible = false
+        menu?.findItem(R.id.action_add_room)?.isVisible = true
 
         val search = menu?.findItem(R.id.action_search)
         search?.isVisible = true
@@ -124,34 +99,18 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_previous -> {
-                finish()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onStart() {
         super.onStart()
 
-        onLotTechniqueClick(imv_lot_batis, 1)
+        onLotTechniqueClick(imv_lot_revetement, 1)
 
-        viewModel.getRooms.observe(this) { roomRes ->
+        viewModel.getRooms.observeOnce(this) { roomRes ->
             roomsList = roomRes
             currentRoomSelected = roomRes[0]
             getElementsSavedForRoom(currentRoomSelected.name)
             roomSimpleAdapter.swapData(roomRes)
             rcv_rooms.adapter = roomSimpleAdapter
             roomSimpleAdapter.setOnItemClickListener(onRoomItemClickListener)
-        }
-
-        viewModel.getElements.observe(this) { elementRes ->
-            elementList = elementRes
-            elementGridAdapter.swapData(elementRes)
-            rcv_elements.adapter = elementGridAdapter
-            elementGridAdapter.setOnItemClickListener(onElementItemClickListener)
         }
     }
 
@@ -253,14 +212,14 @@ class RoomConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
 
     private fun unClickAllLotTechnique(theme: Resources.Theme) {
         theme.applyStyle(R.style.DefaultLot, false)
-        imv_lot_batis.setImageDrawable(
+        imv_lot_revetement.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,
                 R.drawable.ic_mur,
                 theme
             )
         )
-        imv_lot_batis.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        imv_lot_revetement.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
         imv_ouvrants.setImageDrawable(
             ResourcesCompat.getDrawable(
                 resources,

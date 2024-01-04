@@ -51,7 +51,6 @@ class UserSearchFragment(private val constat: ConstatWithDetails) : BaseFragment
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        menu.findItem(R.id.action_next)?.isVisible = false
         menu.findItem(R.id.action_previous)?.isVisible = true
     }
 

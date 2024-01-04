@@ -1,20 +1,15 @@
 package fr.atraore.edl.ui.pdf
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.pdf.PdfDocument
 import android.graphics.pdf.PdfRenderer
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
-import androidx.core.content.FileProvider
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.edl.BaseFragment

@@ -1,6 +1,5 @@
 package fr.atraore.edl.ui.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.KeyReference
 import kotlinx.android.synthetic.main.element_grid_item.view.*
-import java.util.*
 
 class KeysGridAdapter : RecyclerView.Adapter<KeysGridAdapter.KeyGridViewHolder>() {
 

@@ -2,16 +2,21 @@ package fr.atraore.edl.ui.edl.constat.second_page.detail
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,10 +24,11 @@ import fr.atraore.edl.MainActivity
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.databinding.FragmentDetailEndConstatBinding
+import fr.atraore.edl.photo.PhotoPickerFragment
+import fr.atraore.edl.ui.adapter.PhotoGridAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
-import fr.atraore.edl.utils.IdDetailStatesEnum
-import fr.atraore.edl.utils.SUITE_CONSTAT_LABEL
-import fr.atraore.edl.utils.whenAllNotNull
+import fr.atraore.edl.utils.*
+import fr.atraore.edl.utils.InsertMedia.Companion.savePhotoToInternalStorage
 import kotlinx.android.synthetic.main.fragment_detail_end_constat.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,15 +39,18 @@ import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
-    MainActivity.OnNavigationFragment, CoroutineScope {
+    MainActivity.OnNavigationFragment, CoroutineScope, View.OnClickListener, PhotoPickerFragment.Callback {
 
     private val TAG = DetailEndConstatFragment::class.simpleName
-
     override val title: String
         get() = SUITE_CONSTAT_LABEL
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_add_room)?.isVisible = false
+    }
+
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     private lateinit var binding: FragmentDetailEndConstatBinding
 
@@ -49,9 +58,11 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
     private lateinit var detail: Detail
     private lateinit var alterationRefs: List<Alteration>
     private lateinit var etatsRefs: List<Etat>
-    private lateinit var propreteRefs: List<Proprete>
     private lateinit var descriptifRefs: List<Descriptif>
     private lateinit var currentEtat: String
+    private lateinit var currentProprete: String
+    private lateinit var currentImageView: ImageView
+    private lateinit var photoGridAdapter: PhotoGridAdapter
 
     companion object {
         fun newInstance() = DetailEndConstatFragment()
@@ -79,86 +90,114 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
             )
         binding.lifecycleOwner = viewLifecycleOwner
         binding.fragment = this
+        binding.photoClickListener = this
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getString("detailId").let { detailId ->
-            if (!detailId.isNullOrEmpty()) {
-                viewModel.getDetailById(detailId).observe(viewLifecycleOwner) {
-                    it?.let {
-                        binding.detail = it
-                        detail = it
+        photoGridAdapter = PhotoGridAdapter(requireActivity(), viewModel)
+        rcv_photos.layoutManager = FlexboxLayoutManager(requireContext(), FlexDirection.ROW)
+        arguments?.getString("eqpId").let { eqpId ->
+            if (!eqpId.isNullOrEmpty()) {
+                viewModel.getDetailById(eqpId).observe(viewLifecycleOwner) {
+                    detail = it ?: Detail(
+                        UUID.randomUUID().toString(),
+                        arguments?.getString("constatId")!!,
+                        arguments?.getInt("idLot")!!,
+                        arguments?.getString("intitule") ?: ""
+                    )
 
-                        if (!this::currentEtat.isInitialized) {
-                            chipCheckedState(
-                                cg_etat,
-                                IdDetailStatesEnum.ETAT.value
-                            )
-                        }
+                    binding.detail = detail
+                    viewModel.currentDetail = detail
 
-                        if (!this::descriptifRefs.isInitialized) {
-                            viewModel.getAllDescriptifs.observe(viewLifecycleOwner) { listRefs ->
-                                listRefs.let { list: List<Descriptif> ->
-                                    descriptifRefs = list
-                                    cg_descriptif.removeAllViews()
-                                    list.forEach { item ->
-                                        createChipsInCG(
-                                            item.label,
-                                            cg_descriptif,
-                                            IdDetailStatesEnum.DESCRIPTIF.value
-                                        )
-                                    }
-                                    chipCheckedState(
+                    tgb_fonctionnement.isChecked = detail.fonctionmt == "Oui"
+
+                    if (!this::currentEtat.isInitialized) {
+                        chipCheckedState(
+                            cg_etat,
+                            IdDetailStatesEnum.ETAT.value
+                        )
+                    }
+
+                    if (!this::currentProprete.isInitialized) {
+                        chipCheckedState(
+                            cg_proprete,
+                            IdDetailStatesEnum.PROPRETE.value
+                        )
+                    }
+
+                    if (!this::descriptifRefs.isInitialized) {
+                        viewModel.getAllDescriptifs.observe(viewLifecycleOwner) { listRefs ->
+                            listRefs.let { list: List<Descriptif> ->
+                                descriptifRefs = list
+                                cg_descriptif.removeAllViews()
+                                list.forEach { item ->
+                                    createChipsInCG(
+                                        item.label,
                                         cg_descriptif,
                                         IdDetailStatesEnum.DESCRIPTIF.value
                                     )
                                 }
+                                chipCheckedState(
+                                    cg_descriptif,
+                                    IdDetailStatesEnum.DESCRIPTIF.value
+                                )
                             }
                         }
+                    }
 
-                        if (!this::propreteRefs.isInitialized) {
-                            viewModel.getAllPropretes.observe(viewLifecycleOwner) { listRefs ->
-                                listRefs.let { list: List<Proprete> ->
-                                    propreteRefs = list
-                                    cg_proprete.removeAllViews()
-                                    list.forEach { item ->
-                                        createChipsInCG(
-                                            item.label,
-                                            cg_proprete,
-                                            IdDetailStatesEnum.PROPRETE.value
-                                        )
-                                    }
-                                    chipCheckedState(cg_proprete, IdDetailStatesEnum.PROPRETE.value)
-                                }
-                            }
-                        }
-
-                        if (!this::alterationRefs.isInitialized) {
-                            viewModel.getAllAlterations.observe(viewLifecycleOwner) { listRefs ->
-                                listRefs.let { list: List<Alteration> ->
-                                    alterationRefs = list
-                                    cg_alterations.removeAllViews()
-                                    list.forEach { item ->
-                                        createChipsInCG(
-                                            item.label,
-                                            cg_alterations,
-                                            IdDetailStatesEnum.ALTERATION.value
-                                        )
-                                    }
-                                    chipCheckedState(
+                    if (!this::alterationRefs.isInitialized) {
+                        viewModel.getAllAlterations.observe(viewLifecycleOwner) { listRefs ->
+                            listRefs.let { list: List<Alteration> ->
+                                alterationRefs = list
+                                cg_alterations.removeAllViews()
+                                list.forEach { item ->
+                                    createChipsInCG(
+                                        item.label,
                                         cg_alterations,
                                         IdDetailStatesEnum.ALTERATION.value
                                     )
                                 }
+                                chipCheckedState(
+                                    cg_alterations,
+                                    IdDetailStatesEnum.ALTERATION.value
+                                )
                             }
                         }
                     }
+
+                    edt_intitule.setOnFocusChangeListener { view, focus ->
+                        if (!focus) {
+                            Log.d(TAG, "onViewCreated: sauvegarde du détail $detail")
+                            detail.intitule = (view as EditText).text.toString()
+                            viewModel.saveDetail(detail)
+
+                        }
+                    }
+
+                    edt_note.setOnFocusChangeListener { view, focus ->
+                        if (!focus) {
+                            Log.d(TAG, "onViewCreated: sauvegarde du détail $detail")
+                            detail.notes = (view as EditText).text.toString()
+                            viewModel.saveDetail(detail)
+                        }
+                    }
+
+                    //photos
+                    if (!detail.imagesPaths.isNullOrEmpty()) {
+                        photoGridAdapter.swapData(detail.imagesPaths!!.split(","))
+                    } else {
+                        photoGridAdapter.swapData(emptyList())
+                    }
+                    rcv_photos.adapter = photoGridAdapter
                 }
+
             }
         }
+
+
     }
 
     override fun navigateFragment(actionNext: Boolean) {
@@ -173,12 +212,10 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
         (view as Chip).let {
             launch {
                 Log.d(TAG, "chipEtatClicked: ${it.text}")
-                arguments?.getString("detailId")?.let { idDetail ->
-                    viewModel.updateEtat(
-                        it.text.toString(),
-                        idDetail
-                    )
-                }
+                viewModel.updateEtat(
+                    it.text.toString(),
+                    detail.idDetail
+                )
             }
         }
     }
@@ -187,12 +224,11 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
         (view as Chip).let {
             launch {
                 Log.d(TAG, "chipPropreteClicked: ${it.text}")
-                arguments?.getString("detailId")?.let { idDetail ->
-                    viewModel.updateProprete(
-                        it.text.toString(),
-                        idDetail
-                    )
-                }
+                viewModel.updateProprete(
+                    it.text.toString(),
+                    detail.idDetail
+                )
+
             }
         }
     }
@@ -213,7 +249,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
      */
     private fun chipCheckedState(viewGroup: ViewGroup, id: Int) {
         val views = getAllChildrenInsideViewGroup(viewGroup)
-        if (!views.isNullOrEmpty()) {
+        if (views.isNotEmpty()) {
             views.forEach { view ->
                 if (view is Chip) {
                     when (id) {
@@ -221,6 +257,13 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                             if (view.text == detail.etat) {
                                 view.isChecked = true
                                 currentEtat = detail.etat.toString()
+                            }
+                        }
+
+                        IdDetailStatesEnum.PROPRETE.value -> {
+                            if (view.text == detail.proprete) {
+                                view.isChecked = true
+                                currentProprete = detail.proprete.toString()
                             }
                         }
                     }
@@ -242,12 +285,12 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                         } else {
                             detail.descriptif += ", ${it.label}"
                         }
-                        launch {
-                            Log.d(TAG, "set du descriptif dans le detail : ${it.id}")
-                            viewModel.saveDetail(detail)
-                        }
+                        Log.d(TAG, "set du descriptif dans le detail : ${it.id}")
+                        viewModel.saveDetail(detail)
+
                     }
                 }
+
                 IdDetailStatesEnum.ALTERATION.value -> {
                     val dialog = Dialog(requireContext())
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -275,38 +318,34 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                             alterationRefs.find { stt -> stt.label == view.text }
                         //Si alteration trouvée dans la liste
                         foundAlteration?.let { alteration ->
-                            if (!this.detail.alteration!!.contains(alteration.label)) {
-                                var alterationLevelVerif = alteration.label
-                                var levelVerifPassed = false
-                                whenAllNotNull(rdbLevel, rdbVerif) {
-                                    levelVerifPassed = true
-                                    alterationLevelVerif += " (${rdbLevel?.text} - ${rdbVerif?.text})"
-                                }
+                            val alterationLabel = alteration.label
+                            val existingAlteration = detail.alteration?.split(",")?.map { it.trim() }?.find { it.startsWith(alterationLabel) }
 
-                                if (!levelVerifPassed) {
-                                    rdbLevel?.let {
-                                        alterationLevelVerif += " (${rdbLevel.text})"
-                                    }
-                                    rdbVerif?.let {
-                                        alterationLevelVerif += " (${rdbVerif.text})"
-                                    }
-                                }
+                            val selectedLevel = rdbLevel?.text?.let { " ($it)" } ?: ""
+                            val selectedVerif = rdbVerif?.text?.let { " ($it)" } ?: ""
+                            val newLevelVerif = if (selectedLevel.isNotEmpty() || selectedVerif.isNotEmpty()) {
+                                " - $selectedLevel$selectedVerif"
+                            } else ""
 
-                                //séparation par virgules
-                                if (detail.alteration.isNullOrEmpty()) {
-                                    detail.alteration = alterationLevelVerif
+                            if (existingAlteration != null) {
+                                // Mise à jour de l'altération existante
+                                val updatedAlteration = alterationLabel + newLevelVerif
+                                detail.alteration = detail.alteration?.replace(existingAlteration, updatedAlteration)
+                            } else {
+                                // Ajout d'une nouvelle altération avec gestion de la virgule
+                                detail.alteration = if (detail.alteration.isNullOrEmpty()) {
+                                    "$alterationLabel$newLevelVerif"
                                 } else {
-                                    detail.alteration += ", ${alterationLevelVerif}"
-                                }
-
-                                launch {
-                                    Log.d(
-                                        TAG,
-                                        "set de l'alteration dans le detail : ${alteration.id}"
-                                    )
-                                    viewModel.saveDetail(detail)
+                                    "${detail.alteration}, $alterationLabel$newLevelVerif"
                                 }
                             }
+
+                            launch {
+                                Log.d(TAG, "set de l'alteration dans le detail : ${alteration.id}")
+                                viewModel.saveDetail(detail)
+                            }
+
+
                         }
                         dialog.dismiss()
                     }
@@ -319,7 +358,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     dialog.window?.let {
                         lp.copyFrom(it.attributes)
                         lp.width = 1000
-                        lp.height = 700
+                        lp.height = 1000
                         it.attributes = lp
                     }
                 }
@@ -336,14 +375,6 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                     input(allowEmpty = false) { _, text ->
                         launch {
                             when (id) {
-                                IdDetailStatesEnum.PROPRETE.value -> viewModel.saveProprete(
-                                    Proprete(
-                                        UUID.randomUUID().toString(),
-                                        text.toString(),
-                                        idLot,
-                                        detail.idDetail
-                                    )
-                                )
                                 IdDetailStatesEnum.DESCRIPTIF.value -> viewModel.saveDescriptif(
                                     Descriptif(
                                         UUID.randomUUID().toString(),
@@ -352,6 +383,7 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
                                         detail.idDetail
                                     )
                                 )
+
                                 IdDetailStatesEnum.ALTERATION.value -> viewModel.saveAlteration(
                                     Alteration(
                                         UUID.randomUUID().toString(),
@@ -388,15 +420,64 @@ class DetailEndConstatFragment : BaseFragment(SUITE_CONSTAT_LABEL),
             positiveButton(R.string.done) { _ ->
                 run {
                     this@DetailEndConstatFragment.detail.razDetail()
-                    launch {
-                        Log.d(
-                            TAG,
-                            "RAZ du détail : ${this@DetailEndConstatFragment.detail.idDetail}"
-                        )
-                        viewModel.saveDetail(detail)
-                    }
+
+                    Log.d(
+                        TAG,
+                        "RAZ du détail : ${this@DetailEndConstatFragment.detail.idDetail}"
+                    )
+                    viewModel.saveDetail(detail)
                 }
             }
         }
     }
+
+    fun toggleFonctionmentChange(view: View, checked: Boolean) {
+        launch {
+            if (checked) {
+                viewModel.updateFonctionnement("Oui", this@DetailEndConstatFragment.detail.idDetail)
+            } else {
+                viewModel.updateFonctionnement("Non", this@DetailEndConstatFragment.detail.idDetail)
+            }
+        }
+    }
+
+    //photo
+    private fun openPicker() {
+        PhotoPickerFragment.newInstance(
+            multiple = true,
+            allowCamera = true,
+            maxSelection = 5,
+            theme = R.style.ChiliPhotoPicker_Light
+        ).show(childFragmentManager, "picker")
+    }
+
+    override fun onImagesPicked(photos: ArrayList<Uri>) {
+        var paths = mutableListOf<String>()
+        if (photos.isNotEmpty()) {
+            for ((index, imagePath) in photos.withIndex()) {
+                activity?.let {
+                    val path = "PHO_DETAIL_${detail.idConstat}_${detail.idDetail}_${index}"
+                    savePhotoToInternalStorage(requireActivity(), path, getBitmapFromUri(imagePath))
+                    Log.d(TAG, "onImagesPicked: Image sauvegardée")
+                    paths.add(path)
+                }
+            }
+            launch {
+                viewModel.updateImagesPaths(if (!detail.imagesPaths.isNullOrEmpty()) detail.imagesPaths + "," + paths.joinToString(",") else paths.joinToString(","), detail.idDetail)
+            }
+        }
+    }
+
+    private fun getBitmapFromUri(imageUri: Uri): Bitmap {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, imageUri))
+        } else {
+            MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
+        }
+    }
+
+    override fun onClick(p0: View?) {
+        openPicker()
+    }
+
 }

@@ -1,16 +1,40 @@
 package fr.atraore.edl.ui.edl.constat
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import fr.atraore.edl.data.models.crossRef.RoomConstatCrossRef
+import fr.atraore.edl.data.models.data.ChildData
 import fr.atraore.edl.data.models.data.ConstatWithDetails
-import fr.atraore.edl.data.models.data.RoomWithElements
-import fr.atraore.edl.data.models.entity.*
-import fr.atraore.edl.repository.*
-import fr.atraore.edl.utils.CombinedLiveData
-import fr.atraore.edl.utils.TripleCombinedLiveData
+import fr.atraore.edl.data.models.data.EquipmentData
+import fr.atraore.edl.data.models.entity.Contractor
+import fr.atraore.edl.data.models.entity.Detail
+import fr.atraore.edl.data.models.entity.ElementReference
+import fr.atraore.edl.data.models.entity.KeyReference
+import fr.atraore.edl.data.models.entity.OutdoorEquipementReference
+import fr.atraore.edl.data.models.entity.Owner
+import fr.atraore.edl.data.models.entity.Property
+import fr.atraore.edl.data.models.entity.Tenant
+import fr.atraore.edl.repository.ConstatRepository
+import fr.atraore.edl.repository.ContractorRepository
+import fr.atraore.edl.repository.DetailRepository
+import fr.atraore.edl.repository.ElementRepository
+import fr.atraore.edl.repository.EquipmentRepository
+import fr.atraore.edl.repository.KeyRepository
+import fr.atraore.edl.repository.OutdoorEquipementRepository
+import fr.atraore.edl.repository.OwnerRepository
+import fr.atraore.edl.repository.PropertyRepository
+import fr.atraore.edl.repository.RoomRepository
+import fr.atraore.edl.repository.TenantRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
@@ -21,47 +45,36 @@ class ConstatViewModel @AssistedInject constructor(
     val propertyRepository: PropertyRepository,
     val contractorRepository: ContractorRepository,
     val roomRepository: RoomRepository,
-    val elementRepository: ElementRepository,
     val detailRepository: DetailRepository,
     val keyRepository: KeyRepository,
+    val outdoorRepository: OutdoorEquipementRepository,
+    val equipmentRepository: EquipmentRepository,
     @Assisted val constatId: String
 ) : ViewModel() {
     val constatDetail: LiveData<ConstatWithDetails> = repository.getConstatDetail(constatId).asLiveData()
-    val firstRoomReference: LiveData<RoomReference> = roomRepository.firstRoomReference().asLiveData()
-    val allRoomReference: LiveData<List<RoomReference>> = roomRepository.allRoomReferences().asLiveData()
-    val allElementReference: LiveData<List<ElementReference>> = elementRepository.allElementReference().asLiveData()
     val constatHeaderInfo = MutableLiveData<String>()
-    fun getDetailById(id: String): LiveData<Detail> = detailRepository.getDetailById(id).asLiveData()
-    fun getRoomsAndElementsWithIdLot(idLot: Int) : LiveData<List<RoomWithElements>> = roomRepository.getRoomsAndElementsWithIdLot(idLot).asLiveData()
-    fun getRoomWithNameAndIdLot(name: String, idLot: Int) = roomRepository.getRoomWithNameAndIdLot(name, idLot).asLiveData()
+    fun getDetailByIdEqp(idEqp: String, idConstat: String, idLot: Int): LiveData<Detail> = detailRepository.getDetailByIdEqp(idEqp, idConstat, idLot).asLiveData()
 
-    //combined live data
-    val initFirstRoomReference = CombinedLiveData(firstRoomReference, allElementReference)
-    fun roomCombinedLiveData(idLot: Int) = TripleCombinedLiveData(getRoomsAndElementsWithIdLot(idLot), allRoomReference, allElementReference)
+    fun getDetailByIdKeyAndConstat(idKey: Int, constatId: String) = detailRepository.getDetailByIdKeyAndConstat(idKey, constatId).asLiveData()
+    fun getDetailByIdOutdoorAndConstat(idOutdoorEquipement: Int, constatId: String) = detailRepository.getDetailByIdOutdoorAndConstat(idOutdoorEquipement, constatId).asLiveData()
     fun allActifKeysRef() : LiveData<List<KeyReference>> = keyRepository.getAllActifKeysRef().asLiveData()
+    fun allActifOutdoorRef() : LiveData<List<OutdoorEquipementReference>> = outdoorRepository.getAllActifRef().asLiveData()
 
+    val getAllEquipments = equipmentRepository.getAllEquipments().asLiveData()
     val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
+
 
     @AssistedFactory
     interface AssistedStartFactory {
         fun create(itemId: String): ConstatViewModel
     }
-
-    suspend fun saveConstatRoomCrossRef(constatId: String, roomId: String, idLot: Int) {
-        repository.saveConstatRoomCrossRef(constatId, roomId, idLot)
-    }
-
     suspend fun saveDetail(detail: Detail) {
         detailRepository.save(detail)
     }
 
-    suspend fun saveRoomDetailCrossRef(roomId: String, detailId: String) {
-        repository.saveRoomDetailCrossRef(roomId, detailId)
-    }
-
-    fun saveConstat(constat: Constat) = viewModelScope.launch {
-        repository.save(constat)
+    suspend fun saveEquipmentRef(itemId: String, name: String, idRoomRef: Int) {
+        equipmentRepository.updateEquipmentReference(itemId, name, idRoomRef)
     }
 
     fun saveProcuration(constatId: String, procuration: String) = viewModelScope.launch {
@@ -86,20 +99,8 @@ class ConstatViewModel @AssistedInject constructor(
         contractorRepository.saveList(contractors)
     }
 
-    fun saveRoom(room: RoomReference) = viewModelScope.launch {
-        roomRepository.save(room)
-    }
-
-    suspend fun deleteRoomDetailCrossRef(roomId: String, detailId: String) {
-        repository.deleteRoomDetailCrossRef(roomId, detailId)
-    }
-
-    suspend fun deleteConstatRoomCrossRef(constatId: String, roomId: String, idLot: Int) {
-        repository.deleteConstatRoomCrossRef(constatId, roomId, idLot)
-    }
-
-    suspend fun deleteAllDetailsFromRoom(roomId: String) {
-        detailRepository.deleteAllDetailsFromRoom(roomId)
+    suspend fun deleteEquipmentRef(itemId: String) {
+        equipmentRepository.deleteEquipmentRef(itemId)
     }
 
     suspend fun deleteConstatPropertyCrossRefByIds() {
@@ -139,6 +140,12 @@ class ConstatViewModel @AssistedInject constructor(
                     repository.deleteConstatContractorCrossRef(constatWithDetails.constat.constatId, it)
                 }
             }
+        }
+    }
+
+    suspend fun saveRoomConstatCrossRef(crossRefs: List<RoomConstatCrossRef>) {
+        viewModelScope.launch {
+            roomRepository.saveRoomConstatCrossRef(crossRefs)
         }
     }
 }

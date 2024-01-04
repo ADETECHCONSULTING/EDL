@@ -1,12 +1,10 @@
 package fr.atraore.edl.ui.edl.search.agency
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
@@ -53,8 +51,16 @@ class AgencySearchFragment(private val constat: ConstatWithDetails) : BaseFragme
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        menu.findItem(R.id.action_next)?.isVisible = false
         menu.findItem(R.id.action_previous)?.isVisible = true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.action_next -> {
+                findNavController().popBackStack()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

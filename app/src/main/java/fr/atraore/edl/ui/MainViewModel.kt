@@ -17,6 +17,8 @@ class MainViewModel @Inject constructor(
     val ownerRepository: OwnerRepository,
     val propertyRepository: PropertyRepository,
     val contractorRepository: ContractorRepository,
+    val agencyRepository: AgencyRepository,
+    val userRepository: UserRepository
 ) : ViewModel() {
     val allConstats: LiveData<List<Constat>> = constatRepositoy.allConstats.asLiveData()
     val allConstatWithDetails: LiveData<List<ConstatWithDetails>> = constatRepositoy.allConstatWithDetails.asLiveData()

@@ -52,7 +52,7 @@ class UserAdapter(private val userSearchViewModel: UserSearchViewModel, private 
                     Log.d(TAG, "Ajout user ${user} in ${constatDetails.constat.constatId}")
                 }
 
-                Toast.makeText(it.context, "Utilisateur ${user} selectionné", Toast.LENGTH_SHORT).show()
+                Toast.makeText(it.context, "Utilisateur ${user.name} selectionné", Toast.LENGTH_SHORT).show()
             }
         }
     }

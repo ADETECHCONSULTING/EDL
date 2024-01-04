@@ -7,10 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.entity.Contractor
-import fr.atraore.edl.data.models.entity.Owner
-import fr.atraore.edl.data.models.entity.Property
-import fr.atraore.edl.data.models.entity.Tenant
+import fr.atraore.edl.data.models.entity.*
 import fr.atraore.edl.ui.MainViewModel
 
 @AndroidEntryPoint
@@ -28,6 +25,8 @@ abstract class BaseFragment(val classType: String) : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.findItem(R.id.action_next)?.isVisible = true
         menu.findItem(R.id.action_previous)?.isVisible = true
+        menu.findItem(R.id.action_add_agency)?.isVisible = false
+        menu.findItem(R.id.action_add_user)?.isVisible = false
     }
 
     /**
@@ -49,6 +48,12 @@ abstract class BaseFragment(val classType: String) : Fragment() {
             }
             Contractor::class -> {
                 mainViewModel.contractorRepository.save(obj as Contractor)
+            }
+            Users::class -> {
+                mainViewModel.userRepository.save(obj as Users)
+            }
+            Agency::class -> {
+                mainViewModel.agencyRepository.save(obj as Agency)
             }
             else -> println("Type not recognized")
         }

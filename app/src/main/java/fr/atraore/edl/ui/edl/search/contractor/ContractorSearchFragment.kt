@@ -51,7 +51,6 @@ class ContractorSearchFragment(private val constat: ConstatWithDetails) : BaseFr
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        menu.findItem(R.id.action_next)?.isVisible = false
         menu.findItem(R.id.action_previous)?.isVisible = true
     }
 

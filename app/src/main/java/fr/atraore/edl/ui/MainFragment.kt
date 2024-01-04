@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.Constat
-import fr.atraore.edl.photo.PhotoPickerFragment
 import fr.atraore.edl.ui.adapter.ConstatAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.settings.KeysConfigurationActivity
+import fr.atraore.edl.ui.settings.OutDoorConfigurationActivity
 import fr.atraore.edl.ui.settings.RoomConfigurationActivity
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -47,12 +47,16 @@ class MainFragment : BaseFragment("MainFrag") {
         menu.findItem(R.id.action_previous)?.isVisible = false
         menu.findItem(R.id.action_compteur)?.isVisible = false
         menu.findItem(R.id.action_keys)?.isVisible = true
+        menu.findItem(R.id.action_add_user)?.isVisible = true
+        menu.findItem(R.id.action_add_agency)?.isVisible = true
+        menu.findItem(R.id.action_outdoor)?.isVisible = true
 
         menu.findItem(R.id.action_keys)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
         menu.findItem(R.id.action_add_room)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+        menu.findItem(R.id.action_outdoor)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
 
-        menu.findItem(R.id.action_add_room)?.title = "Configuration des pièces"
-        menu.findItem(R.id.action_keys)?.title = "Configuration des clés"
+        menu.findItem(R.id.action_add_room)?.title = getString(R.string.manage_rooms)
+        menu.findItem(R.id.action_keys)?.title = getString(R.string.manage_keys)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -64,6 +68,16 @@ class MainFragment : BaseFragment("MainFrag") {
             R.id.action_keys -> {
                 val intent = Intent(requireContext(), KeysConfigurationActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.action_add_user -> {
+                goToAddUser()
+            }
+            R.id.action_outdoor -> {
+                val intent = Intent(requireContext(), OutDoorConfigurationActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.action_add_agency -> {
+                goToAddAgency()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -108,13 +122,12 @@ class MainFragment : BaseFragment("MainFrag") {
         findNavController().navigate(R.id.go_to_start, bundle)
     }
 
-    private fun openPicker() {
-        PhotoPickerFragment.newInstance(
-            multiple = true,
-            allowCamera = true,
-            maxSelection = 10,
-            theme = R.style.ChiliPhotoPicker_Light
-        ).show(requireActivity().supportFragmentManager, "picker")
+    fun goToAddUser() {
+        findNavController().navigate(R.id.go_to_add_user)
+    }
+
+    fun goToAddAgency() {
+        findNavController().navigate(R.id.go_to_add_agency)
     }
 
 }

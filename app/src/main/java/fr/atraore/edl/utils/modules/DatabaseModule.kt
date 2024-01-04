@@ -1,6 +1,7 @@
 package fr.atraore.edl.utils.modules
 
 import android.content.Context
+import android.sax.Element
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -18,6 +19,7 @@ import fr.atraore.edl.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.nio.charset.Charset
 import java.sql.Date
 import java.util.*
 import javax.inject.Provider
@@ -132,6 +134,15 @@ class DatabaseModule {
         return appDatabase.getConstatKeyDao()
     }
 
+    @Provides
+    fun provideOutDoorEquipementDao(appDatabase: AppDatabase): OutDoorEquipementDao {
+        return appDatabase.getOutDoorEquipementDao()
+    }
+
+    @Provides
+    fun provideEquipmentDao(appDatabase: AppDatabase): EquipmentDao {
+        return appDatabase.getEquipmentDao()
+    }
 
     @Provides
     @Singleton
@@ -150,7 +161,8 @@ class DatabaseModule {
         compteurReferenceDao: Provider<CompteurReferenceDao>,
         configPdfDao: Provider<ConfigPdfDao>,
         keyDao: Provider<KeyDao>,
-        constatKeyDao: Provider<ConstatKeyDao>
+        outDoorEquipementDao: Provider<OutDoorEquipementDao>,
+        propreteDao: Provider<PropreteDao>
     ): AppDatabase {
         return Room.databaseBuilder(
             applicationContext,
@@ -161,6 +173,7 @@ class DatabaseModule {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
                     CoroutineScope(Dispatchers.IO).launch {
+                        executeSQLFromFile(applicationContext, db, "Equipments_202310222323.sql")
                         populateDatabase(
                             constatDao.get(),
                             propertyDao.get(),
@@ -174,7 +187,9 @@ class DatabaseModule {
                             lotReferenceDao.get(),
                             compteurReferenceDao.get(),
                             configPdfDao.get(),
-                            keyDao.get()
+                            keyDao.get(),
+                            outDoorEquipementDao.get(),
+                            propreteDao.get()
                         )
                     }
                 }
@@ -198,7 +213,9 @@ class DatabaseModule {
         lotReferenceDao: LotReferenceDao,
         compteurReferenceDao: CompteurReferenceDao,
         configPdfDao: ConfigPdfDao,
-        keyDao: KeyDao
+        keyDao: KeyDao,
+        outDoorEquipementDao: OutDoorEquipementDao,
+        propreteDao: PropreteDao
     ) {
         // Delete all content
         constatDao.deleteAll()
@@ -214,34 +231,52 @@ class DatabaseModule {
         )
 
         createRoomsReference(roomReferenceDao)
-        createElementReferences(elementReferenceDao)
-        createLotReferences(lotReferenceDao)
+        createLotReferences(lotReferenceDao, elementReferenceDao)
         createCompteurReferences(compteurReferenceDao)
         createConfigPdfReference(configPdfDao)
         createKeyReferences(keyDao)
+        createOutDoorEquipementReferences(outDoorEquipementDao)
+        createPropreteReferences(propreteDao)
     }
 
     private suspend fun createRoomsReference(roomReferenceDao: RoomReferenceDao) {
         ROOMS_LABELS.forEach {
-            val roomReference = RoomReference(UUID.randomUUID().toString(), it)
-            if (it == "ACCES / ENTREE") {
+            val roomReference = RoomReference(null, UUID.randomUUID().toString(), it)
+            if (it == "ACCES/ENTREE") {
                 roomReference.mandatory = true
             }
             roomReferenceDao.save(roomReference)
         }
     }
 
-    private suspend fun createElementReferences(elementReferenceDao: ElementReferenceDao) {
-        ELEMENTS_LABELS.forEach {
-            val elementReference = ElementReference(UUID.randomUUID().toString(), it)
-            elementReferenceDao.save(elementReference)
-        }
-    }
-
-    private suspend fun createLotReferences(lotReferenceDao: LotReferenceDao) {
+    private suspend fun createLotReferences(lotReferenceDao: LotReferenceDao, elementReferenceDao: ElementReferenceDao) {
         for ((index, value) in LOTS_LABELS.withIndex()) {
             val lotReference = LotReference(index+1, value)
             lotReferenceDao.save(lotReference)
+
+            when (lotReference.lotReferenceId) {
+                1 -> { //revetement
+                    saveElementRefs(ELEMENTS_REVETEMENTS_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                2 -> { //ouvrants
+                    saveElementRefs(ELEMENTS_OUVRANTS_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                3 -> { //electricité
+                    saveElementRefs(ELEMENTS_ELEC_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                4 -> { //plomberie
+                    saveElementRefs(ELEMENTS_PLOMBERIE_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                5 -> { //chauffage
+                    saveElementRefs(ELEMENTS_CHAUFFAGE_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                6 -> { //electroménager
+                    saveElementRefs(ELEMENTS_ELECTRONIQUE_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+                7 -> { //Rangement
+                    saveElementRefs(ELEMENTS_RANGEMENT_LABELS, lotReference.lotReferenceId, elementReferenceDao)
+                }
+            }
         }
     }
 
@@ -249,6 +284,13 @@ class DatabaseModule {
         for ((index, value) in COMPTEUR_LABELS.withIndex()) {
             val compteurReference = CompteurReference(index+1, value)
             compteurReferenceDao.save(compteurReference)
+        }
+    }
+
+    private suspend fun createPropreteReferences(propreteDao: PropreteDao) {
+        PROPRETE_LABELS.forEach {
+            val proprete = Proprete(UUID.randomUUID().toString(), it)
+            propreteDao.save(proprete)
         }
     }
 
@@ -274,6 +316,14 @@ class DatabaseModule {
         for (value in KEYS_LABELS) {
             val keyReference = KeyReference(value, true)
             keyDao.save(keyReference)
+        }
+    }
+
+
+    private suspend fun createOutDoorEquipementReferences(outDoorEquipementDao: OutDoorEquipementDao) {
+        for (value in OUTDOORS_EQUIPMNT_LABELS) {
+            val outdoorRef = OutdoorEquipementReference(value, true)
+            outDoorEquipementDao.save(outdoorRef)
         }
     }
 
@@ -405,7 +455,9 @@ class DatabaseModule {
             "",
             "",
             1,
-            ""
+            "",
+            1,
+            null
         )
         agencyDao.save(agency)
 
@@ -524,4 +576,53 @@ class DatabaseModule {
         constatDao.saveConstatAgencyCrossRef(constatWithAgency)
         constatDao.saveConstatUsersCrossRef(constatWithUser)
     }
+
+    suspend fun saveElementRefs(liste: Array<*>, idLot: Int, dao: ElementReferenceDao) {
+        val listToSave = mutableListOf<ElementReference>()
+        for (element in liste) {
+            if (element is List<*>) {
+                val firstItem = element.firstOrNull()
+                firstItem?.let {
+                    val firstItemRef = ElementReference(UUID.randomUUID().toString(), firstItem as String, false, idLot)
+                    listToSave.add(firstItemRef)
+                    for (j in 1 until element.size) {
+                        val sousElement = element[j]
+                        if (sousElement is String) {
+                            val itemRef = ElementReference(UUID.randomUUID().toString(), sousElement, false, idLot, firstItemRef.elementReferenceId)
+                            listToSave.add(itemRef)
+                        }
+                    }
+                }
+            } else {
+                listToSave.add(ElementReference(UUID.randomUUID().toString(), element as String, false, idLot))
+            }
+        }
+        if (listToSave.isNotEmpty()) {
+            listToSave.forEach {
+                dao.save(it)
+            }
+        }
+    }
+
+    fun readSQLFromAssets(context: Context, fileName: String): String {
+        val assetManager = context.assets
+        val inputStream = assetManager.open(fileName)
+        val size = inputStream.available()
+        val buffer = ByteArray(size)
+        inputStream.read(buffer)
+        inputStream.close()
+        return String(buffer, Charset.forName("UTF-8"))
+    }
+
+    fun executeSQLFromFile(context: Context, database: SupportSQLiteDatabase, fileName: String) {
+        val sqlStatements = readSQLFromAssets(context, fileName).split(";")
+        for (statement in sqlStatements) {
+            if (statement.trim().isNotEmpty()) {
+                database.execSQL(statement)
+            }
+        }
+    }
+
+
+
 }

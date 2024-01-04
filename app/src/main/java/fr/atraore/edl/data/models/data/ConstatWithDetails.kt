@@ -62,7 +62,13 @@ data class ConstatWithDetails (
         parentColumn = "constatId",
         entityColumn = "constat_id"
     )
-    val compteurs: MutableList<Compteur>
+    val compteurs: MutableList<Compteur>,
+    @Relation(
+        parentColumn = "constatId",
+        entityColumn = "idConstat"
+    )
+    val keys: MutableList<Detail>
+
 ) : Serializable {
     @Ignore
     fun getOwnersConcatenate(withPrefix: Boolean): String {
@@ -124,6 +130,24 @@ data class ConstatWithDetails (
         } else {
             properties.forEach { property ->
                 res += property.type + " " + property.nature + "\n"
+            }
+        }
+
+        return res
+    }
+
+    @Ignore
+    fun getContractorConcatenate(withPrefix: Boolean): String {
+        var res = "";
+
+        if (contractors.isEmpty()) {
+            res = "Pas de mandataires"
+        } else {
+            if (withPrefix) {
+                res += "Mandataire\n"
+            }
+            contractors.forEach { contractor ->
+                res += contractor.denomination + "\n"
             }
         }
 

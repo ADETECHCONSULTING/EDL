@@ -1,5 +1,6 @@
 package fr.atraore.edl.ui.settings
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,11 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
 import com.google.android.flexbox.FlexDirection.ROW
 import com.google.android.flexbox.FlexboxLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.KeyReference
+import fr.atraore.edl.data.models.entity.OutdoorEquipementReference
 import fr.atraore.edl.ui.ReferenceViewModel
 import fr.atraore.edl.ui.adapter.KeysGridAdapter
 import kotlinx.android.synthetic.main.activity_room_configuration.*
@@ -26,7 +30,7 @@ import kotlin.coroutines.CoroutineContext
 class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchView.OnQueryTextListener {
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     private val viewModel: ReferenceViewModel by viewModels()
     private val keysGridAdapter = KeysGridAdapter()
@@ -55,7 +59,7 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         menuInflater.inflate(R.menu.toolbar_item, menu)
         menu?.findItem(R.id.action_next)?.isVisible = false
         menu?.findItem(R.id.action_compteur)?.isVisible = false
-        menu?.findItem(R.id.action_add_room)?.isVisible = false
+        menu?.findItem(R.id.action_add_room)?.isVisible = true
 
         val search = menu?.findItem(R.id.action_search)
         search?.isVisible = true
@@ -65,10 +69,22 @@ class KeysConfigurationActivity : AppCompatActivity(), CoroutineScope, SearchVie
         return true
     }
 
+    @SuppressLint("CheckResult")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_previous -> {
                 finish()
+            }
+            R.id.action_add_room -> {
+                MaterialDialog(this).show {
+                    title(R.string.add_key)
+                    input(allowEmpty = false) { _, text ->
+                        launch {
+                            viewModel.saveKey(KeyReference(text.toString(), true))
+                        }
+                    }
+                    positiveButton(R.string.done)
+                }
             }
         }
         return super.onOptionsItemSelected(item)

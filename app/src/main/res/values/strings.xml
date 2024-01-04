@@ -7,7 +7,6 @@
     <string name="mandataire_label">Mandataire</string>
     <string name="user_label">Utilisateur</string>
     <string name="agence_label">Agence</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hint_name">Nom Prénom</string>
     <string name="adress_label">Adresse</string>
@@ -43,20 +42,24 @@
         <item>Monsieur/Madame</item>
     </string-array>
 
-    <string name="picker_gallery">Gallery</string>
+    <string name="picker_gallery">Gallerie</string>
     <string name="picker_camera">Camera</string>
-    <string name="picker_select">Select</string>
-    <string name="picker_media_permissions_hint">Grant media permission for easier\ngallery access</string>
-    <string name="picker_empty_media">Your media library is empty</string>
-    <string name="picker_allow">Allow</string>
-    <string name="picker_select_photo">Select photo</string>
+    <string name="picker_select">Sélectionne</string>
+    <string name="picker_media_permissions_hint">Donner la permission à l\'accès à la gallerie</string>
+    <string name="picker_empty_media">Affiche les photos sur 7 jours.\nSi besoin de photo plus anciennes alors cliquer sur "Gallerie"</string>
+    <string name="picker_allow">Accorder</string>
+    <string name="picker_select_photo">Sélectionne une photo</string>
     <string name="picker_no_camera">No camera app is installed</string>
     <string name="city">Ville</string>
     <string name="next">Suivant</string>
     <string name="rename">Renommer</string>
     <string name="rename_dialog_title">Renommer l\'élément</string>
+    <string name="add_element">Voulez-vous ajouter un nouvel élement ? </string>
+    <string name="add_key">Voulez-vous ajouter une nouvelle référence de clé ? </string>
     <string name="delete_dialog_title">Suppression de l\'élément</string>
+    <string name="show_pdf_title">Génération du PDF</string>
     <string name="delete_dialog_content">Êtes-vous certain de vouloir supprimer cet élément. Cette action est irréversible.</string>
+    <string name="show_pdf_content">Êtes-vous certain de vouloir générer un PDF de ce constat ?</string>
     <string name="add_room">Ajouter une pièce</string>
     <string name="done">Valider</string>
     <string name="title_add_rooms">Liste des pièces</string>
@@ -66,6 +69,7 @@
     <string name="label_descriptif">Descriptif :</string>
     <string name="label_alterations">Altérations :</string>
     <string name="label_note">Notes :</string>
+    <string name="label_nature">Nature :</string>
     <string name="add_label">Ajouter</string>
     <string name="selectionne_label">Sélectionné</string>
     <string name="delete_label">Supprimer</string>
@@ -115,8 +119,20 @@
     <string name="label_pdf_title">Constat d\'état des lieux</string>
     <string name="cles_label">Consigner les clés</string>
     <string name="explication_keys_config">Sélectionnez les clés que vous voulez voir s\'afficher lors de l\'établissement d\'un constat</string>
+    <string name="explication_eqpts_config">Sélectionnez les équipements que vous voulez voir s\'afficher lors de l\'établissement d\'un constat</string>
     <string name="title_config_keys">Configuration des clés</string>
     <string name="title_room_config">Configuration des pièces</string>
+    <string name="toggle_user">Activer l\'utilisateur</string>
+    <string name="manage_users">Configurer les utilisateurs</string>
+    <string name="manage_agency">Configurer les agences</string>
+    <string name="manage_rooms">Configuration des pièces</string>
+    <string name="manage_keys">Configuration des clés</string>
+    <string name="signature_label">Veuillez tracer votre signature dans le champ ci-dessous</string>
+    <string name="parah_label">Veuillez parapher le champ ci-dessous</string>
+    <string name="manage_outdoor_eqts">Configurer les équipements ext.</string>
+    <string name="fnctmnt_label">Fonctionnement</string>
+    <string name="fnctmnt_label_ok">Fonctionnement : OK</string>
+    <string name="fnctmnt_label_ko">Fonctionnement : KO</string>
     <plurals name="picker_selected_count">
         <item quantity="one">%d photo selected</item>
         <item quantity="other">%d photos selected</item>
@@ -125,4 +141,8 @@
         <item quantity="one">You can pick only %d image</item>
         <item quantity="other">You can pick only %d images</item>
     </plurals>
+    <string name="add_photos_label">Ajouter des photos</string>
+    <string name="imv_photo_content_desc">photo detail constat</string>
+    <string name="edit_element_title">Editer un élément</string>
+    <string name="edit_input_element_hint">Nom de l\'élément</string>
 </resources>

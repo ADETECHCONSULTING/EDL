@@ -19,7 +19,9 @@ data class Agency (
     @ColumnInfo(name = "num_fax") val numFax: String?,
     @ColumnInfo(name = "name_alias") val nameAlias: String?,
     val courante: Int?,
-    @ColumnInfo(name = "logo_name") val logoName: String?
+    @ColumnInfo(name = "logo_name") val logoName: String?,
+    val actif: Int,
+    val alias: String? = null
 ) : Serializable {
 
 }

@@ -42,7 +42,10 @@ const val DATABASE_NAME = "edlDb"
         ConfigPdf::class,
         RoomElementCrossRef::class,
         KeyReference::class,
-        ConstatKey::class
+        ConstatKey::class,
+        OutdoorEquipementReference::class,
+        RoomConstatCrossRef::class,
+        EquipmentReference::class
     ], version = 1, exportSchema = false
 )
 @TypeConverters(DateTypeConverter::class)
@@ -70,6 +73,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getConfigPdfDao(): ConfigPdfDao
     abstract fun getKeyDao(): KeyDao
     abstract fun getConstatKeyDao(): ConstatKeyDao
+    abstract fun getOutDoorEquipementDao(): OutDoorEquipementDao
+    abstract fun getEquipmentDao(): EquipmentDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

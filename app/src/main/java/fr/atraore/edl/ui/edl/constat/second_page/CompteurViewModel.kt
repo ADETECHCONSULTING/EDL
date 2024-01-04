@@ -44,51 +44,63 @@ class CompteurViewModel @AssistedInject constructor(
     fun setCompteurs() {
         viewModelScope.launch {
             compteurRepository.getById(constatId, 1).collect {
-                compteurEauFroide.value = it ?: Compteur(constatId, 1)
-                if (it == null) {
-                    compteurRepository.save(compteurEauFroide.value!!)
+                if (compteurEauFroide.value == null) {
+                    compteurEauFroide.value = it ?: Compteur(constatId, 1)
+                    if (it == null) {
+                        compteurRepository.save(compteurEauFroide.value!!)
+                    }
                 }
             }
         }
         viewModelScope.launch {
-            compteurRepository.getById(constatId, 2).collect {
-                compteurElec.value = it ?: Compteur(constatId, 2)
-                if (it == null) {
-                    compteurRepository.save(compteurElec.value!!)
+            if (compteurElec.value == null) {
+                compteurRepository.getById(constatId, 2).collect {
+                    compteurElec.value = it ?: Compteur(constatId, 2)
+                    if (it == null) {
+                        compteurRepository.save(compteurElec.value!!)
+                    }
                 }
             }
         }
         viewModelScope.launch {
-            compteurRepository.getById(constatId, 3).collect {
-                compteurDetecFumee.value = it ?: Compteur(constatId, 3)
-                if (it == null) {
-                    compteurRepository.save(compteurDetecFumee.value!!)
+            if (compteurDetecFumee.value == null) {
+                compteurRepository.getById(constatId, 3).collect {
+                    compteurDetecFumee.value = it ?: Compteur(constatId, 3)
+                    if (it == null) {
+                        compteurRepository.save(compteurDetecFumee.value!!)
+                    }
                 }
             }
         }
         viewModelScope.launch {
-            compteurRepository.getById(constatId, 4).collect {
-                //les compteurs optionnels on n'instancie pas directement mais que lorsque
-                //la visibilite passe à true
-                it?.let {
-                    visibilityEauChaude.value = View.VISIBLE
-                    compteurEauChaude.value = it
+            if (compteurEauChaude.value == null) {
+                compteurRepository.getById(constatId, 4).collect {
+                    //les compteurs optionnels on n'instancie pas directement mais que lorsque
+                    //la visibilite passe à true
+                    it?.let {
+                        visibilityEauChaude.value = View.VISIBLE
+                        compteurEauChaude.value = it
+                    }
                 }
             }
         }
         viewModelScope.launch {
-            compteurRepository.getById(constatId, 5).collect {
-                it?.let {
-                    visibilityGaz.value = View.VISIBLE
-                    compteurGaz.value = it
+            if (compteurGaz.value == null) {
+                compteurRepository.getById(constatId, 5).collect {
+                    it?.let {
+                        visibilityGaz.value = View.VISIBLE
+                        compteurGaz.value = it
+                    }
                 }
             }
         }
         viewModelScope.launch {
-            compteurRepository.getById(constatId, 6).collect {
-                it?.let {
-                    visibilityCuve.value = View.VISIBLE
-                    compteurCuve.value = it
+            if (compteurCuve.value == null) {
+                compteurRepository.getById(constatId, 6).collect {
+                    it?.let {
+                        visibilityCuve.value = View.VISIBLE
+                        compteurCuve.value = it
+                    }
                 }
             }
         }

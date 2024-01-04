@@ -13,7 +13,10 @@ data class Constat(
     @ColumnInfo(name = "type_constat") val typeConstat: String, //ESP - Entrant - Pre-etat - Sortant
     @ColumnInfo(name = "date_creation") val dateCreation: Date,
     var procuration: String? = "",
-    val state: Int?
+    val state: Int?,
+    val tenantSignaturePath: String? = null,
+    val onwerSignaturePath: String? = null,
+    val paraphPath: String? = null
 ) : Serializable {
     @Ignore
     val dateCreationFormatted = dateCreation.formatToServerDateTimeDefaults()

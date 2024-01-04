@@ -19,7 +19,14 @@ data class Compteur (
     var localisation: String? = null,
     @ColumnInfo(name = "motif_non_releve") var motifNonReleve: String? = null,
     @ColumnInfo(name = "image_path") val imagePath: String? = null,
-    @ColumnInfo(name = "image_path_second") val imagePathSecond: String? = null
+    @ColumnInfo(name = "image_path_second") val imagePathSecond: String? = null,
+    var fonctionmt: Boolean? = null,
+    var proprete: String? = null,
+    var num: String? = null,
+    var fourni: String? = null,
+    var contrat: String? = null,
+    var divers: String? = null,
+    var comment: String? = null
 ) : Serializable, BaseObservable()  {
 
     @get:Bindable

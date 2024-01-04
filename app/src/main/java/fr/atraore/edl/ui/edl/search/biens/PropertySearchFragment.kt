@@ -52,7 +52,6 @@ class PropertySearchFragment(private val constat: ConstatWithDetails) : BaseFrag
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        menu.findItem(R.id.action_next)?.isVisible = false
         menu.findItem(R.id.action_previous)?.isVisible = true
     }
 }

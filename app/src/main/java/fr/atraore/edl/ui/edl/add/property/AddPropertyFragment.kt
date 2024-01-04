@@ -28,7 +28,7 @@ class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), V
     private lateinit var binding: FragmentAddPropertyBinding
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
         get() = PROPERTY_LABEL
@@ -56,12 +56,12 @@ class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), V
         super.onViewCreated(view, savedInstanceState)
 
         idArgs?.let { itemId ->
-            addViewModel.getPropertyById(itemId).observe(viewLifecycleOwner, {
+            addViewModel.getPropertyById(itemId).observe(viewLifecycleOwner) {
                 it?.let {
                     addViewModel.property.value = it
                 }
                 initListeners()
-            })
+            }
         }
     }
 
@@ -118,7 +118,7 @@ class AddPropertyFragment(val idArgs: String?) : BaseFragment(PROPERTY_LABEL), V
             0, //box
         )
 
-        launch {
+        launch(Dispatchers.Main) {
             save(property)
             Log.d(TAG, "création d'un bien ${property}")
         }

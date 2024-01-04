@@ -7,8 +7,8 @@ import java.io.Serializable
 
 @Entity(tableName = KEY_TABLE)
 data class KeyReference (
-    val name: String,
+    override var name: String,
     var actif: Boolean
-) : Serializable {
+) : Serializable, BaseReference(name) {
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

@@ -60,7 +60,7 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
-                android:id="@+id/imv_lot_batis"
+                android:id="@+id/imv_lot_revetement"
                 android:layout_width="@dimen/buttons_width"
                 android:layout_height="0dp"
                 android:layout_weight="1"

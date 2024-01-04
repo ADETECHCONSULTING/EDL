@@ -16,6 +16,16 @@
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right">
         </action>
+        <action
+            android:id="@+id/go_to_add_user"
+            app:destination="@id/addUserFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/go_to_add_agency"
+            app:destination="@id/addAgencyFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/startConstatFragment"
@@ -97,20 +107,15 @@
         android:id="@+id/signatureFragment"
         android:name="fr.atraore.edl.ui.edl.constat.signature.SignatureFragment"
         android:label="fragment_view_signature_fragment"
-        tools:layout="@layout/fragment_signature" >
+        tools:layout="@layout/fragment_signature" />
 
-        <action
-            android:id="@+id/go_to_generate_pdf"
-            app:destination="@id/pdfGeneratorFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
-    </fragment>
     <fragment
-        android:id="@+id/pdfGeneratorFragment"
-        android:name="fr.atraore.edl.ui.pdf.PdfGeneratorFragment"
-        android:label="fragment_pdf_generator"
-        tools:layout="@layout/fragment_pdf_generator" />
+        android:id="@+id/addUserFragment"
+        android:name="fr.atraore.edl.ui.edl.add.user.AddUserFragment"
+        android:label="AddUserFragment" />
+
+    <fragment
+        android:id="@+id/addAgencyFragment"
+        android:name="fr.atraore.edl.ui.edl.add.agency.AddAgencyFragment"
+        android:label="AddAgencyFragment" />
 </navigation>

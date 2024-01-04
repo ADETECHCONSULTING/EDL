@@ -15,4 +15,7 @@ interface UserDao : BaseDao<Users> {
 
     @Query("SELECT * FROM $USERS_TABLE LIMIT 1")
     fun getLastUser(): Flow<Users>
+
+    @Query("SELECT * FROM $USERS_TABLE WHERE userId = :id")
+    fun getById(id: String): Flow<Users>
 }

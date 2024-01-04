@@ -43,44 +43,93 @@
 
         </LinearLayout>
 
-        <com.github.gcacace.signaturepad.views.SignaturePad
-            android:id="@+id/signature_pad"
+        <LinearLayout
+            android:id="@+id/ctn_signature_paraphe"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/margin_medium"
-            android:background="@color/white"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ctn_header" />
+            app:layout_constraintTop_toBottomOf="@id/ctn_header">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_save_signature"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/buttons_height"
-            android:layout_marginStart="8dp"
-            android:minWidth="@dimen/buttons_large_width"
-            android:text="@string/sauvegarder"
-            app:layout_constraintStart_toEndOf="@+id/signature_pad"
-            app:layout_constraintTop_toTopOf="@+id/signature_pad" />
+            <TextView
+                android:id="@+id/txv_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/signature_label"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_clear_signature"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/buttons_height"
-            android:layout_marginStart="8dp"
-            android:backgroundTint="@color/red"
-            android:minWidth="@dimen/buttons_large_width"
-            android:text="@string/effacer_label"
-            app:layout_constraintStart_toEndOf="@+id/signature_pad"
-            app:layout_constraintTop_toBottomOf="@+id/btn_save_signature" />
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/signature_pad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/margin_medium"
+                android:layout_weight="1"
+                app:clearOnDoubleClick="true"
+                android:background="@color/white"
+                android:saveEnabled="false" />
+
+            <TextView
+                android:id="@+id/txv_paraph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/parah_label"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/paraph_pad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/margin_medium"
+                android:layout_weight="1"
+                app:clearOnDoubleClick="true"
+                android:background="@color/white"
+                android:saveEnabled="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ctn_signature_tenant"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/ctn_header"
+            app:layout_constraintBottom_toTopOf="@id/guideline5">
+
+            <TextView
+                android:id="@+id/txv_signature_tenant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/signature_label"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/signature_pad_tenant"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_medium"
+                app:clearOnDoubleClick="true"
+                android:background="@color/white"
+                android:saveEnabled="false" />
+
+        </LinearLayout>
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.6" />
+            app:layout_constraintGuide_percent="0.5" />
 
         <ImageView
             android:id="@+id/imv_pdf_export"
@@ -89,19 +138,26 @@
             android:src="@drawable/ic_pdf_svgrepo_com"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/signature_pad"
-            app:layout_constraintTop_toBottomOf="@+id/btn_clear_signature" />
+            app:layout_constraintStart_toEndOf="@+id/ctn_signature_paraphe"
+            app:layout_constraintTop_toBottomOf="@id/ctn_signature_tenant"/>
 
         <TextView
             android:id="@+id/txv_pdf_export"
+            style="@style/MyTextViewStyleLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/imv_pdf_export"
             android:layout_marginBottom="@dimen/margin_medium"
-            style="@style/MyTextViewStyleLabel"
             android:text="@string/export_pdf_label"
-            app:layout_constraintStart_toStartOf="@id/imv_pdf_export"
-            app:layout_constraintEnd_toEndOf="@id/imv_pdf_export"/>
+            app:layout_constraintBottom_toTopOf="@id/imv_pdf_export"
+            app:layout_constraintEnd_toEndOf="@id/imv_pdf_export"
+            app:layout_constraintStart_toStartOf="@id/imv_pdf_export" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

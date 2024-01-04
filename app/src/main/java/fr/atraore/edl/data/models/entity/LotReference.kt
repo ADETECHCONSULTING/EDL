@@ -9,8 +9,8 @@ import java.io.Serializable
 @Entity(tableName = LOT_REFERENCE_TABLE)
 data class LotReference (
     @PrimaryKey(autoGenerate = false) val lotReferenceId: Int,
-    val name: String,
+    override var name: String,
     var mandatory: Boolean? = false
-) : Serializable {
+) : Serializable, BaseReference(name) {
 
 }
