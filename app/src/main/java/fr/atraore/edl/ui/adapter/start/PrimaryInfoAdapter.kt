@@ -1,15 +1,5 @@
 package fr.atraore.edl.ui.adapter.start
 
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import fr.atraore.edl.data.dao.BaseDao
-import fr.atraore.edl.data.models.PrimaryInfo
-
 
 /*
 class PrimaryInfoAdapter : ListAdapter<PrimaryInfo, PrimaryInfoAdapter.ViewHolder>(DiffTenantInfoCallback()) {

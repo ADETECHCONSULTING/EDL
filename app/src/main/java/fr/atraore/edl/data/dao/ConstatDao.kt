@@ -1,9 +1,8 @@
 package fr.atraore.edl.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import fr.atraore.edl.data.models.Constat
-import fr.atraore.edl.data.models.ConstatWithDetails
+import fr.atraore.edl.data.models.entity.Constat
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.crossRef.*
 import fr.atraore.edl.utils.CONSTAT_TABLE
 import kotlinx.coroutines.flow.Flow
@@ -17,11 +16,11 @@ interface ConstatDao : BaseDao<Constat> {
 
     @Transaction
     @Query("SELECT * FROM $CONSTAT_TABLE")
-    fun getAllConstatWithDetails() : Flow<List<ConstatWithDetails>>
+    fun getAllConstatWithDetails(): Flow<List<ConstatWithDetails>>
 
     @Transaction
     @Query("SELECT * FROM constat WHERE constatId = :constatId")
-    fun getConstatDetails(constatId: String) : Flow<ConstatWithDetails>
+    fun getConstatDetails(constatId: String): Flow<ConstatWithDetails>
 
     //Select constat by id
     @Query("SELECT * FROM $CONSTAT_TABLE WHERE constatId = :constatId")
@@ -46,6 +45,18 @@ interface ConstatDao : BaseDao<Constat> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveConstatUsersCrossRef(crossRef: ConstatUsersCrossRef)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveConstatRoomCrossRef(crossRef: ConstatRoomCrossRef)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveConstatElementCrossRef(crossRef: RoomDetailCrossRef)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveConstatLotCrossRef(crossRef: ConstatLotCrossRef)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveRoomDetailCrossRef(crossRef: RoomDetailCrossRef)
+
     //** Update **
     @Query("UPDATE ConstatAgencyCrossRef SET agencyId =:agencyId WHERE constatId =:constatId")
     suspend fun updateExistingAgencyCrossRef(constatId: String, agencyId: String)
@@ -53,12 +64,27 @@ interface ConstatDao : BaseDao<Constat> {
     @Query("UPDATE ConstatUsersCrossRef SET userId =:userId WHERE constatId =:constatId")
     suspend fun updateExistingUsersCrossRef(constatId: String, userId: String)
 
+    @Query("UPDATE Constat SET procuration =:procuration WHERE constatId =:constatId")
+    suspend fun updateProcuration(constatId: String, procuration: String)
+
+    @Query("UPDATE Constat SET onwerSignaturePath =:path WHERE constatId =:constatId")
+    suspend fun saveOwnerSignaturePath(path: String, constatId: String)
+
+    @Query("UPDATE Constat SET tenantSignaturePath =:path WHERE constatId =:constatId")
+    suspend fun saveTenantSignaturePath(path: String, constatId: String)
+
+    @Query("UPDATE Constat SET paraphPath =:path WHERE constatId =:constatId")
+    suspend fun saveParaphPath(path: String, constatId: String)
+
     //** DELETE **
     @Delete
     fun delete(constat: Constat)
 
     @Delete
     suspend fun deleteConstatPropertyCrossRef(crossRef: ConstatPropertyCrossRef)
+
+    @Delete
+    suspend fun deleteConstatRoomCrossRef(crossRef: ConstatRoomCrossRef)
 
     @Delete
     suspend fun deleteConstatOwnerCrossRef(crossRef: ConstatOwnerCrossRef)
@@ -75,6 +101,27 @@ interface ConstatDao : BaseDao<Constat> {
     @Delete
     suspend fun deleteConstatUsersCrossRef(crossRef: ConstatUsersCrossRef)
 
+    @Delete
+    suspend fun deleteRoomDetailCrossRef(crossRef: RoomDetailCrossRef)
+
     @Query("DELETE FROM $CONSTAT_TABLE")
     fun deleteAll()
+
+    @Query("DELETE FROM CONSTATPROPERTYCROSSREF WHERE constatId = :constatId and propertyId in (:ids)")
+    fun deleteConstatPropertyRefByIds(constatId: String, ids: List<String>)
+
+    @Query("DELETE FROM CONSTATOWNERCROSSREF WHERE constatId = :constatId and ownerId in (:ids)")
+    fun deleteConstatOwnerRefByIds(constatId: String, ids: List<String>)
+
+    @Query("DELETE FROM CONSTATCONTRACTORCROSSREF WHERE constatId = :constatId and contractorId in (:ids)")
+    fun deleteConstatContractorRefByIds(constatId: String, ids: List<String>)
+
+    @Query("DELETE FROM CONSTATTENANTCROSSREF WHERE constatId = :constatId and tenantId in (:ids)")
+    fun deleteConstatTenantRefByIds(constatId: String, ids: List<String>)
+
+    @Delete
+    fun deleteConstatAgency(constatAgencyCrossRef: ConstatAgencyCrossRef)
+
+    @Delete
+    fun deleteConstatUser(constatUsersCrossRef: ConstatUsersCrossRef)
 }

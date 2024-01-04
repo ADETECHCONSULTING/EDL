@@ -1,11 +1,95 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AnalysisProjectProfileManager">
     <option name="PROJECT_PROFILE" />
     <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
     <list size="0" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/bg_chip.xml" value="0.23020833333333332" />
+        <entry key="app/src/main/res/drawable/bg_chip_state_list.xml" value="0.203" />
+        <entry key="app/src/main/res/drawable/bg_picker.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/bg_placeholder.xml" value="0.1405" />
+        <entry key="app/src/main/res/drawable/bg_ripple_image.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/drawable/button_circle_shape.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/drawable/button_outline_shape.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/button_outline_shape_2.xml" value="0.3605" />
+        <entry key="app/src/main/res/drawable/button_solid_shape.xml" value="0.3605" />
+        <entry key="app/src/main/res/drawable/chip_selected.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/color_choice_chip_strokecolor_selector.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/color_state_sub_item.xml" value="0.4445" />
+        <entry key="app/src/main/res/drawable/edt_background.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/ic_chauffage.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/ic_edit_checked.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/ic_elec.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_electromenager.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_loupe.xml" value="0.3605" />
+        <entry key="app/src/main/res/drawable/ic_loupe_white.xml" value="0.3605" />
+        <entry key="app/src/main/res/drawable/ic_meuble.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_mobilier.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_mur.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/drawable/ic_ouvrant.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/ic_plomberie.xml" value="0.13177083333333334" />
+        <entry key="app/src/main/res/drawable/imageview_outline_shape.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/lot_technique_fill.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/drawable/procuration_background.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/rounded_edittext.xml" value="0.4335" />
+        <entry key="app/src/main/res/drawable/rounded_rdg.xml" value="0.4335" />
+        <entry key="app/src/main/res/drawable/spinner_background.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/square_button.xml" value="0.5565" />
+        <entry key="app/src/main/res/drawable/square_radiobutton.xml" value="0.5565" />
+        <entry key="app/src/main/res/drawable/state_button_bg.xml" value="0.3605" />
+        <entry key="app/src/main/res/drawable/state_button_room_bg.xml" value="0.34" />
+        <entry key="app/src/main/res/drawable/state_button_room_text.xml" value="0.34" />
+        <entry key="app/src/main/res/drawable/state_button_text.xml" value="0.3605" />
+        <entry key="app/src/main/res/drawable/state_radiobutton.xml" value="0.2557291666666667" />
+        <entry key="app/src/main/res/drawable/state_radiobutton_alteration.xml" value="0.4335" />
+        <entry key="app/src/main/res/drawable/state_radiobutton_text.xml" value="0.1203125" />
+        <entry key="app/src/main/res/drawable/textcolor_chip.xml" value="0.23020833333333332" />
+        <entry key="app/src/main/res/layout/activity_keys_configuration.xml" value="0.235" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2740628166160081" />
+        <entry key="app/src/main/res/layout/activity_room_configuration.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/add_contractor_fragment.xml" value="0.25833333333333336" />
+        <entry key="app/src/main/res/layout/add_owner_fragment.xml" value="0.3854166666666667" />
+        <entry key="app/src/main/res/layout/add_property_fragment.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/add_tenant_fragment.xml" value="0.3227124183006536" />
+        <entry key="app/src/main/res/layout/agency_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/agency_search_fragment.xml" value="0.25833333333333336" />
+        <entry key="app/src/main/res/layout/chip_only.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/compteur_fragment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/compteur_item.xml" value="0.3333333333333333" />
+        <entry key="app/src/main/res/layout/constat_item.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/contractor_item.xml" value="0.23958333333333334" />
+        <entry key="app/src/main/res/layout/dialog_color_picker.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/element_grid_item.xml" value="0.5635416666666667" />
+        <entry key="app/src/main/res/layout/element_list_item.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/layout/end_constat_fragment.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_detail_end_constat.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_element_grid.xml" value="0.14624183006535948" />
+        <entry key="app/src/main/res/layout/fragment_end_constat.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_pdf_generator.xml" value="0.5612745098039216" />
+        <entry key="app/src/main/res/layout/fragment_photo_picker.xml" value="0.5635416666666667" />
+        <entry key="app/src/main/res/layout/fragment_signature.xml" value="0.5612745098039216" />
+        <entry key="app/src/main/res/layout/fragment_start_constat.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/list_popup_window_item.xml" value="0.23488562091503268" />
+        <entry key="app/src/main/res/layout/main_fragment.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/layout/property_item.xml" value="0.36642156862745096" />
+        <entry key="app/src/main/res/layout/room_list_item.xml" value="0.5192708333333333" />
+        <entry key="app/src/main/res/layout/room_simple_list_item.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/signature_fragment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/start_constat_fragment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/tenant_item.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/layout/tenant_search_fragment.xml" value="0.23020833333333332" />
+        <entry key="app/src/main/res/layout/user_item.xml" value="0.14624183006535948" />
+        <entry key="app/src/main/res/layout/web_layout.xml" value="0.5257352941176471" />
+        <entry key="app/src/main/res/menu/toolbar_item.xml" value="0.33" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="temurin-11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

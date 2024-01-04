@@ -27,7 +27,7 @@
     <style name="MyTextViewStyleLabel" parent="android:Widget.TextView">
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="TextAppearance.PhotoPicker.Button" parent="TextAppearance.AppCompat.Medium">
@@ -46,6 +46,24 @@
         <item name="pickerCameraIcon">@drawable/picker_camera</item>
         <item name="pickerGalleryIcon">@drawable/picker_gallery</item>
         <item name="pickerDividerColor">@color/divider_light</item>
+    </style>
+
+    <style name="ClickedLot" parent="DefaultLot">
+        <item name="lot_fill_color">@color/colorAccent</item>
+    </style>
+
+    <style name="DefaultLot">
+        <item name="lot_fill_color">@color/white</item>
+    </style>
+
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipStrokeColor">@color/color_choice_chip_strokecolor_selector</item>
+        <item name="chipStrokeWidth">2dp</item>
+    </style>
+
+    <style name="CheckboxBlackedLargeColored" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:buttonTint">@color/black</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
 </resources>

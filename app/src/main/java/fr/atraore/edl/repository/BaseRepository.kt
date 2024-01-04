@@ -2,7 +2,6 @@ package fr.atraore.edl.repository
 
 import androidx.annotation.WorkerThread
 import fr.atraore.edl.data.dao.BaseDao
-import fr.atraore.edl.data.models.Contractor
 
 open class BaseRepository<T>(
     private val dao: BaseDao<T>

@@ -10,10 +10,10 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.*
-import fr.atraore.edl.ui.edl.start.StartConstatViewModel
+import fr.atraore.edl.data.models.entity.*
+import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 
-class PrimaryInfoNoDataBindAdapter(private val dataSet: List<PrimaryInfo>, private val startConstatViewModel: StartConstatViewModel) : RecyclerView.Adapter<PrimaryInfoNoDataBindAdapter.ViewHolder>() {
+class PrimaryInfoNoDataBindAdapter(private val dataSet: List<PrimaryInfo>, private val constatViewModel: ConstatViewModel) : RecyclerView.Adapter<PrimaryInfoNoDataBindAdapter.ViewHolder>() {
     private val TAG: String? = PrimaryInfoNoDataBindAdapter::class.simpleName
 
     var edit: Boolean = false
@@ -74,22 +74,25 @@ class PrimaryInfoNoDataBindAdapter(private val dataSet: List<PrimaryInfo>, priva
     fun saveContent() {
         Log.d(TAG, "sauvegarde de l'entity")
         //type erasure m'empeche de checker toute la liste donc je check que la premire valeur
+        if (dataSet.isEmpty())
+            return
+
         when (dataSet.first()) {
             is Tenant -> {
                 //checked cast juste avant sur la premiere valeur
-                startConstatViewModel.saveTenants(dataSet as List<Tenant>)
+                constatViewModel.saveTenants(dataSet as List<Tenant>)
             }
             is Owner -> {
                 //checked cast juste avant sur la premiere valeur
-                startConstatViewModel.saveOwners(dataSet as List<Owner>)
+                constatViewModel.saveOwners(dataSet as List<Owner>)
             }
             is Contractor -> {
                 //checked cast juste avant sur la premiere valeur
-                startConstatViewModel.saveContractor(dataSet as List<Contractor>)
+                constatViewModel.saveContractor(dataSet as List<Contractor>)
             }
             is Property -> {
                 //checked cast juste avant sur la premiere valeur
-                startConstatViewModel.saveProperties(dataSet as List<Property>)
+                constatViewModel.saveProperties(dataSet as List<Property>)
             }
         }
     }

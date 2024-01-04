@@ -43,7 +43,7 @@ fun Date.formatToTruncatedDateTime(): String{
 /**
  * Pattern: yyyy-MM-dd
  */
-fun Date.formatToServerDateDefaults(): String{
+fun Date.formatToServerDateDefaults(): String {
     val sdf = SimpleDateFormat("yyyy-MM-dd", FRANCE)
     return sdf.format(this)
 }
@@ -51,7 +51,7 @@ fun Date.formatToServerDateDefaults(): String{
 /**
  * Pattern: HH:mm:ss
  */
-fun Date.formatToServerTimeDefaults(): String{
+fun Date.formatToServerTimeDefaults(): String {
     val sdf = SimpleDateFormat("HH:mm:ss", FRANCE)
     return sdf.format(this)
 }

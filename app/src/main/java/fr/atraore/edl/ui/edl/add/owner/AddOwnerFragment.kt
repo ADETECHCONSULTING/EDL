@@ -6,48 +6,62 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Owner
+import fr.atraore.edl.data.models.entity.Owner
+import fr.atraore.edl.databinding.FragmentAddOwnerBinding
 import fr.atraore.edl.ui.edl.BaseFragment
-import fr.atraore.edl.ui.edl.add.property.AddPropertyFragment
-import kotlinx.android.synthetic.main.add_owner_fragment.*
-import kotlinx.android.synthetic.main.add_owner_fragment.btn_cancel
-import kotlinx.android.synthetic.main.add_owner_fragment.btn_create
-import kotlinx.android.synthetic.main.add_owner_fragment.edt_address
-import kotlinx.android.synthetic.main.add_owner_fragment.edt_address2
-import kotlinx.android.synthetic.main.add_owner_fragment.edt_city
-import kotlinx.android.synthetic.main.add_owner_fragment.edt_note
-import kotlinx.android.synthetic.main.add_owner_fragment.edt_postal_code
+import fr.atraore.edl.ui.edl.add.AddViewModel
+import fr.atraore.edl.utils.OWNER_LABEL
+import kotlinx.android.synthetic.main.fragment_add_owner.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class AddOwnerFragment : BaseFragment<Owner>(), View.OnClickListener, CoroutineScope {
+class AddOwnerFragment(val idArgs: String?) : BaseFragment(OWNER_LABEL), View.OnClickListener, CoroutineScope {
     private val TAG = AddOwnerFragment::class.simpleName
+    private val addViewModel: AddViewModel by viewModels()
+    private lateinit var binding: FragmentAddOwnerBinding
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
-        get() = "Propriétaires"
+        get() = OWNER_LABEL
 
     companion object {
-        fun newInstance() = AddOwnerFragment()
+        fun newInstance(idArgs: String?) = AddOwnerFragment(idArgs)
+    }
+
+    override fun goNext() {
+        TODO("Not yet implemented")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.add_owner_fragment, container, false)
+    ): View {
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_owner, container, false)
+        binding.viewModel = addViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initListeners()
+        idArgs?.let { itemId ->
+            addViewModel.getOwnerById(itemId).observe(viewLifecycleOwner) {
+                it?.let {
+                    addViewModel.owner.value = it
+                }
+                initListeners()
+            }
+        }
     }
 
     private fun initListeners() {
@@ -67,6 +81,11 @@ class AddOwnerFragment : BaseFragment<Owner>(), View.OnClickListener, CoroutineS
             return
         }
 
+        var id = UUID.randomUUID().toString()
+        addViewModel.owner.value?.let {
+            id = it.ownerId
+        }
+
         val name = edt_name.text.toString()
         val civi = spn_civilite.selectedItem.toString()
         val tel = edt_tel.text.toString()
@@ -74,14 +93,12 @@ class AddOwnerFragment : BaseFragment<Owner>(), View.OnClickListener, CoroutineS
         val address = edt_address.text.toString()
         val address2 = edt_address2.text.toString()
         val postalCode = edt_postal_code.text.toString()
-        val postalCode2 = edt_postal_code2.text.toString()
         val city = edt_city.text.toString()
-        val city2 = edt_city2.text.toString()
         val mail = edt_mail.text.toString()
         val note = edt_note.text.toString()
 
         val owner = Owner(
-            UUID.randomUUID().toString(),
+            id,
             civi,
             name,
             address,
@@ -94,7 +111,7 @@ class AddOwnerFragment : BaseFragment<Owner>(), View.OnClickListener, CoroutineS
             note
         )
 
-        launch {
+        launch(Dispatchers.Main) {
             save(owner)
             Log.d(TAG, "création d'un propriétaire ${owner}")
         }

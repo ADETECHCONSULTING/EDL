@@ -4,18 +4,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.Navigation
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import fr.atraore.edl.R
-import fr.atraore.edl.data.models.*
+import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.data.models.entity.Agency
 import fr.atraore.edl.databinding.AgencyItemBinding
-import fr.atraore.edl.databinding.ConstatItemBinding
-import fr.atraore.edl.databinding.PropertyItemBinding
 import fr.atraore.edl.ui.edl.search.agency.AgencySearchViewModel
-import fr.atraore.edl.ui.edl.search.contractor.ContractorSearchViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,9 +35,16 @@ class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, pr
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val agency = getItem(position)
-        holder.apply {
-            bind(createClickListener(agency), agency)
-            itemView.tag = agency
+        if (constatDetails.agency?.agencyId == agency.agencyId) {
+            holder.apply {
+                bind(createClickListener(agency), agency, false)
+                itemView.tag = agency
+            }
+        } else {
+            holder.apply {
+                bind(createClickListener(agency), agency, true)
+                itemView.tag = agency
+            }
         }
     }
 
@@ -55,6 +58,8 @@ class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, pr
                     agencySearchViewModel.save(constatDetails.constat, agency)
                     Log.d(TAG, "Ajout agence ${agency} in ${constatDetails.constat.constatId}")
                 }
+
+                Toast.makeText(it.context, "Agence ${agency.name} selectionnée", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -65,11 +70,13 @@ class AgencyAdapter(private val agencySearchViewModel: AgencySearchViewModel, pr
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(
             listenerProperty: View.OnClickListener,
-            item: Agency
+            item: Agency,
+            itemState: Boolean
         ) {
             binding.apply {
                 agencyItem = item
                 addClickListener = listenerProperty
+                state = itemState
             }
         }
     }

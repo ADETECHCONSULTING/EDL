@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="500dp"
+    android:clipToPadding="false">
+
+    <TextView
+        android:id="@+id/txv_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:elevation="12dp"
+        android:gravity="center"
+        android:text="Ajouter une précision"
+        android:textSize="@dimen/textSizeExtraLarge"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/rdg_level_alteration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:background="@drawable/rounded_rdg"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txv_title">
+
+        <RadioButton
+            android:id="@+id/checkbox_peu"
+            style="@style/CheckboxBlackedLargeColored"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:background="@drawable/state_radiobutton"
+            android:button="@null"
+            android:gravity="center"
+            android:text="Un peu"
+            android:textSize="@dimen/textSizeLarge" />
+
+        <RadioButton
+            android:id="@+id/checkbox_moyen"
+            style="@style/CheckboxBlackedLargeColored"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:background="@drawable/state_radiobutton"
+            android:button="@null"
+            android:gravity="center"
+            android:text="Moyen"
+            android:textSize="@dimen/textSizeLarge" />
+
+        <RadioButton
+            android:id="@+id/checkbox_beaucoup"
+            style="@style/CheckboxBlackedLargeColored"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:background="@drawable/state_radiobutton"
+            android:button="@null"
+            android:gravity="center"
+            android:text="Beaucoup"
+            android:textSize="@dimen/textSizeLarge" />
+
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rdg_verif_alteration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/rdg_level_alteration">
+
+        <RadioButton
+            android:id="@+id/checkbox_verifier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:buttonTint="@color/black"
+            android:text="à vérifier"
+            android:textSize="@dimen/textSizeLarge" />
+
+        <RadioButton
+            android:id="@+id/checkbox_chiffrer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/black"
+            android:text="à chiffrer"
+            android:textSize="@dimen/textSizeLarge" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel_label"
+        android:minWidth="160dp"
+        android:backgroundTint="@color/red"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constraintEnd_toStartOf="@+id/btn_save"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rdg_verif_alteration" />
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/done"
+        android:minWidth="160dp"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_cancel"
+        app:layout_constraintTop_toBottomOf="@id/rdg_verif_alteration" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

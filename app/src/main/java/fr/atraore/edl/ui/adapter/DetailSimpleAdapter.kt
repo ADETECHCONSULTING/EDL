@@ -1,0 +1,65 @@
+package fr.atraore.edl.ui.adapter
+
+import android.graphics.Color
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import fr.atraore.edl.R
+import fr.atraore.edl.data.models.entity.Detail
+import fr.atraore.edl.data.models.entity.ElementReference
+import fr.atraore.edl.data.models.entity.RoomReference
+import kotlinx.android.synthetic.main.child_list_item.view.*
+import kotlinx.android.synthetic.main.element_list_item.view.*
+import kotlinx.android.synthetic.main.room_simple_list_item.view.*
+
+class DetailSimpleAdapter : RecyclerView.Adapter<DetailSimpleAdapter.DetailSimpleViewHolder>() {
+
+    private var data: List<Detail> = ArrayList()
+    private lateinit var mOnItemClickListener: View.OnClickListener
+    var currentItemSelected: ElementReference? = null
+    // if checkedPosition = -1, there is no default selection
+    // if checkedPosition = 0, 1st item is selected by default
+    var checkedPosition = -1
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailSimpleViewHolder {
+        return DetailSimpleViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.child_list_item, parent, false)
+        )
+    }
+
+    override fun getItemCount() = data.size
+
+    override fun onBindViewHolder(holder: DetailSimpleViewHolder, position: Int) = holder.bind(data[position])
+
+    fun swapData(data: List<Detail>) {
+        this.data = data
+        notifyDataSetChanged()
+    }
+
+    fun setOnItemClickListener(itemClickListener: View.OnClickListener) {
+        this.mOnItemClickListener = itemClickListener
+    }
+
+    inner class DetailSimpleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(item: Detail) = with(itemView) {
+            if (checkedPosition == -1) {
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAccentLighterMax))
+                itemView.txv_child.setTextColor(Color.BLACK)
+            } else {
+                if (checkedPosition == absoluteAdapterPosition) {
+                    itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorPrimary))
+                    itemView.txv_child.setTextColor(Color.WHITE)
+                } else {
+                    itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAccentLighterMax))
+                    itemView.txv_child.setTextColor(Color.BLACK)
+                }
+            }
+            itemView.txv_child.text = item.intitule
+            itemView.setTag(this@DetailSimpleViewHolder)
+            itemView.setOnClickListener(mOnItemClickListener)
+        }
+    }
+}

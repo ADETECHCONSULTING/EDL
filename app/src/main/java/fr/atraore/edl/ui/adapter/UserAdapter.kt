@@ -4,11 +4,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import fr.atraore.edl.data.models.ConstatWithDetails
-import fr.atraore.edl.data.models.Users
+import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.data.models.entity.Users
 import fr.atraore.edl.databinding.UserItemBinding
 import fr.atraore.edl.ui.edl.search.user.UserSearchViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -50,6 +51,8 @@ class UserAdapter(private val userSearchViewModel: UserSearchViewModel, private 
                     userSearchViewModel.save(constatDetails.constat, user)
                     Log.d(TAG, "Ajout user ${user} in ${constatDetails.constat.constatId}")
                 }
+
+                Toast.makeText(it.context, "Utilisateur ${user.name} selectionné", Toast.LENGTH_SHORT).show()
             }
         }
     }

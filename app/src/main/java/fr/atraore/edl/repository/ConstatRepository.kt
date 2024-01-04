@@ -2,12 +2,13 @@ package fr.atraore.edl.repository
 
 import androidx.annotation.WorkerThread
 import fr.atraore.edl.data.dao.ConstatDao
-import fr.atraore.edl.data.models.Constat
-import fr.atraore.edl.data.models.ConstatWithDetails
+import fr.atraore.edl.data.models.entity.Constat
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.data.models.crossRef.*
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class ConstatRepository(
+class ConstatRepository @Inject constructor(
     private val constatDao: ConstatDao
 ) : BaseRepository<Constat>(constatDao) {
     val allConstats: Flow<List<Constat>> = constatDao.getAllConstat()
@@ -43,8 +44,32 @@ class ConstatRepository(
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
+    suspend fun saveConstatRoomCrossRef(constatId: String, roomId: String, idLot: Int) {
+        constatDao.saveConstatRoomCrossRef(ConstatRoomCrossRef(constatId, roomId, idLot))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveConstatLotCrossRef(constatId: String, lotId: Int) {
+        constatDao.saveConstatLotCrossRef(ConstatLotCrossRef(constatId, lotId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
     suspend fun saveConstatAgencyCrossRef(constatId: String, agencyId: String) {
         constatDao.saveConstatAgencyCrossRef(ConstatAgencyCrossRef(constatId, agencyId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveProcuration(constatId: String, procuration: String) {
+        constatDao.updateProcuration(constatId, procuration)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveRoomDetailCrossRef(roomId: String, detailId: String) {
+        constatDao.saveRoomDetailCrossRef(RoomDetailCrossRef(roomId, detailId))
     }
 
     @Suppress("RedundantSuspendModifier")
@@ -73,6 +98,18 @@ class ConstatRepository(
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
+    suspend fun deleteConstatRoomCrossRef(constatId: String, roomId: String, idLot: Int) {
+        constatDao.deleteConstatRoomCrossRef(ConstatRoomCrossRef(constatId, roomId, idLot))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteRoomDetailCrossRef(roomId: String, detailId: String) {
+        constatDao.deleteRoomDetailCrossRef(RoomDetailCrossRef(roomId, detailId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
     suspend fun deleteConstatOwnerCrossRef(constatId: String, ownerId: String) {
         constatDao.deleteConstatOwnerCrossRef(ConstatOwnerCrossRef(constatId, ownerId))
     }
@@ -89,4 +126,33 @@ class ConstatRepository(
         constatDao.deleteConstatContractorCrossRef(ConstatContractorCrossRef(constatId, contractorId))
     }
 
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteConstatAgencyCrossRef(constatId: String, agencyId: String) {
+        constatDao.deleteConstatAgency(ConstatAgencyCrossRef(constatId, agencyId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteConstatUserCrossRef(constatId: String, userId: String) {
+        constatDao.deleteConstatUser(ConstatUsersCrossRef(constatId, userId))
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveOwnerSignaturePath(path: String, constatId: String) {
+        constatDao.saveOwnerSignaturePath(path, constatId)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveTenantSignaturePath(path: String, constatId: String) {
+        constatDao.saveTenantSignaturePath(path, constatId)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun saveParaphPath(path: String, constatId: String) {
+        constatDao.saveParaphPath(path, constatId)
+    }
 }

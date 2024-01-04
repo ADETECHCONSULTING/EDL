@@ -1,15 +1,15 @@
 package fr.atraore.edl.repository
 
-import androidx.annotation.WorkerThread
 import fr.atraore.edl.data.dao.PropertyDao
-import fr.atraore.edl.data.models.Constat
-import fr.atraore.edl.data.models.Property
+import fr.atraore.edl.data.models.entity.Property
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class   PropertyRepository(
+class PropertyRepository @Inject constructor(
     private val propertyDao: PropertyDao
 ) : BaseRepository<Property>(propertyDao) {
 
     val allProperties: Flow<List<Property>> = propertyDao.getAllProperties()
+    fun getById(id: String): Flow<Property> = propertyDao.getById(id)
 
 }

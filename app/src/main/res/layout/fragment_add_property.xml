@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="fr.atraore.edl.ui.edl.add.AddViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@drawable/gradient_bg"
+        tools:context=".ui.edl.add.tenant.AddTenantFragment">
+
+        <TextView
+            android:id="@+id/txv_nature"
+            style="@style/MyTextViewStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="@string/nature_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_nature"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:hint="@string/mandatory"
+            android:padding="@dimen/padding_small"
+            android:text="@{viewModel.property.nature}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_middle"
+            app:layout_constraintStart_toStartOf="@id/txv_nature"
+            app:layout_constraintTop_toBottomOf="@id/txv_nature" />
+
+        <TextView
+            android:id="@+id/txv_adresse"
+            style="@style/MyTextViewStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/adress_label"
+            app:layout_constraintStart_toStartOf="@id/txv_nature"
+            app:layout_constraintTop_toBottomOf="@id/edt_nature" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:hint="@string/mandatory"
+            android:padding="@dimen/padding_small"
+            android:text="@{viewModel.property.address}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_middle"
+            app:layout_constraintStart_toStartOf="@id/txv_nature"
+            app:layout_constraintTop_toBottomOf="@id/txv_adresse" />
+
+        <TextView
+            android:id="@+id/txv_adresse2"
+            style="@style/MyTextViewStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/address_label_2"
+            app:layout_constraintStart_toStartOf="@id/txv_nature"
+            app:layout_constraintTop_toBottomOf="@id/edt_address" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_address2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:hint="@string/optional"
+            android:padding="@dimen/padding_small"
+            android:text="@{viewModel.property.address2}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_middle"
+            app:layout_constraintStart_toStartOf="@id/txv_nature"
+            app:layout_constraintTop_toBottomOf="@id/txv_adresse2" />
+
+        <TextView
+            android:id="@+id/txv_postal_code"
+            style="@style/MyTextViewStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/postal_code_label"
+            app:layout_constraintStart_toStartOf="@id/txv_nature"
+            app:layout_constraintTop_toBottomOf="@id/edt_address2" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_postal_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:hint="@string/mandatory"
+            android:inputType="textPostalAddress"
+            android:padding="@dimen/padding_small"
+            android:text="@{viewModel.property.postalCode}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_first_quarter"
+            app:layout_constraintStart_toStartOf="@id/txv_nature"
+            app:layout_constraintTop_toBottomOf="@id/txv_postal_code" />
+
+        <TextView
+            android:id="@+id/txv_city"
+            style="@style/MyTextViewStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/city"
+            app:layout_constraintStart_toStartOf="@id/edt_city"
+            app:layout_constraintTop_toBottomOf="@id/edt_address2" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_city"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:background="@drawable/spinner_background"
+            android:hint="@string/mandatory"
+            android:padding="@dimen/padding_small"
+            android:text="@{viewModel.property.city}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_middle"
+            app:layout_constraintStart_toEndOf="@id/edt_postal_code"
+            app:layout_constraintTop_toBottomOf="@id/txv_postal_code" />
+
+        <TextView
+            android:id="@+id/txv_floor"
+            style="@style/MyTextViewStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/etage_label"
+            app:layout_constraintStart_toStartOf="@id/txv_nature"
+            app:layout_constraintTop_toBottomOf="@id/edt_postal_code" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_floor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:hint="@string/optional"
+            android:inputType="number"
+            android:padding="@dimen/padding_small"
+            android:text="@{String.valueOf(viewModel.property.floor), default=0}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_first_quarter"
+            app:layout_constraintStart_toStartOf="@id/txv_nature"
+            app:layout_constraintTop_toBottomOf="@id/txv_floor" />
+
+        <TextView
+            android:id="@+id/txv_appartment_door"
+            style="@style/MyTextViewStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/appartment_number_label"
+            app:layout_constraintStart_toStartOf="@id/edt_city"
+            app:layout_constraintTop_toBottomOf="@id/edt_city" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_appartment_door"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:background="@drawable/spinner_background"
+            android:hint="@string/optional"
+            android:inputType="number"
+            android:padding="@dimen/padding_small"
+            android:text="@{String.valueOf(viewModel.property.appartmentDoor), default=0}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_middle"
+            app:layout_constraintStart_toEndOf="@id/edt_postal_code"
+            app:layout_constraintTop_toBottomOf="@id/txv_appartment_door" />
+
+        <TextView
+            android:id="@+id/txv_type"
+            style="@style/MyTextViewStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_large"
+            android:text="@string/type_label"
+            app:layout_constraintStart_toEndOf="@id/guideline_middle"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:hint="@string/mandatory"
+            android:padding="@dimen/padding_small"
+            android:text="@{viewModel.property.type}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_last_quarter"
+            app:layout_constraintStart_toStartOf="@id/txv_type"
+            app:layout_constraintTop_toBottomOf="@id/txv_type" />
+
+        <TextView
+            android:id="@+id/txv_nb_level"
+            style="@style/MyTextViewStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/nb_level_label"
+            app:layout_constraintStart_toEndOf="@id/guideline_middle"
+            app:layout_constraintTop_toBottomOf="@id/edt_type" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_nb_level"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:hint="@string/optional"
+            android:inputType="number"
+            android:padding="@dimen/padding_small"
+            android:text="@{String.valueOf(viewModel.property.nbLevels), default=1}"
+            app:layout_constraintEnd_toEndOf="@id/guideline_last_quarter"
+            app:layout_constraintStart_toStartOf="@id/txv_type"
+            app:layout_constraintTop_toBottomOf="@id/txv_nb_level" />
+
+
+        <TextView
+            android:id="@+id/txv_note"
+            style="@style/MyTextViewStyleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/note_label"
+            app:layout_constraintStart_toEndOf="@id/guideline_middle"
+            app:layout_constraintTop_toBottomOf="@id/edt_nb_level" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_note"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:background="@drawable/spinner_background"
+            android:hint="@string/optional"
+            android:inputType="textMultiLine"
+            android:lines="4"
+            android:padding="@dimen/padding_small"
+            android:text="@{viewModel.property.notes}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/txv_type"
+            app:layout_constraintTop_toBottomOf="@id/txv_note"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_first_quarter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_last_quarter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.70" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:text="@string/cancel_label"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_create"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_create"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.property.propertyId == null ? @string/create_label : @string/modifier_label}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_cancel" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

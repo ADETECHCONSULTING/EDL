@@ -2,38 +2,41 @@ package fr.atraore.edl.ui.edl.search.owner
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import fr.atraore.edl.EdlApplication
+import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.ConstatWithDetails
-import fr.atraore.edl.data.models.Owner
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.OwnerAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
-import kotlinx.android.synthetic.main.owner_search_fragment.*
+import fr.atraore.edl.utils.OWNER_LABEL
+import kotlinx.android.synthetic.main.fragment_owner_search.*
 
-class OwnerSearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Owner>() {
+@AndroidEntryPoint
+class OwnerSearchFragment(private val constat: ConstatWithDetails) : BaseFragment(OWNER_LABEL) {
 
     override val title: String
-        get() = "Propriétaires"
+        get() = OWNER_LABEL
 
     companion object {
         fun newInstance(constat: ConstatWithDetails) = OwnerSearchFragment(constat)
     }
 
-    private val ownerSearchViewModel: OwnerSearchViewModel by viewModels {
-        val edlApplication = (activity?.application as EdlApplication)
-        OwnerSearchViewModelFactory(edlApplication.ownerRepository, edlApplication.constatRepository)
+    override fun goNext() {
+        TODO("Not yet implemented")
     }
+
+    private val ownerSearchViewModel: OwnerSearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.owner_search_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_owner_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,6 +49,10 @@ class OwnerSearchFragment(private val constat: ConstatWithDetails) : BaseFragmen
         ownerSearchViewModel.allOwners.observe(viewLifecycleOwner, Observer {owners ->
             owners?.let { adapter.submitList(it) }
         })
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_previous)?.isVisible = true
     }
 
 }

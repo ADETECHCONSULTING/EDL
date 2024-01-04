@@ -4,23 +4,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Constat
-import fr.atraore.edl.data.models.ConstatWithDetails
-import fr.atraore.edl.data.models.Property
-import fr.atraore.edl.data.models.Tenant
-import fr.atraore.edl.databinding.ConstatItemBinding
-import fr.atraore.edl.databinding.PropertyItemBinding
+import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.data.models.entity.Tenant
 import fr.atraore.edl.databinding.TenantItemBinding
 import fr.atraore.edl.ui.edl.search.tenant.TenantSearchViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 

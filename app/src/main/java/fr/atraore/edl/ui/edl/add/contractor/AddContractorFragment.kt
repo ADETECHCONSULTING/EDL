@@ -6,42 +6,64 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Contractor
+import fr.atraore.edl.data.models.entity.Contractor
+import fr.atraore.edl.databinding.FragmentAddContractorBinding
 import fr.atraore.edl.ui.edl.BaseFragment
-import kotlinx.android.synthetic.main.add_contractor_fragment.*
+import fr.atraore.edl.ui.edl.add.AddViewModel
+import fr.atraore.edl.utils.CONTRACTOR_LABEL
+import kotlinx.android.synthetic.main.fragment_add_contractor.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class AddContractorFragment : BaseFragment<Contractor>(), View.OnClickListener, CoroutineScope {
+class AddContractorFragment(val idArgs: String?) : BaseFragment(CONTRACTOR_LABEL), View.OnClickListener, CoroutineScope {
     private val TAG = AddContractorFragment::class.simpleName
+    private val addViewModel: AddViewModel by viewModels()
+    private lateinit var binding: FragmentAddContractorBinding
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
+        get() = Dispatchers.Default
 
     override val title: String
-        get() = "Mandataires"
+        get() = CONTRACTOR_LABEL
 
     companion object {
-        fun newInstance() = AddContractorFragment()
+        fun newInstance(idArgs: String?) = AddContractorFragment(idArgs)
     }
 
-    private lateinit var viewModel: AddContractorViewModel
+    override fun goNext() {
+        TODO("Not yet implemented")
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.add_contractor_fragment, container, false)
+    ): View {
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_add_contractor, container, false)
+        binding.viewModel = addViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initListeners()
+
+        idArgs?.let { itemId ->
+            addViewModel.getContractorById(itemId).observe(viewLifecycleOwner) {
+                it?.let {
+                    addViewModel.contractor.value = it
+                }
+                initListeners()
+            }
+        }
     }
 
     private fun initListeners() {
@@ -61,6 +83,11 @@ class AddContractorFragment : BaseFragment<Contractor>(), View.OnClickListener, 
             return
         }
 
+        var id = UUID.randomUUID().toString()
+        addViewModel.contractor.value?.let {
+            id = it.contractorId
+        }
+
         val denomination = edt_denomination.text.toString()
         val tel = edt_tel.text.toString()
         val tel2 = edt_tel2.text.toString()
@@ -74,19 +101,23 @@ class AddContractorFragment : BaseFragment<Contractor>(), View.OnClickListener, 
         val note = edt_note.text.toString()
 
         val contractor = Contractor(
-            UUID.randomUUID().toString(),
+            id,
             denomination,
             mail,
+            tel,
+            tel2,
             address,
             address2,
             null,
             postalCode,
             postalCode2,
             null,
-            city
+            city,
+            city2,
+            note
         )
 
-        launch {
+        launch(Dispatchers.Main) {
             save(contractor)
             Log.d(TAG, "création d'un mandataire ${contractor}")
         }

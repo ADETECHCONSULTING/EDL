@@ -2,39 +2,41 @@ package fr.atraore.edl.ui.edl.search.biens
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import fr.atraore.edl.EdlApplication
+import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
-import fr.atraore.edl.data.models.Constat
-import fr.atraore.edl.data.models.ConstatWithDetails
-import fr.atraore.edl.data.models.Property
+import fr.atraore.edl.data.models.data.ConstatWithDetails
 import fr.atraore.edl.ui.adapter.PropertyAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
-import kotlinx.android.synthetic.main.property_search_fragment.*
+import fr.atraore.edl.utils.PROPERTY_LABEL
+import kotlinx.android.synthetic.main.fragment_property_search.*
 
-class PropertySearchFragment(private val constat: ConstatWithDetails) : BaseFragment<Property>() {
+@AndroidEntryPoint
+class PropertySearchFragment(private val constat: ConstatWithDetails) : BaseFragment(PROPERTY_LABEL) {
 
     override val title: String
-        get() = "Biens"
+        get() = PROPERTY_LABEL
 
     companion object {
         fun newInstance(constat: ConstatWithDetails) = PropertySearchFragment(constat)
     }
 
-    private val propertySearchViewModel: PropertySearchViewModel by viewModels {
-        val edlApplication = (activity?.application as EdlApplication)
-        PropertySearchViewModelFactory(edlApplication.propertyRepository, edlApplication.constatRepository)
+    override fun goNext() {
+        TODO("Not yet implemented")
     }
+
+    private val propertySearchViewModel: PropertySearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.property_search_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_property_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,4 +51,7 @@ class PropertySearchFragment(private val constat: ConstatWithDetails) : BaseFrag
         })
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.action_previous)?.isVisible = true
+    }
 }

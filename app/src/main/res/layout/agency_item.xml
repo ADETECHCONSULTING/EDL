@@ -11,81 +11,78 @@
 
         <variable
             name="agencyItem"
-            type="fr.atraore.edl.data.models.Agency" />
+            type="fr.atraore.edl.data.models.entity.Agency" />
+
+        <variable
+            name="state"
+            type="java.lang.Boolean" />
 
     </data>
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
         <LinearLayout
-            android:layout_width="300dp"
+            android:id="@+id/ctn_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="@color/white">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/ctn_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?colorPrimary"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Title, secondary and supporting text -->
+                <TextView
+                    android:id="@+id/txv_type_appart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{agencyItem.name}"
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                <TextView
+                    android:id="@+id/txv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{agencyItem.address}"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+                <TextView
+                    android:id="@+id/txv_tel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{agencyItem.numTelFixe + ` - ` + agencyItem.numTelPortable}"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/txv_type_appart"
+            <!-- Buttons -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="@{agencyItem.name}"
-                android:textColor="@color/colorPrimaryDark"
-                tools:text="Guy Hoquet" />
-
-
-            <TextView
-                android:id="@+id/txv_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:lines="2"
-                android:text="@{agencyItem.address}"
-                tools:text="43 rue de bellevue 69400, Landiris" />
-
-            <TextView
-                android:id="@+id/txv_address_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:lines="2"
-                android:text="@{agencyItem.address2}"
-                tools:text="43 rue de bellevue 69400, Landiris" />
-
-            <TextView
-                android:id="@+id/txv_tel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:lines="2"
-                android:text="@{agencyItem.numTelFixe + ` - ` + agencyItem.numTelPortable}"
-                android:layout_marginBottom="10dp"
-                tools:text="0627562283" />
-
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_add_white"
-                android:backgroundTint="?colorAccent"
-                android:onClick="@{addClickListener}"
-                app:borderWidth="0dp"
-                app:tint="@color/white"
-                android:layout_margin="12dp" />
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@color/colorAccent"
+                    android:onClick="@{addClickListener}"
+                    android:text="@string/add_label"
+                    style="?attr/borderlessButtonStyle" />
+            </LinearLayout>
 
         </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 </layout>

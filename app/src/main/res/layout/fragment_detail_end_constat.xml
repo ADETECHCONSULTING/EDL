@@ -1,0 +1,488 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="detail"
+            type="fr.atraore.edl.data.models.entity.Detail" />
+
+        <variable
+            name="fragment"
+            type="fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatFragment" />
+
+        <variable
+            name="photoClickListener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="@drawable/gradient_bg"
+        tools:context=".ui.edl.constat.second_page.detail.DetailEndConstatFragment">
+
+        <LinearLayout
+            android:id="@+id/ctn_no_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{detail == null ? View.VISIBLE : View.GONE}"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSizeLarge"
+                style="@style/MyTextViewStyleLabel"
+                android:text="@string/label_empty_detail" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding_medium">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:visibility="@{detail == null ? View.GONE : View.VISIBLE}"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.2" />
+
+                <LinearLayout
+                    android:id="@+id/ctn_static_events"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:backgroundTint="@color/colorAccent"
+                        android:textColor="@color/black"
+                        android:onClick="@{(view) -> fragment.razDetail()}"
+                        android:text="@string/raz"/>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"/>
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cg_proprete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_propre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipPropreteClicked(view)}"
+                            android:text="@string/propre_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_poussiere"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipPropreteClicked(view)}"
+                            android:text="@string/poussiere_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_gras"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipPropreteClicked(view)}"
+                            android:text="@string/gras_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_non_nettoye"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipPropreteClicked(view)}"
+                            android:text="@string/non_nettoye_label" />
+
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <ToggleButton
+                        android:id="@+id/tgb_fonctionnement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:text="@string/fnctmnt_label"
+                        android:textOn="@string/fnctmnt_label_ok"
+                        android:textOff="@string/fnctmnt_label_ko"
+                        android:onCheckedChanged="@{(view, check) -> fragment.toggleFonctionmentChange(view, check)}"
+                        />
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:id="@+id/txv_intitule"
+                    style="@style/MyTextViewStyleLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_intitule"
+                    android:textAllCaps="true"
+                    android:layout_marginTop="@dimen/margin_large"
+                    app:layout_constraintEnd_toStartOf="@id/guideline2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ctn_static_events" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_intitule"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_background"
+                    android:padding="@dimen/padding_small"
+                    app:layout_constraintBottom_toBottomOf="@id/txv_intitule"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/txv_intitule"
+                    android:text="@{detail.intitule}"
+                    tools:text="@string/label_intitule" />
+
+
+                <TextView
+                    android:id="@+id/txv_etat"
+                    style="@style/MyTextViewStyleLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/label_etat"
+                    android:textAllCaps="true"
+                    app:layout_constraintEnd_toStartOf="@id/guideline2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/edt_intitule" />
+
+                <LinearLayout
+                    android:id="@+id/ctn_etat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="@id/txv_etat"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/txv_etat">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cg_etat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_neuf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            app:chipBackgroundColor="@color/chip_neuf"
+                            style="@style/ChipStyle"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipEtatClicked(view)}"
+                            android:text="@string/neuf_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_bon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            app:chipBackgroundColor="@color/chip_bon"
+                            style="@style/ChipStyle"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipEtatClicked(view)}"
+                            android:text="@string/bon_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_usage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            app:chipBackgroundColor="@color/chip_usage"
+                            style="@style/ChipStyle"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipEtatClicked(view)}"
+                            android:text="@string/usage_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_mauvais"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            app:chipBackgroundColor="@color/chip_mauvais"
+                            style="@style/ChipStyle"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipEtatClicked(view)}"
+                            android:text="@string/mauvais_label" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cp_hs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="@dimen/chips_width"
+                            android:minHeight="@dimen/buttons_height"
+                            android:textSize="@dimen/textSizeMedium"
+                            app:chipBackgroundColor="@color/chip_hs"
+                            android:textColor="@color/white"
+                            style="@style/ChipStyle"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            android:textAlignment="center"
+                            android:onClick="@{(view) -> fragment.chipEtatClicked(view)}"
+                            android:text="@string/hs_label" />
+
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txv_descriptif"
+                    style="@style/MyTextViewStyleLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/label_descriptif"
+                    android:textAllCaps="true"
+                    app:layout_constraintEnd_toStartOf="@id/guideline2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ctn_etat"/>
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_descriptions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_background"
+                    android:gravity="start"
+                    android:inputType="textMultiLine"
+                    android:minLines="4"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    android:text="@{detail.descriptif}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/txv_descriptif"/>
+
+                <LinearLayout
+                    android:id="@+id/ctn_descriptif"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toBottomOf="@id/edt_descriptions">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cg_descriptif"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <ImageView
+                        android:id="@+id/imv_add_descriptif"
+                        android:layout_width="@dimen/buttons_width"
+                        android:layout_height="@dimen/buttons_height"
+                        android:src="@drawable/ic_add"
+                        android:onClick="@{(view) -> fragment.onAddClicked(view, 3)}"  />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txv_alterations"
+                    style="@style/MyTextViewStyleLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/label_alterations"
+                    android:textAllCaps="true"
+                    app:layout_constraintEnd_toStartOf="@id/guideline2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ctn_descriptif" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_alterations"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_background"
+                    android:gravity="start"
+                    android:inputType="textMultiLine"
+                    android:minLines="4"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    android:text="@{detail.alteration}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/txv_alterations" />
+
+                <LinearLayout
+                    android:id="@+id/ctn_alterations"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    app:layout_constraintTop_toBottomOf="@id/edt_alterations"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cg_alterations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <ImageView
+                        android:id="@+id/imv_add_alterations"
+                        android:layout_width="@dimen/buttons_width"
+                        android:layout_height="@dimen/buttons_height"
+                        android:src="@drawable/ic_add"
+                        android:onClick="@{(view) -> fragment.onAddClicked(view, 4)}" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txv_nature"
+                    style="@style/MyTextViewStyleLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/label_nature"
+                    android:textAllCaps="true"
+                    app:layout_constraintEnd_toStartOf="@id/guideline2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ctn_alterations" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_nature"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_background"
+                    android:gravity="start"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    android:padding="@dimen/padding_small"
+                    android:text="@{detail.nature}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/txv_nature" />
+
+                <TextView
+                    android:id="@+id/txv_note"
+                    style="@style/MyTextViewStyleLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/label_note"
+                    android:textAllCaps="true"
+                    app:layout_constraintEnd_toStartOf="@id/guideline2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/edt_nature" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edt_note"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/spinner_background"
+                    android:gravity="start"
+                    android:inputType="textMultiLine"
+                    android:lines="4"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    android:text="@{detail.notes}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/txv_note"
+                    tools:text="@string/label_intitule" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_add_photos"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:backgroundTint="@color/colorAccent"
+                    android:textColor="@color/black"
+                    android:onClick="@{photoClickListener}"
+                    app:layout_constraintTop_toBottomOf="@id/edt_note"
+                    app:layout_constraintEnd_toStartOf="@id/guideline2"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/add_photos_label" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_photos"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline2"
+                    app:layout_constraintTop_toTopOf="@id/btn_add_photos"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

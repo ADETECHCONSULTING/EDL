@@ -1,15 +1,24 @@
 package fr.atraore.edl.ui
 
 import androidx.lifecycle.*
-import fr.atraore.edl.data.models.Constat
-import fr.atraore.edl.data.models.ConstatWithDetails
-import fr.atraore.edl.repository.ConstatRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import fr.atraore.edl.data.models.entity.Constat
+import fr.atraore.edl.data.models.data.ConstatWithDetails
+import fr.atraore.edl.repository.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class MainViewModel(
-    private val constatRepositoy: ConstatRepository
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val constatRepositoy: ConstatRepository,
+    val tenantRepository: TenantRepository,
+    val ownerRepository: OwnerRepository,
+    val propertyRepository: PropertyRepository,
+    val contractorRepository: ContractorRepository,
+    val agencyRepository: AgencyRepository,
+    val userRepository: UserRepository
 ) : ViewModel() {
     val allConstats: LiveData<List<Constat>> = constatRepositoy.allConstats.asLiveData()
     val allConstatWithDetails: LiveData<List<ConstatWithDetails>> = constatRepositoy.allConstatWithDetails.asLiveData()
@@ -19,18 +28,4 @@ class MainViewModel(
     fun saveConstat(constat: Constat) = viewModelScope.launch {
         constatRepositoy.save(constat)
     }
-}
-
-class MainViewModelFactory(
-    private val repository: ConstatRepository
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return MainViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-
 }
