@@ -9,12 +9,9 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import fr.atraore.edl.data.models.crossRef.RoomConstatCrossRef
-import fr.atraore.edl.data.models.data.ChildData
 import fr.atraore.edl.data.models.data.ConstatWithDetails
-import fr.atraore.edl.data.models.data.EquipmentData
 import fr.atraore.edl.data.models.entity.Contractor
 import fr.atraore.edl.data.models.entity.Detail
-import fr.atraore.edl.data.models.entity.ElementReference
 import fr.atraore.edl.data.models.entity.KeyReference
 import fr.atraore.edl.data.models.entity.OutdoorEquipementReference
 import fr.atraore.edl.data.models.entity.Owner
@@ -23,7 +20,6 @@ import fr.atraore.edl.data.models.entity.Tenant
 import fr.atraore.edl.repository.ConstatRepository
 import fr.atraore.edl.repository.ContractorRepository
 import fr.atraore.edl.repository.DetailRepository
-import fr.atraore.edl.repository.ElementRepository
 import fr.atraore.edl.repository.EquipmentRepository
 import fr.atraore.edl.repository.KeyRepository
 import fr.atraore.edl.repository.OutdoorEquipementRepository
@@ -32,9 +28,6 @@ import fr.atraore.edl.repository.PropertyRepository
 import fr.atraore.edl.repository.RoomRepository
 import fr.atraore.edl.repository.TenantRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 

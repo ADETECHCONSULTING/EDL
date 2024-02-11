@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.settings.EquipmentConfigurationActivity">
+
+    <LinearLayout
+        android:id="@+id/ctn_lot_technique"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/buttons_height"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/searchView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imv_lot_revetement"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_weight="1"
+            android:src="@drawable/ic_mur" />
+
+        <ImageView
+            android:id="@+id/imv_ouvrants"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_weight="1"
+            android:src="@drawable/ic_ouvrant" />
+
+
+        <ImageView
+            android:id="@+id/imv_elec"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_weight="1"
+            android:src="@drawable/ic_elec" />
+
+        <ImageView
+            android:id="@+id/imv_plomberie"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_weight="1"
+            android:src="@drawable/ic_plomberie" />
+
+
+        <ImageView
+            android:id="@+id/imv_chauffage"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_weight="1"
+            android:src="@drawable/ic_chauffage" />
+
+
+        <ImageView
+            android:id="@+id/imv_electromenager"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_weight="1"
+            android:src="@drawable/ic_electromenager" />
+
+
+        <ImageView
+            android:id="@+id/imv_mobilier"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_weight="1"
+            android:src="@drawable/ic_mobilier" />
+
+
+        <ImageView
+            android:id="@+id/imv_meuble"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/buttons_height"
+            android:layout_weight="1"
+            android:src="@drawable/ic_meuble" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:defaultQueryHint="Filtrer"
+        app:queryHint="Filtrer"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ctn_lot_technique"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1.0" />
+
+    <TextView
+        android:id="@+id/txvFirstLevel"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Niveau 1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ctn_lot_technique" />
+
+    <TextView
+        android:id="@+id/txvSecondLevel"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Niveau 2"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toEndOf="@id/guideline6"
+        app:layout_constraintTop_toBottomOf="@id/ctn_lot_technique"/>
+
+    <TextView
+        android:id="@+id/txvThirdLevel"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Niveau 3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toEndOf="@id/guideline7"
+        app:layout_constraintTop_toBottomOf="@id/ctn_lot_technique" />
+
+    <Button
+        android:id="@+id/btnAddFirstLevel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:text="Ajouter"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txvFirstLevel" />
+
+    <Button
+        android:id="@+id/btnAddSecondLevel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:text="Ajouter"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toEndOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@id/txvSecondLevel" />
+
+    <Button
+        android:id="@+id/btnAddThridLevel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:text="Ajouter"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toEndOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@id/txvThirdLevel" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvFirstLevel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddFirstLevel"
+        tools:listitem="@layout/eqp_list_item" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvSecondLevel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toStartOf="@id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddFirstLevel"
+        tools:listitem="@layout/eqp_list_item" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvThirdLevel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddFirstLevel"
+        tools:listitem="@layout/eqp_list_item" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

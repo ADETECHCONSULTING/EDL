@@ -13,6 +13,7 @@ import fr.atraore.edl.R
 import fr.atraore.edl.data.models.entity.Constat
 import fr.atraore.edl.ui.adapter.ConstatAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
+import fr.atraore.edl.ui.settings.EquipmentConfigurationActivity
 import fr.atraore.edl.ui.settings.KeysConfigurationActivity
 import fr.atraore.edl.ui.settings.OutDoorConfigurationActivity
 import fr.atraore.edl.ui.settings.RoomConfigurationActivity
@@ -62,7 +63,7 @@ class MainFragment : BaseFragment("MainFrag") {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_add_room -> {
-                val intent = Intent(requireContext(), RoomConfigurationActivity::class.java)
+                val intent = Intent(requireContext(), EquipmentConfigurationActivity::class.java)
                 startActivity(intent)
             }
             R.id.action_keys -> {

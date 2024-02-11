@@ -114,6 +114,7 @@
     <string name="gras_label">gras</string>
     <string name="non_nettoye_label">non nettoyé</string>
     <string name="ajout">ajout</string>
+    <string name="eqpts_configuration">Configuration des équipements</string>
     <string name="search_label">Recherche</string>
     <string name="contentdes_page_generation_pdf">Page de génération du PDF</string>
     <string name="label_pdf_title">Constat d\'état des lieux</string>

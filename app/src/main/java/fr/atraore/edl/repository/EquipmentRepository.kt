@@ -10,6 +10,26 @@ class EquipmentRepository @Inject constructor(
 ): BaseRepository<EquipmentReference>(dao) {
     fun getAllEquipments(): Flow<List<EquipmentReference>> = dao.getAllEquipments()
 
+    fun getFirstLevelItems(idRoomRef: Int): Flow<List<String>> = dao.getFirstLevelItems(idRoomRef)
+    fun getSecondLevelItems(idRoomRef: Int): Flow<List<String>> = dao.getSecondLevelItems(idRoomRef)
+    fun getThirdLevelItems(idRoomRef: Int): Flow<List<String>> = dao.getThirdLevelItems(idRoomRef)
+
+    fun filterLevelOneItems(query: String): Flow<List<String>> = dao.filterLevelOneItems(query)
+    fun filterLevelTwoItems(query: String): Flow<List<String>> = dao.filterLevelTwoItems(query)
+    fun filterLevelThreeItems(query: String): Flow<List<String>> = dao.filterLevelThreeItems(query)
+
+    suspend fun addItemFirstLevel(item: String, idRoomRef: Int) {
+        dao.addItemFirstLevel(item, idRoomRef)
+    }
+
+    suspend fun updateItemSecondLevel(level1: String, secondItem: String, idRoomRef: Int) {
+        dao.updateItemSecondLevel(level1, secondItem, idRoomRef)
+    }
+
+    suspend fun updateItemThirdLevel(level1: String, thirdItem: String, idRoomRef: Int) {
+        dao.updateItemThirdLevel(level1, thirdItem, idRoomRef)
+    }
+
     suspend fun deleteEquipmentRef(id: String) = dao.deleteById(id)
     suspend fun updateEquipmentReference(itemId: String, value: String, idRoomRef: Int) {
         val levels = dao.getLevelsForItem(itemId)
