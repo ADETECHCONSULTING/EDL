@@ -51,9 +51,9 @@ class MainFragment : BaseFragment("MainFrag") {
         menu.findItem(R.id.action_add_user)?.isVisible = true
         menu.findItem(R.id.action_add_agency)?.isVisible = true
         menu.findItem(R.id.action_outdoor)?.isVisible = true
+        menu.findItem(R.id.action_add_room)?.isVisible = false
 
         menu.findItem(R.id.action_keys)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
-        menu.findItem(R.id.action_add_room)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
         menu.findItem(R.id.action_outdoor)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
 
         menu.findItem(R.id.action_add_room)?.title = getString(R.string.manage_rooms)
@@ -62,10 +62,6 @@ class MainFragment : BaseFragment("MainFrag") {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.action_add_room -> {
-                val intent = Intent(requireContext(), RoomConfigurationActivity::class.java)
-                startActivity(intent)
-            }
             R.id.action_add_eqpt -> {
                 val intent = Intent(requireContext(), EquipmentConfigurationActivity::class.java)
                 startActivity(intent)

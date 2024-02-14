@@ -53,7 +53,7 @@ class ConstatViewModel @AssistedInject constructor(
     fun allActifKeysRef() : LiveData<List<KeyReference>> = keyRepository.getAllActifKeysRef().asLiveData()
     fun allActifOutdoorRef() : LiveData<List<OutdoorEquipementReference>> = outdoorRepository.getAllActifRef().asLiveData()
 
-    val getAllEquipments = equipmentRepository.getAllEquipments().asLiveData()
+    fun getAllEquipments(clickedLot: Int) = equipmentRepository.getAllEquipments(clickedLot).asLiveData()
     val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
 

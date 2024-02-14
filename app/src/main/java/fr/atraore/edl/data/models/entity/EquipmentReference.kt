@@ -6,8 +6,9 @@ import androidx.room.PrimaryKey
 @Entity
 data class EquipmentReference(
     @PrimaryKey(autoGenerate = false) val id: String,
-    val level1: String,
-    val level2: String,
-    val level3: String?,
-    val idRoomRef: Int?
+    var level1: String,
+    var level2: String,
+    var level3: String?,
+    val idRoomRef: Int?,
+    val idLot: Int?
 )

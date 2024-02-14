@@ -54,6 +54,8 @@
             android:name=".ui.settings.OutDoorConfigurationActivity"
             android:screenOrientation="userLandscape" />
 
+        <activity android:name=".ui.settings.EquipmentReferenceActivity" android:screenOrientation="landscape" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="fr.atraore.edl.fileprovider"

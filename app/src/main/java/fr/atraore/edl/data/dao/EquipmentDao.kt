@@ -7,19 +7,19 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EquipmentDao : BaseDao<EquipmentReference> {
-    @Query("SELECT DISTINCT * FROM EquipmentReference")
-    fun getAllEquipments(): Flow<List<EquipmentReference>>
+    @Query("SELECT DISTINCT * FROM EquipmentReference WHERE idLot = :clickedLot ORDER BY level1 ASC")
+    fun getAllEquipments(clickedLot: Int): Flow<List<EquipmentReference>>
 
     @Query("SELECT level2, level3 FROM EquipmentReference WHERE id = :itemId")
     fun getLevelsForItem(itemId: String): LevelData
 
-    @Query("SELECT level1 FROM EquipmentReference WHERE idRoomRef = :idRoomRef OR idRoomRef IS NULL AND level1 IS NOT NULL GROUP BY level1 ORDER BY level1 ASC")
+    @Query("SELECT DISTINCT level1 FROM EquipmentReference WHERE idRoomRef = :idRoomRef OR idRoomRef IS NULL AND level1 IS NOT NULL GROUP BY level1 ORDER BY level1 ASC")
     fun getFirstLevelItems(idRoomRef: Int): Flow<List<String>>
 
-    @Query("SELECT level2 FROM EquipmentReference WHERE idRoomRef = :idRoomRef OR idRoomRef IS NULL AND level2 IS NOT NULL GROUP BY level2 ORDER BY level2 ASC")
+    @Query("SELECT DISTINCT level2 FROM EquipmentReference WHERE idRoomRef = :idRoomRef OR idRoomRef IS NULL AND level2 IS NOT NULL GROUP BY level2 ORDER BY level2 ASC")
     fun getSecondLevelItems(idRoomRef: Int): Flow<List<String>>
 
-    @Query("SELECT level3 FROM EquipmentReference WHERE idRoomRef = :idRoomRef OR idRoomRef IS NULL AND level3 IS NOT NULL GROUP BY level3 ORDER BY level3 ASC")
+    @Query("SELECT DISTINCT level3 FROM EquipmentReference WHERE idRoomRef = :idRoomRef OR idRoomRef IS NULL AND level3 IS NOT NULL GROUP BY level3 ORDER BY level3 ASC")
     fun getThirdLevelItems(idRoomRef: Int): Flow<List<String>>
 
     @Query("UPDATE EquipmentReference SET level3 = :value, idRoomRef = :idRoomRef WHERE id = :itemId")
@@ -52,9 +52,11 @@ interface EquipmentDao : BaseDao<EquipmentReference> {
     @Query("SELECT level3 FROM EquipmentReference WHERE level3 LIKE '%' || :query || '%' GROUP BY level3 ORDER BY level3 ASC")
     fun filterLevelThreeItems(query: String): Flow<List<String>>
 
-    @Query("SELECT EXISTS(SELECT 1 FROM EquipmentReference WHERE level1 = :levelOne AND level2 = :levelTwo AND level3 = :levelThree AND idRoomRef = :lotId)")
-    fun equipmentExists(levelOne: String, levelTwo: String, levelThree: String, lotId: Int): Flow<Boolean>
+    @Query("SELECT EXISTS(SELECT 1 FROM EquipmentReference WHERE level1 = :levelOne AND level2 = :levelTwo AND level3 = :levelThree AND idLot = :lotId AND idRoomRef = :idRoomRef)")
+    fun equipmentExists(levelOne: String, levelTwo: String, levelThree: String, lotId: Int, idRoomRef: Int): Flow<Boolean>
 
+    @Query("SELECT * FROM EquipmentReference WHERE idLot IS NOT NULL")
+    fun getAllEquipmentReferencesWithIdLot(): Flow<List<EquipmentReference>>
 }
 
 data class LevelData(val level2: String?, val level3: String?)

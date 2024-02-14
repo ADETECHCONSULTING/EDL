@@ -85,27 +85,44 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         app:defaultQueryHint="Filtrer"
-        app:queryHint="Filtrer"
+        app:queryHint="Filtrer les équipements"
         app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ctn_lot_technique"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/goToEditEquipment"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_go_to_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchView"
+        app:layout_constraintBottom_toBottomOf="@id/searchView"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.33" />
+        app:layout_constraintGuide_percent="0.50" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.66" />
+        app:layout_constraintGuide_percent="0.75" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
@@ -113,6 +130,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="1.0" />
+
+    <TextView
+        android:id="@+id/txvRoom"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Pièce"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ctn_lot_technique" />
 
     <TextView
         android:id="@+id/txvFirstLevel"
@@ -125,7 +156,7 @@
         android:textStyle="bold"
         android:text="Niveau 1"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline5"
         app:layout_constraintTop_toBottomOf="@id/ctn_lot_technique" />
 
     <TextView
@@ -157,13 +188,24 @@
         app:layout_constraintTop_toBottomOf="@id/ctn_lot_technique" />
 
     <Button
+        android:id="@+id/btnAddRoom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:text="Ajouter"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txvRoom" />
+
+
+    <Button
         android:id="@+id/btnAddFirstLevel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_small"
         android:text="Ajouter"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline5"
         app:layout_constraintTop_toBottomOf="@id/txvFirstLevel" />
 
     <Button
@@ -188,13 +230,24 @@
         app:layout_constraintTop_toBottomOf="@id/txvThirdLevel" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvRooms"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAddRoom"
+        tools:listitem="@layout/eqp_list_item" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvFirstLevel"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/btnAddFirstLevel"
         tools:listitem="@layout/eqp_list_item" />
 

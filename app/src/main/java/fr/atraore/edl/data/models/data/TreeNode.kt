@@ -39,7 +39,7 @@ object TreeParser {
 
             if (eqpRef.level3 != null) {
                 if (secondLevelNode.children.none { node -> node.name == eqpRef.level3 }) {
-                    secondLevelNode.children.add(TreeNode(eqpRef.level3, eqpRef.id, idRoomRef = eqpRef.idRoomRef))
+                    secondLevelNode.children.add(TreeNode(eqpRef.level3!!, eqpRef.id, idRoomRef = eqpRef.idRoomRef))
                 }
             }
         }

@@ -9,24 +9,25 @@ import androidx.recyclerview.widget.RecyclerView
 import fr.atraore.edl.R
 import kotlinx.android.synthetic.main.eqp_list_item.view.txv_eqp
 
-class ListAdapter(private var list: List<String>, private val level: Int, private val listener: OnLevelsItemClickListener) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
-    private var selectedItem = -1
-    private val originalList = list
+class ListAdapter(private var list: MutableList<String>, private val level: Int, private val listener: OnLevelsItemClickListener) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+    private var selectedItem: String? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
                 if ((itemView.parent as RecyclerView).isEnabled) {
-                    notifyItemChanged(selectedItem)
-                    selectedItem = layoutPosition
-                    notifyItemChanged(selectedItem)
+                    selectedItem = list[layoutPosition]
+                    notifyDataSetChanged()
+
 
                     if (level == 1) {
                         listener.onFirstLevelItemClick()
                     } else if (level == 2) {
                         listener.onSecondLevelItemClick()
-                    } else {
+                    } else if (level == 3) {
                         listener.onThirdLevelItemClick()
+                    } else {
+                        listener.onRoomItemClick()
                     }
                 } else {
                     if (level == 2) {
@@ -40,7 +41,7 @@ class ListAdapter(private var list: List<String>, private val level: Int, privat
 
         fun bind(item: String) {
             itemView.txv_eqp.text = item
-            if (selectedItem == layoutPosition) {
+            if (item == selectedItem) {
                 itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorPrimary))
             } else {
                 itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAccent))
@@ -63,11 +64,16 @@ class ListAdapter(private var list: List<String>, private val level: Int, privat
     override fun getItemCount() = list.size
 
     fun updateList(newList: List<String>) {
-        list = newList
+        list.clear()
+        list.addAll(newList)
         notifyDataSetChanged()
     }
 
-    fun getSelectedItem(): String {
-        return list[selectedItem]
+    fun getSelectedItem(): String? {
+        return selectedItem
+    }
+
+    fun getList(): List<String> {
+        return list
     }
 }

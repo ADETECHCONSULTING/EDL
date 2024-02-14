@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+
+    <EditText
+        android:id="@+id/editTextLevel1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:textSize="@dimen/textSizeMedium"
+        android:hint="Level 1" />
+
+    <EditText
+        android:id="@+id/editTextLevel2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:textSize="@dimen/textSizeMedium"
+        android:hint="Level 2" />
+
+    <EditText
+        android:id="@+id/editTextLevel3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:textSize="@dimen/textSizeMedium"
+        android:hint="Level 3" />
+
+    <TextView
+        android:id="@+id/txvRoomRef"
+        android:layout_width="0dp"
+        tools:text="Lot"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textSizeMedium"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/txvLot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="Lot"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:textSize="@dimen/textSizeMedium"
+        android:layout_weight="1" />
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:src="@drawable/ic_done"/>
+
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@color/red"
+        android:src="@drawable/ic_trash"/>
+
+</LinearLayout>

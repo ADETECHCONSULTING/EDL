@@ -308,7 +308,7 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
     }
 
     private fun initRooms() {
-        viewModel.getAllEquipments.observe(viewLifecycleOwner) { equipments ->
+        viewModel.getAllEquipments(clickedLot).observe(viewLifecycleOwner) { equipments ->
             val noEqpsNull = equipments.filter { it.idRoomRef != null } //TODO for now
             val treeEqps = TreeParser.buildHierarchy(noEqpsNull)
             // Assume 'rootNode' is your TreeNode with all the data populated
