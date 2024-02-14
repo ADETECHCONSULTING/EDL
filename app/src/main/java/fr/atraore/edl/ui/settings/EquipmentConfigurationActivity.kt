@@ -11,8 +11,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import dagger.hilt.android.AndroidEntryPoint
 import fr.atraore.edl.R
+import fr.atraore.edl.utils.LOTS_LABELS
 import kotlinx.android.synthetic.main.activity_equipment_configuration.btnAddFirstLevel
 import kotlinx.android.synthetic.main.activity_equipment_configuration.btnAddSecondLevel
 import kotlinx.android.synthetic.main.activity_equipment_configuration.btnAddThridLevel
@@ -139,7 +142,29 @@ class EquipmentConfigurationActivity : AppCompatActivity(), OnLevelsItemClickLis
     }
 
     override fun onThirdLevelItemClick() {
-        Toast.makeText(this, "WOW", Toast.LENGTH_SHORT).show()
+        val levelOne = (rcvFirstLevel.adapter as ListAdapter).getSelectedItem()
+        val levelTwo = (rcvSecondLevel.adapter as ListAdapter).getSelectedItem()
+        val levelThree = (rcvThirdLevel.adapter as ListAdapter).getSelectedItem()
+        viewModel.equipmentExists(levelOne, levelTwo, levelThree, selectedLotIndex).observe(this) { exists ->
+            if (!exists) {
+                showConfirmationDialog(levelOne, levelTwo, levelThree)
+            } else {
+                Toast.makeText(this, "Un équipement avec ces niveaux dans let lot ${LOTS_LABELS[selectedLotIndex-1]} existe déjà", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun showConfirmationDialog(levelOne: String, levelTwo: String, levelThree: String) {
+        MaterialDialog(this).show {
+            title(text = "Voulez vous sauvegarder l'équipement au niveau du lot : ${LOTS_LABELS[selectedLotIndex-1]} ?")
+            message(text = "Niveau 1: $levelOne\nNiveau 2: $levelTwo\nNiveau 3: $levelThree")
+            positiveButton(text = "Valider") {
+                // Sauvegarder les valeurs dans le repository
+                Toast.makeText(this@EquipmentConfigurationActivity, "Sauvegarde effectuée", Toast.LENGTH_SHORT).show()
+            }
+            negativeButton(text = "Annuler")
+            lifecycleOwner(this@EquipmentConfigurationActivity)
+        }
     }
 }
 

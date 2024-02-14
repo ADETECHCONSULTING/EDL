@@ -38,4 +38,6 @@ class ListViewModel @Inject constructor(val repository: EquipmentRepository) : V
             repository.updateItemThirdLevel(level1, thirdItem, idRoomRef)
         }
     }
+
+    fun equipmentExists(levelOne: String, levelTwo: String, levelThree: String, lotId: Int) = repository.equipmentExists(levelOne, levelTwo, levelThree, lotId).asLiveData()
 }

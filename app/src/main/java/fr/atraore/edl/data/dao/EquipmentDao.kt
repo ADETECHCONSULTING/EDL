@@ -51,6 +51,10 @@ interface EquipmentDao : BaseDao<EquipmentReference> {
 
     @Query("SELECT level3 FROM EquipmentReference WHERE level3 LIKE '%' || :query || '%' GROUP BY level3 ORDER BY level3 ASC")
     fun filterLevelThreeItems(query: String): Flow<List<String>>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM EquipmentReference WHERE level1 = :levelOne AND level2 = :levelTwo AND level3 = :levelThree AND idRoomRef = :lotId)")
+    fun equipmentExists(levelOne: String, levelTwo: String, levelThree: String, lotId: Int): Flow<Boolean>
+
 }
 
 data class LevelData(val level2: String?, val level3: String?)

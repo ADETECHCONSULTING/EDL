@@ -63,6 +63,10 @@ class MainFragment : BaseFragment("MainFrag") {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_add_room -> {
+                val intent = Intent(requireContext(), RoomConfigurationActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.action_add_eqpt -> {
                 val intent = Intent(requireContext(), EquipmentConfigurationActivity::class.java)
                 startActivity(intent)
             }

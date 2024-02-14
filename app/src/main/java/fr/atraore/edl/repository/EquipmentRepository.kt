@@ -1,5 +1,6 @@
 package fr.atraore.edl.repository
 
+import androidx.lifecycle.LiveData
 import fr.atraore.edl.data.dao.EquipmentDao
 import fr.atraore.edl.data.models.entity.EquipmentReference
 import kotlinx.coroutines.flow.Flow
@@ -39,6 +40,10 @@ class EquipmentRepository @Inject constructor(
             levels.level2 != null -> dao.updateLevel2(itemId, value, idRoomRef)
             else -> dao.updateLevel1(itemId, value, idRoomRef)
         }
+    }
+
+    fun equipmentExists(levelOne: String, levelTwo: String, levelThree: String, lotId: Int): Flow<Boolean> {
+        return dao.equipmentExists(levelOne, levelTwo, levelThree, lotId)
     }
 
 }
