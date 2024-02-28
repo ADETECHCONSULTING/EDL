@@ -1,6 +1,7 @@
 package fr.atraore.edl.ui.edl.constat.first_page
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -24,6 +25,7 @@ import fr.atraore.edl.ui.adapter.start.PrimaryInfoNoDataBindAdapter
 import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
+import fr.atraore.edl.ui.settings.EquipmentConfigurationActivity
 import fr.atraore.edl.utils.*
 import kotlinx.android.synthetic.main.fragment_start_constat.*
 import kotlinx.coroutines.CoroutineScope
@@ -108,6 +110,10 @@ class StartConstatFragment() : BaseFragment("Constat"), View.OnClickListener, Li
         when(item.itemId){
             R.id.action_compteur -> {
                 goCompteur()
+            }
+            R.id.action_add_eqpt -> {
+                val intent = Intent(requireContext(), EquipmentConfigurationActivity::class.java)
+                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)

@@ -1,11 +1,13 @@
 package fr.atraore.edl.ui.settings
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.atraore.edl.data.models.entity.EquipmentReference
+import fr.atraore.edl.data.models.entity.RoomReference
 import fr.atraore.edl.repository.EquipmentRepository
 import fr.atraore.edl.repository.RoomRepository
 import kotlinx.coroutines.flow.Flow
@@ -32,6 +34,19 @@ class ListViewModel @Inject constructor(val repository: EquipmentRepository, val
         viewModelScope.launch {
             repository.save(EquipmentReference(UUID.randomUUID().toString(), levelOne, levelTwo, levelThree, idRoomRef, lotId))
         }
+    }
+
+    fun insertRoom(roomName: String): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+        viewModelScope.launch {
+            try {
+                roomRepository.save(RoomReference(null, UUID.randomUUID().toString(), roomName))
+                result.postValue(true)
+            } catch (e: Exception) {
+                result.postValue(false)
+            }
+        }
+        return result
     }
 
     fun updateEquipmentReference(equipmentReference: EquipmentReference) {

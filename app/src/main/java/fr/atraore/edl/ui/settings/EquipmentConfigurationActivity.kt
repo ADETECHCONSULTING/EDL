@@ -21,6 +21,7 @@ import fr.atraore.edl.utils.LOTS_LABELS
 import fr.atraore.edl.utils.ROOMS_LABELS
 import fr.atraore.edl.utils.observeOnce
 import kotlinx.android.synthetic.main.activity_equipment_configuration.btnAddFirstLevel
+import kotlinx.android.synthetic.main.activity_equipment_configuration.btnAddRoom
 import kotlinx.android.synthetic.main.activity_equipment_configuration.btnAddSecondLevel
 import kotlinx.android.synthetic.main.activity_equipment_configuration.btnAddThridLevel
 import kotlinx.android.synthetic.main.activity_equipment_configuration.goToEditEquipment
@@ -49,6 +50,11 @@ class EquipmentConfigurationActivity : AppCompatActivity(), OnLevelsItemClickLis
         viewModel.getAllRoomReferences.observe(this) { list ->
             roomAdapter.updateList(list.map { it.name })
         }
+
+        btnAddRoom.setOnClickListener {
+            showAddElement(0)
+        }
+
         setupList(rcvFirstLevel, btnAddFirstLevel, 1)
         setupList(rcvSecondLevel, btnAddSecondLevel, 2)
         setupList(rcvThirdLevel, btnAddThridLevel, 3)
@@ -195,6 +201,19 @@ class EquipmentConfigurationActivity : AppCompatActivity(), OnLevelsItemClickLis
             title(text = "Ajouter un nouvel élément")
             input { _, text ->
                 when(level) {
+                    0 -> {
+                        viewModel.insertRoom(text.toString()).observeOnce(this@EquipmentConfigurationActivity) { success ->
+                            if (success) {
+                                selectedRoom = text.toString()
+                                val adapter = this@EquipmentConfigurationActivity.rcvRooms.adapter as ListAdapter
+                                val newList = mutableListOf(text.toString())
+                                newList.addAll(adapter.getList())
+                                adapter.updateList(newList)
+                            } else {
+                                Toast.makeText(this@EquipmentConfigurationActivity, "Failed to insert room", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
                     1 -> {
                         val adapter = this@EquipmentConfigurationActivity.rcvFirstLevel.adapter as ListAdapter
 

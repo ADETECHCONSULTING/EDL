@@ -54,6 +54,8 @@ class ConstatViewModel @AssistedInject constructor(
     fun allActifOutdoorRef() : LiveData<List<OutdoorEquipementReference>> = outdoorRepository.getAllActifRef().asLiveData()
 
     fun getAllEquipments(clickedLot: Int) = equipmentRepository.getAllEquipments(clickedLot).asLiveData()
+
+    fun getAllRoomReferences() = roomRepository.getAllRoomReferences().asLiveData()
     val coroutineContext: CoroutineContext
     get() = Dispatchers.IO
 
@@ -136,9 +138,4 @@ class ConstatViewModel @AssistedInject constructor(
         }
     }
 
-    suspend fun saveRoomConstatCrossRef(crossRefs: List<RoomConstatCrossRef>) {
-        viewModelScope.launch {
-            roomRepository.saveRoomConstatCrossRef(crossRefs)
-        }
-    }
 }

@@ -1,6 +1,7 @@
 package fr.atraore.edl.ui.edl.constat.second_page
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -29,6 +30,7 @@ import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.edl.constat.ConstatViewModel
 import fr.atraore.edl.ui.edl.constat.second_page.detail.DetailEndConstatFragment
 import fr.atraore.edl.ui.formatToServerDateTimeDefaults
+import fr.atraore.edl.ui.settings.EquipmentConfigurationActivity
 import fr.atraore.edl.utils.*
 import fr.atraore.edl.utils.itemanimators.SlideDownAlphaAnimator
 import kotlinx.android.synthetic.main.fragment_end_constat.*
@@ -266,6 +268,11 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
                     initOutdoor()
                 }
             }
+
+            R.id.action_add_eqpt -> {
+                val intent = Intent(requireContext(), EquipmentConfigurationActivity::class.java)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -308,12 +315,14 @@ class EndConstatFragment() : BaseFragment("EndConstat"), LifecycleObserver, OnTr
     }
 
     private fun initRooms() {
-        viewModel.getAllEquipments(clickedLot).observe(viewLifecycleOwner) { equipments ->
-            val noEqpsNull = equipments.filter { it.idRoomRef != null } //TODO for now
-            val treeEqps = TreeParser.buildHierarchy(noEqpsNull)
-            // Assume 'rootNode' is your TreeNode with all the data populated
-            val adapter = TreeNodeAdapter(treeEqps.children, 0, this)
-            rcv_rooms.adapter = adapter
+        viewModel.getAllRoomReferences().observe(viewLifecycleOwner) { rooms ->
+            viewModel.getAllEquipments(clickedLot).observe(viewLifecycleOwner) { equipments ->
+                val noEqpsNull = equipments.filter { it.idRoomRef != null } //TODO for now
+                val treeEqps = TreeParser.buildHierarchy(noEqpsNull, rooms.map { it.name })
+                // Assume 'rootNode' is your TreeNode with all the data populated
+                val adapter = TreeNodeAdapter(treeEqps.children, 0, this)
+                rcv_rooms.adapter = adapter
+            }
         }
     }
 

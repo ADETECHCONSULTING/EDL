@@ -8,7 +8,7 @@ data class TreeNode(val name: String, val id: String, val children: MutableList<
 
 object TreeParser {
 
-    fun buildHierarchy(results: List<EquipmentReference>): TreeNode {
+    fun buildHierarchy(results: List<EquipmentReference>, rooms: List<String>): TreeNode {
         val root = TreeNode("Root", UUID.randomUUID().toString())
 
         val levelZeroMap = mutableMapOf<Int?, TreeNode>() // Modification pour accepter des clés null
@@ -19,7 +19,7 @@ object TreeParser {
             // Gérer les cas où idRoomRef est null
             val parentId = (eqpRef.idRoomRef ?: 0) -1 // Utiliser -1 ou tout autre valeur par défaut
             val parentLabel = if (eqpRef.idRoomRef != null) {
-                ROOMS_LABELS.getOrElse(eqpRef.idRoomRef - 1) { "Inconnu" }
+                rooms.getOrElse(eqpRef.idRoomRef - 1) { "Inconnu" }
             } else {
                 "Parent Inconnu" // Label par défaut pour les parents sans idRoomRef
             }
