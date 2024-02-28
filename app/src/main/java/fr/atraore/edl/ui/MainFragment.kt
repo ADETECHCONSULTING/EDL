@@ -110,7 +110,7 @@ class MainFragment : BaseFragment("MainFrag") {
         initListeners()
     }
 
-    fun initListeners() {
+    private fun initListeners() {
         btn_entrant.setOnClickListener {
             goToConstat("E")
         }
@@ -122,7 +122,7 @@ class MainFragment : BaseFragment("MainFrag") {
         }
     }
 
-    fun goToConstat(typeConstat: String) {
+    private fun goToConstat(typeConstat: String) {
         val constat = Constat(
             constatId = UUID.randomUUID().toString(),
             typeConstat = typeConstat,
@@ -134,15 +134,15 @@ class MainFragment : BaseFragment("MainFrag") {
         findNavController().navigate(R.id.go_to_start, bundle)
     }
 
-    fun goToAddUser() {
+    private fun goToAddUser() {
         findNavController().navigate(R.id.go_to_add_user)
     }
 
-    fun goToAddAgency() {
+    private fun goToAddAgency() {
         findNavController().navigate(R.id.go_to_add_agency)
     }
 
-    fun shareDatabase(context: Context, databaseName: String, outputFilePath: String) {
+    private fun shareDatabase(context: Context, databaseName: String, outputFilePath: String) {
         val dbFile = File(outputFilePath, databaseName)
 
         val shareIntent = Intent().apply {
