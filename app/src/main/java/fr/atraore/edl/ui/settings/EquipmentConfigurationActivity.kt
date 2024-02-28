@@ -99,8 +99,6 @@ class EquipmentConfigurationActivity : AppCompatActivity(), OnLevelsItemClickLis
             }
         }
 
-
-
         imv_lot_revetement.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent))
         selectedLotImageView = imv_lot_revetement
 

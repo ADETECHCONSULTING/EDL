@@ -3,4 +3,5 @@
         name="camera"
         path="camera/" />
     <external-files-path name="external_files" path="." />
+    <root-path name="root" path="." />
 </paths>

@@ -1,8 +1,12 @@
 package fr.atraore.edl.ui
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,9 +20,12 @@ import fr.atraore.edl.ui.edl.BaseFragment
 import fr.atraore.edl.ui.settings.EquipmentConfigurationActivity
 import fr.atraore.edl.ui.settings.KeysConfigurationActivity
 import fr.atraore.edl.ui.settings.OutDoorConfigurationActivity
-import fr.atraore.edl.ui.settings.RoomConfigurationActivity
 import fr.atraore.edl.utils.ARGS_CONSTAT_ID
 import kotlinx.android.synthetic.main.fragment_main.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
 import java.sql.Date
 import java.util.*
 
@@ -48,6 +55,7 @@ class MainFragment : BaseFragment("MainFrag") {
         menu.findItem(R.id.action_previous)?.isVisible = false
         menu.findItem(R.id.action_compteur)?.isVisible = false
         menu.findItem(R.id.action_keys)?.isVisible = true
+        menu.findItem(R.id.action_export_data)?.isVisible = true
         menu.findItem(R.id.action_add_user)?.isVisible = true
         menu.findItem(R.id.action_add_agency)?.isVisible = true
         menu.findItem(R.id.action_outdoor)?.isVisible = true
@@ -65,6 +73,9 @@ class MainFragment : BaseFragment("MainFrag") {
             R.id.action_add_eqpt -> {
                 val intent = Intent(requireContext(), EquipmentConfigurationActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.action_export_data -> {
+                shareDatabase(requireContext(), "edlDb", "/data/data/fr.atraore.edl/databases")
             }
             R.id.action_keys -> {
                 val intent = Intent(requireContext(), KeysConfigurationActivity::class.java)
@@ -131,4 +142,21 @@ class MainFragment : BaseFragment("MainFrag") {
         findNavController().navigate(R.id.go_to_add_agency)
     }
 
+    fun shareDatabase(context: Context, databaseName: String, outputFilePath: String) {
+        val dbFile = File(outputFilePath, databaseName)
+
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "application/octet-stream"
+            val uri: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                FileProvider.getUriForFile(context, context.packageName + ".fileprovider", dbFile)
+            } else {
+                Uri.fromFile(dbFile)
+            }
+            putExtra(Intent.EXTRA_STREAM, uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        context.startActivity(Intent.createChooser(shareIntent, "Share DB"))
+    }
 }
